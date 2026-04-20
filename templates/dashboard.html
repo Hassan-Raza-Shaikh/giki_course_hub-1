@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — GIKI Course Hub{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Welcome back, {{ session.username }} 👋</h1>
+  <p>Here's what's happening with your account today.</p>
+</div>
+
+<!-- Stats Row -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-icon">📤</span>
+    <span class="stat-label">My Contributions</span>
+    <span class="stat-value" style="color:var(--accent);">{{ contrib_count }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">🔖</span>
+    <span class="stat-label">Bookmarks</span>
+    <span class="stat-value" style="color:var(--info);">{{ bookmark_count }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">🔔</span>
+    <span class="stat-label">Notifications</span>
+    <span class="stat-value" style="color:{{ 'var(--danger)' if notif_count > 0 else 'var(--text-muted)' }};">{{ notif_count }}</span>
+  </div>
+</div>
+
+<!-- My Uploads -->
+<div class="section-header">
+  <h2>📂 My Uploads</h2>
+  <a href="{{ url_for('files.upload_file') }}" class="btn btn-primary btn-sm">+ New Upload</a>
+</div>
+
+{% if my_files %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Subject</th>
+        <th>Status</th>
+        <th>Uploaded</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in my_files %}
+      <tr>
+        <td><a href="{{ url_for('files.file_detail', file_id=f[0]) }}">{{ f[1] }}</a></td>
+        <td class="text-muted">{{ f[4] or '—' }}</td>
+        <td>
+          {% if f[2] == 'approved' %}
+            <span class="badge badge-success">Approved</span>
+          {% elif f[2] == 'pending' %}
+            <span class="badge badge-warning">Pending</span>
+          {% else %}
+            <span class="badge badge-danger">Rejected</span>
+          {% endif %}
+        </td>
+        <td class="text-muted" style="font-size:0.8rem;">{{ f[3].strftime('%b %d, %Y') if f[3] else '—' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state card">
+  <div class="empty-icon">📭</div>
+  <p>You haven't uploaded anything yet.</p>
+  <a href="{{ url_for('files.upload_file') }}" class="btn btn-primary mt-2">Upload your first file</a>
+</div>
+{% endif %}
+
+<!-- Notifications Section (if on notifications route) -->
+{% if notifications is defined and notifications %}
+<hr class="divider mt-3">
+<div class="section-header mt-2"><h2>🔔 Notifications</h2></div>
+<div style="display:flex;flex-direction:column;gap:10px;">
+  {% for n in notifications %}
+  <div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:12px;">
+    <span style="font-size:1.2rem;">{{ '🔔' if not n[2] else '✅' }}</span>
+    <div>
+      <div style="font-size:0.9rem;">{{ n[1] }}</div>
+      <div class="text-muted" style="font-size:0.78rem;margin-top:2px;">{{ n[3].strftime('%b %d, %Y %H:%M') if n[3] else '' }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

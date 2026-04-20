@@ -1,32 +1,6 @@
 import psycopg2
+from config import DB_CONFIG
 
-try:
-    conn = psycopg2.connect(
-        host="localhost",
-        database="giki course hub",
-        user="postgres",
-        password="ammar.12?",  # put your actual password
-        port="5432"
-    )
-
-    print("✅ Connected to database!")
-
-    cur = conn.cursor()
-
-    # Test 1: Check DB name
-    cur.execute("SELECT current_database();")
-    print("Database:", cur.fetchone())
-
-    # Test 2: Check users table
-    cur.execute("SELECT * FROM users;")
-    rows = cur.fetchall()
-
-    print("Users table data:")
-    for row in rows:
-        print(row)
-
-    cur.close()
-    conn.close()
-
-except Exception as e:
-    print("❌ Error:", e)
+def get_connection():
+    """Returns a new psycopg2 connection. Caller is responsible for closing it."""
+    return psycopg2.connect(**DB_CONFIG)

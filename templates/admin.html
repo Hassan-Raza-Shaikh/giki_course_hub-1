@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Admin Panel — GIKI Course Hub{% endblock %}
+{% block page_title %}Admin Panel{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>⚙️ Admin Dashboard</h1>
+  <p>Manage files, reports, and site analytics.</p>
+</div>
+
+{% if section != 'pending' %}
+<!-- Stats overview -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-icon">👥</span>
+    <span class="stat-label">Total Users</span>
+    <span class="stat-value" style="color:var(--accent);">{{ total_users }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">📁</span>
+    <span class="stat-label">Total Files</span>
+    <span class="stat-value" style="color:var(--info);">{{ total_files }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">⏳</span>
+    <span class="stat-label">Pending</span>
+    <span class="stat-value" style="color:var(--warning);">{{ pending_count }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-icon">🚩</span>
+    <span class="stat-label">Open Reports</span>
+    <span class="stat-value" style="color:var(--danger);">{{ open_reports }}</span>
+  </div>
+</div>
+
+<!-- Quick Admin Actions -->
+<div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+  <a href="{{ url_for('admin.pending_files') }}" class="btn btn-warning">⏳ Review Pending ({{ pending_count }})</a>
+  <a href="{{ url_for('admin.reports') }}" class="btn btn-danger">🚩 Open Reports ({{ open_reports }})</a>
+  <form method="POST" action="{{ url_for('admin.generate_report') }}" style="margin:0;">
+    <button class="btn btn-ghost">📊 Generate Monthly Report</button>
+  </form>
+</div>
+
+<!-- Top Downloads -->
+{% if top_files %}
+<div class="section-header"><h2>🔥 Top Downloaded Files</h2></div>
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>#</th><th>Title</th><th>Category</th><th>Downloads</th></tr></thead>
+    <tbody>
+      {% for i, f in enumerate(top_files) %}
+      <tr>
+        <td style="color:var(--text-muted);">{{ i+1 }}</td>
+        <td><a href="{{ url_for('files.file_detail', file_id=f[0]) }}">{{ f[1] }}</a></td>
+        <td class="text-muted">{{ f[2] or '—' }}</td>
+        <td><span class="badge badge-info">{{ f[3] }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% else %}
+<!-- Pending Files Table -->
+<div class="section-header">
+  <h2>⏳ Pending Approval</h2>
+  <a href="{{ url_for('admin.dashboard') }}" class="btn btn-ghost btn-sm">← Back</a>
+</div>
+
+{% if pending_files %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Title</th><th>Uploader</th><th>Subject</th><th>Type</th><th>Uploaded</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for f in pending_files %}
+      <tr>
+        <td style="font-weight:500;">{{ f[1] }}</td>
+        <td class="text-muted">{{ f[2] }}</td>
+        <td class="text-muted">{{ f[6] or '—' }}</td>
+        <td><span class="badge badge-info">{{ f[3] or '—' }}</span></td>
+        <td class="text-muted" style="font-size:0.8rem;">{{ f[5].strftime('%b %d, %Y') if f[5] else '—' }}</td>
+        <td>
+          <div style="display:flex;gap:6px;">
+            <form method="POST" action="{{ url_for('admin.approve_file', file_id=f[0]) }}" style="margin:0;">
+              <button class="btn btn-success btn-sm">✅ Approve</button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.reject_file', file_id=f[0]) }}" style="margin:0;display:flex;gap:4px;">
+              <input name="reason" class="form-control" style="width:140px;" placeholder="Reason…" />
+              <button class="btn btn-danger btn-sm">✕ Reject</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state card">
+  <div class="empty-icon">✅</div>
+  <p>No files are pending approval. You're all caught up!</p>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

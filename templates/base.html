@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GIKI Course Hub — Browse, upload, and manage course resources.">
+  <title>{% block title %}GIKI Course Hub{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── Sidebar ────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">📚</span>
+      <span>Course Hub</span>
+    </div>
+
+    <span class="sidebar-section">Main</span>
+    <ul class="sidebar-nav">
+      <li><a href="{{ url_for('user.dashboard') }}" class="{{ 'active' if request.endpoint == 'user.dashboard' }}">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a></li>
+      <li><a href="{{ url_for('files.list_files') }}" class="{{ 'active' if request.endpoint == 'files.list_files' }}">
+        <span class="nav-icon">📁</span> Browse Files
+      </a></li>
+      <li><a href="{{ url_for('files.upload_file') }}" class="{{ 'active' if request.endpoint == 'files.upload_file' }}">
+        <span class="nav-icon">⬆️</span> Upload
+      </a></li>
+      <li><a href="{{ url_for('user.bookmarks') }}" class="{{ 'active' if request.endpoint == 'user.bookmarks' }}">
+        <span class="nav-icon">🔖</span> Bookmarks
+      </a></li>
+      <li><a href="{{ url_for('user.profile') }}" class="{{ 'active' if request.endpoint == 'user.profile' }}">
+        <span class="nav-icon">👤</span> Profile
+      </a></li>
+    </ul>
+
+    {% if session.get('role') == 'admin' or not session.get('user_id') %}
+    <span class="sidebar-section" style="margin-top:12px;">Admin</span>
+    <ul class="sidebar-nav">
+      <li><a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if request.endpoint == 'admin.dashboard' }}">
+        <span class="nav-icon">⚙️</span> Admin Panel
+      </a></li>
+      <li><a href="{{ url_for('admin.pending_files') }}" class="{{ 'active' if request.endpoint == 'admin.pending_files' }}">
+        <span class="nav-icon">⏳</span> Pending Files
+      </a></li>
+      <li><a href="{{ url_for('admin.reports') }}" class="{{ 'active' if request.endpoint == 'admin.reports' }}">
+        <span class="nav-icon">🚩</span> Reports
+      </a></li>
+    </ul>
+    {% endif %}
+
+    <div class="sidebar-footer">
+      {% if session.get('user_id') %}
+      <div class="user-tag">
+        <div class="avatar">{{ session.username[0]|upper if session.username else '?' }}</div>
+        <div>
+          <div style="font-weight:600; color:var(--text); font-size:0.85rem;">{{ session.username }}</div>
+          <div style="font-size:0.75rem;">{{ session.role }}</div>
+        </div>
+      </div>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost btn-sm w-full mt-1" style="justify-content:center;">
+        🚪 Logout
+      </a>
+      {% else %}
+      <div style="padding: 0 8px;">
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">Viewing as Guest</p>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm w-full mb-1" style="justify-content:center;">Log In</a>
+        <a href="{{ url_for('auth.signup') }}" class="btn btn-ghost btn-sm w-full" style="justify-content:center;">Sign Up</a>
+      </div>
+      {% endif %}
+    </div>
+  </aside>
+
+  <!-- ── Main ───────────────────────────────────────── -->
+  <div class="main">
+    {% if request.endpoint in ['auth.login', 'auth.signup'] %}
+      {% block auth_content %}{% endblock %}
+    {% else %}
+      <header class="topbar">
+        <span class="topbar-title">{% block page_title %}{% endblock %}</span>
+        <div class="topbar-actions">
+          <a href="{{ url_for('files.upload_file') }}" class="btn btn-primary btn-sm">+ Upload</a>
+        </div>
+      </header>
+    {% endif %}
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for cat, msg in messages %}
+            <div class="flash flash-{{ cat }}">
+              {% if cat == 'success' %}✅{% elif cat == 'danger' %}❌{% elif cat == 'warning' %}⚠️{% else %}ℹ️{% endif %}
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
