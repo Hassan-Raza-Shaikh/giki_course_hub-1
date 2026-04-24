@@ -1,233 +1,216 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import ScrollReveal from '../components/ScrollReveal';
 
-const Landing = () => {
+const QUOTES = [
+  '"Education is the most powerful weapon which you can use to change the world."',
+  '"The roots of education are bitter, but the fruit is sweet."',
+  '"An investment in knowledge pays the best interest."',
+];
+
+const Landing = ({ onSignIn }) => {
+  const [randomCourses, setRandomCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+  useEffect(() => {
+    api.get('/courses/random?n=3')
+      .then(res => { if (res.data.success) setRandomCourses(res.data.courses); })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-subtle)', display: 'flex', flexDirection: 'column' }}>
-      {/* ── Hero Section ───────────────────────────────────────── */}
-      <section style={{ 
-        minHeight: '85vh', 
-        background: 'linear-gradient(135deg, var(--bg-dark) 0%, #002D6B 100%)',
-        color: 'white',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        padding: '80px 24px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Decorative Background Elements */}
-        <div style={{ position: 'absolute', width: '800px', height: '800px', background: 'radial-gradient(circle, var(--primary) 0%, transparent 70%)', borderRadius: '50%', opacity: 0.3, top: '-300px', left: '-200px', filter: 'blur(100px)' }} />
-        <div style={{ position: 'absolute', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--secondary) 0%, transparent 70%)', borderRadius: '50%', opacity: 0.2, bottom: '-100px', right: '-100px', filter: 'blur(80px)' }} />
+    <div style={{ overflowX: 'hidden' }}>
 
-        <div style={{ zIndex: 2, maxWidth: '900px' }} className="fade-in">
-          <div style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '10px', 
-            background: 'rgba(255,255,255,0.05)', 
-            padding: '10px 20px', 
-            borderRadius: '100px',
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            marginBottom: '32px',
-            border: '1px solid rgba(255,255,255,0.1)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em'
-          }}>
-            <span style={{ color: 'var(--secondary)' }}>✨ New Era</span> 
-            <span style={{ opacity: 0.5 }}>|</span> 
-            <span>GIKI Student Hub</span>
-          </div>
-          
-          <h1 style={{ 
-            fontSize: 'clamp(3rem, 8vw, 5rem)', 
-            fontWeight: 800, 
-            lineHeight: 1.05, 
-            marginBottom: '28px',
-            letterSpacing: '-0.03em'
-          }}>
-            Elevate Your Learning with <br />
-            <span style={{ background: 'linear-gradient(90deg, #FFFFFF 30%, var(--secondary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              GIKI COURSE HUB
-            </span>
-          </h1>
-          
-          <p style={{ fontSize: '1.25rem', opacity: 0.7, maxWidth: '650px', margin: '0 auto 48px', lineHeight: 1.6, fontWeight: 500 }}>
-            Discover high-quality resources, share your knowledge, and connect with peers in GIKI's most advanced academic platform.
-          </p>
+      {/* ── Hero ───────────────────────────────────────────── */}
+      <section className="hero">
+        {/* Glows */}
+        <div className="hero-glow" style={{ width: 700, height: 700, background: 'radial-gradient(circle, rgba(79,163,209,0.25), transparent 70%)', top: -200, left: -100 }} />
+        <div className="hero-glow" style={{ width: 500, height: 500, background: 'radial-gradient(circle, rgba(0,201,255,0.15), transparent 70%)', bottom: -100, right: -50 }} />
 
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <NavLink to="/signup" style={{ 
-              backgroundColor: 'white', 
-              color: 'var(--primary)', 
-              padding: '18px 40px', 
-              borderRadius: '16px', 
-              fontWeight: 800,
-              fontSize: '1.1rem',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-              transition: 'var(--transition)'
-            }} className="hover-scale">
-              Launch Your Hub
-            </NavLink>
-            <NavLink to="/files" style={{ 
-              background: 'rgba(255,255,255,0.05)', 
-              color: 'white', 
-              padding: '18px 40px', 
-              borderRadius: '16px', 
-              fontWeight: 700,
-              fontSize: '1.1rem',
-              border: '1px solid rgba(255,255,255,0.15)',
-              backdropFilter: 'blur(10px)'
+        <div className="page-container" style={{ position: 'relative', zIndex: 2, paddingTop: '80px' }}>
+          <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
+              background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+              padding: '8px 20px', borderRadius: '100px', marginBottom: '40px',
+              fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)',
+              textTransform: 'uppercase', letterSpacing: '0.12em',
             }}>
-              Explore Resources
-            </NavLink>
+              <span style={{ color: '#00C9FF' }}>●</span> GIK Institute of Engineering
+            </div>
+
+            <h1 style={{
+              fontSize: 'clamp(3.5rem, 8vw, 6.5rem)',
+              fontWeight: 900,
+              color: 'white',
+              letterSpacing: '-0.04em',
+              lineHeight: 1.0,
+              marginBottom: '28px',
+              fontFamily: 'Outfit, sans-serif',
+            }}>
+              GIKI<br /><span className="gradient-text">COURSE HUB</span>
+            </h1>
+
+            <p style={{
+              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+              color: 'rgba(255,255,255,0.6)',
+              fontStyle: 'italic',
+              maxWidth: '600px',
+              margin: '0 auto 20px',
+              lineHeight: 1.7,
+            }}>
+              {quote}
+            </p>
+
+            <p style={{
+              fontSize: '1.1rem',
+              color: 'rgba(255,255,255,0.5)',
+              maxWidth: '520px',
+              margin: '0 auto 52px',
+              lineHeight: 1.7,
+            }}>
+              Your one-stop platform for academic materials at GIKI — past papers, lecture notes, slides, and more, organized by course and year.
+            </p>
+
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button className="btn-primary" onClick={() => navigate('/courses')}
+                style={{ fontSize: '1.05rem' }}>
+                Explore Courses →
+              </button>
+              <button className="btn-outline" onClick={onSignIn}>Sign In</button>
+            </div>
+          </div>
+
+          {/* Scroll hint */}
+          <div style={{ marginTop: '80px', animation: 'float 3s ease-in-out infinite' }}>
+            <div style={{ width: 1, height: 60, background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)', margin: '0 auto' }} />
+            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textAlign: 'center', marginTop: '8px', letterSpacing: '0.1em' }}>SCROLL</p>
           </div>
         </div>
       </section>
 
-      {/* ── Stats Strip ────────────────────────────────────────── */}
-      <div style={{ padding: '0 24px', position: 'relative', zIndex: 10, marginTop: '-60px' }}>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '80px', 
-          padding: '40px', 
-          background: 'rgba(255, 255, 255, 0.95)',
-          borderRadius: '24px',
-          maxWidth: '1100px',
-          margin: '0 auto',
-          boxShadow: '0 20px 40px -10px rgba(0, 58, 143, 0.2)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid white',
-          flexWrap: 'wrap'
-        }}>
-          <StatItem num="850+" label="Verified Files" />
-          <StatItem num="45+" label="Active Subjects" />
-          <StatItem num="2.5k+" label="Daily Downloads" />
-          <StatItem num="1k+" label="Platform Users" />
-        </div>
-      </div>
+      {/* ── Random Courses ─────────────────────────────────── */}
+      <section style={{ padding: '120px 0 80px', background: 'var(--bg-subtle)' }}>
+        <div className="page-container">
+          <ScrollReveal>
+            <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+              <p style={{ color: 'var(--secondary)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px' }}>
+                Featured This Session
+              </p>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: 'var(--primary)', letterSpacing: '-0.03em' }}>
+                Discover Your Courses
+              </h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '16px', maxWidth: '500px', margin: '16px auto 0' }}>
+                Browse study materials contributed by students just like you.
+              </p>
+            </div>
+          </ScrollReveal>
 
-      {/* ── Features ───────────────────────────────────────────── */}
-      <section style={{ padding: '120px 24px', maxWidth: '1200px', margin: '0 auto' }}>
-        <header style={{ textAlign: 'center', marginBottom: '80px' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.02em' }}>
-            Built for Students, <span style={{ color: 'var(--secondary)' }}>By Students.</span>
-          </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '16px' }}>Everything you need to survive and thrive academic life.</p>
-        </header>
+          {loading ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: '28px' }}>
+              {[1,2,3].map(i => (
+                <div key={i} style={{ height: 200, background: 'linear-gradient(90deg, #e2e8f0 25%, #f0f4ff 50%, #e2e8f0 75%)', backgroundSize: '200%', animation: 'shimmer 1.5s infinite', borderRadius: 'var(--radius-lg)' }} />
+              ))}
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: '28px' }}>
+              {randomCourses.map((course, i) => (
+                <ScrollReveal key={course.id} delay={`reveal-delay-${i+1}`}>
+                  <div className="course-card" onClick={() => navigate(`/course/${course.id}`)}>
+                    <div style={{ fontSize: '2.8rem', marginBottom: '20px' }}>{course.icon}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                      <span className="badge badge-year">Year {course.year}</span>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{course.code}</span>
+                    </div>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px', lineHeight: 1.3 }}>{course.name}</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>{course.description}</p>
+                    <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--secondary)', fontWeight: 700, fontSize: '0.9rem' }}>
+                      View Materials <span>→</span>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}>
-          <FeatureCard icon="⚡" title="Lightning Fast Search" desc="Our advanced indexing makes finding the specific past paper or notes easier than ever." />
-          <FeatureCard icon="💎" title="Premium Quality" desc="Every single file is moderated by our admin team to ensure students get only the best resources." />
-          <FeatureCard icon="🌌" title="Modern Interface" desc="A beautiful, responsive UI designed with GIKI's identity in mind, optimized for all devices." />
-          <FeatureCard icon="🤝" title="Collaborative" desc="Join the community contribution effort. Share your best work and earn reputation within the hub." />
-          <FeatureCard icon="🚀" title="Always Syncing" desc="Your bookmarks and interactions are synced in real-time. Access your library from anywhere." />
-          <FeatureCard icon="🛡️" title="Secure & Private" desc="We value your privacy. All your activities and uploads are handled with enterprise-grade security." />
-        </div>
-      </section>
-
-      {/* ── CTA Section ───────────────────────────────────────── */}
-      <section style={{ paddingBottom: '120px', paddingLeft: '24px', paddingRight: '24px' }}>
-        <div style={{ 
-          maxWidth: '1000px', 
-          margin: '0 auto', 
-          background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)', 
-          borderRadius: '32px',
-          padding: '80px 40px',
-          textAlign: 'center',
-          color: 'white',
-          boxShadow: '0 40px 100px -20px rgba(0, 58, 143, 0.4)'
-        }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '24px' }}>Ready to Ace Your Semester?</h2>
-          <p style={{ fontSize: '1.2rem', opacity: 0.9, marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>
-            Join over 1,000 GIKIANS who are already using the Course Hub to simplify their studies.
-          </p>
-          <NavLink to="/signup" style={{ 
-            backgroundColor: 'white', 
-            color: 'var(--primary)', 
-            padding: '18px 48px', 
-            borderRadius: '16px', 
-            fontWeight: 800,
-            fontSize: '1.1rem',
-            display: 'inline-block'
-          }}>
-            Create Your Account
-          </NavLink>
+          <ScrollReveal>
+            <div style={{ textAlign: 'center', marginTop: '64px' }}>
+              <button className="btn-primary" onClick={() => navigate('/courses')}>
+                Browse All Courses
+              </button>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      <footer style={{ 
-        padding: '60px 24px', 
-        textAlign: 'center', 
-        borderTop: '1px solid var(--border)',
-        backgroundColor: 'white'
-      }}>
-        <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '16px', fontFamily: 'Outfit' }}>
-          GIKI COURSE HUB
+      {/* ── About Us ──────────────────────────────────────── */}
+      <section style={{ padding: '120px 0', background: 'linear-gradient(135deg, var(--bg-hero) 0%, var(--primary) 100%)' }}>
+        <div className="page-container">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+            <ScrollReveal>
+              <p style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '20px' }}>
+                About GIKI Course Hub
+              </p>
+              <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 900, color: 'white', letterSpacing: '-0.03em', marginBottom: '24px', lineHeight: 1.1 }}>
+                Built by Students, <br />For Students.
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '16px' }}>
+                GIK Institute of Engineering Sciences and Technology, nestled in the foothills of the Himalayas, is one of Pakistan's top engineering universities.
+              </p>
+              <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '1.05rem', lineHeight: 1.8 }}>
+                GIKI Course Hub is a community-driven platform where students collaborate by sharing high-quality study materials across all four academic years — completely free.
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay="reveal-delay-2">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                {[
+                  { val: '32+', label: 'Core Courses' },
+                  { val: '5', label: 'Material Types' },
+                  { val: '4', label: 'Academic Years' },
+                  { val: '100%', label: 'Free & Open' },
+                ].map(s => (
+                  <div key={s.label} style={{
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '32px 24px',
+                    textAlign: 'center',
+                  }}>
+                    <div style={{ fontSize: '2.4rem', fontWeight: 900, color: 'white', fontFamily: 'Outfit', letterSpacing: '-0.04em' }}>{s.val}</div>
+                    <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', fontWeight: 600, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '500px', margin: '0 auto' }}>
-          Crafted with 💙 by the GIKI Student Community. <br />
-          Official Branding & Academic Excellence.
-        </p>
-        <div style={{ marginTop: '32px', fontSize: '0.8rem', opacity: 0.5 }}>
+
+        <style>{`
+          @media (max-width: 768px) {
+            section > .page-container > div[style*="grid-template-columns: 1fr 1fr"] {
+              grid-template-columns: 1fr !important;
+              gap: 40px !important;
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* ── Footer ───────────────────────────────────────── */}
+      <footer style={{ padding: '48px 24px', background: '#001A4D', textAlign: 'center' }}>
+        <div style={{ fontFamily: 'Outfit', fontWeight: 900, color: 'white', fontSize: '1.2rem', marginBottom: '12px' }}>
+          GIKI <span style={{ color: 'var(--accent)' }}>COURSE HUB</span>
+        </div>
+        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.85rem' }}>
           © 2024 Ghulam Ishaq Khan Institute. All Rights Reserved.
-        </div>
+        </p>
       </footer>
-
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        .hover-scale { transition: transform 0.2s ease; }
-        .hover-scale:hover { transform: scale(1.05); }
-        
-        @media (max-width: 768px) {
-          section:first-of-type { padding: 100px 24px !important; }
-          h1 { font-size: 2.8rem !important; }
-        }
-      `}</style>
     </div>
   );
 };
-
-const StatItem = ({ num, label }) => (
-  <div style={{ textAlign: 'center', minWidth: '150px' }}>
-    <div style={{ fontSize: '2.4rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', letterSpacing: '-0.03em' }}>{num}</div>
-    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '4px' }}>{label}</div>
-  </div>
-);
-
-const FeatureCard = ({ icon, title, desc }) => (
-  <div style={{ 
-    padding: '48px 40px', 
-    backgroundColor: 'white', 
-    borderRadius: '24px', 
-    border: '1px solid var(--border)',
-    transition: 'var(--transition)',
-    cursor: 'default',
-    boxShadow: 'var(--shadow-md)'
-  }} className="hover-scale">
-    <div style={{ 
-      width: '64px', 
-      height: '64px', 
-      background: 'var(--primary-fade)', 
-      borderRadius: '16px', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-      fontSize: '2rem',
-      marginBottom: '28px',
-      color: 'var(--primary)'
-    }}>{icon}</div>
-    <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '16px', color: 'var(--primary)' }}>{title}</h3>
-    <p style={{ color: 'var(--text-muted)', lineHeight: 1.7, fontSize: '1.05rem' }}>{desc}</p>
-  </div>
-);
 
 export default Landing;
