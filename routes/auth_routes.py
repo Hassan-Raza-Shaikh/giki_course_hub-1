@@ -34,6 +34,66 @@ def signup():
         conn.close()
 
 
+@auth_bp.route('/api/auth/firebase', methods=['POST'])
+def firebase_auth():
+    data = request.get_json()
+    uid = data.get('uid')
+    email = data.get('email')
+    display_name = data.get('displayName', email.split('@')[0])
+
+    if not uid or not email:
+        return jsonify({"success": False, "message": "Invalid Firebase data."}), 400
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        # 1. Check if user exists by UID
+        cur.execute("SELECT user_id, username, role FROM users WHERE firebase_uid = %s;", (uid,))
+        user = cur.fetchone()
+
+        if not user:
+            # 2. Check if user exists by email (pre-existing account being linked)
+            cur.execute("SELECT user_id, username, role FROM users WHERE email = %s;", (email,))
+            user = cur.fetchone()
+            
+            if user:
+                # Link existing user
+                cur.execute("UPDATE users SET firebase_uid = %s WHERE user_id = %s;", (uid, user[0]))
+            else:
+                # 3. Create new user
+                # Ensure username is unique
+                username = email.split('@')[0]
+                cur.execute("SELECT 1 FROM users WHERE username = %s;", (username,))
+                if cur.fetchone():
+                    username = f"{username}_{uid[:4]}"
+                
+                cur.execute(
+                    "INSERT INTO users (username, email, firebase_uid, role) VALUES (%s, %s, %s, 'user') RETURNING user_id, username, role;",
+                    (username, email, uid)
+                )
+                user = cur.fetchone()
+        
+        conn.commit()
+        cur.close()
+
+        # Set session
+        session['user_id']  = user[0]
+        session['username'] = user[1]
+        session['role']     = user[2]
+
+        return jsonify({
+            "success": True,
+            "message": f"Welcome, {user[1]}!",
+            "user": {"id": user[0], "username": user[1], "role": user[2]}
+        })
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"success": False, "message": f"Firebase auth error: {e}"}), 500
+    finally:
+        conn.close()
+
+
 @auth_bp.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
