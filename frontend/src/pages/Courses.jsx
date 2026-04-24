@@ -31,7 +31,7 @@ const CourseRow = ({ course, onClick }) => (
   >
     <div style={{
       minWidth: '48px', fontSize: '0.72rem', fontWeight: 800,
-      color: '#06B6D4', background: 'rgba(6,182,212,0.1)',
+      color: 'var(--secondary)', border: '1px solid var(--secondary)', background: 'white',
       padding: '4px 8px', borderRadius: '6px', textAlign: 'center',
       letterSpacing: '0.02em', lineHeight: 1.2,
     }}>
@@ -62,18 +62,19 @@ const YearSection = ({ year, semesters, onCourseClick }) => {
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '16px 28px', cursor: 'pointer',
-          background: open ? '#FAF5FF' : 'transparent',
+          background: open ? 'var(--bg-subtle)' : 'transparent',
           transition: 'background 0.2s',
         }}
-        onMouseOver={e => { if (!open) e.currentTarget.style.background = '#FAF5FF'; }}
+        onMouseOver={e => { if (!open) e.currentTarget.style.background = 'var(--bg-subtle)'; }}
         onMouseOut={e => { if (!open) e.currentTarget.style.background = 'transparent'; }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div style={{
             width: 32, height: 32, borderRadius: '8px',
-            background: 'linear-gradient(135deg, #7C3AED, #EC4899)',
+            background: 'var(--accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'Outfit', fontWeight: 900, color: 'white', fontSize: '0.85rem',
+            fontFamily: 'Outfit', fontWeight: 900, color: 'var(--text)', fontSize: '0.85rem',
+            border: '2px solid var(--text)'
           }}>
             Y{year}
           </div>
@@ -131,11 +132,11 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '20px 24px', cursor: 'pointer',
-          background: open ? 'linear-gradient(90deg, rgba(124,58,237,0.05), transparent)' : 'white',
+          background: open ? 'var(--bg-subtle)' : 'white',
           transition: 'background 0.2s',
         }}
-        onMouseOver={e => { if (!open) e.currentTarget.style.background = '#FAF5FF'; }}
-        onMouseOut={e => { if (!open) e.currentTarget.style.background = open ? 'linear-gradient(90deg, rgba(124,58,237,0.05), transparent)' : 'white'; }}
+        onMouseOver={e => { if (!open) e.currentTarget.style.background = 'var(--bg-subtle)'; }}
+        onMouseOut={e => { if (!open) e.currentTarget.style.background = 'white'; }}
       >
         <div>
           <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem', fontFamily: 'Outfit' }}>
@@ -148,8 +149,8 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{
             fontSize: '0.75rem', fontWeight: 700,
-            color: open ? 'white' : 'var(--primary)',
-            background: open ? 'linear-gradient(135deg,#7C3AED,#EC4899)' : 'rgba(124,58,237,0.08)',
+            color: open ? 'white' : 'var(--text)',
+            background: open ? 'var(--primary)' : 'white', border: '1px solid var(--text)',
             padding: '4px 12px', borderRadius: '100px', transition: 'all 0.2s',
           }}>
             {open ? 'Collapse' : 'Expand'}
@@ -196,22 +197,20 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '28px 32px', cursor: 'pointer',
-          background: open
-            ? 'linear-gradient(135deg, #5B21B6 0%, #7C3AED 40%, #EC4899 100%)'
-            : 'white',
+          background: open ? 'var(--primary)' : 'white',
           transition: 'background 0.3s',
         }}
-        onMouseOver={e => { if (!open) e.currentTarget.style.background = '#FAF5FF'; }}
+        onMouseOver={e => { if (!open) e.currentTarget.style.background = 'var(--bg-subtle)'; }}
         onMouseOut={e => { if (!open) e.currentTarget.style.background = 'white'; }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{
             width: 54, height: 54, borderRadius: '14px',
-            background: open ? 'rgba(255,255,255,0.18)' : 'rgba(124,58,237,0.08)',
+            background: 'white',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '1.6rem', transition: 'all 0.3s',
-            border: open ? '1px solid rgba(255,255,255,0.25)' : '1px solid rgba(124,58,237,0.12)',
-            boxShadow: open ? '0 0 20px rgba(240,171,252,0.25)' : 'none',
+            border: '2px solid var(--text)',
+            boxShadow: open ? '4px 4px 0px var(--text)' : '2px 2px 0px var(--text)',
           }}>
             {faculty.icon}
           </div>
@@ -257,7 +256,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
 
       {/* Programs list */}
       {open && (
-        <div style={{ padding: '24px', borderTop: '1px solid rgba(124,58,237,0.15)', display: 'flex', flexDirection: 'column', gap: '12px', background: '#FAF5FF' }}>
+        <div style={{ padding: '24px', borderTop: '2px solid var(--text)', display: 'flex', flexDirection: 'column', gap: '12px', background: 'white' }}>
           {faculty.programs.map(prog => (
             <ProgramAccordion key={prog.id} program={prog} onCourseClick={onCourseClick} />
           ))}
@@ -306,23 +305,23 @@ const Courses = () => {
 
       {/* ── Header ──────────────────────────────────────────────── */}
       <div style={{
-        background: 'linear-gradient(145deg, #0F0325 0%, #1E0A4E 50%, #2D0A6E 100%)',
-        padding: '80px 0 100px',
+        background: 'var(--bg-hero)',
+        padding: '80px 0 100px', borderBottom: '2px solid var(--border)',
         position: 'relative', overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%)', top: -200, right: -100, borderRadius: '50%', filter: 'blur(80px)' }} />
-        <div style={{ position: 'absolute', width: 400, height: 400, background: 'radial-gradient(circle, rgba(236,72,153,0.2), transparent 70%)', bottom: -100, left: -80, borderRadius: '50%', filter: 'blur(60px)' }} />
+        <div style={{ position: 'absolute', width: 400, height: 400, background: 'var(--accent)', top: -100, right: -100, borderRadius: '50px', transform: 'rotate(15deg)', opacity: 0.15 }} />
+        <div style={{ position: 'absolute', width: 300, height: 300, background: 'var(--secondary)', bottom: -50, left: -50, borderRadius: '100px', transform: 'rotate(-25deg)', opacity: 0.15 }} />
 
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <ScrollReveal>
             <p style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px',
-                background: 'linear-gradient(90deg,#F0ABFC,#06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                color: 'var(--primary)' }}>
                 Academic Resources
               </p>
-              <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: 'white', letterSpacing: '-0.03em', marginBottom: '20px' }}>
+              <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '20px' }}>
                 All Courses by Faculty
               </h1>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', maxWidth: '560px', lineHeight: 1.7, marginBottom: '40px' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '560px', lineHeight: 1.7, marginBottom: '40px' }}>
                 Browse the complete GIKI course catalog organized by faculty, program, and year.
               </p>
 
@@ -336,12 +335,12 @@ const Courses = () => {
                 onChange={e => setSearch(e.target.value)}
                 style={{
                   width: '100%', padding: '16px 16px 16px 48px',
-                  borderRadius: 'var(--radius-md)', border: '1px solid rgba(240,171,252,0.2)', outline: 'none',
-                  fontSize: '0.95rem', background: 'rgba(240,171,252,0.08)',
-                  color: 'white', backdropFilter: 'blur(8px)',
+                  borderRadius: 'var(--radius-md)', border: '2px solid var(--text)', outline: 'none',
+                  fontSize: '0.95rem', background: 'white',
+                  color: 'var(--text)', boxShadow: '4px 4px 0px var(--text)',
                 }}
               />
-              <style>{`input::placeholder { color: rgba(240,171,252,0.4); }`}</style>
+              <style>{`input::placeholder { color: var(--text-muted); }`}</style>
             </div>
           </ScrollReveal>
 
@@ -350,9 +349,10 @@ const Courses = () => {
             {RESOURCE_TYPES.map(rt => (
               <div key={rt.label} style={{
                 display: 'flex', alignItems: 'center', gap: '8px',
-                background: 'rgba(240,171,252,0.08)', border: '1px solid rgba(240,171,252,0.15)',
+                background: 'white', border: '1px solid var(--text)',
                 padding: '8px 16px', borderRadius: '100px',
-                fontSize: '0.82rem', fontWeight: 600, color: 'rgba(255,255,255,0.75)',
+                fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)',
+                boxShadow: '2px 2px 0px var(--text)'
               }}>
                 {rt.icon} {rt.label}
               </div>
@@ -364,9 +364,8 @@ const Courses = () => {
       {/* ── Search Results ──────────────────────────────────────── */}
       {searchResults && (
         <div className="page-container" style={{ padding: '40px 24px 0' }}>
-          <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-            <div style={{ padding: '20px 28px', borderBottom: '1px solid var(--border)', fontWeight: 800, fontFamily: 'Outfit',
-              background: 'linear-gradient(135deg,#7C3AED,#EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
+            <div style={{ padding: '20px 28px', borderBottom: '2px solid var(--text)', fontWeight: 800, fontFamily: 'Outfit', color: 'var(--primary)' }}>
               🔍 {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{search}"
             </div>
             {searchResults.length === 0 ? (

@@ -34,10 +34,10 @@ const Landing = ({ onSignIn }) => {
 
       {/* ── Hero ───────────────────────────────────────────── */}
       <section className="hero">
-        {/* Aurora Glows */}
-        <div className="hero-glow" style={{ width: 800, height: 800, background: 'radial-gradient(circle, rgba(124,58,237,0.45), transparent 65%)', top: -300, left: -200 }} />
-        <div className="hero-glow" style={{ width: 600, height: 600, background: 'radial-gradient(circle, rgba(236,72,153,0.3), transparent 65%)', bottom: -200, right: -100 }} />
-        <div className="hero-glow" style={{ width: 400, height: 400, background: 'radial-gradient(circle, rgba(6,182,212,0.25), transparent 65%)', top: '40%', right: '20%' }} />
+        {/* Fun Neo-brutalist geometric shapes instead of Aurora gradients */}
+        <div className="hero-glow" style={{ width: 400, height: 400, background: 'var(--accent)', top: -100, left: -100, borderRadius: '50px', filter: 'none', transform: 'rotate(15deg)', opacity: 0.2 }} />
+        <div className="hero-glow" style={{ width: 300, height: 300, background: 'var(--secondary)', bottom: -50, right: -100, borderRadius: '100px', filter: 'none', transform: 'rotate(-25deg)', opacity: 0.15 }} />
+        <div className="hero-glow" style={{ width: 150, height: 150, background: 'var(--primary)', top: '30%', right: '15%', filter: 'none', transform: 'rotate(45deg)', opacity: 0.2 }} />
 
         {/* Floating particles */}
         {[...Array(6)].map((_, i) => (
@@ -58,18 +58,19 @@ const Landing = ({ onSignIn }) => {
           <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
-              background: 'rgba(240,171,252,0.08)', border: '1px solid rgba(240,171,252,0.2)',
+              background: 'white', border: '2px solid var(--text)',
               padding: '8px 20px', borderRadius: '100px', marginBottom: '40px',
-              fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.7)',
+              fontSize: '0.8rem', fontWeight: 700, color: 'var(--text)',
               textTransform: 'uppercase', letterSpacing: '0.12em',
+              boxShadow: '4px 4px 0px var(--accent)'
             }}>
-              <span style={{ color: '#F0ABFC' }}>●</span> GIK Institute of Engineering
+              <span style={{ color: 'var(--primary)' }}>●</span> GIK Institute of Engineering
             </div>
 
             <h1 style={{
               fontSize: 'clamp(3.5rem, 8vw, 6.5rem)',
               fontWeight: 900,
-              color: 'white',
+              color: 'var(--text)',
               letterSpacing: '-0.04em',
               lineHeight: 1.0,
               marginBottom: '28px',
@@ -80,7 +81,7 @@ const Landing = ({ onSignIn }) => {
 
             <p style={{
               fontSize: 'clamp(1rem, 2vw, 1.3rem)',
-              color: 'rgba(255,255,255,0.55)',
+              color: 'var(--text-muted)',
               fontStyle: 'italic',
               maxWidth: '600px',
               margin: '0 auto 20px',
@@ -91,7 +92,7 @@ const Landing = ({ onSignIn }) => {
 
             <p style={{
               fontSize: '1.1rem',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'var(--text-muted)',
               maxWidth: '520px',
               margin: '0 auto 52px',
               lineHeight: 1.7,
@@ -162,8 +163,8 @@ const Landing = ({ onSignIn }) => {
                       {course.faculty} · {course.description?.slice(0, 60)}…
                     </p>
                     <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.9rem',
-                      background: 'linear-gradient(90deg,#7C3AED,#EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                      View Materials <span>→</span>
+                      color: 'var(--accent)' }}>
+                      View Materials <span style={{ color: 'var(--text)' }}>→</span>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -182,25 +183,25 @@ const Landing = ({ onSignIn }) => {
       </section>
 
       {/* ── About Us ──────────────────────────────────────── */}
-      <section style={{ padding: '120px 0', background: 'linear-gradient(145deg, #0F0325 0%, #1E0A4E 50%, #2D0B6E 100%)', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ padding: '120px 0', background: 'var(--bg-subtle)', position: 'relative', overflow: 'hidden', borderTop: '2px solid var(--border)', borderBottom: '2px solid var(--border)' }}>
         {/* Background orbs */}
-        <div style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(236,72,153,0.15), transparent 70%)', top: -100, right: -100, borderRadius: '50%', filter: 'blur(80px)' }} />
-        <div style={{ position: 'absolute', width: 400, height: 400, background: 'radial-gradient(circle, rgba(6,182,212,0.12), transparent 70%)', bottom: -50, left: -50, borderRadius: '50%', filter: 'blur(60px)' }} />
+        <div style={{ position: 'absolute', width: 500, height: 500, border: '40px solid var(--accent)', top: -100, right: -100, borderRadius: '50%', opacity: 0.1 }} />
+        <div style={{ position: 'absolute', width: 400, height: 400, background: 'var(--secondary)', bottom: -50, left: -50, opacity: 0.1, transform: 'rotate(20deg)' }} />
 
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
             <ScrollReveal>
               <p style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '20px',
-                background: 'linear-gradient(90deg,#F0ABFC,#06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                color: 'var(--primary)' }}>
                 About GIKI Course Hub
               </p>
-              <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 900, color: 'white', letterSpacing: '-0.03em', marginBottom: '24px', lineHeight: 1.1 }}>
+              <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '24px', lineHeight: 1.1 }}>
                 Built by Students, <br />For Students.
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '16px' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '16px' }}>
                 GIK Institute of Engineering Sciences and Technology, nestled in the foothills of the Himalayas, is one of Pakistan's top engineering universities.
               </p>
-              <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', lineHeight: 1.8 }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8 }}>
                 GIKI Course Hub is a community-driven platform where students collaborate by sharing high-quality study materials across all programs — completely free.
               </p>
             </ScrollReveal>
@@ -209,24 +210,22 @@ const Landing = ({ onSignIn }) => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 {STATS.map((s, i) => (
                   <div key={s.label} style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(240,171,252,0.12)',
+                    background: 'white',
+                    border: '1px solid var(--text)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '32px 20px',
                     textAlign: 'center',
-                    backdropFilter: 'blur(10px)',
                     transition: 'all 0.3s ease',
                   }}
-                  onMouseOver={e => { e.currentTarget.style.background = 'rgba(124,58,237,0.12)'; e.currentTarget.style.borderColor = 'rgba(240,171,252,0.3)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
-                  onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(240,171,252,0.12)'; e.currentTarget.style.transform = 'none'; }}
+                  onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                  onMouseOut={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.transform = 'none'; }}
                   >
                     <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{s.icon}</div>
                     <div style={{
                       fontSize: '2.2rem', fontWeight: 900, fontFamily: 'Outfit', letterSpacing: '-0.04em',
-                      background: ['linear-gradient(135deg,#F0ABFC,#7C3AED)', 'linear-gradient(135deg,#06B6D4,#7C3AED)', 'linear-gradient(135deg,#EC4899,#F0ABFC)', 'linear-gradient(135deg,#06B6D4,#EC4899)'][i],
-                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                      color: 'var(--text)',
                     }}>{s.val}</div>
-                    <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.8rem', fontWeight: 600, marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600, marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -245,12 +244,12 @@ const Landing = ({ onSignIn }) => {
       </section>
 
       {/* ── Footer ───────────────────────────────────────── */}
-      <footer style={{ padding: '48px 24px', background: '#0A0118', textAlign: 'center', borderTop: '1px solid rgba(240,171,252,0.08)' }}>
+      <footer style={{ padding: '48px 24px', background: 'white', textAlign: 'center' }}>
         <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.2rem', marginBottom: '12px' }}>
-          <span style={{ color: 'white' }}>GIKI </span>
-          <span style={{ background: 'linear-gradient(90deg,#F0ABFC,#06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>COURSE HUB</span>
+          <span style={{ color: 'var(--text)' }}>GIKI </span>
+          <span style={{ color: 'var(--primary)' }}>COURSE HUB</span>
         </div>
-        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.85rem' }}>
+        <p style={{ color: 'var(--text-light)', fontSize: '0.85rem' }}>
           © 2024 Ghulam Ishaq Khan Institute. All Rights Reserved.
         </p>
       </footer>

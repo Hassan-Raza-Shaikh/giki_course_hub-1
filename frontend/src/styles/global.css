@@ -13,41 +13,39 @@ body {
 
 /* ── Design Tokens ───────────────────────────────────── */
 :root {
-  /* Aurora Palette */
-  --primary:      #7C3AED;   /* Electric violet */
-  --primary-dark: #5B21B6;   /* Deep violet */
-  --primary-mid:  #9F67FF;   /* Softer violet */
-  --secondary:    #06B6D4;   /* Electric cyan */
-  --accent:       #F0ABFC;   /* Hot pink glow */
-  --hot-pink:     #EC4899;   /* Magenta/pink CTA */
+  /* Minimal but Fun Palette */
+  --primary:      #FF3366;   /* Fun Pinkish Red */
+  --primary-dark: #E62E5C;
+  --primary-mid:  #FF6688;
+  --secondary:    #00C4B5;   /* Fun Teal */
+  --accent:       #FFD166;   /* Playful Yellow */
+  --hot-pink:     #FF3366;
 
   /* Backgrounds */
-  --bg-hero:    #0F0325;     /* Near-black violet */
-  --bg-dark:    #1E0A4E;     /* Deep purple */
-  --bg-subtle:  #F5F0FF;     /* Soft lavender tint */
+  --bg-hero:    #FFFBF5;     /* Warm Off-White */
+  --bg-dark:    #FFFFFF;
+  --bg-subtle:  #F3F4F6;
   --bg-white:   #FFFFFF;
 
   /* Text */
-  --text:       #1A0B2E;
-  --text-muted: #6B5B95;
-  --text-light: #A89BC4;
+  --text:       #111827;     /* Near Black */
+  --text-muted: #6B7280;     /* Grey */
+  --text-light: #9CA3AF;     /* Light Grey */
 
-  /* Borders */
-  --border:     #E4D9FF;
-
-  /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(124,58,237,0.1);
-  --shadow-md:  0 4px 16px rgba(124,58,237,0.15);
-  --shadow-lg:  0 20px 60px rgba(124,58,237,0.22);
+  /* Borders & Shadows */
+  --border:     #E5E7EB;
+  --shadow-sm:  4px 4px 0px rgba(17, 24, 39, 0.08); /* Neo-brutalism touch */
+  --shadow-md:  8px 8px 0px rgba(17, 24, 39, 0.08);
+  --shadow-lg:  12px 12px 0px rgba(17, 24, 39, 0.08);
 
   /* Radii */
   --radius-sm:  8px;
-  --radius-md:  14px;
-  --radius-lg:  20px;
-  --radius-xl:  28px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
 
   /* Transitions */
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Scroll Reveal Animations ────────────────────────── */
@@ -123,20 +121,20 @@ a { text-decoration: none; color: inherit; }
   transition: var(--transition);
 }
 .navbar.scrolled {
-  background: rgba(30, 10, 78, 0.95);
-  box-shadow: 0 4px 30px rgba(124,58,237,0.3);
-  border-bottom-color: rgba(240,171,252,0.2);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 30px rgba(17, 24, 39, 0.05);
+  border-bottom-color: var(--border);
 }
 .navbar-logo {
   font-family: 'Outfit', sans-serif;
   font-weight: 900;
   font-size: 1.3rem;
-  color: white;
+  color: var(--text);
   letter-spacing: -0.02em;
   cursor: pointer;
 }
 .navbar-logo span {
-  background: linear-gradient(90deg, #F0ABFC, #06B6D4);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -145,7 +143,7 @@ a { text-decoration: none; color: inherit; }
 /* ── Hero Section ────────────────────────────────────── */
 .hero {
   min-height: 100vh;
-  background: linear-gradient(145deg, #0F0325 0%, #1E0A4E 40%, #2D0A6E 70%, #0F0325 100%);
+  background: var(--bg-hero);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,7 +161,7 @@ a { text-decoration: none; color: inherit; }
 /* ── Cards ───────────────────────────────────────────── */
 .course-card {
   background: white;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
   cursor: pointer;
@@ -173,16 +171,16 @@ a { text-decoration: none; color: inherit; }
   overflow: hidden;
 }
 .course-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(124,58,237,0.2);
-  border-color: #C4B5FD;
+  transform: translateY(-4px) translateX(-4px);
+  box-shadow: 8px 8px 0px var(--accent);
+  border-color: var(--text);
 }
 .course-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #7C3AED, #EC4899, #06B6D4);
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -197,24 +195,28 @@ a { text-decoration: none; color: inherit; }
   padding: 24px 32px;
   cursor: pointer;
   background: white;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: var(--radius-lg);
   transition: var(--transition);
   user-select: none;
+  box-shadow: var(--shadow-sm);
 }
 .accordion-header:hover {
-  background: #FAF5FF;
-  border-color: #C4B5FD;
+  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 6px 6px 0px var(--secondary);
+  border-color: var(--text);
 }
 .accordion-header.open {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   border-bottom-color: transparent;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--hot-pink) 100%);
+  background: var(--primary);
   color: white;
+  box-shadow: none;
+  transform: none;
 }
 .accordion-body {
   background: white;
-  border: 1px solid var(--border);
+  border: 2px solid var(--text);
   border-top: none;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   overflow: hidden;
