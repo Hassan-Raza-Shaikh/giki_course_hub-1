@@ -28,6 +28,7 @@ const CoursePage = ({ user, onSignIn }) => {
   const [uploadCatId, setUploadCatId]     = useState('');
   const [uploadFile, setUploadFile]       = useState(null);
   const [uploading, setUploading]         = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);   // 0-100
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError]     = useState('');
 
@@ -57,27 +58,46 @@ const CoursePage = ({ user, onSignIn }) => {
     }
     setUploading(true);
     setUploadError('');
+    setUploadProgress(0);
+
     const form = new FormData();
     form.append('title', uploadTitle);
     form.append('category_id', uploadCatId);
     form.append('subject_id', subjectId);
-    if (uploadFile) form.append('file', uploadFile);
+    if (uploadFile) {
+      form.append('file', uploadFile);
+    } else {
+      setUploadError('Please select a file to upload.');
+      setUploading(false);
+      return;
+    }
 
     try {
       const res = await api.post(`/courses/${id}/upload`, form, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.lengthComputable) {
+            const pct = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            setUploadProgress(pct);
+          }
+        }
       });
+
       if (res.data.success) {
         setUploadSuccess(true);
         setUploadTitle('');
         setUploadCatId('');
         setUploadFile(null);
-        // Refresh materials
+        setUploadProgress(0);
+        // Refresh file list
         const refresh = await api.get(`/courses/${id}`);
         if (refresh.data.success) setFiles(refresh.data.files_by_category);
+      } else {
+        setUploadError(res.data.message || 'Upload failed.');
       }
     } catch (err) {
-      setUploadError(err.response?.data?.message || 'Upload failed. Please try again.');
+      console.error('Upload error:', err);
+      setUploadError(err.message || err.response?.data?.message || 'Upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -108,29 +128,37 @@ const CoursePage = ({ user, onSignIn }) => {
 
       {/* ── Course Header ──────────────────────────────────── */}
       <div style={{
-        background: 'linear-gradient(145deg, #001A4D 0%, #003A8F 100%)',
+        background: 'linear-gradient(145deg, #0F0325 0%, #1E0A4E 50%, #3D0B8E 100%)',
         padding: '70px 0 80px',
         position: 'relative',
         overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 70% 50%, rgba(79,163,209,0.2), transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(124,58,237,0.4), transparent 70%)', top: -100, left: -100, borderRadius: '50%', filter: 'blur(80px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', width: 400, height: 400, background: 'radial-gradient(circle, rgba(236,72,153,0.25), transparent 70%)', bottom: -80, right: -80, borderRadius: '50%', filter: 'blur(60px)', pointerEvents: 'none' }} />
 
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <button
             onClick={() => navigate('/courses')}
-            style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', padding: '8px 16px', borderRadius: 100, fontSize: '0.85rem', fontWeight: 600, marginBottom: 32, cursor: 'pointer' }}
+            style={{ background: 'rgba(240,171,252,0.1)', border: '1px solid rgba(240,171,252,0.25)', color: 'rgba(255,255,255,0.8)', padding: '8px 16px', borderRadius: 100, fontSize: '0.85rem', fontWeight: 600, marginBottom: 32, cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseOver={e => { e.currentTarget.style.background = 'rgba(240,171,252,0.2)'; }}
+            onMouseOut={e => { e.currentTarget.style.background = 'rgba(240,171,252,0.1)'; }}
           >
             ← Back to Courses
           </button>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '28px', flexWrap: 'wrap' }}>
-            <div style={{ fontSize: '4rem', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.3))' }}>{course.icon}</div>
+            <div style={{ fontSize: '4rem', filter: 'drop-shadow(0 4px 20px rgba(240,171,252,0.4))' }}>{course.icon || '📘'}</div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap' }}>
-                <span className="badge" style={{ background: 'rgba(0,201,255,0.15)', color: '#00C9FF', border: '1px solid rgba(0,201,255,0.3)' }}>
-                  Year {course.year}
+                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.78rem', fontWeight: 700,
+                  background: 'rgba(6,182,212,0.15)', color: '#06B6D4', border: '1px solid rgba(6,182,212,0.3)' }}>
+                  Sem {course.semester}
                 </span>
-                <span style={{ color: 'rgba(255,255,255,0.45)', fontWeight: 700, fontSize: '0.9rem' }}>{course.code}</span>
+                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.78rem', fontWeight: 700,
+                  background: 'rgba(240,171,252,0.12)', color: '#F0ABFC', border: '1px solid rgba(240,171,252,0.25)' }}>
+                  {course.program}
+                </span>
+                <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 700, fontSize: '0.9rem' }}>{course.code}</span>
               </div>
               <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: 'white', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
                 {course.name}
@@ -199,7 +227,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       href={file.file_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ background: 'var(--primary)', color: 'white', padding: '8px 18px', borderRadius: 8, fontWeight: 700, fontSize: '0.85rem', flexShrink: 0 }}
+                      style={{ background: 'linear-gradient(135deg,#7C3AED,#EC4899)', color: 'white', padding: '8px 18px', borderRadius: 8, fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, boxShadow: '0 4px 12px rgba(124,58,237,0.3)' }}
                     >
                       Download
                     </a>
@@ -219,8 +247,9 @@ const CoursePage = ({ user, onSignIn }) => {
         {/* Upload Section */}
         <ScrollReveal>
           <div ref={uploadRef} style={{ background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
-            <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', background: 'linear-gradient(135deg, #F0F4FF 0%, white 100%)' }}>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--primary)', fontFamily: 'Outfit', marginBottom: '8px' }}>
+            <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', background: 'linear-gradient(135deg, #FAF5FF 0%, white 100%)' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '8px',
+                background: 'linear-gradient(135deg,#7C3AED,#EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 📤 Contribute Materials
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
@@ -259,7 +288,9 @@ const CoursePage = ({ user, onSignIn }) => {
                       placeholder="e.g. CS-302 Mid Term 2023"
                       value={uploadTitle}
                       onChange={e => setUploadTitle(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: '#F8FAFC' }}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: '#FAF5FF', transition: 'border-color 0.2s' }}
+                      onFocus={e => e.target.style.borderColor = '#7C3AED'}
+                      onBlur={e => e.target.style.borderColor = 'var(--border)'}
                     />
                   </div>
                   <div>
@@ -304,9 +335,21 @@ const CoursePage = ({ user, onSignIn }) => {
                       <input id="file-input" type="file" style={{ display: 'none' }} onChange={e => setUploadFile(e.target.files[0])} />
                     </div>
                   </div>
-                  <button type="submit" className="btn-primary" disabled={uploading} style={{ alignSelf: 'flex-start', opacity: uploading ? 0.7 : 1 }}>
-                    {uploading ? 'Uploading…' : 'Publish Material'}
-                  </button>
+                  {uploading ? (
+                    <div style={{ alignSelf: 'flex-start', width: '100%', maxWidth: '300px', padding: '8px 0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary)' }}>
+                        <span>Uploading to secure storage…</span>
+                        <span>{uploadProgress}%</span>
+                      </div>
+                      <div style={{ height: '8px', background: 'var(--border)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: `${uploadProgress}%`, height: '100%', background: 'linear-gradient(90deg, #7C3AED, #EC4899)', transition: 'width 0.2s', borderRadius: '4px' }} />
+                      </div>
+                    </div>
+                  ) : (
+                    <button type="submit" className="btn-primary" disabled={uploading} style={{ alignSelf: 'flex-start', opacity: uploading ? 0.7 : 1 }}>
+                      Publish Material
+                    </button>
+                  )}
                 </form>
               )}
             </div>

@@ -1,9 +1,11 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from config import SECRET_KEY, MAX_CONTENT_LENGTH
+from firebase_admin_init import init_firebase_admin
 
 from routes.auth_routes import auth_bp
 from routes.file_routes import file_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -11,6 +13,9 @@ def create_app():
     app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 
     CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+
+    # Initialize Firebase Admin SDK (for ID token verification)
+    init_firebase_admin()
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(file_bp)
@@ -32,4 +37,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

@@ -4,9 +4,27 @@
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
+    password TEXT, -- Can be null for Firebase-only users
+    email TEXT UNIQUE,
+    firebase_uid TEXT UNIQUE,
     role TEXT CHECK (role IN ('user', 'admin')) DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =====================================
+-- 1a. FACULTIES & PROGRAMS
+-- =====================================
+CREATE TABLE faculties (
+    faculty_id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL,
+    full_name TEXT NOT NULL,
+    icon TEXT
+);
+
+CREATE TABLE programs (
+    program_id SERIAL PRIMARY KEY,
+    faculty_id INT REFERENCES faculties(faculty_id) ON DELETE CASCADE,
+    name TEXT NOT NULL
 );
 
 -- =====================================
@@ -15,7 +33,12 @@ CREATE TABLE users (
 CREATE TABLE courses (
     course_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    description TEXT
+    code TEXT,
+    description TEXT,
+    year INT,
+    semester INT,
+    program_id INT REFERENCES programs(program_id) ON DELETE CASCADE,
+    faculty_id INT REFERENCES faculties(faculty_id) ON DELETE CASCADE
 );
 
 -- =====================================
@@ -27,14 +50,7 @@ CREATE TABLE subjects (
     name TEXT NOT NULL
 );
 
--- =====================================
--- 4. PREREQUISITES (SELF RELATION)
--- =====================================
-CREATE TABLE prerequisites (
-    course_id INT REFERENCES courses(course_id) ON DELETE CASCADE,
-    prerequisite_course_id INT REFERENCES courses(course_id) ON DELETE CASCADE,
-    PRIMARY KEY (course_id, prerequisite_course_id)
-);
+
 
 -- =====================================
 -- 5. CATEGORIES
@@ -73,109 +89,7 @@ CREATE TABLE file_metadata (
 );
 
 -- =====================================
--- 8. BOOKMARKS
--- =====================================
-CREATE TABLE bookmarks (
-    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-    file_id INT REFERENCES files(file_id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, file_id)
-);
-
--- =====================================
--- 9. DOWNLOADS
--- =====================================
-CREATE TABLE downloads (
-    download_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
-    file_id INT REFERENCES files(file_id),
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- =====================================
--- 10. DOWNLOAD SUMMARY (AGGREGATION TABLE)
--- =====================================
-CREATE TABLE download_summary (
-    file_id INT PRIMARY KEY REFERENCES files(file_id),
-    total_downloads INT DEFAULT 0
-);
-
--- =====================================
--- 11. RATINGS
--- =====================================
-CREATE TABLE ratings (
-    user_id INT REFERENCES users(user_id),
-    file_id INT REFERENCES files(file_id),
-    rating INT CHECK (rating BETWEEN 1 AND 5),
-    PRIMARY KEY (user_id, file_id)
-);
-
--- =====================================
--- 12. COMMENTS
--- =====================================
-CREATE TABLE comments (
-    comment_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
-    file_id INT REFERENCES files(file_id),
-    comment TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- =====================================
--- 13. TAGS
--- =====================================
-CREATE TABLE tags (
-    tag_id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
-);
-
--- =====================================
--- 14. FILE TAGS (MANY TO MANY)
--- =====================================
-CREATE TABLE file_tags (
-    file_id INT REFERENCES files(file_id) ON DELETE CASCADE,
-    tag_id INT REFERENCES tags(tag_id) ON DELETE CASCADE,
-    PRIMARY KEY (file_id, tag_id)
-);
-
--- =====================================
--- 15. NOTIFICATIONS
--- =====================================
-CREATE TABLE notifications (
-    notification_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
-    message TEXT,
-    is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- =====================================
--- 16. REPORTS
--- =====================================
-CREATE TABLE reports (
-    report_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
-    file_id INT REFERENCES files(file_id),
-    reason TEXT NOT NULL,
-    status TEXT CHECK (status IN ('pending', 'resolved')) DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- =====================================
--- 17. AUDIT LOGS
--- =====================================
-CREATE TABLE audit_logs (
-    log_id SERIAL PRIMARY KEY,
-    user_id INT,
-    action TEXT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- =====================================
 -- INDEXES (FOR PERFORMANCE)
 -- =====================================
 CREATE INDEX idx_files_subject ON files(subject_id);
 CREATE INDEX idx_files_category ON files(category_id);
-CREATE INDEX idx_downloads_file ON downloads(file_id);
-CREATE INDEX idx_bookmarks_user ON bookmarks(user_id);
-CREATE INDEX idx_ratings_file ON ratings(file_id);
-CREATE INDEX idx_comments_file ON comments(file_id);
