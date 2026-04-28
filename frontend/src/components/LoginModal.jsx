@@ -46,19 +46,19 @@ const LoginModal = ({ onClose, onSuccess }) => {
   return (
     <div className="modal-overlay" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="modal-box" style={{ position: 'relative', overflow: 'hidden', padding: '0' }}>
-        {/* Aurora top strip */}
-        <div style={{ height: '4px', background: 'linear-gradient(90deg, #7C3AED, #EC4899, #06B6D4)', width: '100%' }} />
+        {/* Sharp border top strip */}
+        <div style={{ height: '8px', background: 'var(--primary)', width: '100%', borderBottom: '2px solid var(--text)' }} />
 
         <div style={{ padding: '48px 40px 40px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{
               width: 64, height: 64, borderRadius: '18px', margin: '0 auto 20px',
-              background: 'linear-gradient(135deg, #7C3AED, #EC4899)',
+              background: 'var(--accent)', border: '2px solid var(--text)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '1.8rem', boxShadow: '0 8px 24px rgba(124,58,237,0.4)',
+              fontSize: '1.8rem', boxShadow: '4px 4px 0px var(--text)',
             }}>📚</div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '8px',
-              background: 'linear-gradient(135deg,#7C3AED,#EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              color: 'var(--text)' }}>
               Welcome to GIKI Hub
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
@@ -75,26 +75,15 @@ const LoginModal = ({ onClose, onSuccess }) => {
           <button
             onClick={handleGoogle}
             disabled={loading}
+            className="btn-outline"
             style={{
               width: '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '14px',
-              padding: '16px',
-              borderRadius: 'var(--radius-md)',
-              border: '1.5px solid rgba(124,58,237,0.15)',
-              background: 'white',
-              fontWeight: 700,
-              fontSize: '1rem',
-              color: 'var(--text)',
-              cursor: 'pointer',
-              transition: 'var(--transition)',
-              boxShadow: '0 2px 12px rgba(124,58,237,0.1)',
               opacity: loading ? 0.7 : 1,
             }}
-            onMouseOver={e => { e.currentTarget.style.boxShadow = '0 4px 20px rgba(124,58,237,0.25)'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.3)'; }}
-            onMouseOut={e => { e.currentTarget.style.boxShadow = '0 2px 12px rgba(124,58,237,0.1)'; e.currentTarget.style.borderColor = 'rgba(124,58,237,0.15)'; }}
           >
             <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"

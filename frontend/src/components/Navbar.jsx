@@ -13,8 +13,16 @@ const Navbar = ({ onSignIn, user }) => {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-logo" onClick={() => navigate('/')}>
-        GIKI <span>COURSE HUB</span>
+      <div className="navbar-logo" onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{
+          background: 'var(--primary)', color: 'white', 
+          padding: '4px 10px', borderRadius: '6px', 
+          border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--accent)',
+          lineHeight: 1, letterSpacing: '0.02em'
+        }}>
+          GIKI
+        </div>
+        <span style={{ color: 'var(--text)', fontWeight: 900 }}>HUB</span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -22,27 +30,65 @@ const Navbar = ({ onSignIn, user }) => {
           onClick={() => navigate('/courses')}
           style={{
             background: 'transparent',
-            color: 'rgba(255,255,255,0.75)',
+            color: 'var(--text-muted)',
             fontSize: '0.95rem',
-            fontWeight: 600,
+            fontWeight: 800,
             transition: 'color 0.2s',
             padding: '8px 4px',
           }}
-          onMouseOver={e => e.target.style.color = '#F0ABFC'}
-          onMouseOut={e => e.target.style.color = 'rgba(255,255,255,0.75)'}
+          onMouseOver={e => e.target.style.color = 'var(--primary)'}
+          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
         >
           Courses
         </button>
 
+        <button
+          onClick={() => navigate('/search')}
+          style={{
+            background: 'transparent',
+            color: 'var(--text-muted)',
+            fontSize: '0.95rem',
+            fontWeight: 800,
+            transition: 'color 0.2s',
+            padding: '8px 4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+          onMouseOver={e => e.target.style.color = 'var(--primary)'}
+          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
+        >
+          <span>🔍</span> Search
+        </button>
+
+        <button
+          onClick={() => navigate('/bookmarks')}
+          style={{
+            background: 'transparent',
+            color: 'var(--text-muted)',
+            fontSize: '0.95rem',
+            fontWeight: 800,
+            transition: 'color 0.2s',
+            padding: '8px 4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+          onMouseOver={e => e.target.style.color = 'var(--primary)'}
+          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
+        >
+          <span>🔖</span> My Library
+        </button>
+
         {user ? (
           <div style={{
-            background: 'rgba(240,171,252,0.12)',
-            color: 'white',
+            background: 'white',
+            color: 'var(--text)',
             padding: '8px 18px',
             borderRadius: '100px',
             fontSize: '0.9rem',
-            fontWeight: 600,
-            border: '1px solid rgba(240,171,252,0.25)',
+            fontWeight: 700,
+            border: '2px solid var(--border)',
             display: 'flex',
             alignItems: 'center',
             gap: '8px'
@@ -56,18 +102,18 @@ const Navbar = ({ onSignIn, user }) => {
           <button
             onClick={onSignIn}
             style={{
-              background: 'linear-gradient(135deg, #7C3AED, #EC4899)',
+              background: 'var(--primary)',
               color: 'white',
               padding: '10px 24px',
               borderRadius: '100px',
               fontSize: '0.9rem',
               fontWeight: 800,
-              boxShadow: '0 4px 18px rgba(124,58,237,0.45)',
+              boxShadow: '4px 4px 0px var(--text)',
+              border: '2px solid var(--text)',
               transition: 'all 0.2s ease',
-              letterSpacing: '0.01em',
             }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 6px 28px rgba(124,58,237,0.65)'; }}
-            onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 4px 18px rgba(124,58,237,0.45)'; }}
+            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px) translateX(-2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px var(--text)'; }}
+            onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px var(--text)'; }}
           >
             Sign In
           </button>

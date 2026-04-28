@@ -45,7 +45,7 @@ const Landing = ({ onSignIn }) => {
             position: 'absolute',
             width: `${6 + i * 2}px`, height: `${6 + i * 2}px`,
             borderRadius: '50%',
-            background: ['#F0ABFC','#06B6D4','#EC4899','#7C3AED','#06B6D4','#F0ABFC'][i],
+            background: ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--primary)', 'var(--secondary)', 'var(--accent)'][i],
             opacity: 0.5,
             top: `${15 + i * 15}%`,
             left: `${5 + i * 15}%`,
@@ -111,8 +111,8 @@ const Landing = ({ onSignIn }) => {
 
           {/* Scroll hint */}
           <div style={{ marginTop: '80px', animation: 'float 3s ease-in-out infinite' }}>
-            <div style={{ width: 1, height: 60, background: 'linear-gradient(to bottom, rgba(240,171,252,0.5), transparent)', margin: '0 auto' }} />
-            <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem', textAlign: 'center', marginTop: '8px', letterSpacing: '0.1em' }}>SCROLL</p>
+            <div style={{ width: 2, height: 60, background: 'linear-gradient(to bottom, var(--primary), transparent)', margin: '0 auto' }} />
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 800, textAlign: 'center', marginTop: '8px', letterSpacing: '0.1em' }}>SCROLL</p>
           </div>
         </div>
       </section>
@@ -148,7 +148,7 @@ const Landing = ({ onSignIn }) => {
                     {/* Top gradient banner */}
                     <div style={{
                       position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
-                      background: ['linear-gradient(90deg,#7C3AED,#EC4899)', 'linear-gradient(90deg,#06B6D4,#7C3AED)', 'linear-gradient(90deg,#EC4899,#06B6D4)'][i],
+                      background: ['var(--primary)', 'var(--secondary)', 'var(--accent)'][i],
                     }} />
                     <div style={{ fontSize: '2.8rem', marginBottom: '20px' }}>{course.icon || '📘'}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>

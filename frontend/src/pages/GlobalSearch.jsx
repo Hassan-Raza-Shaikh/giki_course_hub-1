@@ -1,0 +1,233 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import api from '../services/api';
+import ScrollReveal from '../components/ScrollReveal';
+
+const GlobalSearch = ({ user, onSignIn }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const [query, setQuery]           = useState(searchParams.get('q') || '');
+  const [facultyId, setFacultyId]   = useState(searchParams.get('faculty_id') || '');
+  const [categoryId, setCategoryId] = useState(searchParams.get('category_id') || '');
+
+  const [results, setResults]       = useState({ files: [], courses: [] });
+  const [faculties, setFaculties]   = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading]       = useState(false);
+
+  // Fetch filter options
+  useEffect(() => {
+    api.get('/courses').then(res => {
+      if (res.data.success) setFaculties(res.data.faculties);
+    });
+    // Assuming categories are fetched or hardcoded. Let's fetch them from a course detail or common endpoint if available.
+    // For now, let's use the known list or fetch from any course detail.
+    api.get('/courses/1').then(res => {
+        if (res.data.success) setCategories(res.data.categories);
+    }).catch(() => {
+        setCategories([
+            {id: 1, name: 'Past Papers'}, {id: 2, name: 'Notes'}, 
+            {id: 3, name: 'Slides'}, {id: 4, name: 'Assignments'}, {id: 5, name: 'Lab Reports'}
+        ]);
+    });
+  }, []);
+
+  const performSearch = useCallback(async () => {
+    if (!query && !facultyId && !categoryId) {
+        setResults({ files: [], courses: [] });
+        return;
+    }
+    setLoading(true);
+    try {
+      const res = await api.get('/search', {
+        params: { q: query, faculty_id: facultyId, category_id: categoryId }
+      });
+      if (res.data.success) {
+        setResults({ files: res.data.files, courses: res.data.courses });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [query, facultyId, categoryId]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => performSearch(), 300);
+    return () => clearTimeout(timer);
+  }, [performSearch]);
+
+  const updateFilters = (key, val) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (val) newParams.set(key, val);
+    else newParams.delete(key);
+    setSearchParams(newParams);
+    if (key === 'q') setQuery(val);
+    if (key === 'faculty_id') setFacultyId(val);
+    if (key === 'category_id') setCategoryId(val);
+  };
+
+  return (
+    <div style={{ paddingTop: '100px', minHeight: '100vh', background: 'var(--bg-subtle)' }}>
+      <div className="page-container">
+        
+        {/* Search Header */}
+        <ScrollReveal>
+          <div style={{ marginBottom: '40px' }}>
+            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '24px' }}>
+              Search <span className="gradient-text">Everything</span> 🔍
+            </h1>
+
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ position: 'relative', flex: 1, minWidth: '300px' }}>
+                <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.2rem' }}>🔍</span>
+                <input 
+                  type="text" 
+                  placeholder="Search for courses, file titles, or codes..."
+                  value={query}
+                  onChange={(e) => updateFilters('q', e.target.value)}
+                  style={{
+                    width: '100%', padding: '16px 16px 16px 48px',
+                    borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
+                    fontSize: '1rem', boxShadow: '4px 4px 0px var(--text)',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+
+              <select 
+                value={facultyId}
+                onChange={(e) => updateFilters('faculty_id', e.target.value)}
+                style={{
+                  padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
+                  background: 'white', fontWeight: 700, cursor: 'pointer',
+                  boxShadow: '4px 4px 0px var(--text)', outline: 'none'
+                }}
+              >
+                <option value="">All Faculties</option>
+                {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+              </select>
+
+              <select 
+                value={categoryId}
+                onChange={(e) => updateFilters('category_id', e.target.value)}
+                style={{
+                  padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
+                  background: 'white', fontWeight: 700, cursor: 'pointer',
+                  boxShadow: '4px 4px 0px var(--text)', outline: 'none'
+                }}
+              >
+                <option value="">All Categories</option>
+                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {loading ? (
+          <div style={{ padding: '40px', textAlign: 'center' }}>
+            <div className="shimmer" style={{ height: '40px', width: '200px', margin: '0 auto', borderRadius: '8px' }} />
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px', paddingBottom: '80px' }}>
+            
+            {/* Courses Results */}
+            {results.courses.length > 0 && (
+              <section>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  📚 Courses ({results.courses.length})
+                </h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+                  {results.courses.map(course => (
+                    <div 
+                      key={course.id} 
+                      onClick={() => navigate(`/course/${course.id}`)}
+                      style={{
+                        background: 'white', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
+                        padding: '20px', boxShadow: '4px 4px 0px var(--text)', cursor: 'pointer',
+                        transition: '0.2s'
+                      }}
+                      onMouseOver={e => e.currentTarget.style.transform = 'translate(-2px, -2px)'}
+                      onMouseOut={e => e.currentTarget.style.transform = 'none'}
+                    >
+                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <div style={{ fontSize: '1.8rem' }}>{course.icon}</div>
+                        <div>
+                          <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem' }}>{course.name}</div>
+                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{course.code} · {course.faculty}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Files Results */}
+            {results.files.length > 0 && (
+              <section>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  📄 Resources ({results.files.length})
+                </h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
+                  {results.files.map(file => (
+                    <div 
+                      key={file.id} 
+                      style={{
+                        background: 'white', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
+                        padding: '24px', boxShadow: '4px 4px 0px var(--text)', display: 'flex', flexDirection: 'column', gap: '12px'
+                      }}
+                    >
+                      <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.1rem' }}>{file.title}</div>
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>{file.category}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{file.course_name}</span>
+                      </div>
+                      
+                      <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          {file.file_size ? `${(file.file_size / (1024*1024)).toFixed(2)} MB` : ''}
+                        </div>
+                        <button 
+                          onClick={() => {
+                            if(user) window.open(file.file_url, '_blank');
+                            else onSignIn();
+                          }}
+                          className="btn-primary" 
+                          style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                        >
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {!loading && query && results.files.length === 0 && results.courses.length === 0 && (
+              <div style={{ padding: '80px 20px', textAlign: 'center' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🏜️</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>No results found for "{query}"</h3>
+                <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Try a different search term or adjust your filters.</p>
+              </div>
+            )}
+            
+            {!query && !facultyId && !categoryId && (
+                <div style={{ padding: '80px 20px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🔦</div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Search for anything...</h3>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Type a course name, resource title, or course code to begin.</p>
+                </div>
+            )}
+
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+};
+
+export default GlobalSearch;
