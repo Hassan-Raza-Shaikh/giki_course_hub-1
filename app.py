@@ -3,8 +3,10 @@ from flask_cors import CORS
 from config import SECRET_KEY, MAX_CONTENT_LENGTH
 from firebase_admin_init import init_firebase_admin
 
-from routes.auth_routes import auth_bp
-from routes.file_routes import file_bp
+from routes.auth_routes  import auth_bp
+from routes.file_routes  import file_bp
+from routes.admin_routes import admin_bp
+from routes.issue_routes import issue_bp
 
 
 def create_app():
@@ -19,6 +21,8 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(file_bp)
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(issue_bp)
 
     @app.errorhandler(404)
     def not_found(e):

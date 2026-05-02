@@ -9,6 +9,9 @@ import Courses     from './pages/Courses';
 import CoursePage  from './pages/CoursePage';
 import Bookmarks   from './pages/Bookmarks';
 import GlobalSearch from './pages/GlobalSearch';
+import AdminPanel  from './pages/AdminPanel';
+import ReportIssue from './pages/ReportIssue';
+
 
 const App = () => {
   const [user, setUser]           = useState(null);
@@ -29,11 +32,13 @@ const App = () => {
       )}
 
       <Routes>
-        <Route path="/"           element={<Landing     onSignIn={handleSignIn} />} />
+        <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
         <Route path="/courses"    element={<Courses />} />
         <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
         <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
         <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
+        <Route path="/admin"      element={<AdminPanel user={user} />} />
+        <Route path="/report-issue" element={<ReportIssue user={user} />} />
         <Route path="*"           element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

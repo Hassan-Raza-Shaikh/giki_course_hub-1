@@ -4,11 +4,14 @@ import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 
 const RESOURCE_TYPES = [
-  { icon: '📄', label: 'Past Papers',  desc: 'Previous exams and quizzes for exam prep.' },
-  { icon: '📓', label: 'Notes',        desc: 'Condensed lecture notes from top students.' },
-  { icon: '🖥️', label: 'Slides',      desc: 'Lecture presentations from professors.' },
-  { icon: '📋', label: 'Assignments',  desc: 'Solved assignments for reference.' },
-  { icon: '🧪', label: 'Lab Reports',  desc: 'Complete lab reports and data sheets.' },
+  { icon: '📋', label: 'Outline',         desc: 'Course outlines and curriculum details.' },
+  { icon: '📓', label: 'Notes',           desc: 'Lecture notes and student-made summaries.' },
+  { icon: '🖥️', label: 'Slides',          desc: 'Official lecture presentations and slides.' },
+  { icon: '📝', label: 'Quizzes',         desc: 'Past quizzes and practice questions.' },
+  { icon: '📌', label: 'Assignments',     desc: 'Assignment tasks and reference solutions.' },
+  { icon: '🔬', label: 'Lab Manuals',     desc: 'Lab instructions and manual documents.' },
+  { icon: '🧪', label: 'Lab Tasks',       desc: 'Specific lab exercises and task sheets.' },
+  { icon: '📚', label: 'Reference Books', desc: 'Recommended textbooks and study guides.' },
 ];
 
 const YEAR_LABELS = { 1: 'Year 1', 2: 'Year 2', 3: 'Year 3', 4: 'Year 4' };

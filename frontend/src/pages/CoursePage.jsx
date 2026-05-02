@@ -2,13 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
+import FileViewer from '../components/FileViewer';
 
 const CATEGORY_ICONS = {
-  'Past Papers':  '📄',
-  'Notes':        '📓',
-  'Slides':       '🖥️',
-  'Assignments':  '📋',
-  'Lab Reports':  '🧪',
+  'Outline':         '📋',
+  'Notes':           '📝',
+  'Slides':          '📊',
+  'Quizzes':         '📝',
+  'Assignments':     '📄',
+  'Lab Manuals':     '🧪',
+  'Lab Tasks':       '⚗️',
+  'Reference Books': '📚',
 };
 
 const CoursePage = ({ user, onSignIn }) => {
@@ -21,44 +25,50 @@ const CoursePage = ({ user, onSignIn }) => {
   const [categories, setCategories]   = useState([]);
   const [activeTab, setActiveTab]     = useState('');
   const [loading, setLoading]         = useState(true);
-  const [bookmarks, setBookmarks]     = useState([]);
+  const [viewerFile, setViewerFile]   = useState(null);
+  const [reportModal, setReportModal] = useState(null); // file being reported
+  const [reportReason, setReportReason] = useState('');
+  const [reportSent, setReportSent]   = useState(false);
+  // bookmarks = Set of file_ids the user has bookmarked
+  const [bookmarks, setBookmarks] = useState(new Set());
 
   useEffect(() => {
-    if (user) {
-      const storageKey = `gh_bookmarks_${user.uid || user.id || user.username}`;
-      const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      setBookmarks(saved.map(b => b.id));
-    } else {
-      setBookmarks([]);
-    }
+    if (!user) { setBookmarks(new Set()); return; }
+    api.get('/bookmarks')
+      .then(res => {
+        if (res.data.success) {
+          setBookmarks(new Set(res.data.bookmarks.map(b => b.file_id)));
+        }
+      })
+      .catch(() => {});
   }, [user]);
 
-  const toggleBookmark = (file) => {
-    if (!user) {
-      onSignIn();
-      return;
+  const toggleBookmark = async (file) => {
+    if (!user) { onSignIn(); return; }
+    const fileId   = file.file_id ?? file.id;
+    const isMarked = bookmarks.has(fileId);
+    // Optimistic update
+    setBookmarks(prev => {
+      const next = new Set(prev);
+      isMarked ? next.delete(fileId) : next.add(fileId);
+      return next;
+    });
+    try {
+      if (isMarked) {
+        await api.delete(`/bookmarks/${fileId}`);
+      } else {
+        await api.post(`/bookmarks/${fileId}`);
+      }
+    } catch {
+      // Revert on failure
+      setBookmarks(prev => {
+        const next = new Set(prev);
+        isMarked ? next.add(fileId) : next.delete(fileId);
+        return next;
+      });
     }
-    const storageKey = `gh_bookmarks_${user.uid || user.id || user.username}`;
-    const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
-    const exists = saved.find(b => b.id === file.id);
-    let updated;
-    if (exists) {
-      updated = saved.filter(b => b.id !== file.id);
-    } else {
-      updated = [...saved, {
-        id: file.id,
-        title: file.title,
-        file_url: file.file_url,
-        category: file.category,
-        file_size: file.file_size ? (file.file_size / (1024 * 1024)).toFixed(2) : null,
-        course_id: id,
-        course_name: course.name,
-        icon: CATEGORY_ICONS[file.category] || '📄'
-      }];
-    }
-    localStorage.setItem(storageKey, JSON.stringify(updated));
-    setBookmarks(updated.map(b => b.id));
   };
+
 
   // Upload state
   const [uploadTitle, setUploadTitle]     = useState('');
@@ -77,8 +87,16 @@ const CoursePage = ({ user, onSignIn }) => {
           setCourse(res.data.course);
           setFiles(res.data.files_by_category);
           setCategories(res.data.categories);
-          const tabs = Object.keys(res.data.files_by_category);
-          setActiveTab(tabs[0] || (res.data.categories[0]?.name || ''));
+          // Default to Outline for non-lab, Lab Manuals for lab — fall back to first populated tab
+          const course = res.data.course;
+          const preferred = course.is_lab ? 'Lab Manuals' : 'Outline';
+          const allCatNames = res.data.categories.map(c => c.name);
+          const populated = Object.keys(res.data.files_by_category);
+          const defaultTab =
+            allCatNames.includes(preferred) ? preferred :
+            populated[0] ||
+            (res.data.categories[0]?.name || '');
+          setActiveTab(defaultTab);
         }
       })
       .catch(console.error)
@@ -159,6 +177,7 @@ const CoursePage = ({ user, onSignIn }) => {
   const currentFiles = filesByCategory[activeTab] || [];
 
   return (
+    <>
     <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
 
       {/* ── Course Header ──────────────────────────────────── */}
@@ -304,7 +323,12 @@ const CoursePage = ({ user, onSignIn }) => {
 
             {currentFiles.length > 0 ? (
               currentFiles.map((file, i) => (
-                <div key={file.id} className="file-item">
+                <div
+                  key={file.id ?? file.file_id}
+                  className="file-item"
+                  onClick={() => setViewerFile(file)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1, minWidth: 0 }}>
                     <div style={{
                       width: 44, height: 44, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-sm)',
@@ -313,43 +337,88 @@ const CoursePage = ({ user, onSignIn }) => {
                       {CATEGORY_ICONS[file.category] || '📁'}
                     </div>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.95rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{file.title}</div>
+                      <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.95rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {file.title}
+                      </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '3px' }}>
                         Contributed by <strong>{file.uploader || 'Anonymous'}</strong> · {file.date ? new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                         {file.file_size && ` · ${(file.file_size / (1024 * 1024)).toFixed(2)} MB`}
                       </div>
+                      {file.admin_note && (
+                        <div style={{
+                          marginTop: '8px', padding: '7px 12px',
+                          background: '#FFFBEB', border: '1px solid #FCD34D',
+                          borderRadius: '8px', fontSize: '0.78rem',
+                          color: '#92400E', lineHeight: 1.5,
+                          display: 'flex', gap: '6px', alignItems: 'flex-start'
+                        }}>
+                          <span style={{ flexShrink: 0 }}>📌</span>
+                          <span><strong>Admin note:</strong> {file.admin_note}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button 
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={e => e.stopPropagation()}>
+                    {/* Bookmark button */}
+                    <button
                       onClick={() => toggleBookmark(file)}
-                      style={{ 
-                        background: 'white', border: '2px solid var(--text)', borderRadius: '8px', 
-                        width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '1.2rem', cursor: 'pointer', transition: 'all 0.2s',
-                        boxShadow: bookmarks.includes(file.id) ? 'inset 2px 2px 4px rgba(0,0,0,0.1)' : '2px 2px 0px var(--text)'
+                      style={{
+                        background: bookmarks.has(file.file_id ?? file.id) ? 'var(--accent)' : 'white',
+                        border: '2px solid var(--text)',
+                        borderRadius: '8px',
+                        padding: '6px 12px',
+                        fontSize: '0.75rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        color: 'var(--text)',
+                        boxShadow: bookmarks.has(file.file_id ?? file.id) ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '2px 2px 0px var(--text)',
+                        whiteSpace: 'nowrap',
                       }}
-                      title={bookmarks.includes(file.id) ? 'Remove from Library' : 'Add to Library'}
                     >
-                      {bookmarks.includes(file.id) ? '🔖' : '📑'}
+                      {bookmarks.has(file.file_id ?? file.id) ? '✓ Bookmarked' : '+ Bookmark'}
                     </button>
+                    {/* Download — direct browser download + tracking */}
                     {file.file_url && (
-                      <button
+                      <a
+                        href={file.file_url}
+                        download={file.title}
                         onClick={() => {
-                          if (user) {
-                            window.open(file.file_url, '_blank');
-                          } else {
-                            onSignIn();
-                          }
+                          if (user) api.post(`/files/${file.file_id ?? file.id}/download`).catch(() => {});
                         }}
-                        style={{ 
-                          background: 'var(--primary)', color: 'white', padding: '8px 18px', 
-                          borderRadius: 8, fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, 
-                          border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--text)', 
-                          transition: 'all 0.15s', cursor: 'pointer' 
+                        style={{
+                          background: 'var(--primary)', color: 'white',
+                          padding: '8px 18px', borderRadius: 8,
+                          fontWeight: 700, fontSize: '0.85rem',
+                          border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--text)',
+                          textDecoration: 'none', whiteSpace: 'nowrap',
+                          display: 'inline-block',
                         }}
                       >
-                        Download
+                        ⬇ Download
+                      </a>
+                    )}
+                    {/* Flag button — only for logged-in users */}
+                    {user && (
+                      <button
+                        onClick={() => { setReportModal(file); setReportReason(''); setReportSent(false); }}
+                        style={{
+                          background: 'white',
+                          border: '2px solid var(--text)',
+                          borderRadius: '8px',
+                          padding: '6px 12px',
+                          fontSize: '0.75rem',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          color: '#DC2626',
+                          boxShadow: '2px 2px 0px var(--text)',
+                          whiteSpace: 'nowrap',
+                        }}
+                        onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'white'; }}
+                      >
+                        🚩 Flag
                       </button>
                     )}
                   </div>
@@ -425,11 +494,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'white', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
                     >
                       <option value="">Select material type…</option>
-                      {categories.filter(c => {
-                        const isLabReport = c.name === 'Lab Reports';
-                        const isLabCourse = course?.name?.toLowerCase().includes('lab') || course?.code?.toLowerCase().endsWith('l');
-                        return !isLabReport || isLabCourse;
-                      }).map(c => (
+                      {categories.map(c => (
                         <option key={c.id} value={c.id}>{CATEGORY_ICONS[c.name] || '📁'} {c.name}</option>
                       ))}
                     </select>
@@ -484,6 +549,61 @@ const CoursePage = ({ user, onSignIn }) => {
         </div> {/* End course grid */}
       </div>
     </div>
+
+    {/* File Viewer modal */}
+    {viewerFile && (
+      <FileViewer file={viewerFile} onClose={() => setViewerFile(null)} />
+    )}
+
+    {/* Report modal */}
+    {reportModal && (
+      <div
+        onClick={() => setReportModal(null)}
+        style={{ position: 'fixed', inset: 0, zIndex: 10001, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
+      >
+        <div onClick={e => e.stopPropagation()} style={{ background: 'white', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '460px' }}>
+          {reportSent ? (
+            <div style={{ textAlign: 'center', padding: '20px 0' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>✅</div>
+              <h3 style={{ fontWeight: 800, marginBottom: '8px' }}>Report submitted</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Thank you for helping keep the platform safe. An admin will review it.</p>
+              <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
+            </div>
+          ) : (
+            <>
+              <h3 style={{ fontWeight: 800, marginBottom: '6px' }}>🚩 Report File</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '18px' }}>
+                Reporting: <strong>{reportModal.title}</strong>
+              </p>
+              <textarea
+                value={reportReason}
+                onChange={e => setReportReason(e.target.value)}
+                placeholder="Describe the issue (wrong content, inappropriate material, duplicate…)"
+                rows={4}
+                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              />
+              <div style={{ display: 'flex', gap: '10px', marginTop: '16px', justifyContent: 'flex-end' }}>
+                <button onClick={() => setReportModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'white', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+                <button
+                  onClick={async () => {
+                    if (!reportReason.trim()) return;
+                    try {
+                      await api.post(`/reports/${reportModal.file_id ?? reportModal.id}`, { reason: reportReason });
+                      setReportSent(true);
+                    } catch { /* ignore */ }
+                  }}
+                  disabled={!reportReason.trim()}
+                  style={{ padding: '10px 20px', border: '2px solid #DC2626', borderRadius: '8px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700, opacity: reportReason.trim() ? 1 : 0.5 }}
+                >
+                  Submit Report
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 

@@ -21,5 +21,5 @@ FIREBASE_CREDENTIALS_PATH = os.environ.get('FIREBASE_CREDENTIALS', 'firebase/ser
 FIREBASE_STORAGE_BUCKET   = os.environ.get('FIREBASE_BUCKET', 'your-project.appspot.com')
 
 # Upload settings
-ALLOWED_EXTENSIONS = {'pdf', 'docx', 'pptx', 'xlsx', 'txt', 'zip'}
+ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip', 'png', 'jpg', 'jpeg'}
 MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB

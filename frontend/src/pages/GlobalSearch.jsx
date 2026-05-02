@@ -27,8 +27,10 @@ const GlobalSearch = ({ user, onSignIn }) => {
         if (res.data.success) setCategories(res.data.categories);
     }).catch(() => {
         setCategories([
-            {id: 1, name: 'Past Papers'}, {id: 2, name: 'Notes'}, 
-            {id: 3, name: 'Slides'}, {id: 4, name: 'Assignments'}, {id: 5, name: 'Lab Reports'}
+            {id: 1, name: 'Outline'}, {id: 2, name: 'Notes'}, 
+            {id: 3, name: 'Slides'}, {id: 4, name: 'Quizzes'}, 
+            {id: 5, name: 'Assignments'}, {id: 6, name: 'Lab Manuals'},
+            {id: 7, name: 'Lab Tasks'}, {id: 8, name: 'Reference Books'}
         ]);
     });
   }, []);

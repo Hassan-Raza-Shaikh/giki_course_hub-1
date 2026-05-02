@@ -78,6 +78,11 @@ body {
   50%       { box-shadow: 0 0 40px rgba(240,171,252,0.7), 0 0 80px rgba(124,58,237,0.3); }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(40px);

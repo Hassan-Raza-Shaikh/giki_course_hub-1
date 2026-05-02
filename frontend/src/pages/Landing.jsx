@@ -16,7 +16,7 @@ const STATS = [
   { val: '100%', label: 'Free & Open',   icon: '🔓' },
 ];
 
-const Landing = ({ onSignIn }) => {
+const Landing = ({ user, onSignIn, onSignOut }) => {
   const [randomCourses, setRandomCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -105,7 +105,9 @@ const Landing = ({ onSignIn }) => {
                 style={{ fontSize: '1.05rem' }}>
                 Explore Courses →
               </button>
-              <button className="btn-outline" onClick={onSignIn}>Sign In</button>
+              {!user && (
+                <button className="btn-outline" onClick={onSignIn}>Sign In</button>
+              )}
             </div>
           </div>
 

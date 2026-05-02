@@ -103,19 +103,22 @@ BEGIN
             jsonb_agg(
                 jsonb_build_object(
                     'id', f.file_id,
+                    'file_id', f.file_id,
                     'title', f.title,
                     'category', COALESCE(cat.name, 'General'),
                     'uploader', u.username,
                     'date', f.upload_date,
                     'file_url', f.file_url,
                     'file_size', m.file_size,
-                    'file_type', m.file_type
+                    'file_type', m.file_type,
+                    'admin_note', fn.note_text
                 ) ORDER BY f.upload_date DESC
             ) AS files
         FROM files f
         LEFT JOIN categories cat ON f.category_id = cat.category_id
         LEFT JOIN users u ON f.uploaded_by = u.user_id
         LEFT JOIN file_metadata m ON f.file_id = m.file_id
+        LEFT JOIN file_notes fn ON fn.file_id = f.file_id
         WHERE f.course_code = (SELECT COALESCE(code, name) FROM courses WHERE course_id = p_course_id) 
           AND f.status = 'approved'
         GROUP BY COALESCE(cat.name, 'General')
