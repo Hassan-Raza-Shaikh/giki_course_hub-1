@@ -1,9 +1,23 @@
 import random
 from flask import Blueprint, request, session, jsonify
+import boto3
+from botocore.exceptions import NoCredentialsError
 from db import get_connection
-from config import ALLOWED_EXTENSIONS
+from config import ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY, R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX
 
 file_bp = Blueprint('files', __name__)
+
+def get_s3_client():
+    if not R2_ENDPOINT_URL or not R2_ACCESS_KEY or not R2_SECRET_KEY:
+        return None
+    return boto3.client(
+        's3',
+        endpoint_url=R2_ENDPOINT_URL,
+        aws_access_key_id=R2_ACCESS_KEY,
+        aws_secret_access_key=R2_SECRET_KEY,
+        region_name='auto'  # R2 requires this or similar
+    )
+
 
 
 def allowed_file(filename):
@@ -210,20 +224,39 @@ def upload_to_course(course_id):
     ext       = file.filename.rsplit('.', 1)[1].lower()
     file_type = ext
     
-    # Ensure upload directory exists
-    upload_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'uploads')
-    os.makedirs(upload_dir, exist_ok=True)
-    
     # Generate unique filename to prevent clashing
     unique_filename = f"{uuid.uuid4().hex}_{secure_filename(file.filename)}"
-    file_path       = os.path.join(upload_dir, unique_filename)
     
-    # Save physically
-    file.save(file_path)
-    file_size = os.path.getsize(file_path)
-    
-    # Public URL served by Flask's static folder
-    file_url  = f"/static/uploads/{unique_filename}"
+    # Try uploading to Cloudflare R2 if configured
+    s3_client = get_s3_client()
+    if not s3_client:
+        return jsonify({"success": False, "message": "Storage is not configured on the server."}), 500
+
+    try:
+        # We don't have a physical path, we just get the size from the file stream
+        file.seek(0, os.SEEK_END)
+        file_size = file.tell()
+        file.seek(0)
+        
+        s3_client.upload_fileobj(
+            file, 
+            R2_BUCKET, 
+            unique_filename,
+            ExtraArgs={"ContentType": file.mimetype} # Omit ACL="public-read" as R2 relies on bucket policies
+        )
+        # R2 Public URL
+        if R2_PUBLIC_URL_PREFIX:
+            file_url = f"{R2_PUBLIC_URL_PREFIX.rstrip('/')}/{unique_filename}"
+        else:
+            # Fallback to endpoint url if no custom domain is set
+            file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
+        
+    except NoCredentialsError:
+        print("DEBUG: R2 Credentials error.")
+        return jsonify({"success": False, "message": "Storage credential error."}), 500
+    except Exception as e:
+        print(f"DEBUG: R2 Upload failed: {e}")
+        return jsonify({"success": False, "message": f"Storage upload failed: {str(e)}"}), 500
     
     conn = get_connection()
     try:

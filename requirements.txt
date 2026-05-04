@@ -3,3 +3,4 @@ flask-cors
 psycopg2-binary
 werkzeug
 firebase-admin
+boto3

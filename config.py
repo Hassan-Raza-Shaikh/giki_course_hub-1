@@ -23,3 +23,10 @@ FIREBASE_STORAGE_BUCKET   = os.environ.get('FIREBASE_BUCKET', 'your-project.apps
 # Upload settings
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip', 'png', 'jpg', 'jpeg'}
 MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB
+
+# Cloudflare R2 (S3 Compatible)
+R2_BUCKET = os.environ.get('R2_BUCKET', 'giki-course-hub')
+R2_ENDPOINT_URL = os.environ.get('R2_ENDPOINT_URL', '')
+R2_ACCESS_KEY = os.environ.get('R2_ACCESS_KEY', '')
+R2_SECRET_KEY = os.environ.get('R2_SECRET_KEY', '')
+R2_PUBLIC_URL_PREFIX = os.environ.get('R2_PUBLIC_URL_PREFIX', '')

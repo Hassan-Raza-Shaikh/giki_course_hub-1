@@ -14,6 +14,7 @@ GIKI Course Hub is a course-material platform for GIKI students. It lets users b
 
 ## Database Schema
 
+
 ### users
 Stores every authenticated user, including password-based users and Firebase-only users.
 
