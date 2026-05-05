@@ -9,12 +9,16 @@ from routes.admin_routes import admin_bp
 from routes.issue_routes import issue_bp
 
 
+import os
+
 def create_app():
     app = Flask(__name__)
     app.secret_key = SECRET_KEY
     app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 
-    CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+    # Support production and local origins
+    allowed_origins = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
+    CORS(app, supports_credentials=True, origins=allowed_origins)
 
     # Initialize Firebase Admin SDK (for ID token verification)
     init_firebase_admin()
@@ -38,7 +42,9 @@ def create_app():
 
     return app
 
+app = create_app()
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(debug=True, host='0.0.0.0', port=port)
+

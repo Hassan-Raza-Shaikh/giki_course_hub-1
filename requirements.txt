@@ -5,3 +5,4 @@ werkzeug
 firebase-admin
 boto3
 python-dotenv
+gunicorn
