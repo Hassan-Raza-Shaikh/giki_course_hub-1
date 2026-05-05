@@ -3,6 +3,10 @@
 # ==========================================
 
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Flask
 SECRET_KEY = os.environ.get('SECRET_KEY', 'giki-course-hub-secret-2024')
