@@ -8,12 +8,51 @@ __pycache__/
 venv/
 env/
 .env
+.env.*
+!.env.example
 
-# Node
+# ─── SECRETS & CREDENTIALS ────────────────────────────────────────────────────
+# Firebase Admin SDK service account key (contains a live RSA private key!)
+*adminsdk*.json
+*serviceAccount*.json
+*service-account*.json
+firebase/*.json
+firebase/
+gikicoursehub-firebase-adminsdk-*.json
+
+# Any other key/secret files
+*.key
+*.pem
+*.p12
+*.pfx
+
+# ─── ENVIRONMENT / CONFIG ─────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+config/secrets.py
+
+# ─── NODE ─────────────────────────────────────────────────────────────────────
 node_modules/
+frontend/node_modules/
 dist/
 build/
-.DS_Store
+frontend/dist/
 
-# Credentials
-firebase/
+# ─── VERCEL ───────────────────────────────────────────────────────────────────
+# Contains your Vercel project ID and org ID — not a hard secret but best kept private
+.vercel/
+frontend/.vercel/
+
+# ─── PYTHON VIRTUAL ENV ───────────────────────────────────────────────────────
+.tmp_env/
+venv/
+env/
+
+# ─── OS / EDITOR ──────────────────────────────────────────────────────────────
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
