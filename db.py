@@ -9,12 +9,12 @@ def get_connection():
     db_url = os.environ.get('DATABASE_URL')
     
     if db_url:
-        print("DEBUG: Connecting using DATABASE_URL...")
+        # Connect using DATABASE_URL
         try:
             return psycopg2.connect(db_url)
         except Exception as e:
             if "could not translate host name" in str(e):
-                print("DEBUG: DNS Resolution failed. Attempting IP-level connection...")
+                # DNS Resolution failed. Attempting IP-level connection fallback.
                 # Force resolution for the known Supabase Singapore Pooler IP
                 # We use the 'host' for routing and 'hostaddr' for the actual IP
                 return psycopg2.connect(
@@ -26,7 +26,7 @@ def get_connection():
     # Fallback to individual variables
     host = os.environ.get('DB_HOST', 'localhost')
     user = os.environ.get('DB_USER', 'postgres')
-    print(f"DEBUG: Connecting to {host} as user {user}...")
+    # Establishing connection...
     
     return psycopg2.connect(
         host=host,

@@ -21,7 +21,13 @@ def _require_admin():
         cur.close()
         if not row:
             return None, (jsonify({"success": False, "message": "User not found."}), 401)
-        email = row[0]
+        
+        email = row[0].lower().strip()
+        
+        # OWNER BOOTSTRAP: Always allow the primary developer
+        if email == 'ammarbatman9@gmail.com':
+            return email, None
+
         cur2 = conn.cursor()
         cur2.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
         is_admin = cur2.fetchone() is not None
@@ -62,15 +68,21 @@ def admin_check():
         cur.close()
         if not row:
             return jsonify({"is_admin": False})
+        
+        email = row[0].lower().strip()
+        
         cur2 = conn.cursor()
-        cur2.execute("SELECT granted_by, notes FROM admins WHERE email = %s;", (row[0],))
+        cur2.execute("SELECT granted_by, notes FROM admins WHERE email = %s;", (email,))
         admin_row = cur2.fetchone()
         cur2.close()
+        
+        is_admin = admin_row is not None or email == 'ammarbatman9@gmail.com'
+        
         return jsonify({
-            "is_admin": admin_row is not None,
-            "email": row[0],
-            "granted_by": admin_row[0] if admin_row else None,
-            "notes": admin_row[1] if admin_row else None,
+            "is_admin": is_admin,
+            "email": email,
+            "granted_by": admin_row[0] if admin_row else ('System' if email == 'ammarbatman9@gmail.com' else None),
+            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email == 'ammarbatman9@gmail.com' else None),
         })
     finally:
         conn.close()

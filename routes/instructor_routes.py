@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from db import get_connection
+from routes.admin_routes import _require_admin
 
 instructor_bp = Blueprint('instructors', __name__)
 
@@ -45,7 +46,10 @@ def get_all_instructors():
 
 @instructor_bp.route('/api/instructors', methods=['POST'])
 def add_instructor():
-    """Add a new instructor to the database."""
+    """Add a new instructor to the database (Admin only)."""
+    admin_email, err = _require_admin()
+    if err: return err
+
     name = (request.json.get('name') or '').strip()
     faculty_name = (request.json.get('faculty_name') or '').strip()
     

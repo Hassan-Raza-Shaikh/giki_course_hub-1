@@ -101,6 +101,36 @@ def search_all():
         conn.close()
 
 
+@file_bp.route('/api/stats', methods=['GET'])
+def get_public_stats():
+    """Return public statistics for the landing page."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT COUNT(*) FROM courses;")
+        courses = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM faculties;")
+        faculties = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM programs;")
+        programs = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'approved';")
+        materials = cur.fetchone()[0]
+        cur.close()
+        return jsonify({
+            "success": True,
+            "stats": {
+                "courses": courses,
+                "faculties": faculties,
+                "programs": programs,
+                "materials": materials
+            }
+        })
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
 @file_bp.route('/api/categories', methods=['GET'])
 def list_categories():
     """Return all categories for filter dropdowns."""
@@ -230,13 +260,10 @@ def upload_to_course(course_id):
     instructor_id = request.form.get('instructor_id', type=int)
     file          = request.files.get('file')
 
-    print(f"DEBUG: Upload Request - Title: {title}, CatID: {category_id}, InstructorID: {instructor_id}, File: {file}")
-
     if not title or not category_id or not file:
         return jsonify({"success": False, "message": "Title, category, and file are required."}), 400
 
     if not file.filename or not allowed_file(file.filename):
-        print(f"DEBUG: Disallowed file type or empty filename: {file.filename}")
         return jsonify({"success": False, "message": "File type not allowed."}), 400
 
     ext       = file.filename.rsplit('.', 1)[1].lower()
@@ -270,16 +297,16 @@ def upload_to_course(course_id):
             file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
         
     except NoCredentialsError:
-        print("DEBUG: R2 Credentials error.")
-        return jsonify({"success": False, "message": "Storage credential error."}), 500
+        return jsonify({"success": False, "message": "Storage configuration error."}), 500
     except Exception as e:
-        print(f"DEBUG: R2 Upload failed: {e}")
-        return jsonify({"success": False, "message": f"Storage upload failed: {str(e)}"}), 500
+        return jsonify({"success": False, "message": f"Upload failed: {str(e)}"}), 500
     
     conn = get_connection()
     try:
         cur = conn.cursor()
-        uploader = session.get('user_id', 1)
+        uploader = session.get('user_id')
+        if not uploader:
+            return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
 
         # Lookup the global course code for this course
         cur.execute("SELECT name, code FROM courses WHERE course_id = %s;", (course_id,))

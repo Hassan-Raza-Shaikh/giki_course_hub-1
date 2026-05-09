@@ -18,13 +18,22 @@ const STATS = [
 
 const Landing = ({ user, onSignIn, onSignOut }) => {
   const [randomCourses, setRandomCourses] = useState([]);
+  const [stats, setStats] = useState({ courses: '...', faculties: '...', programs: '...', materials: '...' });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
   useEffect(() => {
+    // Fetch live stats
+    api.get('/stats')
+      .then(res => {
+        if (res.data.success) {
+          setStats(res.data.stats);
+        }
+      })
+      .catch(err => console.error("Stats fetch error:", err));
+
     let attempts = 0;
-    const maxAttempts = 20; // Wait up to 60s
+    const maxAttempts = 20;
 
     const fetchFeatured = () => {
       attempts++;
@@ -51,40 +60,30 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
     fetchFeatured();
   }, []);
 
+  const statItems = [
+    { val: stats.courses,   label: 'Courses',   icon: '📚' },
+    { val: stats.faculties, label: 'Faculties', icon: '🏛️' },
+    { val: stats.programs,  label: 'Programs',  icon: '🎓' },
+    { val: stats.materials, label: 'Materials', icon: '📂' },
+  ];
+
   return (
     <div style={{ overflowX: 'hidden' }}>
 
       {/* ── Hero ───────────────────────────────────────────── */}
-      <section className="hero">
-        {/* Fun Neo-brutalist geometric shapes instead of Aurora gradients */}
-        <div className="hero-glow" style={{ width: 400, height: 400, background: 'var(--accent)', top: -100, left: -100, borderRadius: '50px', filter: 'none', transform: 'rotate(15deg)', opacity: 0.2 }} />
-        <div className="hero-glow" style={{ width: 300, height: 300, background: 'var(--secondary)', bottom: -50, right: -100, borderRadius: '100px', filter: 'none', transform: 'rotate(-25deg)', opacity: 0.15 }} />
-        <div className="hero-glow" style={{ width: 150, height: 150, background: 'var(--primary)', top: '30%', right: '15%', filter: 'none', transform: 'rotate(45deg)', opacity: 0.2 }} />
+      <section className="hero" style={{ minHeight: '85vh', display: 'flex', alignItems: 'center' }}>
+        <div className="hero-glow" style={{ width: 400, height: 400, background: 'var(--accent)', top: -100, left: -100, borderRadius: '50px', filter: 'none', transform: 'rotate(15deg)', opacity: 0.1 }} />
+        <div className="hero-glow" style={{ width: 300, height: 300, background: 'var(--secondary)', bottom: -50, right: -100, borderRadius: '100px', filter: 'none', transform: 'rotate(-25deg)', opacity: 0.1 }} />
 
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
-          <div key={i} style={{
-            position: 'absolute',
-            width: `${6 + i * 2}px`, height: `${6 + i * 2}px`,
-            borderRadius: '50%',
-            background: ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--primary)', 'var(--secondary)', 'var(--accent)'][i],
-            opacity: 0.5,
-            top: `${15 + i * 15}%`,
-            left: `${5 + i * 15}%`,
-            animation: `float ${3 + i * 0.5}s ease-in-out ${i * 0.4}s infinite`,
-            filter: 'blur(1px)',
-          }} />
-        ))}
-
-        <div className="page-container" style={{ position: 'relative', zIndex: 2, paddingTop: '80px' }}>
+        <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
-              background: 'white', border: '2px solid var(--text)',
+              background: 'white', border: '1px solid var(--border)',
               padding: '8px 20px', borderRadius: '100px', marginBottom: '40px',
               fontSize: '0.8rem', fontWeight: 700, color: 'var(--text)',
               textTransform: 'uppercase', letterSpacing: '0.12em',
-              boxShadow: '4px 4px 0px var(--accent)'
+              boxShadow: 'var(--shadow-sm)'
             }}>
               <span style={{ color: 'var(--primary)' }}>●</span> GIK Institute of Engineering
             </div>
@@ -95,50 +94,55 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
               color: 'var(--text)',
               letterSpacing: '-0.04em',
               lineHeight: 1.0,
-              marginBottom: '28px',
+              marginBottom: '32px',
               fontFamily: 'Outfit, sans-serif',
             }}>
               GIKI<br /><span className="gradient-text">COURSE HUB</span>
             </h1>
 
             <p style={{
-              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+              fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
               color: 'var(--text-muted)',
-              fontStyle: 'italic',
-              maxWidth: '600px',
-              margin: '0 auto 20px',
-              lineHeight: 1.7,
+              maxWidth: '650px',
+              margin: '0 auto 48px',
+              lineHeight: 1.6,
+              fontWeight: 500
             }}>
-              {quote}
+              The ultimate academic repository for GIKI students. <br/>Access past papers, notes, and course materials in one place.
             </p>
 
-            <p style={{
-              fontSize: '1.1rem',
-              color: 'var(--text-muted)',
-              maxWidth: '520px',
-              margin: '0 auto 52px',
-              lineHeight: 1.7,
-            }}>
-              Your one-stop platform for academic materials at GIKI — past papers, lecture notes, slides, and more.
-            </p>
-
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button className="btn-primary" onClick={() => navigate('/courses')}
-                style={{ fontSize: '1.05rem' }}>
-                Explore Courses →
-              </button>
-              {!user && (
-                <button className="btn-outline" onClick={onSignIn}>Sign In</button>
-              )}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+              {/* Subtle animation line */}
+              <div style={{ 
+                width: '1px', 
+                height: '40px', 
+                background: 'linear-gradient(to bottom, var(--primary), transparent)',
+                animation: 'growShrink 2s ease-in-out infinite'
+              }} />
+              
+              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button className="btn-primary" onClick={() => navigate('/courses')}
+                  style={{ 
+                    fontSize: '1.1rem', 
+                    padding: '16px 40px',
+                    boxShadow: '0 10px 20px -5px rgba(124, 58, 237, 0.3)'
+                  }}>
+                  Explore Courses →
+                </button>
+                {!user && (
+                  <button className="btn-outline" onClick={onSignIn} style={{ padding: '16px 40px' }}>Sign In</button>
+                )}
+              </div>
             </div>
           </div>
-
-          {/* Scroll hint */}
-          <div style={{ marginTop: '80px', animation: 'float 3s ease-in-out infinite' }}>
-            <div style={{ width: 2, height: 60, background: 'linear-gradient(to bottom, var(--primary), transparent)', margin: '0 auto' }} />
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 800, textAlign: 'center', marginTop: '8px', letterSpacing: '0.1em' }}>SCROLL</p>
-          </div>
         </div>
+
+        <style>{`
+          @keyframes growShrink {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.3; }
+            50% { transform: scaleY(1); opacity: 1; }
+          }
+        `}</style>
       </section>
 
       {/* ── Random Courses ─────────────────────────────────── */}
@@ -147,13 +151,13 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '64px' }}>
               <p style={{ color: 'var(--hot-pink)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px' }}>
-                Featured This Session
+                Featured Resources
               </p>
               <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: 'var(--primary)', letterSpacing: '-0.03em' }}>
-                Discover Your Courses
+                Discover Materials
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '16px', maxWidth: '500px', margin: '16px auto 0' }}>
-                Browse study materials contributed by students just like you.
+                Browse high-quality study materials contributed by the GIKI community.
               </p>
             </div>
           </ScrollReveal>
@@ -162,11 +166,8 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
             <div style={{ textAlign: 'center', padding: '40px 24px' }}>
               <div style={{ fontSize: '2rem', marginBottom: '16px', animation: 'spin 2s linear infinite' }}>⏳</div>
               <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '8px', fontFamily: 'Outfit' }}>
-                Fetching Featured Courses...
+                Fetching Resources...
               </div>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', maxWidth: '380px', margin: '0 auto' }}>
-                The server is waking up — this usually takes about 30 seconds on the first visit.
-              </p>
               <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
             </div>
           ) : randomCourses.length === 0 ? (
@@ -178,10 +179,9 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
               {randomCourses.map((course, i) => (
                 <ScrollReveal key={course.id} delay={`reveal-delay-${i+1}`}>
                   <div className="course-card" onClick={() => navigate(`/course/${course.id}`)}>
-                    {/* Top gradient banner */}
                     <div style={{
                       position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
-                      background: ['var(--primary)', 'var(--secondary)', 'var(--accent)'][i],
+                      background: ['var(--primary)', 'var(--secondary)', 'var(--accent)'][i % 3],
                     }} />
                     <div style={{ fontSize: '2.8rem', marginBottom: '20px' }}>{course.icon || '📘'}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
@@ -216,74 +216,65 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
       </section>
 
       {/* ── About Us ──────────────────────────────────────── */}
-      <section style={{ padding: '120px 0', background: 'var(--bg-subtle)', position: 'relative', overflow: 'hidden', borderTop: '2px solid var(--border)', borderBottom: '2px solid var(--border)' }}>
-        {/* Background orbs */}
-        <div style={{ position: 'absolute', width: 500, height: 500, border: '40px solid var(--accent)', top: -100, right: -100, borderRadius: '50%', opacity: 0.1 }} />
-        <div style={{ position: 'absolute', width: 400, height: 400, background: 'var(--secondary)', bottom: -50, left: -50, opacity: 0.1, transform: 'rotate(20deg)' }} />
-
+      <section style={{ padding: '120px 0', background: 'var(--bg-subtle)', position: 'relative', overflow: 'hidden', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ position: 'absolute', width: 500, height: 500, border: '40px solid var(--accent)', top: -100, right: -100, borderRadius: '50%', opacity: 0.05 }} />
+        
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
             <ScrollReveal>
               <p style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '20px',
                 color: 'var(--primary)' }}>
-                About GIKI Course Hub
+                Platform Overview
               </p>
               <h2 style={{ fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '24px', lineHeight: 1.1 }}>
-                Built by Students, <br />For Students.
+                Streamlined Academic <br />Collaboration.
               </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '16px' }}>
-                GIK Institute of Engineering Sciences and Technology, nestled in the foothills of the Himalayas, is one of Pakistan's top engineering universities.
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', lineHeight: 1.8, marginBottom: '20px' }}>
+                Experience a centralized repository for GIK Institute resources. We bridge the gap between departments by making high-quality study materials accessible to everyone.
               </p>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8 }}>
-                GIKI Course Hub is a community-driven platform where students collaborate by sharing high-quality study materials across all programs — completely free.
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', lineHeight: 1.8 }}>
+                Empowering the GIKI community through shared knowledge and efficient, peer-to-peer resource distribution.
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay="reveal-delay-2">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                {STATS.map((s, i) => (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                {statItems.map((s, i) => (
                   <div key={s.label} style={{
                     background: 'white',
-                    border: '1px solid var(--text)',
+                    border: '1px solid var(--border)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '32px 20px',
                     textAlign: 'center',
-                    transition: 'all 0.3s ease',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxShadow: 'var(--shadow-sm)'
                   }}
-                  onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
-                  onMouseOut={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.transform = 'none'; }}
+                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+                  onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                   >
-                    <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{s.icon}</div>
+                    <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{s.icon}</div>
                     <div style={{
-                      fontSize: '2.2rem', fontWeight: 900, fontFamily: 'Outfit', letterSpacing: '-0.04em',
+                      fontSize: '2.4rem', fontWeight: 900, fontFamily: 'Outfit', letterSpacing: '-0.04em',
                       color: 'var(--text)',
+                      marginBottom: '4px'
                     }}>{s.val}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600, marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{s.label}</div>
                   </div>
                 ))}
               </div>
             </ScrollReveal>
           </div>
         </div>
-
-        <style>{`
-          @media (max-width: 768px) {
-            section > .page-container > div[style*="grid-template-columns: 1fr 1fr"] {
-              grid-template-columns: 1fr !important;
-              gap: 40px !important;
-            }
-          }
-        `}</style>
       </section>
 
       {/* ── Footer ───────────────────────────────────────── */}
-      <footer style={{ padding: '48px 24px', background: 'white', textAlign: 'center' }}>
-        <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.2rem', marginBottom: '12px' }}>
+      <footer style={{ padding: '60px 24px', background: 'white', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
+        <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.4rem', marginBottom: '16px' }}>
           <span style={{ color: 'var(--text)' }}>GIKI </span>
           <span style={{ color: 'var(--primary)' }}>COURSE HUB</span>
         </div>
-        <p style={{ color: 'var(--text-light)', fontSize: '0.85rem' }}>
-          © 2024 Ghulam Ishaq Khan Institute. All Rights Reserved.
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>
+          © {new Date().getFullYear()} GIK Institute of Engineering Sciences and Technology
         </p>
       </footer>
     </div>
