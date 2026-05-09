@@ -24,7 +24,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
 
   useEffect(() => {
     let attempts = 0;
-    const maxAttempts = 5;
+    const maxAttempts = 20; // Wait up to 60s
 
     const fetchFeatured = () => {
       attempts++;

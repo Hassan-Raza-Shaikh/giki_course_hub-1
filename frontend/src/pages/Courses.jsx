@@ -278,7 +278,7 @@ const Courses = () => {
 
   useEffect(() => {
     let attempts = 0;
-    const maxAttempts = 5;
+    const maxAttempts = 20; // Wait up to 60 seconds (20 * 3s)
 
     const fetchWithRetry = () => {
       attempts++;

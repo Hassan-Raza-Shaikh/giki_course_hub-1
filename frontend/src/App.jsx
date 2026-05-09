@@ -26,30 +26,45 @@ const App = () => {
       if (fbUser) {
         try {
           const idToken = await fbUser.getIdToken();
-          // Sync with backend to get our custom user object (role, student info, etc.)
-          const res = await api.post('/auth/firebase', {
-            idToken,
-            uid: fbUser.uid,
-            email: fbUser.email,
-            displayName: fbUser.displayName,
-            photoURL: fbUser.photoURL,
-          });
-          if (res.data.success) {
-            setUser({
-              ...res.data.user,
-              displayName: res.data.user.displayName || fbUser.displayName,
-              photoURL: res.data.user.photoURL || fbUser.photoURL,
-              email: fbUser.email
-            });
-          }
+          let attempts = 0;
+          const maxAttempts = 20;
+
+          const syncAuth = async () => {
+            try {
+              const res = await api.post('/auth/firebase', {
+                idToken, uid: fbUser.uid, email: fbUser.email,
+                displayName: fbUser.displayName, photoURL: fbUser.photoURL,
+              });
+              if (res.data.success) {
+                setUser({ ...res.data.user, displayName: res.data.user.displayName || fbUser.displayName, photoURL: res.data.user.photoURL || fbUser.photoURL, email: fbUser.email });
+                setLoading(false);
+              } else if (attempts < maxAttempts) {
+                attempts++;
+                setTimeout(syncAuth, 3000);
+              } else {
+                setLoading(false);
+              }
+            } catch (err) {
+              if (attempts < maxAttempts) {
+                attempts++;
+                setTimeout(syncAuth, 3000);
+              } else {
+                console.error("Auth sync failed:", err);
+                setUser(null);
+                setLoading(false);
+              }
+            }
+          };
+          syncAuth();
         } catch (err) {
-          console.error("Auth sync failed:", err);
+          console.error("Auth initialization failed:", err);
           setUser(null);
+          setLoading(false);
         }
       } else {
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();

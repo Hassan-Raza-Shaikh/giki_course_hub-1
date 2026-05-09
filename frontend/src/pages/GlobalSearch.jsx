@@ -16,10 +16,9 @@ const GlobalSearch = ({ user, onSignIn }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading]       = useState(false);
 
-  // Fetch filter options with retry for cold start
   useEffect(() => {
     let attempts = 0;
-    const maxAttempts = 5;
+    const maxAttempts = 20; // Wait up to 60s
 
     const fetchData = () => {
       attempts++;
