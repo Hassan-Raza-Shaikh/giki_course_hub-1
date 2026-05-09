@@ -10,9 +10,9 @@ const QUOTES = [
 ];
 
 const STATS = [
-  { val: '923+', label: 'Total Courses', icon: '📚' },
-  { val: '16',   label: 'Programs',      icon: '🎓' },
-  { val: '6',    label: 'Faculties',     icon: '🏛️' },
+  { val: '923',  label: 'Total Courses', icon: '📚' },
+  { val: '50+',  label: 'Programs',      icon: '🎓' },
+  { val: '7',    label: 'Faculties',     icon: '🏛️' },
   { val: '100%', label: 'Free & Open',   icon: '🔓' },
 ];
 
@@ -23,10 +23,32 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
   const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
   useEffect(() => {
-    api.get('/courses/random?n=3')
-      .then(res => { if (res.data.success) setRandomCourses(res.data.courses); })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    let attempts = 0;
+    const maxAttempts = 5;
+
+    const fetchFeatured = () => {
+      attempts++;
+      api.get('/courses/random?n=3')
+        .then(res => {
+          if (res.data.success && res.data.courses.length > 0) {
+            setRandomCourses(res.data.courses);
+            setLoading(false);
+          } else if (attempts < maxAttempts) {
+            setTimeout(fetchFeatured, 3000);
+          } else {
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          if (attempts < maxAttempts) {
+            setTimeout(fetchFeatured, 3000);
+          } else {
+            setLoading(false);
+          }
+        });
+    };
+
+    fetchFeatured();
   }, []);
 
   return (
