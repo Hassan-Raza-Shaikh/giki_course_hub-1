@@ -48,7 +48,22 @@ def create_app():
     def index():
         return jsonify({"message": "GIKI Course Hub API v3.0"})
 
+    @app.route('/debug/db')
+    def debug_db():
+        from db import get_connection
+        try:
+            conn = get_connection()
+            cur = conn.cursor()
+            cur.execute("SELECT version();")
+            version = cur.fetchone()[0]
+            cur.close()
+            conn.close()
+            return jsonify({"success": True, "database": "Connected!", "version": version})
+        except Exception as e:
+            return jsonify({"success": False, "error": str(e)}), 500
+
     return app
+
 
 app = create_app()
 
