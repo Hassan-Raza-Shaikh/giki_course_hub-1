@@ -16,24 +16,40 @@ const GlobalSearch = ({ user, onSignIn }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading]       = useState(false);
 
-  // Fetch filter options
+  // Fetch filter options with retry for cold start
   useEffect(() => {
-    api.get('/courses').then(res => {
-      if (res.data.success) setFaculties(res.data.faculties);
-    });
-    // Assuming categories are fetched or hardcoded. Let's fetch them from a course detail or common endpoint if available.
-    // For now, let's use the known list or fetch from any course detail.
-    api.get('/categories').then(res => {
-        if (res.data.success) setCategories(res.data.categories);
-    }).catch(() => {
-        // fallback hardcoded list if endpoint fails
-        setCategories([
+    let attempts = 0;
+    const maxAttempts = 5;
+
+    const fetchData = () => {
+      attempts++;
+      Promise.all([
+        api.get('/courses'),
+        api.get('/categories')
+      ]).then(([courseRes, catRes]) => {
+        if (courseRes.data.success) setFaculties(courseRes.data.faculties);
+        if (catRes.data.success) setCategories(catRes.data.categories);
+        
+        // If we got nothing, but success was true, might still be waking up
+        if (!courseRes.data.faculties?.length && attempts < maxAttempts) {
+          setTimeout(fetchData, 3000);
+        }
+      }).catch(() => {
+        if (attempts < maxAttempts) {
+          setTimeout(fetchData, 3000);
+        } else {
+          // Final fallback for categories if server is completely down
+          setCategories([
             {id: 1, name: 'Outline'}, {id: 2, name: 'Notes'}, 
             {id: 3, name: 'Slides'}, {id: 4, name: 'Quizzes'}, 
             {id: 5, name: 'Assignments'}, {id: 6, name: 'Lab Manuals'},
             {id: 7, name: 'Lab Tasks'}, {id: 8, name: 'Reference Books'}
-        ]);
-    });
+          ]);
+        }
+      });
+    };
+
+    fetchData();
   }, []);
 
   const [error, setError]           = useState('');
@@ -144,8 +160,11 @@ const GlobalSearch = ({ user, onSignIn }) => {
         )}
 
         {loading ? (
-          <div style={{ padding: '40px', textAlign: 'center' }}>
-            <div className="shimmer" style={{ height: '40px', width: '200px', margin: '0 auto', borderRadius: '8px' }} />
+          <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '16px', animation: 'spin 2s linear infinite' }}>⏳</div>
+            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--primary)' }}>Searching GIKI Hub...</div>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '6px' }}>The server is waking up — just a moment!</p>
+            <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px', paddingBottom: '80px' }}>
