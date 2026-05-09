@@ -7,6 +7,7 @@ from routes.auth_routes  import auth_bp
 from routes.file_routes  import file_bp
 from routes.admin_routes import admin_bp
 from routes.issue_routes import issue_bp
+from routes.instructor_routes import instructor_bp
 
 
 import os
@@ -27,14 +28,21 @@ def create_app():
     app.register_blueprint(file_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(issue_bp)
+    app.register_blueprint(instructor_bp)
 
     @app.errorhandler(404)
     def not_found(e):
-        return jsonify({"success": False, "message": "Resource not found"}), 404
+        return jsonify({
+            "success": False, 
+            "message": "Resource not found. Please report this issue so the developers can get on it—your reporting helps us improve the app experience!"
+        }), 404
 
     @app.errorhandler(500)
     def server_error(e):
-        return jsonify({"success": False, "message": "Internal server error"}), 500
+        return jsonify({
+            "success": False, 
+            "message": "Internal server error. Please report this issue so the developers can get on it—your reporting helps us improve the app experience!"
+        }), 500
 
     @app.route('/')
     def index():

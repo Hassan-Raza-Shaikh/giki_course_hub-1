@@ -38,8 +38,8 @@ const ReportIssue = ({ user }) => {
           <h1 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '12px' }}>
             🚩 Report an <span className="gradient-text">Issue</span>
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-            Found a bug? UI looking weird? Missing material? Let us know!
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto', lineHeight: 1.5 }}>
+            Found a bug? UI looking weird? Let us know! Please report this issue so the developers can get on it—your reporting helps us improve the app experience!
           </p>
         </div>
 

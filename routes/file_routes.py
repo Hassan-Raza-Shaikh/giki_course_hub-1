@@ -43,18 +43,19 @@ def search_all():
         file_sql = """
             SELECT DISTINCT ON (f.file_id)
                    f.file_id, f.title, f.file_url, cat.name as category, f.upload_date,
-                   c.name as course_name, c.course_id, m.file_size
+                   c.name as course_name, c.course_id, m.file_size, i.name as instructor_name
             FROM files f
             LEFT JOIN categories cat ON f.category_id = cat.category_id
             LEFT JOIN (SELECT DISTINCT ON (code) name, code, course_id FROM courses ORDER BY code, course_id) c
                    ON f.course_code = COALESCE(c.code, c.name)
             LEFT JOIN file_metadata m ON f.file_id = m.file_id
+            LEFT JOIN instructors i ON f.instructor_id = i.instructor_id
             WHERE f.status = 'approved'
         """
         params = []
         if query:
-            file_sql += " AND (f.title ILIKE %s OR c.name ILIKE %s OR f.course_code ILIKE %s)"
-            params.extend([f'%{query}%', f'%{query}%', f'%{query}%'])
+            file_sql += " AND (f.title ILIKE %s OR c.name ILIKE %s OR f.course_code ILIKE %s OR i.name ILIKE %s)"
+            params.extend([f'%{query}%', f'%{query}%', f'%{query}%', f'%{query}%'])
         if category_id:
             file_sql += " AND f.category_id = %s"
             params.append(category_id)
@@ -67,7 +68,7 @@ def search_all():
         cur.execute(file_sql, params)
         files = [{
             "id": r[0], "title": r[1], "file_url": r[2], "category": r[3],
-            "date": r[4], "course_name": r[5], "course_id": r[6], "file_size": r[7]
+            "date": r[4], "course_name": r[5], "course_id": r[6], "file_size": r[7], "instructor_name": r[8]
         } for r in cur.fetchall()]
 
         # 2. Search Courses (Distinct by name and code to avoid multi-program duplicates)
@@ -94,6 +95,22 @@ def search_all():
 
         cur.close()
         return jsonify({"success": True, "files": files, "courses": courses})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
+@file_bp.route('/api/categories', methods=['GET'])
+def list_categories():
+    """Return all categories for filter dropdowns."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT category_id, name, is_lab_category FROM categories ORDER BY category_id;")
+        categories = [{"id": r[0], "name": r[1], "is_lab": r[2]} for r in cur.fetchall()]
+        cur.close()
+        return jsonify({"success": True, "categories": categories})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
     finally:
@@ -208,11 +225,12 @@ def upload_to_course(course_id):
     Handle local file upload.
     Saves file to static/uploads/ and records in DB.
     """
-    title       = request.form.get('title', '').strip()
-    category_id = request.form.get('category_id', type=int)
-    file        = request.files.get('file')
+    title         = request.form.get('title', '').strip()
+    category_id   = request.form.get('category_id', type=int)
+    instructor_id = request.form.get('instructor_id', type=int)
+    file          = request.files.get('file')
 
-    print(f"DEBUG: Upload Request - Title: {title}, CatID: {category_id}, File: {file}")
+    print(f"DEBUG: Upload Request - Title: {title}, CatID: {category_id}, InstructorID: {instructor_id}, File: {file}")
 
     if not title or not category_id or not file:
         return jsonify({"success": False, "message": "Title, category, and file are required."}), 400
@@ -294,10 +312,17 @@ def upload_to_course(course_id):
         initial_status = 'approved' if cur.fetchone() else 'pending'
 
         cur.execute("""
-            INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path)
-            VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING file_id;
-        """, (title, course_code, category_id, uploader, initial_status, file_url, file_path))
+            INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path, instructor_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING file_id;
+        """, (title, course_code, category_id, uploader, initial_status, file_url, None, instructor_id))
         new_file_id = cur.fetchone()[0]
+
+        # Automatically associate the instructor with this course if not already linked
+        if instructor_id:
+            cur.execute(
+                "INSERT INTO course_instructors (course_id, instructor_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
+                (course_id, instructor_id)
+            )
 
         cur.execute(
             "INSERT INTO file_metadata (file_id, file_size, file_type) VALUES (%s, %s, %s);",
@@ -310,9 +335,6 @@ def upload_to_course(course_id):
         return jsonify({"success": True, "message": msg, "file_id": new_file_id, "status": initial_status})
     except Exception as e:
         conn.rollback()
-        # Clean up local file on error
-        if os.path.exists(file_path):
-            os.remove(file_path)
         return jsonify({"success": False, "message": f"Upload failed: {e}"}), 500
     finally:
         conn.close()

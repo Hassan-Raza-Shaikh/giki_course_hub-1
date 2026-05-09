@@ -23,9 +23,10 @@ const GlobalSearch = ({ user, onSignIn }) => {
     });
     // Assuming categories are fetched or hardcoded. Let's fetch them from a course detail or common endpoint if available.
     // For now, let's use the known list or fetch from any course detail.
-    api.get('/courses/1').then(res => {
+    api.get('/categories').then(res => {
         if (res.data.success) setCategories(res.data.categories);
     }).catch(() => {
+        // fallback hardcoded list if endpoint fails
         setCategories([
             {id: 1, name: 'Outline'}, {id: 2, name: 'Notes'}, 
             {id: 3, name: 'Slides'}, {id: 4, name: 'Quizzes'}, 
@@ -35,12 +36,16 @@ const GlobalSearch = ({ user, onSignIn }) => {
     });
   }, []);
 
+  const [error, setError]           = useState('');
+
   const performSearch = useCallback(async () => {
     if (!query && !facultyId && !categoryId) {
         setResults({ files: [], courses: [] });
+        setError('');
         return;
     }
     setLoading(true);
+    setError('');
     try {
       const res = await api.get('/search', {
         params: { q: query, faculty_id: facultyId, category_id: categoryId }
@@ -50,6 +55,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
       }
     } catch (err) {
       console.error(err);
+      setError("Search failed. Please report this issue so the developers can get on it—your reporting helps us improve the app experience!");
     } finally {
       setLoading(false);
     }
@@ -127,6 +133,16 @@ const GlobalSearch = ({ user, onSignIn }) => {
           </div>
         </ScrollReveal>
 
+        {error && (
+          <div style={{ 
+            background: '#FEF2F2', border: '2px solid #EF4444', borderRadius: '12px', 
+            padding: '16px 24px', marginBottom: '32px', color: '#B91C1C', fontWeight: 600,
+            boxShadow: '4px 4px 0px #EF4444'
+          }}>
+            ⚠️ {error}
+          </div>
+        )}
+
         {loading ? (
           <div style={{ padding: '40px', textAlign: 'center' }}>
             <div className="shimmer" style={{ height: '40px', width: '200px', margin: '0 auto', borderRadius: '8px' }} />
@@ -182,9 +198,10 @@ const GlobalSearch = ({ user, onSignIn }) => {
                       }}
                     >
                       <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.1rem' }}>{file.title}</div>
-                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                         <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>{file.category}</span>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{file.course_name}</span>
+                        {file.instructor_name && <span style={{ padding: '3px 10px', background: '#FDE68A', color: '#92400E', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
                       </div>
                       
                       <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

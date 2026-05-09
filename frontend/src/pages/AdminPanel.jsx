@@ -39,6 +39,8 @@ const AdminPanel = ({ user }) => {
   const [issueCounts, setIssueCounts] = useState({});
   
   const [courses,  setCourses]  = useState([]);
+  const [instructors, setInstructors] = useState([]);
+  const [instructorForm, setInstructorForm] = useState({ name: '', faculty_name: '' });
   const [courseSearch, setCourseSearch] = useState('');
   const [faculties, setFaculties] = useState([]);
   const [programs,  setPrograms]  = useState([]);
@@ -88,8 +90,12 @@ const AdminPanel = ({ user }) => {
   const [fileFilter, setFileFilter] = useState('');
 
   const showToast = (msg, type = 'success') => {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3500);
+    let finalMsg = msg;
+    if (type === 'error') {
+      finalMsg = `${msg} Please report this issue so the developers can get on it—your reporting helps us improve the app experience!`;
+    }
+    setToast({ msg: finalMsg, type: type });
+    setTimeout(() => setToast(null), type === 'error' ? 6000 : 3500);
   };
 
   /* ── auth check ── */
@@ -118,6 +124,7 @@ const AdminPanel = ({ user }) => {
       reports: () => api.get('/admin/reports').then(r => { setReports(r.data.reports || []); setReportCounts(r.data.counts || {}); }),
       issues:  () => api.get('/admin/issues').then(r => { setIssues(r.data.issues || []); setIssueCounts(r.data.counts || {}); }),
       courses: () => api.get('/admin/courses').then(r => setCourses(r.data.courses || [])),
+      instructors: () => api.get('/instructors').then(r => setInstructors(r.data.instructors || [])),
       stats_detailed: () => api.get('/admin/stats/detailed').then(r => setDetailedStats(r.data)),
       files:   () => api.get('/admin/files/all').then(r => setAllFiles(r.data.files || [])),
       users:   () => api.get('/admin/users').then(r => setUsers(r.data.users || [])),
@@ -131,7 +138,7 @@ const AdminPanel = ({ user }) => {
 
   // Load faculty/program metadata if on courses tab
   useEffect(() => {
-    if (tab === 'courses' && isAdmin) {
+    if ((tab === 'courses' || tab === 'instructors') && isAdmin) {
       api.get('/admin/faculties-programs').then(r => {
         setFaculties(r.data.faculties || []);
         setPrograms(r.data.programs || []);
@@ -326,6 +333,18 @@ const AdminPanel = ({ user }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const saveInstructor = async (e) => {
+    e.preventDefault();
+    try {
+      await api.post('/instructors', instructorForm);
+      showToast('Instructor added 🧑‍🏫');
+      setInstructorForm({ name: '', faculty_name: '' });
+      api.get('/instructors').then(r => setInstructors(r.data.instructors || []));
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Error saving instructor', 'error');
+    }
+  };
+
   const grantAdmin = async (e) => {
     e.preventDefault();
     if (!newAdminEmail) return;
@@ -365,6 +384,7 @@ const AdminPanel = ({ user }) => {
     { key: 'reports', label: `🚩 Content Flags (${reportCounts.pending ?? 0})` },
     { key: 'issues',  label: `🛠️ Platform Issues (${issueCounts.open ?? 0})` },
     { key: 'courses', label: '📚 Courses' },
+    { key: 'instructors', label: '🧑‍🏫 Instructors' },
     { key: 'stats_detailed', label: '📈 Stats' },
     { key: 'files',   label: '📁 All Files' },
     { key: 'users',   label: `👥 Users (${stats?.total_users ?? '…'})` },
@@ -771,6 +791,47 @@ const AdminPanel = ({ user }) => {
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button onClick={() => editCourse(c)} style={btnStyle('#6366F1')}>Edit</button>
                     <button onClick={() => deleteCourse(c.course_id, c.name)} style={btnStyle('#EF4444')}>Delete</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Instructors tab ── */}
+        {tab === 'instructors' && (
+          <div>
+            <form onSubmit={saveInstructor} style={{ background: 'white', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
+              <h3 style={{ fontWeight: 900, marginBottom: '20px' }}>🧑‍🏫 Add New Instructor</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+                <div className="form-group">
+                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Full Name *</label>
+                  <input value={instructorForm.name} onChange={e => setInstructorForm({...instructorForm, name: e.target.value})} placeholder="e.g. Dr. Ali" required style={{ width: '100%', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)' }} />
+                </div>
+                <div className="form-group">
+                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Faculty *</label>
+                  <select 
+                    value={instructorForm.faculty_name} 
+                    onChange={e => setInstructorForm({...instructorForm, faculty_name: e.target.value})} 
+                    required
+                    style={{ width: '100%', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)', background: 'white' }}
+                  >
+                    <option value="">Select Faculty</option>
+                    {faculties.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
+                  </select>
+                </div>
+              </div>
+              <button type="submit" style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, width: '100%', padding: '14px', marginTop: '24px', cursor: 'pointer' }}>
+                Create Instructor
+              </button>
+            </form>
+
+            <div style={{ background: 'white', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+              {loading ? <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div> : instructors.map(i => (
+                <div key={i.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 800 }}>{i.name}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{i.faculty || 'General Faculty'}</div>
                   </div>
                 </div>
               ))}

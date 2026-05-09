@@ -28,7 +28,7 @@ def run_migrations():
         applied = get_applied_migrations(cur)
         
         # Determine if this is a fresh setup where we shouldn't fail if 001_baseline runs
-        cur.execute("SELECT 1 FROM information_schema.tables WHERE table_name = 'users';")
+        cur.execute("SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'users';")
         has_users = bool(cur.fetchone())
 
         if has_users and '001_baseline.sql' not in applied:

@@ -7,7 +7,18 @@ import json
 import psycopg2
 from config import DB_CONFIG
 
-CATEGORIES = ["Past Papers", "Notes", "Slides", "Assignments", "Lab Reports"]
+CATEGORIES = [
+    ("Outline",         False),
+    ("Notes",           False),
+    ("Slides",          False),
+    ("Quizzes",         False),
+    ("Assignments",     False),
+    ("Past Papers",     False),
+    ("Reference Books", False),
+    ("Lab Manuals",     True),
+    ("Lab Tasks",       True),
+    ("Lab Reports",     True),
+]
 
 FACULTY_ICONS = {
     "FCSE": "💻",
@@ -16,6 +27,7 @@ FACULTY_ICONS = {
     "FMCE": "⚗️",
     "FME": "⚙️",
     "Civil Engineering": "🏗️",
+    "FBS": "🧪",
 }
 
 FACULTY_FULL_NAMES = {
@@ -25,11 +37,18 @@ FACULTY_FULL_NAMES = {
     "FMCE": "Faculty of Mechanical & Chemical Engineering",
     "FME": "Faculty of Mechanical Engineering",
     "Civil Engineering": "Faculty of Civil Engineering",
+    "FBS": "Faculty of Basic Sciences",
 }
 
 def seed():
     with open("giki_courses_with_codes.json", encoding="utf-8") as f:
         data = json.load(f)
+    
+    try:
+        with open("instructors_by_faculty.json", encoding="utf-8") as f:
+            instructor_data = json.load(f)
+    except FileNotFoundError:
+        instructor_data = {}
 
     conn = psycopg2.connect(**DB_CONFIG)
     cur = conn.cursor()
@@ -60,6 +79,8 @@ def seed():
         cur.execute("ALTER TABLE courses ADD COLUMN IF NOT EXISTS faculty_id INT REFERENCES faculties(faculty_id);")
         cur.execute("ALTER TABLE courses ADD COLUMN IF NOT EXISTS program_id INT REFERENCES programs(program_id);")
         cur.execute("ALTER TABLE courses ADD COLUMN IF NOT EXISTS semester INT CHECK (semester BETWEEN 1 AND 8);")
+        cur.execute("ALTER TABLE courses ADD COLUMN IF NOT EXISTS is_lab BOOLEAN DEFAULT FALSE;")
+        cur.execute("ALTER TABLE categories ADD COLUMN IF NOT EXISTS is_lab_category BOOLEAN DEFAULT FALSE;")
 
         # Ensure unique constraint on (code, program_id) to allow same course code in different programs 
         # but prevent duplicates within a program
@@ -75,17 +96,18 @@ def seed():
 
         # Clean old seed data
         cur.execute("DELETE FROM files;")
-        cur.execute("DELETE FROM subjects;")
+        cur.execute("DELETE FROM course_instructors;")
+        cur.execute("DELETE FROM instructors;")
         cur.execute("DELETE FROM courses;")
         cur.execute("DELETE FROM programs;")
         cur.execute("DELETE FROM faculties;")
         cur.execute("DELETE FROM categories;")
 
         # ── Seed categories ────────────────────────────────────────────────
-        for cat in CATEGORIES:
+        for cat_name, is_lab_cat in CATEGORIES:
             cur.execute(
-                "INSERT INTO categories (name) VALUES (%s) ON CONFLICT (name) DO NOTHING;",
-                (cat,)
+                "INSERT INTO categories (name, is_lab_category) VALUES (%s, %s) ON CONFLICT (name) DO UPDATE SET is_lab_category = EXCLUDED.is_lab_category;",
+                (cat_name, is_lab_cat)
             )
         print(f"✅ Seeded {len(CATEGORIES)} categories.")
 
@@ -93,7 +115,7 @@ def seed():
         total_courses = 0
         for fac_data in data["faculties"]:
             fac_name = fac_data["faculty_name"]
-            
+            print(f"  Seeding faculty: {fac_name}...")
             # Insert faculty
             cur.execute("""
                 INSERT INTO faculties (name, full_name, icon)
@@ -105,6 +127,7 @@ def seed():
 
             for prog_data in fac_data["programs"]:
                 prog_name = prog_data["program_name"]
+                print(f"    Seeding program: {prog_name}...")
                 
                 # Insert program
                 cur.execute("""
@@ -126,12 +149,33 @@ def seed():
                     for course in sem_data["courses"]:
                         code = course["code"]
                         name = course["name"]
+                        is_lab = "Lab" in name or (code and code.strip().endswith('L'))
                         cur.execute("""
-                            INSERT INTO courses (name, code, description, year, semester, faculty_id, program_id)
-                            VALUES (%s, %s, %s, %s, %s, %s, %s)
+                            INSERT INTO courses (name, code, description, year, semester, faculty_id, program_id, is_lab)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                             ON CONFLICT (code, program_id) DO NOTHING;
-                        """, (name, code, f"{prog_name} — Semester {semester}", year, semester, faculty_id, program_id))
+                        """, (name, code, f"{prog_name} — Semester {semester}", year, semester, faculty_id, program_id, is_lab))
                         total_courses += 1
+            print(f"  ✅ Finished {fac_name}.")
+
+        # ── Ensure FBS exists (even if not in JSON) ────────────────────────
+        cur.execute("""
+            INSERT INTO faculties (name, full_name, icon)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (name) DO NOTHING;
+        """, ("FBS", "Faculty of Basic Sciences", "🧪"))
+
+        # ── Seed instructors ──────────────────────────────────────────────
+        total_instructors = 0
+        for fac_code, inst_list in instructor_data.items():
+            for inst_name in inst_list:
+                cur.execute("""
+                    INSERT INTO instructors (name, faculty_name)
+                    VALUES (%s, %s)
+                    ON CONFLICT (name) DO UPDATE SET faculty_name = EXCLUDED.faculty_name;
+                """, (inst_name, fac_code))
+                total_instructors += 1
+        print(f"✅ Seeded {total_instructors} instructors from JSON.")
 
         conn.commit()
         print(f"✅ Seeded {total_courses} course entries across all programs.")

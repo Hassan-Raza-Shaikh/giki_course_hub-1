@@ -111,7 +111,8 @@ BEGIN
                     'file_url', f.file_url,
                     'file_size', m.file_size,
                     'file_type', m.file_type,
-                    'admin_note', fn.note_text
+                    'admin_note', fn.note_text,
+                    'instructor_name', i.name
                 ) ORDER BY f.upload_date DESC
             ) AS files
         FROM files f
@@ -119,6 +120,7 @@ BEGIN
         LEFT JOIN users u ON f.uploaded_by = u.user_id
         LEFT JOIN file_metadata m ON f.file_id = m.file_id
         LEFT JOIN file_notes fn ON fn.file_id = f.file_id
+        LEFT JOIN instructors i ON f.instructor_id = i.instructor_id
         WHERE f.course_code = (SELECT COALESCE(code, name) FROM courses WHERE course_id = p_course_id) 
           AND f.status = 'approved'
         GROUP BY COALESCE(cat.name, 'General')

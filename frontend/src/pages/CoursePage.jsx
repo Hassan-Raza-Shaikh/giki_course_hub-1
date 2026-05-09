@@ -23,6 +23,9 @@ const CoursePage = ({ user, onSignIn }) => {
   const [course, setCourse]           = useState(null);
   const [filesByCategory, setFiles]   = useState({});
   const [categories, setCategories]   = useState([]);
+  const [instructors, setInstructors] = useState([]);
+  const [courseInstructors, setCourseInstructors] = useState([]);
+  const [instructorFilter, setInstructorFilter] = useState('');
   const [activeTab, setActiveTab]     = useState('');
   const [loading, setLoading]         = useState(true);
   const [viewerFile, setViewerFile]   = useState(null);
@@ -73,6 +76,7 @@ const CoursePage = ({ user, onSignIn }) => {
   // Upload state
   const [uploadTitle, setUploadTitle]     = useState('');
   const [uploadCatId, setUploadCatId]     = useState('');
+  const [uploadInstructorId, setUploadInstructorId] = useState('');
   const [uploadFile, setUploadFile]       = useState(null);
   const [uploading, setUploading]         = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);   // 0-100
@@ -101,6 +105,14 @@ const CoursePage = ({ user, onSignIn }) => {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
+
+    api.get('/instructors').then(res => {
+      if (res.data.success) setInstructors(res.data.instructors);
+    }).catch(console.error);
+
+    api.get(`/courses/${id}/instructors`).then(res => {
+      if (res.data.success) setCourseInstructors(res.data.instructors);
+    }).catch(console.error);
   }, [id]);
 
   const handleUpload = async (e) => {
@@ -117,6 +129,7 @@ const CoursePage = ({ user, onSignIn }) => {
     const form = new FormData();
     form.append('title', uploadTitle);
     form.append('category_id', uploadCatId);
+    if (uploadInstructorId) form.append('instructor_id', uploadInstructorId);
     if (uploadFile) {
       form.append('file', uploadFile);
     } else {
@@ -140,6 +153,7 @@ const CoursePage = ({ user, onSignIn }) => {
         setUploadSuccess(true);
         setUploadTitle('');
         setUploadCatId('');
+        setUploadInstructorId('');
         setUploadFile(null);
         setUploadProgress(0);
         // Refresh file list
@@ -156,6 +170,33 @@ const CoursePage = ({ user, onSignIn }) => {
     }
   };
 
+  // ── Derived data — MUST be above any early returns (Rules of Hooks) ──────
+  const allTabs = categories.map(c => c.name);
+  const currentFiles = (filesByCategory[activeTab] || []).filter(
+    f => !instructorFilter || (instructorFilter === 'general' ? !f.instructor_name : f.instructor_name === instructorFilter)
+  );
+
+  // Group instructors by faculty for organized dropdown
+  const otherInstructorsGrouped = React.useMemo(() => {
+    const grouped = instructors
+      .filter(i => !courseInstructors.find(ci => ci.id === i.id))
+      .reduce((acc, i) => {
+        const fac = i.faculty || 'Other';
+        if (!acc[fac]) acc[fac] = [];
+        acc[fac].push(i);
+        return acc;
+      }, {});
+
+    return Object.keys(grouped)
+      .sort((a, b) => {
+        const faculty = course?.faculty;
+        if (faculty && a === faculty) return -1;
+        if (faculty && b === faculty) return 1;
+        return a.localeCompare(b);
+      })
+      .map(fac => ({ name: fac, list: grouped[fac] }));
+  }, [instructors, courseInstructors, course]);
+
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70 }}>
       <div style={{ textAlign: 'center' }}>
@@ -166,15 +207,15 @@ const CoursePage = ({ user, onSignIn }) => {
   );
 
   if (!course) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70, flexDirection: 'column', gap: 20 }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70, flexDirection: 'column', gap: 20, textAlign: 'center', padding: '0 20px' }}>
       <div style={{ fontSize: '4rem' }}>😕</div>
-      <h2 style={{ color: 'var(--primary)' }}>Course not found</h2>
-      <button className="btn-primary" onClick={() => navigate('/courses')}>Back to Courses</button>
+      <h2 style={{ color: 'var(--primary)', fontWeight: 900 }}>Course not found</h2>
+      <p style={{ color: 'var(--text-muted)', maxWidth: '500px', lineHeight: 1.6 }}>
+        We couldn't find the course you're looking for. Please report this issue so the developers can get on it—your reporting helps us improve the app experience!
+      </p>
+      <button className="btn-primary" onClick={() => navigate('/courses')} style={{ marginTop: '10px' }}>Back to Courses</button>
     </div>
   );
-
-  const allTabs = categories.map(c => c.name);
-  const currentFiles = filesByCategory[activeTab] || [];
 
   return (
     <>
@@ -222,6 +263,16 @@ const CoursePage = ({ user, onSignIn }) => {
               <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '600px', lineHeight: 1.7, fontWeight: 500 }}>
                 {course.description}
               </p>
+              {courseInstructors.length > 0 && (
+                <div style={{ marginTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
+                  {courseInstructors.map(inst => (
+                    <span key={inst.id} style={{ background: 'var(--bg-subtle)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 600, border: '1px solid var(--border)' }}>
+                      🧑‍🏫 {inst.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -319,6 +370,17 @@ const CoursePage = ({ user, onSignIn }) => {
                   {currentFiles.length} {currentFiles.length === 1 ? 'resource' : 'resources'} available
                 </p>
               </div>
+              {courseInstructors.length > 0 && (
+                <select
+                  value={instructorFilter}
+                  onChange={e => setInstructorFilter(e.target.value)}
+                  style={{ padding: '8px 12px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.85rem', fontWeight: 700, outline: 'none', background: 'var(--bg-subtle)', cursor: 'pointer' }}
+                >
+                  <option value="">All Instructors</option>
+                  <option value="general">General Material</option>
+                  {courseInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
+                </select>
+              )}
             </div>
 
             {currentFiles.length > 0 ? (
@@ -343,6 +405,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '3px' }}>
                         Contributed by <strong>{file.uploader || 'Anonymous'}</strong> · {file.date ? new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                         {file.file_size && ` · ${(file.file_size / (1024 * 1024)).toFixed(2)} MB`}
+                        {file.instructor_name && <span style={{ marginLeft: '8px', color: 'var(--primary)', fontWeight: 600 }}>🧑‍🏫 {file.instructor_name}</span>}
                       </div>
                       {file.admin_note && (
                         <div style={{
@@ -496,6 +559,30 @@ const CoursePage = ({ user, onSignIn }) => {
                       <option value="">Select material type…</option>
                       {categories.map(c => (
                         <option key={c.id} value={c.id}>{CATEGORY_ICONS[c.name] || '📁'} {c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                      Instructor (Optional)
+                    </label>
+                    <select
+                      value={uploadInstructorId}
+                      onChange={e => setUploadInstructorId(e.target.value)}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'white', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                    >
+                      <option value="">None / General Material</option>
+                      {courseInstructors.length > 0 && (
+                        <optgroup label={`Teaches ${course.code}`}>
+                          {courseInstructors.map(i => <option key={`ci-${i.id}`} value={i.id}>{i.name}</option>)}
+                        </optgroup>
+                      )}
+                      {otherInstructorsGrouped.map(group => (
+                        <optgroup key={`group-${group.name}`} label={`${group.name} Instructors`}>
+                          {group.list.map(i => (
+                            <option key={`i-${i.id}`} value={i.id}>{i.name}</option>
+                          ))}
+                        </optgroup>
                       ))}
                     </select>
                   </div>
