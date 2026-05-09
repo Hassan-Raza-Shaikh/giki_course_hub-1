@@ -63,10 +63,23 @@ const App = () => {
 
   if (loading) {
     return (
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-subtle)' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '3rem', animation: 'float 2s ease-in-out infinite' }}>📚</div>
-          <p style={{ marginTop: '16px', fontWeight: 700, color: 'var(--text-muted)' }}>Initializing Hub...</p>
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-subtle)', padding: '24px' }}>
+        <div style={{ textAlign: 'center', maxWidth: '400px' }}>
+          <div style={{ fontSize: '4rem', animation: 'float 2s ease-in-out infinite', marginBottom: '24px' }}>📚</div>
+          <h2 style={{ fontWeight: 900, color: 'var(--primary)', fontFamily: 'Outfit', fontSize: '1.5rem', marginBottom: '12px' }}>Initializing GIKI Hub...</h2>
+          <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
+            Waking up the server. This may take up to 30 seconds if the site hasn't been visited in a while.
+          </p>
+          <div style={{ marginTop: '32px', height: '6px', background: 'var(--border)', borderRadius: '10px', overflow: 'hidden', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '40%', background: 'var(--primary)', borderRadius: '10px', animation: 'loading-bar 2s infinite ease-in-out' }} />
+          </div>
+          <style>{`
+            @keyframes loading-bar {
+              0% { left: -40%; width: 40%; }
+              50% { width: 60%; }
+              100% { left: 100%; width: 40%; }
+            }
+          `}</style>
         </div>
       </div>
     );
