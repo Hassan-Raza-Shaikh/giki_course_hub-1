@@ -22,20 +22,31 @@ def init_firebase_admin():
     if _initialized:
         return True
 
-    key_path = os.environ.get(
-        'FIREBASE_CREDENTIALS',
-        os.path.join(os.path.dirname(__file__), 'firebase', 'serviceAccountKey.json')
-    )
-    bucket = os.environ.get('FIREBASE_BUCKET', 'gikicoursehub.firebasestorage.app')
+    # Locations to check for the key
+    possible_paths = [
+        os.environ.get('FIREBASE_CREDENTIALS'),
+        os.path.join(os.path.dirname(__file__), 'firebase', 'serviceAccountKey.json'),
+        os.path.join(os.path.dirname(__file__), 'serviceAccountKey.json'),  # Check root for Render/Vercel
+    ]
+    
+    key_path = None
+    for p in possible_paths:
+        if p and os.path.exists(p):
+            key_path = p
+            break
 
-    if not os.path.exists(key_path):
-        print(f"\n⚠️  [Firebase Admin] Service account key NOT found at: {key_path}")
+    if not key_path:
+        # For the error message, show the primary expected path
+        fallback_path = possible_paths[1]
+        print(f"\n⚠️  [Firebase Admin] Service account key NOT found at: {fallback_path}")
         print("   Token verification is DISABLED — sign-in still works but UIDs are not verified.")
         print("   To enable: Firebase Console → Project Settings → Service Accounts → Generate key\n")
         return False
 
+    bucket = os.environ.get('FIREBASE_BUCKET', 'gikicoursehub.firebasestorage.app')
     try:
         cred = credentials.Certificate(key_path)
+
         firebase_admin.initialize_app(cred, {'storageBucket': bucket})
         _initialized = True
         print(f"✅ [Firebase Admin] Initialized with key: {key_path}")
