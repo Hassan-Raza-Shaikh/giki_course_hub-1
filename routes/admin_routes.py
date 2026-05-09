@@ -24,8 +24,8 @@ def _require_admin():
         
         email = row[0].lower().strip()
         
-        # OWNER BOOTSTRAP: Always allow the primary developer
-        if email == 'ammarbatman9@gmail.com':
+        # OWNER BOOTSTRAP: Always allow the primary developers
+        if email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com']:
             return email, None
 
         cur2 = conn.cursor()
@@ -81,8 +81,8 @@ def admin_check():
         return jsonify({
             "is_admin": is_admin,
             "email": email,
-            "granted_by": admin_row[0] if admin_row else ('System' if email == 'ammarbatman9@gmail.com' else None),
-            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email == 'ammarbatman9@gmail.com' else None),
+            "granted_by": admin_row[0] if admin_row else ('System' if email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com'] else None),
+            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com'] else None),
         })
     finally:
         conn.close()

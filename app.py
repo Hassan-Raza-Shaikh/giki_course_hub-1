@@ -21,6 +21,13 @@ def create_app():
     allowed_origins = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
     CORS(app, supports_credentials=True, origins=allowed_origins)
 
+    # Cross-domain session cookie configuration (Vercel -> Render)
+    app.config.update(
+        SESSION_COOKIE_SAMESITE='None',
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+    )
+
     # Initialize Firebase Admin SDK (for ID token verification)
     init_firebase_admin()
 

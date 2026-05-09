@@ -13,30 +13,30 @@ body {
 
 /* ── Design Tokens ───────────────────────────────────── */
 :root {
-  /* Minimal but Fun Palette (Lighter Blue & Yellow) */
-  --primary:      #3B82F6;   /* Lighter Blue */
-  --primary-dark: #2563EB;
-  --primary-mid:  #60A5FA;
-  --secondary:    #FFD166;   /* Yellow (Replaced Teal) */
-  --accent:       #FF5E00;   /* Vivid Orange (For popouts/shadows) */
-  --hot-pink:     #3B82F6;   /* Deprecated, maps to primary */
+  /* Vibrant & Professional Palette */
+  --primary:      #2563EB;   /* Bold Royal Blue */
+  --primary-dark: #1E40AF;
+  --primary-mid:  #3B82F6;
+  --secondary:    #F59E0B;   /* Amber/Gold */
+  --accent:       #EF4444;   /* Red-Orange (For strong pop) */
+  --hot-pink:     #EC4899;   /* For subtle accents */
 
   /* Backgrounds */
-  --bg-hero:    #FFFBF5;     /* Warm Off-White */
-  --bg-dark:    #FFFFFF;
-  --bg-subtle:  #F3F4F6;
+  --bg-hero:    #FFFFFF;
+  --bg-dark:    #111827;
+  --bg-subtle:  #F9FAFB;
   --bg-white:   #FFFFFF;
 
   /* Text */
-  --text:       #111827;     /* Near Black */
-  --text-muted: #6B7280;     /* Grey */
-  --text-light: #9CA3AF;     /* Light Grey */
+  --text:       #0F172A;     /* Slate 900 */
+  --text-muted: #475569;     /* Slate 600 */
+  --text-light: #94A3B8;     /* Slate 400 */
 
-  /* Borders & Shadows */
-  --border:     #E5E7EB;
-  --shadow-sm:  4px 4px 0px rgba(17, 24, 39, 0.08); /* Neo-brutalism touch */
-  --shadow-md:  8px 8px 0px rgba(17, 24, 39, 0.08);
-  --shadow-lg:  12px 12px 0px rgba(17, 24, 39, 0.08);
+  /* Borders & Shadows - Bolder Neo-brutalism */
+  --border:     #0F172A;
+  --shadow-sm:  4px 4px 0px #0F172A;
+  --shadow-md:  8px 8px 0px #F59E0B;
+  --shadow-lg:  12px 12px 0px #EF4444;
 
   /* Radii */
   --radius-sm:  8px;
@@ -338,9 +338,9 @@ a { text-decoration: none; color: inherit; }
 
 /* ── Utility ─────────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 50%, var(--secondary) 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
   background-size: 200%;
-  animation: aurora 4s ease infinite;
+  animation: aurora 6s linear infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
