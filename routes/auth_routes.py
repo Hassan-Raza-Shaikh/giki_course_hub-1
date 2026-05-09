@@ -108,6 +108,18 @@ def firebase_auth():
                 user = cur.fetchone()
 
         user_id = user[0]
+        role    = user[2]
+
+        # 4. Check if user is an admin to sync role
+        cur.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
+        is_admin_in_db = cur.fetchone() is not None or email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com']
+        
+        if is_admin_in_db and role != 'admin':
+            cur.execute("UPDATE users SET role = 'admin' WHERE user_id = %s;", (user_id,))
+            role = 'admin'
+        elif not is_admin_in_db and role == 'admin':
+            cur.execute("UPDATE users SET role = 'user' WHERE user_id = %s;", (user_id,))
+            role = 'user'
 
         # Update display_name / photo_url on users row
         cur.execute(
