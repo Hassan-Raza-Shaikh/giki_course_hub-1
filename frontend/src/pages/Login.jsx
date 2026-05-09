@@ -16,9 +16,11 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+      const idToken = await user.getIdToken();
       
       // Sync with our backend
       const res = await api.post('/auth/firebase', {
+        idToken,
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
