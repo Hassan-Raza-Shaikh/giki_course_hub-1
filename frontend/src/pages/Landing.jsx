@@ -159,10 +159,19 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
           </ScrollReveal>
 
           {loading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: '28px' }}>
-              {[1,2,3].map(i => (
-                <div key={i} style={{ height: 220, background: 'linear-gradient(90deg, #EDE9FE 25%, #F5F0FF 50%, #EDE9FE 75%)', backgroundSize: '200%', animation: 'shimmer 1.5s infinite', borderRadius: 'var(--radius-lg)' }} />
-              ))}
+            <div style={{ textAlign: 'center', padding: '40px 24px' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '16px', animation: 'spin 2s linear infinite' }}>⏳</div>
+              <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '8px', fontFamily: 'Outfit' }}>
+                Fetching Featured Courses...
+              </div>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', maxWidth: '380px', margin: '0 auto' }}>
+                The server is waking up — this usually takes about 30 seconds on the first visit.
+              </p>
+              <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            </div>
+          ) : randomCourses.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px 24px', color: 'var(--text-muted)' }}>
+              No featured courses available at the moment.
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: '28px' }}>
