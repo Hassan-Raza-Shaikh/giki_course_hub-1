@@ -10,7 +10,18 @@ def get_connection():
     
     if db_url:
         print("DEBUG: Connecting using DATABASE_URL...")
-        return psycopg2.connect(db_url)
+        try:
+            return psycopg2.connect(db_url)
+        except Exception as e:
+            if "could not translate host name" in str(e):
+                print("DEBUG: DNS Resolution failed. Attempting IP-level connection...")
+                # Force resolution for the known Supabase Singapore Pooler IP
+                # We use the 'host' for routing and 'hostaddr' for the actual IP
+                return psycopg2.connect(
+                    db_url, 
+                    hostaddr='13.213.241.248' # Direct IP for aws-1-ap-southeast-1.pooler.supabase.com
+                )
+            raise e
     
     # Fallback to individual variables
     host = os.environ.get('DB_HOST', 'localhost')

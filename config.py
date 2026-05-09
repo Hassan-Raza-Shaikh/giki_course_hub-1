@@ -9,16 +9,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Flask
-SECRET_KEY = os.environ.get('SECRET_KEY', 'default-dev-secret-key')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-123')
 
 # PostgreSQL
+# Note: db.py now handles DATABASE_URL connection logic
 DB_CONFIG = {
     "host":     os.environ.get('DB_HOST', 'localhost'),
-    "database": os.environ.get('DB_NAME', 'giki_course_hub'),
+    "database": os.environ.get('DB_NAME', 'postgres'),
     "user":     os.environ.get('DB_USER', 'postgres'),
     "password": os.environ.get('DB_PASSWORD', ''),
     "port":     os.environ.get('DB_PORT', '5432'),
 }
+
 
 
 # Firebase (placeholder — wired in Day 10)

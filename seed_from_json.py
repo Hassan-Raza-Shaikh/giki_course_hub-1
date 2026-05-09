@@ -5,7 +5,8 @@ DB mapping: faculty table, programs table, courses table (with faculty_id, progr
 """
 import json
 import psycopg2
-from config import DB_CONFIG
+from db import get_connection
+
 
 CATEGORIES = [
     ("Outline",         False),
@@ -50,7 +51,7 @@ def seed():
     except FileNotFoundError:
         instructor_data = {}
 
-    conn = psycopg2.connect(**DB_CONFIG)
+    conn = get_connection()
     cur = conn.cursor()
 
     try:
