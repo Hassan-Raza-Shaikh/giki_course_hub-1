@@ -398,30 +398,6 @@ const AdminPanel = ({ user }) => {
     f.course_code?.toLowerCase().includes(fileFilter.toLowerCase())
   );
 
-  const MobileBottomNav = () => (
-    <div className="show-mobile" style={{
-      position: 'fixed', bottom: 0, left: 0, right: 0,
-      background: 'white', borderTop: '2px solid var(--text)',
-      display: 'flex', justifyContent: 'space-around', padding: '10px 0 24px',
-      zIndex: 9999, boxShadow: '0 -10px 30px rgba(0,0,0,0.1)'
-    }}>
-      {[
-        { key: 'pending', icon: '⏳', label: 'Pending' },
-        { key: 'reports', icon: '🚩', label: 'Flags' },
-        { key: 'issues',  icon: '🛠️', label: 'Issues' },
-        { key: 'stats_detailed', icon: '📈', label: 'Stats' },
-      ].map(t => (
-        <button key={t.key} onClick={() => setTab(t.key)} style={{
-          background: 'none', border: 'none', display: 'flex', flexDirection: 'column',
-          alignItems: 'center', gap: '4px', opacity: tab === t.key ? 1 : 0.5,
-          color: tab === t.key ? 'var(--primary)' : 'var(--text-muted)'
-        }}>
-          <span style={{ fontSize: '1.4rem' }}>{t.icon}</span>
-          <span style={{ fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase' }}>{t.label}</span>
-        </button>
-      ))}
-    </div>
-  );
 
   return (
     <div style={{ paddingTop: '80px', minHeight: '100vh', background: 'var(--bg-subtle)' }}>
@@ -606,8 +582,8 @@ const AdminPanel = ({ user }) => {
           </div>
         )}
 
-        {/* Tab bar (Desktop only) */}
-        <div className="scroll-x hide-mobile" style={{ marginBottom: '24px', paddingBottom: '12px' }}>
+        {/* Tab bar */}
+        <div className="scroll-x" style={{ marginBottom: '24px', paddingBottom: '12px' }}>
           {TABS.map(t => (
             <button
               key={t.key}
@@ -1024,7 +1000,7 @@ const AdminPanel = ({ user }) => {
         )}
 
         <div style={{ height: '80px' }} />
-        <MobileBottomNav />
+
       </div>
     </div>
   );

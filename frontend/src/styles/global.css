@@ -407,8 +407,10 @@ a { text-decoration: none; color: inherit; }
   .hide-mobile { display: none !important; }
 }
 .show-mobile { display: none; }
+.show-mobile-flex { display: none; }
 @media (max-width: 768px) {
   .show-mobile { display: block !important; }
+  .show-mobile-flex { display: flex !important; }
 }
 
 /* ── Responsive ──────────────────────────────────────── */
