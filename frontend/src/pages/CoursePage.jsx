@@ -164,7 +164,7 @@ const CoursePage = ({ user, onSignIn }) => {
       }
     } catch (err) {
       console.error('Upload error:', err);
-      setUploadError(err.message || err.response?.data?.message || 'Upload failed. Please try again.');
+      setUploadError(err.response?.data?.message || err.message || 'Upload failed. Please try again.');
     } finally {
       setUploading(false);
     }

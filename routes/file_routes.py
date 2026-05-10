@@ -251,34 +251,28 @@ from werkzeug.utils import secure_filename
 
 @file_bp.route('/api/courses/<int:course_id>/upload', methods=['POST'])
 def upload_to_course(course_id):
-    """
-    Handle local file upload.
-    Saves file to static/uploads/ and records in DB.
-    """
-    title         = request.form.get('title', '').strip()
-    category_id   = request.form.get('category_id', type=int)
-    instructor_id = request.form.get('instructor_id', type=int)
-    file          = request.files.get('file')
-
-    if not title or not category_id or not file:
-        return jsonify({"success": False, "message": "Title, category, and file are required."}), 400
-
-    if not file.filename or not allowed_file(file.filename):
-        return jsonify({"success": False, "message": "File type not allowed."}), 400
-
-    ext       = file.filename.rsplit('.', 1)[1].lower()
-    file_type = ext
-    
-    # Generate unique filename to prevent clashing
-    unique_filename = f"{uuid.uuid4().hex}_{secure_filename(file.filename)}"
-    
-    # Try uploading to Cloudflare R2 if configured
-    s3_client = get_s3_client()
-    if not s3_client:
-        return jsonify({"success": False, "message": "Storage is not configured on the server."}), 500
-
+    """Securely upload file to R2 and record metadata in PostgreSQL."""
+    conn = None
     try:
-        # We don't have a physical path, we just get the size from the file stream
+        title         = request.form.get('title', '').strip()
+        category_id   = request.form.get('category_id', type=int)
+        instructor_id = request.form.get('instructor_id', type=int)
+        file          = request.files.get('file')
+        
+        if not file or file.filename == '':
+            return jsonify({"success": False, "message": "No file part or no file selected."}), 400
+
+        if not title or not category_id or not file:
+            return jsonify({"success": False, "message": "Title, category, and file are required."}), 400
+
+        s3_client = get_s3_client()
+        if not s3_client:
+            return jsonify({"success": False, "message": "Storage is not configured on the server."}), 500
+
+        file_type = file.content_type
+        unique_filename = f"course_{course_id}/{uuid.uuid4().hex}_{secure_filename(file.filename)}"
+        
+        # Get file size
         file.seek(0, os.SEEK_END)
         file_size = file.tell()
         file.seek(0)
@@ -287,28 +281,23 @@ def upload_to_course(course_id):
             file, 
             R2_BUCKET, 
             unique_filename,
-            ExtraArgs={"ContentType": file.content_type} # Use content_type for Flask FileStorage
+            ExtraArgs={"ContentType": file.content_type}
         )
+        
         # R2 Public URL
         if R2_PUBLIC_URL_PREFIX:
             file_url = f"{R2_PUBLIC_URL_PREFIX.rstrip('/')}/{unique_filename}"
         else:
-            # Fallback to endpoint url if no custom domain is set
             file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
-        
-    except NoCredentialsError:
-        return jsonify({"success": False, "message": "Storage configuration error."}), 500
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Upload failed: {str(e)}"}), 500
-    
-    conn = get_connection()
-    try:
-        cur = conn.cursor()
+
         uploader = session.get('user_id')
         if not uploader:
             return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
 
-        # Lookup the global course code for this course
+        conn = get_connection()
+        cur = conn.cursor()
+        
+        # Verify course exists
         cur.execute("SELECT name, code FROM courses WHERE course_id = %s;", (course_id,))
         course_row = cur.fetchone()
         if not course_row:
@@ -331,12 +320,10 @@ def upload_to_course(course_id):
                 cur.close()
                 return jsonify({"success": False, "message": "Lab materials can only be uploaded to lab courses."}), 400
 
-        # Admins' uploads are auto-approved; everyone else goes to pending review
-        cur.execute("SELECT email FROM users WHERE user_id = %s;", (uploader,))
-        uploader_email_row = cur.fetchone()
-        uploader_email = uploader_email_row[0] if uploader_email_row else ''
-        cur.execute("SELECT 1 FROM admins WHERE email = %s;", (uploader_email,))
-        initial_status = 'approved' if cur.fetchone() else 'pending'
+        # Auto-approve if the uploader is an admin
+        role = session.get('role', 'user')
+        is_admin = (role == 'admin')
+        initial_status = 'approved' if is_admin else 'pending'
 
         cur.execute("""
             INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path, instructor_id)
