@@ -479,29 +479,33 @@ const CoursePage = ({ user, onSignIn }) => {
                         ⬇ Download
                       </a>
                     )}
-                    {/* Flag button — only for logged-in users */}
-                    {user && (
-                      <button
-                        onClick={() => { setReportModal(file); setReportReason(''); setReportSent(false); }}
-                        style={{
-                          background: 'white',
-                          border: '2px solid var(--text)',
-                          borderRadius: '8px',
-                          padding: '6px 12px',
-                          fontSize: '0.75rem',
-                          fontWeight: 800,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                          color: '#DC2626',
-                          boxShadow: '2px 2px 0px var(--text)',
-                          whiteSpace: 'nowrap',
-                        }}
-                        onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
-                        onMouseOut={e => { e.currentTarget.style.background = 'white'; }}
-                      >
-                        🚩 Flag
-                      </button>
-                    )}
+                    {/* Flag button */}
+                    <button
+                      onClick={(e) => { 
+                        e.stopPropagation();
+                        if (!user) { onSignIn(); return; }
+                        setReportModal(file); 
+                        setReportReason(''); 
+                        setReportSent(false); 
+                      }}
+                      style={{
+                        background: 'white',
+                        border: '2px solid var(--text)',
+                        borderRadius: '8px',
+                        padding: '6px 12px',
+                        fontSize: '0.75rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        color: '#DC2626',
+                        boxShadow: '2px 2px 0px var(--text)',
+                        whiteSpace: 'nowrap',
+                      }}
+                      onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
+                      onMouseOut={e => { e.currentTarget.style.background = 'white'; }}
+                    >
+                      🚩 Flag
+                    </button>
                   </div>
                 </div>
               ))
