@@ -291,9 +291,24 @@ def admin_delete_file(file_id):
         conn.commit()
         cur.close()
 
-        # Remove physical file
-        if storage_path and os.path.exists(storage_path):
-            os.remove(storage_path)
+        # Remove physical file or R2 object
+        if storage_path:
+            # Check if it's a local file path
+            if os.path.exists(storage_path):
+                try:
+                    os.remove(storage_path)
+                except Exception as e:
+                    print(f"Error deleting local file: {e}")
+            else:
+                # Attempt to delete from R2 (storage_path is the unique_filename object key)
+                try:
+                    from routes.file_routes import get_s3_client
+                    from config import R2_BUCKET
+                    s3_client = get_s3_client()
+                    if s3_client:
+                        s3_client.delete_object(Bucket=R2_BUCKET, Key=storage_path)
+                except Exception as e:
+                    print(f"Error deleting from R2: {e}")
 
         _log(admin_email, 'delete_file', file_id, title)
         return jsonify({"success": True, "message": f"'{title}' deleted."})

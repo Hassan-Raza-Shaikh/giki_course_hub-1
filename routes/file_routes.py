@@ -330,7 +330,7 @@ def upload_to_course(course_id):
         cur.execute("""
             INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path, instructor_id)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING file_id;
-        """, (title, course_code, category_id, uploader, initial_status, file_url, None, instructor_id))
+        """, (title, course_code, category_id, uploader, initial_status, file_url, unique_filename, instructor_id))
         new_file_id = cur.fetchone()[0]
 
         # Automatically associate the instructor with this course if not already linked
