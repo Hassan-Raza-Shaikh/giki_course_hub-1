@@ -11,7 +11,7 @@ const CATEGORY_ICONS = {
   'Assignments': '📌',
   'Lab Manuals': '🔬',
   'Lab Tasks':   '🧪',
-  'Reference Books': '📚',
+  'Reference':   '📚',
 };
 
 const Bookmarks = ({ user, onSignIn }) => {

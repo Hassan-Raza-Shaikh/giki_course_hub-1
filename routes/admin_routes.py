@@ -267,6 +267,53 @@ def admin_reject_file(file_id):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# PUT /api/admin/files/<id> — Update file metadata (Admin only)
+# ─────────────────────────────────────────────────────────────────────────────
+@admin_bp.route('/api/admin/files/<int:file_id>', methods=['PUT'])
+def admin_update_file(file_id):
+    admin_email, err = _require_admin()
+    if err: return err
+
+    d = request.get_json() or {}
+    new_title         = d.get('title', '').strip()
+    new_category_id   = d.get('category_id')
+    new_instructor_id = d.get('instructor_id')
+
+    if not new_title:
+        return jsonify({"success": False, "message": "Title cannot be empty."}), 400
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        
+        # Verify file exists
+        cur.execute("SELECT title, uploaded_by FROM files WHERE file_id = %s;", (file_id,))
+        row = cur.fetchone()
+        if not row:
+            return jsonify({"success": False, "message": "File not found."}), 404
+        
+        old_title = row[0]
+
+        # Update the file (uploaded_by remains UNCHANGED)
+        cur.execute("""
+            UPDATE files 
+            SET title = %s, category_id = %s, instructor_id = %s 
+            WHERE file_id = %s;
+        """, (new_title, new_category_id, new_instructor_id, file_id))
+
+        conn.commit()
+        cur.close()
+
+        _log(admin_email, 'update_file', file_id, f"Changed title from '{old_title}' to '{new_title}'")
+        return jsonify({"success": True, "message": "File details updated successfully."})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # DELETE /api/admin/files/<id>
 # ─────────────────────────────────────────────────────────────────────────────
 @admin_bp.route('/api/admin/files/<int:file_id>', methods=['DELETE'])
@@ -582,9 +629,10 @@ def admin_faculties_programs():
         cur.execute("SELECT faculty_id, name, icon FROM faculties ORDER BY name;")
         faculties = [{"id": r[0], "name": r[1], "icon": r[2]} for r in cur.fetchall()]
         cur.execute("SELECT program_id, name, faculty_id FROM programs ORDER BY name;")
-        programs  = [{"id": r[0], "name": r[1], "faculty_id": r[2]} for r in cur.fetchall()]
+        cur.execute("SELECT category_id, name FROM categories ORDER BY name;")
+        categories = [{"id": r[0], "name": r[1]} for r in cur.fetchall()]
         cur.close()
-        return jsonify({"success": True, "faculties": faculties, "programs": programs})
+        return jsonify({"success": True, "faculties": faculties, "programs": programs, "categories": categories})
     finally:
         conn.close()
 

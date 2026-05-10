@@ -82,6 +82,10 @@ const AdminPanel = ({ user }) => {
   const [noteModal, setNoteModal] = useState(null);
   const [noteText, setNoteText] = useState('');
 
+  // Edit file modal
+  const [editFileModal, setEditFileModal] = useState(null); // full file object
+  const [editFileForm, setEditFileForm] = useState({ title: '', category_id: '', instructor_id: '' });
+
   // Generic confirm modal (replaces window.confirm)
   // shape: { title, body, onConfirm, danger? }
   const [confirmModal, setConfirmModal] = useState(null);
@@ -138,10 +142,11 @@ const AdminPanel = ({ user }) => {
 
   // Load faculty/program metadata if on courses tab
   useEffect(() => {
-    if ((tab === 'courses' || tab === 'instructors') && isAdmin) {
+    if ((tab === 'courses' || tab === 'instructors' || tab === 'pending' || tab === 'files') && isAdmin) {
       api.get('/admin/faculties-programs').then(r => {
         setFaculties(r.data.faculties || []);
         setPrograms(r.data.programs || []);
+        setCategories(r.data.categories || []);
       });
     }
   }, [tab, isAdmin]);
@@ -198,6 +203,33 @@ const AdminPanel = ({ user }) => {
         setConfirmModal(null);
       }
     });
+  };
+
+  const openEditFile = (file) => {
+    setEditFileModal(file);
+    setEditFileForm({
+      title: file.title || '',
+      category_id: file.category_id || '',
+      instructor_id: file.instructor_id || ''
+    });
+  };
+
+  const saveEditFile = async () => {
+    if (!editFileModal) return;
+    try {
+      await api.put(`/admin/files/${editFileModal.file_id}`, editFileForm);
+      showToast('File details updated ✨');
+      setEditFileModal(null);
+      // Refresh current tab data
+      if (tab === 'pending') {
+        api.get('/admin/files/pending').then(r => setPending(r.data.files || []));
+      } else if (tab === 'files') {
+        api.get('/admin/files/all').then(r => setAllFiles(r.data.files || []));
+      }
+      loadStats();
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Update failed.', 'error');
+    }
   };
 
   /* ── actions: Reports ── */
@@ -510,6 +542,58 @@ const AdminPanel = ({ user }) => {
           </div>
         </div>
       )}
+      {/* Edit File Modal */}
+      {editFileModal && (
+        <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'white', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '500px' }}>
+            <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>✏️ Edit File Details</h3>
+            
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>File Title</label>
+              <input 
+                type="text" 
+                value={editFileForm.title} 
+                onChange={e => setEditFileForm({ ...editFileForm, title: e.target.value })}
+                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Category</label>
+              <select 
+                value={editFileForm.category_id}
+                onChange={e => setEditFileForm({ ...editFileForm, category_id: e.target.value })}
+                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              >
+                <option value="">Select Category</option>
+                {faculties.length > 0 && categories.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+                {/* Fallback if categories not loaded yet (categories usually fetched per course, but admin gets global list or from some tab) */}
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Instructor (Optional)</label>
+              <select 
+                value={editFileForm.instructor_id}
+                onChange={e => setEditFileForm({ ...editFileForm, instructor_id: e.target.value })}
+                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              >
+                <option value="">None / General</option>
+                {instructors.map(i => (
+                  <option key={i.id} value={i.id}>{i.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'white', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--text)', background: 'var(--text)', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700 }}>Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* File Note modal */}
       {noteModal && (
@@ -671,6 +755,7 @@ const AdminPanel = ({ user }) => {
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 Preview</a>
+                    <button onClick={() => openEditFile(f)} style={{ ...btnStyle('var(--text)'), flex: 1 }}>✏️ Edit</button>
                     <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('#10B981'), flex: 1 }}>✅ Approve</button>
                     <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>❌ Reject</button>
                   </div>
@@ -931,6 +1016,7 @@ const AdminPanel = ({ user }) => {
                   </span>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 View</a>
+                    <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}>✏️ Edit</button>
                     <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}>📌 {f.admin_note ? 'Edit Note' : 'Add Note'}</button>
                     <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
                   </div>

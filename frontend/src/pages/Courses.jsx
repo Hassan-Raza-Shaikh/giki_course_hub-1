@@ -11,7 +11,7 @@ const RESOURCE_TYPES = [
   { icon: '📌', label: 'Assignments',     desc: 'Assignment tasks and reference solutions.' },
   { icon: '🔬', label: 'Lab Manuals',     desc: 'Lab instructions and manual documents.' },
   { icon: '🧪', label: 'Lab Tasks',       desc: 'Specific lab exercises and task sheets.' },
-  { icon: '📚', label: 'Reference Books', desc: 'Recommended textbooks and study guides.' },
+  { icon: '📚', label: 'Reference',       desc: 'Recommended textbooks and study guides.' },
 ];
 
 const YEAR_LABELS = { 1: 'Year 1', 2: 'Year 2', 3: 'Year 3', 4: 'Year 4' };

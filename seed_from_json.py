@@ -15,7 +15,7 @@ CATEGORIES = [
     ("Quizzes",         False),
     ("Assignments",     False),
     ("Past Papers",     False),
-    ("Reference Books", False),
+    ("Reference",       False),
     ("Lab Manuals",     True),
     ("Lab Tasks",       True),
     ("Lab Reports",     True),

@@ -12,7 +12,7 @@ const CATEGORY_ICONS = {
   'Assignments':     '📄',
   'Lab Manuals':     '🧪',
   'Lab Tasks':       '⚗️',
-  'Reference Books': '📚',
+  'Reference':       '📚',
 };
 
 const CoursePage = ({ user, onSignIn }) => {
@@ -352,15 +352,37 @@ const CoursePage = ({ user, onSignIn }) => {
         <div className="course-grid">
           {/* Left Sidebar */}
           <div className="sidebar-tabs">
-            {allTabs.map(tab => (
-              <button
-                key={tab}
-                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {CATEGORY_ICONS[tab] || '📁'} {tab}
-              </button>
-            ))}
+            {allTabs.map(tab => {
+              const count = (filesByCategory[tab] || []).length;
+              return (
+                <button
+                  key={tab}
+                  className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                  onClick={() => setActiveTab(tab)}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {CATEGORY_ICONS[tab] || '📁'} {tab}
+                  </span>
+                  {count > 0 && (
+                    <span style={{
+                      background: activeTab === tab ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)',
+                      color: activeTab === tab ? 'white' : 'var(--text-muted)',
+                      padding: '2px 10px',
+                      borderRadius: '100px',
+                      fontSize: '0.72rem',
+                      fontWeight: 900,
+                      backdropFilter: 'blur(4px)',
+                      border: activeTab === tab ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
+                      fontFamily: 'Outfit',
+                      flexShrink: 0
+                    }}>
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
             <button 
               onClick={() => {
                  setTimeout(() => uploadRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
