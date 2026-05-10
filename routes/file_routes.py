@@ -3,6 +3,9 @@ from flask import Blueprint, request, session, jsonify
 import boto3
 from botocore.exceptions import NoCredentialsError
 from db import get_connection
+from werkzeug.utils import secure_filename
+import os
+import uuid
 from config import ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY, R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX
 
 file_bp = Blueprint('files', __name__)
@@ -245,9 +248,8 @@ def course_detail(course_id):
         conn.close()
 
 
-import os
-import uuid
-from werkzeug.utils import secure_filename
+
+
 
 @file_bp.route('/api/courses/<int:course_id>/upload', methods=['POST'])
 def upload_to_course(course_id):
