@@ -117,22 +117,24 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
               Access past papers, notes, and course materials in one place.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}>
-              <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+              <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', width: '100%', maxWidth: '500px' }}>
                 <button className="btn-primary" onClick={() => navigate('/courses')}
                   style={{ 
-                    fontSize: '1.2rem', 
-                    padding: '18px 48px',
-                    borderRadius: '14px'
+                    fontSize: '1.1rem', 
+                    padding: '16px 36px',
+                    borderRadius: '14px',
+                    flex: '1 1 200px'
                   }}>
                   Explore Courses →
                 </button>
                 {!user && (
                   <button className="btn-outline" onClick={onSignIn} 
                     style={{ 
-                      padding: '18px 48px',
+                      padding: '16px 36px',
                       borderRadius: '14px',
-                      fontSize: '1.2rem'
+                      fontSize: '1.1rem',
+                      flex: '1 1 120px'
                     }}>
                     Sign In
                   </button>
@@ -236,7 +238,12 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
         <div style={{ position: 'absolute', width: 500, height: 500, border: '40px solid var(--accent)', top: -100, right: -100, borderRadius: '50%', opacity: 0.05 }} />
         
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+            gap: '60px', 
+            alignItems: 'center' 
+          }}>
             <ScrollReveal>
               <p style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '20px',
                 color: 'var(--primary)' }}>
@@ -254,7 +261,11 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
             </ScrollReveal>
 
             <ScrollReveal delay="reveal-delay-2">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+                gap: '16px' 
+              }}>
                 {statItems.map((s, i) => (
                   <div key={s.label} style={{
                     background: 'white',

@@ -325,7 +325,25 @@ const CoursePage = ({ user, onSignIn }) => {
           }
           @media (max-width: 900px) {
             .course-grid { grid-template-columns: 1fr; gap: 32px; }
-            .sidebar-tabs { position: relative; top: 0; flex-direction: row; flex-wrap: wrap; }
+            .sidebar-tabs { 
+              position: sticky; 
+              top: 60px; 
+              flex-direction: row; 
+              overflow-x: auto; 
+              padding: 10px 4px;
+              background: #F5F0FF;
+              z-index: 10;
+              margin: 0 -16px;
+              padding: 12px 16px;
+              -webkit-overflow-scrolling: touch;
+              scrollbar-width: none;
+            }
+            .sidebar-tabs::-webkit-scrollbar { display: none; }
+            .sidebar-tabs .tab-btn { 
+              white-space: nowrap; 
+              padding: 10px 18px; 
+              font-size: 0.85rem;
+            }
           }
         `}</style>
 

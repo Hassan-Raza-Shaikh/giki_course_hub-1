@@ -568,7 +568,7 @@ const AdminPanel = ({ user }) => {
         )}
 
         {/* Tab bar */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
+        <div className="scroll-x" style={{ marginBottom: '24px', paddingBottom: '12px' }}>
           {TABS.map(t => (
             <button
               key={t.key}
@@ -581,6 +581,7 @@ const AdminPanel = ({ user }) => {
                 color: tab === t.key ? 'white' : 'var(--text)',
                 boxShadow: tab === t.key ? 'none' : '2px 2px 0 var(--text)',
                 transition: 'all 0.15s',
+                whiteSpace: 'nowrap'
               }}
             >
               {t.label}
@@ -592,22 +593,24 @@ const AdminPanel = ({ user }) => {
         {tab === 'pending' && (
           <div>
             {pending.length > 0 && (
-              <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', background: 'white', padding: '12px 20px', borderRadius: '12px', border: '2px solid var(--border)' }}>
-                <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{selectedPending.size} selected</span>
-                <button 
-                  onClick={() => {
-                    if (selectedPending.size === pending.length) setSelectedPending(new Set());
-                    else setSelectedPending(new Set(pending.map(f => f.file_id)));
-                  }}
-                  style={{ background: 'none', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
-                >
-                  {selectedPending.size === pending.length ? 'Deselect All' : 'Select All'}
-                </button>
-                <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+              <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', background: 'white', padding: '12px 20px', borderRadius: '12px', border: '2px solid var(--border)', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{selectedPending.size} selected</span>
+                  <button 
+                    onClick={() => {
+                      if (selectedPending.size === pending.length) setSelectedPending(new Set());
+                      else setSelectedPending(new Set(pending.map(f => f.file_id)));
+                    }}
+                    style={{ background: 'none', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                  >
+                    {selectedPending.size === pending.length ? 'Deselect' : 'Select All'}
+                  </button>
+                </div>
+                <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <button 
                     disabled={!selectedPending.size} 
                     onClick={bulkApprove}
-                    style={{ ...btnStyle('#10B981'), opacity: selectedPending.size ? 1 : 0.5 }}
+                    style={{ ...btnStyle('#10B981'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
                   >
                     ✅ Bulk Approve
                   </button>
@@ -617,7 +620,7 @@ const AdminPanel = ({ user }) => {
                       setRejectTarget({ file_id: '__bulk__', title: `${selectedPending.size} selected file(s)` });
                       setRejectReason('');
                     }}
-                    style={{ ...btnStyle('#EF4444'), opacity: selectedPending.size ? 1 : 0.5 }}
+                    style={{ ...btnStyle('#EF4444'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
                   >
                     ❌ Bulk Reject
                   </button>
@@ -628,28 +631,33 @@ const AdminPanel = ({ user }) => {
               {loading ? <LoadingRow /> : pending.length === 0 ? (
                 <EmptyRow icon="🎉" msg="No files pending review — all caught up!" />
               ) : pending.map(f => (
-                <div key={f.file_id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '18px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap', background: selectedPending.has(f.file_id) ? '#F9FAFB' : 'transparent' }}>
-                  <input 
-                    type="checkbox" 
-                    checked={selectedPending.has(f.file_id)}
-                    onChange={() => {
-                      const next = new Set(selectedPending);
-                      if (next.has(f.file_id)) next.delete(f.file_id);
-                      else next.add(f.file_id);
-                      setSelectedPending(next);
-                    }}
-                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                  />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, color: 'var(--primary)' }}>{f.title}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      {f.course_code} · {f.category} · by <strong>{f.uploader || f.uploader_email}</strong> · {fmtDate(f.upload_date)}
+                <div key={f.file_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--border)', background: selectedPending.has(f.file_id) ? '#F9FAFB' : 'transparent' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={selectedPending.has(f.file_id)}
+                      onChange={() => {
+                        const next = new Set(selectedPending);
+                        if (next.has(f.file_id)) next.delete(f.file_id);
+                        else next.add(f.file_id);
+                        setSelectedPending(next);
+                      }}
+                      style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1rem' }}>{f.title}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                        {f.course_code} · {f.category}
+                      </div>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                    <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 Preview</a>
-                    <button onClick={() => approve(f.file_id)} style={btnStyle('#10B981')}>✅ Approve</button>
-                    <button onClick={() => openReject(f)} style={btnStyle('#EF4444')}>❌ Reject</button>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                    by <strong>{f.uploader || f.uploader_email}</strong> · {fmtDate(f.upload_date)}
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 Preview</a>
+                    <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('#10B981'), flex: 1 }}>✅ Approve</button>
+                    <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>❌ Reject</button>
                   </div>
                 </div>
               ))}
@@ -663,22 +671,20 @@ const AdminPanel = ({ user }) => {
             {loading ? <LoadingRow /> : reports.length === 0 ? (
               <EmptyRow icon="🛡️" msg="No active reports. The platform is clean!" />
             ) : reports.map(r => (
-              <div key={r.report_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '24px', borderBottom: '1px solid var(--border)' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ color: '#DC2626', fontWeight: 800, fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '4px' }}>
-                      Flagged: {r.file_title} ({r.course_code})
-                    </div>
-                    <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '4px' }}>Reason: "{r.reason}"</div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      Reported by <strong>{r.reporter}</strong> ({r.reporter_email}) · {fmtDate(r.created_at)}
-                    </div>
+              <div key={r.report_id} style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
+                <div>
+                  <div style={{ color: '#DC2626', fontWeight: 800, fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '4px' }}>
+                    Flagged: {r.file_title} ({r.course_code})
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <a href={r.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 View File</a>
-                    <button onClick={() => openResolveModal(r)} style={btnStyle('#10B981')}>🏁 Resolve</button>
-                    <button onClick={() => dismissReport(r.report_id)} style={btnStyle('#9CA3AF')}>💤 Dismiss</button>
+                  <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '4px' }}>Reason: "{r.reason}"</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    Reported by <strong>{r.reporter}</strong> ({r.reporter_email}) · {fmtDate(r.created_at)}
                   </div>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 View File</a>
+                  <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('#10B981'), flex: 1 }}>🏁 Resolve</button>
+                  <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}>💤 Dismiss</button>
                 </div>
               </div>
             ))}
@@ -691,27 +697,25 @@ const AdminPanel = ({ user }) => {
             {loading ? <LoadingRow /> : issues.length === 0 ? (
               <EmptyRow icon="✨" msg="No open issues reported. Everything is running smoothly!" />
             ) : issues.map(i => (
-              <div key={i.issue_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '24px', borderBottom: '1px solid var(--border)' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                      <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, background: '#EDE9FE', color: '#5B21B6', textTransform: 'uppercase' }}>
-                        {i.type}
-                      </span>
-                      <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, ...STATUS_COLORS[i.status], textTransform: 'uppercase' }}>
-                        {i.status}
-                      </span>
-                    </div>
-                    <div style={{ fontWeight: 800, fontSize: '1.1rem', marginBottom: '6px' }}>{i.title}</div>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text)', lineHeight: 1.5, marginBottom: '12px', whiteSpace: 'pre-wrap' }}>{i.description}</p>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      Reported by <strong>{i.reporter}</strong> ({i.reporter_email}) · {fmtDate(i.created_at)}
-                    </div>
+              <div key={i.issue_id} style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
+                <div>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, background: '#EDE9FE', color: '#5B21B6', textTransform: 'uppercase' }}>
+                      {i.type}
+                    </span>
+                    <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, ...STATUS_COLORS[i.status], textTransform: 'uppercase' }}>
+                      {i.status}
+                    </span>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button onClick={() => openIssueResolveModal(i)} style={btnStyle('#10B981')}>✅ Mark Resolved</button>
-                    <button onClick={() => deleteIssue(i.issue_id, i.title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
+                  <div style={{ fontWeight: 800, fontSize: '1.1rem', marginBottom: '6px' }}>{i.title}</div>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text)', lineHeight: 1.5, marginBottom: '12px', whiteSpace: 'pre-wrap' }}>{i.description}</p>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                    Reported by <strong>{i.reporter}</strong> ({i.reporter_email}) · {fmtDate(i.created_at)}
                   </div>
+                </div>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button onClick={() => openIssueResolveModal(i)} style={{ ...btnStyle('#10B981'), flex: 1 }}>✅ Mark Resolved</button>
+                  <button onClick={() => deleteIssue(i.issue_id, i.title)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>🗑 Delete</button>
                 </div>
               </div>
             ))}

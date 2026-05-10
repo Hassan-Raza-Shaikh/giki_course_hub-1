@@ -63,6 +63,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <button
+          className="hide-mobile"
           onClick={() => navigate('/courses')}
           style={{
             background: 'transparent',
@@ -79,6 +80,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         </button>
 
         <button
+          className="hide-mobile"
           onClick={() => navigate('/search')}
           style={{
             background: 'transparent',
@@ -98,6 +100,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         </button>
 
         <button
+          className="hide-mobile"
           onClick={() => navigate('/bookmarks')}
           style={{
             background: 'transparent',
@@ -217,9 +220,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
                 {/* Quick links */}
                 {[
-                  { icon: '🔖', label: 'Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
-                  { icon: '🔍', label: 'Search Courses', action: () => { setMenuOpen(false); navigate('/search'); } },
-                  { icon: '📚', label: 'Browse Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
+                  { icon: '🔖', label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
+                  { icon: '🔍', label: 'Global Search', action: () => { setMenuOpen(false); navigate('/search'); } },
+                  { icon: '📚', label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
                   { icon: '🚩', label: 'Report an Issue', action: () => { setMenuOpen(false); navigate('/report-issue'); } },
                 ].map(link => (
                   <button key={link.label} onClick={link.action}

@@ -1,57 +1,93 @@
-# GIKI Course Hub - Comprehensive Project Report
+# GIKI Course Hub Project Report
 
 ## 1. Project Title
-**GIKI Course Hub** (Advanced Academic Resource Management System)
+**GIKI Course Hub**
 
 ## 2. Group Members
-(i) **Hassan Raza Shaikh** (Project Lead & Backend Architect)  
-(ii) (Group Member 2 Name) (Registration Number)  
+(i) Hassan Raza Shaikh (Registration Number)
+(ii) (Group Member 2 Name) (Registration Number)
 (iii) (Group Member 3 Name) (Registration Number)
 
 ## 3. Project Description
-GIKI Course Hub is a premium, centralized academic repository designed specifically for the GIK Institute community. Unlike simple file-sharing sites, this platform implements a structured academic hierarchy (Faculty → Program → Course) to ensure resources are logically organized and easily discoverable. 
+The GIKI Course Hub is a centralized academic repository designed for students to discover and share study materials like notes and past papers. 
+It implements a structured university hierarchy (Faculty, Program, Course) to ensure resources are logically organized and easily accessible. 
+The platform features a secure moderation workflow and live statistics to maintain a high-quality academic environment for all users.
 
-The system leverages a hybrid storage architecture, using **PostgreSQL** for structured metadata and **Cloudflare R2 (S3-Compatible)** for high-performance binary file delivery. The platform features a high-fidelity "Neo-brutalist" interface, live statistics tracking, and a robust administrative moderation layer to maintain the quality of academic contributions.
+## 4. Types of Users
+(i) Student User
+(ii) Teacher / Instructor User
+(iii) Admin User
 
----
+## 5. User Specific Detailed Requirements
 
-## 4. Technical Architecture & Database Design
+### (i) Student (specific requirements)
+a. Students can browse the academic catalog by faculty, program, and semester.
+b. Students can search for specific courses using alphanumeric codes (e.g., CS101) or names.
+c. Students can view, download, and contribute academic materials (Notes, Slides, Past Papers).
+d. Students can bookmark important files for quick access via their personal dashboard.
+e. Students can report incorrect or malicious materials to the administrative team.
 
-### I. Relational Schema & Integrity
-The system is built on a highly normalized relational schema in **PostgreSQL**. Key features include:
--   **Cascading Actions**: Use of `ON DELETE CASCADE` to maintain referential integrity across the academic hierarchy.
--   **Triggers**: Automated audit triggers that track every status change for uploaded files and log them into the `admin_logs` table for accountability.
+### (ii) Teacher / Instructor (specific requirements)
+a. Teachers can be associated with specific courses they are currently teaching.
+b. Teachers can provide "Official" verified course materials and lecture slides.
+c. Teachers can review materials uploaded by students for their specific courses.
 
-### II. Advanced Database Features
-To meet production standards, the project implements several advanced database features:
--   **SQL Views**: Virtual tables like `vw_approved_materials` abstract complex multi-table joins, providing the frontend with a simplified, high-performance interface for browsing public content.
--   **Stored Procedures**: Procedures such as `sp_approve_file` encapsulate multi-step business logic (status updates, log generation, and notification flags) into atomic transactions.
--   **Database Cursors**: Implemented within backend functions for **iterative row processing**. Cursors are specifically used in reporting modules and batch data operations to process large result sets (such as yearly audit logs) sequentially, ensuring minimal memory footprint and preventing server timeouts.
+### (iii) Admin (specific requirements)
+a. Admins can moderate community uploads by approving, rejecting, or deleting pending files.
+b. Admins can manage the academic infrastructure (Adding/Editing Faculties, Programs, and Courses).
+c. Admins can view and resolve system-wide issues and bug reports submitted by students.
+d. Admins can access a master dashboard to track total platform metrics and user activity.
 
-### III. Performance Optimization (Indexes)
-To ensure the platform remains responsive as the database grows, several **B-Tree Indexes** have been strategically implemented:
--   **Search Index**: An index on `files(course_code)` ensures that course-specific resource lookups are instantaneous.
--   **Relational Indexes**: Indexes on `category_id` and `instructor_id` optimize the filtering of materials during student browsing.
--   **Unique Constraints**: Multi-column unique indexes prevent duplicate file uploads and maintain data cleanliness.
+## 6. Major Modules of the Project
+(i) **Authentication Module**: Manages secure Google/Firebase login and account role synchronization.
+(ii) **Academic Discovery Module**: Handles the hierarchical navigation and course categorization engine.
+(iii) **File Management Module**: Manages file uploads, metadata extraction, and storage on Cloudflare R2.
+(iv) **Moderation & Audit Module**: Provides the interface for admins to review contributions and tracks all system actions.
 
----
+## 7. Technical Details
 
-## 5. System Modules & Features
+### (i) List of tables with column names
+a) **users** (user_id, username, password, email, firebase_uid, role, created_at)
+b) **faculties** (faculty_id, name, full_name, icon)
+c) **programs** (program_id, faculty_id, name)
+d) **courses** (course_id, name, code, description, year, semester, program_id, faculty_id, is_lab)
+e) **instructors** (instructor_id, name, faculty_name)
+f) **course_instructors** (course_id, instructor_id)
+g) **files** (file_id, title, course_code, category_id, uploaded_by, instructor_id, status, file_url, upload_date, storage_path)
+h) **categories** (category_id, name, is_lab_category)
+i) **file_metadata** (metadata_id, file_id, file_size, file_type)
+j) **file_notes** (note_id, file_id, note_text, created_at)
+k) **bookmarks** (user_id, file_id, created_at)
+l) **file_downloads** (download_id, file_id, user_id, downloaded_at)
+m) **admins** (email, added_at, notes)
+n) **reports** (report_id, file_id, reported_by, reason, status, created_at)
+o) **issues** (issue_id, reporter_id, title, description, type, status, created_at)
 
-### I. Authentication Module
-Powered by **Firebase Google Authentication**, providing secure, zero-password login. User roles are synchronized in real-time, granting instant administrative access to authorized developers.
+### (ii) Types of databases used as backend
+a) Postgres (Primary relational database hosted on Supabase)
+b) Firebase (Used for Identity Management and real-time Authentication)
 
-### II. Academic Discovery Engine
-A hierarchical navigation system that allows students to drill down from their Faculty into specific Programs and Semesters.
+### (iii) Types of front end used
+a) HTML, CSS, JS using React + Vite (Custom Neo-brutalist and Glassmorphism design)
 
-### III. Moderation & Audit System
-A specialized workflow where community uploads remain in a "Pending" state until reviewed by an admin. All actions are tracked via the system audit logs.
+### (iv) Use of advanced database features
 
----
+**a) Postgres Functions**
+1. To aggregate complex course hierarchies into a single nested JSON object for high-speed delivery.
+2. To calculate real-time download counts and uploader rankings across the entire platform.
 
-## 6. Technology Stack
--   **Frontend**: React.js (Vite) with a custom "Neo-brutalist" Design System.
--   **Backend**: Flask (Python) with SQLAlchemy & Psycopg2.
--   **Storage**: Cloudflare R2 (Object Storage) & PostgreSQL (Metadata).
--   **Auth**: Firebase Admin SDK.
--   **Deployment**: Vercel (Frontend) & Render (Backend).
+**b) Stored Procedures**
+1. To handle the atomic "Approve File" transaction which updates status, logs the action, and notifies the user.
+2. To perform scheduled database maintenance like cleaning up orphaned metadata or resetting system logs.
+
+**c) Views**
+1. To show a consolidated list of approved materials by joining the files, categories, and users tables.
+2. To provide read-only academic statistics (Total courses vs. Total materials) for the public landing page.
+
+**d) Database Cursors**
+1. To iterate through large sets of administrative audit logs for generating yearly activity reports.
+2. To process bulk file moderation requests sequentially without overloading server memory.
+
+**e) B-Tree Indexes**
+1. To optimize course search performance using an index on the `course_code` column.
+2. To speed up user-specific lookups using indexes on `uploaded_by` and `user_id` fields.

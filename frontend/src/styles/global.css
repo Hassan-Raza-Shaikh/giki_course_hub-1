@@ -108,6 +108,10 @@ a { text-decoration: none; color: inherit; }
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .page-container { padding: 0 16px; }
 }
 
 /* ── Navbar ──────────────────────────────────────────── */
@@ -124,6 +128,9 @@ a { text-decoration: none; color: inherit; }
   justify-content: space-between;
   padding: 0 40px;
   transition: var(--transition);
+}
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; height: 60px; }
 }
 .navbar.scrolled {
   background: rgba(255, 255, 255, 0.95);
@@ -169,6 +176,9 @@ a { text-decoration: none; color: inherit; }
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
+}
+@media (max-width: 640px) {
+  .course-card { padding: 24px 20px; }
 }
 .course-card:hover {
   transform: translateY(-4px) translateX(-4px);
@@ -295,12 +305,19 @@ a { text-decoration: none; color: inherit; }
 .modal-box {
   background: white;
   border-radius: var(--radius-xl);
-  padding: 48px 40px;
+  padding: 0;
   max-width: 440px;
   width: 90%;
   box-shadow: 0 30px 80px rgba(124,58,237,0.35);
   animation: scaleIn 0.25s ease;
   border: 1px solid var(--border);
+  overflow: hidden;
+}
+.modal-content {
+  padding: 28px 36px 32px;
+}
+@media (max-width: 640px) {
+  .modal-content { padding: 20px 20px 24px; }
 }
 
 /* ── Primary Button ──────────────────────────────────── */
@@ -314,6 +331,13 @@ a { text-decoration: none; color: inherit; }
   border: 2px solid var(--text);
   box-shadow: 4px 4px 0px var(--accent);
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+@media (max-width: 640px) {
+  .btn-primary { padding: 12px 24px; font-size: 0.95rem; }
 }
 .btn-primary:hover {
   transform: translateY(-2px) translateX(-2px);
@@ -366,9 +390,39 @@ a { text-decoration: none; color: inherit; }
   animation: shimmer 1.5s infinite;
 }
 
+/* ── Utilities ───────────────────────────────────────── */
+.scroll-x {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 4px 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll-x::-webkit-scrollbar { display: none; }
+.scroll-x > * { flex-shrink: 0; }
+
+.hide-mobile { display: block; }
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+.show-mobile { display: none; }
+@media (max-width: 768px) {
+  .show-mobile { display: block !important; }
+}
+
 /* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 768px) {
   .navbar { padding: 0 20px; }
   .page-container { padding: 0 16px; }
   .accordion-header { padding: 18px 20px; }
+  .modal-box { padding: 32px 24px; }
+  h1 { font-size: 2.2rem !important; }
+  h2 { font-size: 1.8rem !important; }
+}
+
+@media (max-width: 480px) {
+  .btn-primary, .btn-outline { width: 100%; }
+  .file-item { padding: 14px 16px; }
+  h1 { font-size: 1.8rem !important; }
 }

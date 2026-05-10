@@ -206,7 +206,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
           ✕
         </button>
 
-        <div style={{ padding: '28px 36px 32px' }}>
+        <div className="modal-content">
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             <div style={{
