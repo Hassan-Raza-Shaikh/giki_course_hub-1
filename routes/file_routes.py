@@ -229,6 +229,19 @@ def course_detail(course_id):
         )
         categories = [{"id": r[0], "name": r[1]} for r in cur.fetchall()]
 
+        # Instructors linked to this course
+        cur.execute("""
+            SELECT i.instructor_id, i.name, i.faculty_name
+            FROM instructors i
+            JOIN course_instructors ci ON i.instructor_id = ci.instructor_id
+            WHERE ci.course_id = %s;
+        """, (course_id,))
+        course_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
+
+        # All instructors (for the upload dropdown autocomplete)
+        cur.execute("SELECT instructor_id, name, faculty_name FROM instructors ORDER BY name;")
+        all_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
+
         cur.close()
 
         return jsonify({
@@ -240,7 +253,9 @@ def course_detail(course_id):
                 "is_lab": is_lab
             },
             "files_by_category": by_category,
-            "categories": categories
+            "categories": categories,
+            "course_instructors": course_instructors,
+            "all_instructors": all_instructors
         })
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
@@ -264,50 +279,34 @@ def upload_to_course(course_id):
         if not file or file.filename == '':
             return jsonify({"success": False, "message": "No file part or no file selected."}), 400
 
+        if not allowed_file(file.filename):
+            return jsonify({"success": False, "message": f"File type not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"}), 400
+
         if not title or not category_id or not file:
             return jsonify({"success": False, "message": "Title, category, and file are required."}), 400
-
-        s3_client = get_s3_client()
-        if not s3_client:
-            return jsonify({"success": False, "message": "Storage is not configured on the server."}), 500
-
-        file_type = file.content_type
-        unique_filename = f"course_{course_id}/{uuid.uuid4().hex}_{secure_filename(file.filename)}"
-        
-        # Get file size
-        file.seek(0, os.SEEK_END)
-        file_size = file.tell()
-        file.seek(0)
-        
-        s3_client.upload_fileobj(
-            file, 
-            R2_BUCKET, 
-            unique_filename,
-            ExtraArgs={"ContentType": file.content_type}
-        )
-        
-        # R2 Public URL
-        if R2_PUBLIC_URL_PREFIX:
-            file_url = f"{R2_PUBLIC_URL_PREFIX.rstrip('/')}/{unique_filename}"
-        else:
-            file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
 
         uploader = session.get('user_id')
         if not uploader:
             return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
 
+        # Get file size
+        file.seek(0, os.SEEK_END)
+        file_size = file.tell()
+        file.seek(0)
+
+        # Enforce 100MB limit
+        if file_size > 100 * 1024 * 1024:
+            return jsonify({"success": False, "message": "File size exceeds the 100MB limit."}), 400
+
         conn = get_connection()
         cur = conn.cursor()
         
-        # Verify course exists
+        # Verify course exists BEFORE uploading to R2 to prevent orphaned files
         cur.execute("SELECT name, code FROM courses WHERE course_id = %s;", (course_id,))
         course_row = cur.fetchone()
         if not course_row:
             cur.close()
             return jsonify({"success": False, "message": "Course not found."}), 404
-        
-        c_name, c_code = course_row
-        course_code    = c_code or c_name
 
         # Validate: lab-only categories cannot be uploaded to non-lab courses
         cur.execute(
@@ -321,6 +320,35 @@ def upload_to_course(course_id):
             if not course_is_lab or not course_is_lab[0]:
                 cur.close()
                 return jsonify({"success": False, "message": "Lab materials can only be uploaded to lab courses."}), 400
+
+        c_name, c_code = course_row
+        course_code    = c_code or c_name
+
+        s3_client = get_s3_client()
+        if not s3_client:
+            cur.close()
+            return jsonify({"success": False, "message": "Storage is not configured on the server."}), 500
+
+        file_type = file.content_type
+        unique_filename = f"course_{course_id}/{uuid.uuid4().hex}_{secure_filename(file.filename)}"
+        
+        try:
+            s3_client.upload_fileobj(
+                file, 
+                R2_BUCKET, 
+                unique_filename,
+                ExtraArgs={"ContentType": file.content_type}
+            )
+        except Exception as e:
+            cur.close()
+            return jsonify({"success": False, "message": f"Failed to upload to storage: {str(e)}"}), 500
+        
+        # R2 Public URL
+        if R2_PUBLIC_URL_PREFIX:
+            file_url = f"{R2_PUBLIC_URL_PREFIX.rstrip('/')}/{unique_filename}"
+        else:
+            file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
+
 
         # Auto-approve if the uploader is an admin
         role = session.get('role', 'user')

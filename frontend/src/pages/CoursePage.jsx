@@ -91,15 +91,17 @@ const CoursePage = ({ user, onSignIn }) => {
           setCourse(res.data.course);
           setFiles(res.data.files_by_category);
           setCategories(res.data.categories);
+          setInstructors(res.data.all_instructors || []);
+          setCourseInstructors(res.data.course_instructors || []);
           // Default to Outline for non-lab, Lab Manuals for lab — fall back to first populated tab
-          const course = res.data.course;
-          const preferred = course.is_lab ? 'Lab Manuals' : 'Outline';
+          const courseData = res.data.course;
+          const preferred = courseData.is_lab ? 'Lab Manuals' : 'Outline';
           const allCatNames = res.data.categories.map(c => c.name);
           const populated = Object.keys(res.data.files_by_category);
           const defaultTab =
             allCatNames.includes(preferred) ? preferred :
-            populated[0] ||
-            (res.data.categories[0]?.name || '');
+            (populated.length > 0 ? populated[0] : (allCatNames[0] || ''));
+
           setActiveTab(defaultTab);
         }
       })
