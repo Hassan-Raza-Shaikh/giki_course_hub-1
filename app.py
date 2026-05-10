@@ -28,13 +28,6 @@ def create_app():
     allowed_origins = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
     CORS(app, supports_credentials=True, origins=allowed_origins)
 
-    # Cross-domain session cookie configuration (Vercel -> Render)
-    app.config.update(
-        SESSION_COOKIE_SAMESITE='None',
-        SESSION_COOKIE_SECURE=True,
-        SESSION_COOKIE_HTTPONLY=True,
-    )
-
     # Initialize Firebase Admin SDK (for ID token verification)
     init_firebase_admin()
 
@@ -62,17 +55,17 @@ def create_app():
     def index():
         return jsonify({"message": "GIKI Course Hub API v3.0"})
 
-    @app.route('/debug/db')
-    def debug_db():
+    @app.route('/debug/hierarchy')
+    def debug_hierarchy():
         from db import get_connection
         try:
             conn = get_connection()
             cur = conn.cursor()
-            cur.execute("SELECT version();")
-            version = cur.fetchone()[0]
+            cur.execute("SELECT get_api_courses_hierarchy();")
+            res = cur.fetchone()[0]
             cur.close()
             conn.close()
-            return jsonify({"success": True, "database": "Connected!", "version": version})
+            return jsonify({"success": True, "count": len(res) if res else 0, "data_sample": res[:1] if res else []})
         except Exception as e:
             return jsonify({"success": False, "error": str(e)}), 500
 

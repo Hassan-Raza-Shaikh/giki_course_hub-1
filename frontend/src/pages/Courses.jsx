@@ -284,18 +284,18 @@ const Courses = () => {
       attempts++;
       api.get('/courses')
         .then(res => {
-          if (res.data.success && res.data.faculties.length > 0) {
-            setFaculties(res.data.faculties);
+          if (res.data.success) {
+            setFaculties(res.data.faculties || []);
             setLoading(false);
           } else if (attempts < maxAttempts) {
-            setTimeout(fetchWithRetry, 3000); // retry after 3s
+            setTimeout(fetchWithRetry, 3000);
           } else {
             setLoading(false);
           }
         })
         .catch(() => {
           if (attempts < maxAttempts) {
-            setTimeout(fetchWithRetry, 3000); // retry after 3s on error
+            setTimeout(fetchWithRetry, 3000);
           } else {
             setLoading(false);
           }
