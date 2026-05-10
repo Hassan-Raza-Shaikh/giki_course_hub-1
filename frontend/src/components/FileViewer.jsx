@@ -33,12 +33,20 @@ const FileViewer = ({ file, onClose }) => {
     if (!url) return <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>No preview available.</p>;
 
     if (fileType === 'pdf') {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      // Google Docs Viewer is much more reliable for multi-page PDFs on mobile Safari/Chrome
+      const displayUrl = isMobile 
+        ? `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true` 
+        : url;
+
       return (
-        <iframe
-          src={url}
-          title={title}
-          style={{ width: '100%', height: '100%', border: 'none', borderRadius: '0 0 12px 12px' }}
-        />
+        <div style={{ width: '100%', height: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <iframe
+            src={displayUrl}
+            title={title}
+            style={{ width: '100%', height: '100%', border: 'none', borderRadius: '0 0 12px 12px' }}
+          />
+        </div>
       );
     }
 
@@ -146,6 +154,19 @@ const FileViewer = ({ file, onClose }) => {
             >
               ⬇ Download
             </a>
+            {fileType === 'pdf' && (
+              <button
+                onClick={() => window.open(url, '_blank')}
+                style={{
+                  padding: '7px 16px', background: 'white', color: 'var(--text)',
+                  borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem',
+                  border: '2px solid var(--text)', boxShadow: '2px 2px 0 var(--text)',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px',
+                }}
+              >
+                📄 Open Full
+              </button>
+            )}
             <button
               onClick={onClose}
               style={{

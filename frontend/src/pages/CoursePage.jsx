@@ -297,6 +297,11 @@ const CoursePage = ({ user, onSignIn }) => {
             position: sticky;
             top: 100px;
           }
+          .sidebar-container { 
+            position: sticky; 
+            top: 100px; 
+            height: fit-content; 
+          }
           .sidebar-tabs .tab-btn {
             justify-content: flex-start;
             padding: 14px 20px;
@@ -325,18 +330,20 @@ const CoursePage = ({ user, onSignIn }) => {
             box-shadow: 4px 4px 0px var(--text);
             transform: translateY(-2px);
           }
-          @media (max-width: 900px) {
+          @media (max-width: 768px) {
             .course-grid { grid-template-columns: 1fr; gap: 32px; }
+            .sidebar-container {
+               position: sticky;
+               top: 60px;
+               z-index: 100;
+               background: #F5F0FF;
+               margin: 0 -16px;
+            }
             .sidebar-tabs { 
-              position: sticky; 
-              top: 60px; 
               flex-direction: row; 
               overflow-x: auto; 
-              padding: 10px 4px;
-              background: #F5F0FF;
-              z-index: 10;
-              margin: 0 -16px;
               padding: 12px 16px;
+              background: transparent;
               -webkit-overflow-scrolling: touch;
               scrollbar-width: none;
             }
@@ -346,52 +353,58 @@ const CoursePage = ({ user, onSignIn }) => {
               padding: 10px 18px; 
               font-size: 0.85rem;
             }
+            .upload-trigger-btn { display: none !important; }
           }
         `}</style>
 
         <div className="course-grid">
           {/* Left Sidebar */}
-          <div className="sidebar-tabs">
-            {allTabs.map(tab => {
-              const count = (filesByCategory[tab] || []).length;
-              return (
-                <button
-                  key={tab}
-                  className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab)}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
-                >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {CATEGORY_ICONS[tab] || '📁'} {tab}
-                  </span>
-                  {count > 0 && (
-                    <span style={{
-                      background: activeTab === tab ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)',
-                      color: activeTab === tab ? 'white' : 'var(--text-muted)',
-                      padding: '2px 10px',
-                      borderRadius: '100px',
-                      fontSize: '0.72rem',
-                      fontWeight: 900,
-                      backdropFilter: 'blur(4px)',
-                      border: activeTab === tab ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
-                      fontFamily: 'Outfit',
-                      flexShrink: 0
-                    }}>
-                      {count}
+          <div className="sidebar-container" style={{ position: 'sticky', top: '100px', height: 'fit-content' }}>
+            <div className="sidebar-tabs">
+              {allTabs.map(tab => {
+                const count = (filesByCategory[tab] || []).length;
+                return (
+                  <button
+                    key={tab}
+                    className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                    onClick={() => setActiveTab(tab)}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
+                  >
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {CATEGORY_ICONS[tab] || '📁'} {tab}
                     </span>
-                  )}
-                </button>
-              );
-            })}
+                    {count > 0 && (
+                      <span style={{
+                        background: activeTab === tab ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)',
+                        color: activeTab === tab ? 'white' : 'var(--text-muted)',
+                        padding: '2px 10px',
+                        borderRadius: '100px',
+                        fontSize: '0.72rem',
+                        fontWeight: 900,
+                        backdropFilter: 'blur(4px)',
+                        border: activeTab === tab ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
+                        fontFamily: 'Outfit',
+                        flexShrink: 0
+                      }}>
+                        {count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            
             <button 
               onClick={() => {
                  setTimeout(() => uploadRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
               }}
+              className="upload-trigger-btn"
               style={{
-                marginTop: '16px', background: 'var(--hot-pink)', color: 'white', border: '2px solid var(--text)',
-                boxShadow: '4px 4px 0px var(--text)', padding: '14px 20px', borderRadius: 'var(--radius-md)',
-                fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer', textAlign: 'left',
-                display: 'flex', alignItems: 'center', gap: '12px'
+                marginTop: '24px', background: 'var(--hot-pink)', color: 'white', border: '2px solid var(--text)',
+                boxShadow: '4px 4px 0px var(--text)', padding: '16px 20px', borderRadius: 'var(--radius-md)',
+                fontWeight: 900, fontSize: '0.95rem', cursor: 'pointer', textAlign: 'center',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
+                width: '100%', transition: 'all 0.2s'
               }}
             >
               📤 Upload File
@@ -400,6 +413,20 @@ const CoursePage = ({ user, onSignIn }) => {
 
           {/* Right Content Area */}
           <div>
+            <button 
+              className="show-mobile-flex"
+              onClick={() => {
+                 setTimeout(() => uploadRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+              }}
+              style={{
+                width: '100%', background: 'var(--hot-pink)', color: 'white', border: '2px solid var(--text)',
+                boxShadow: '4px 4px 0px var(--text)', padding: '14px 20px', borderRadius: 'var(--radius-md)',
+                fontWeight: 900, marginBottom: '24px', justifyContent: 'center', alignItems: 'center', gap: '12px'
+              }}
+            >
+              📤 Upload Resource
+            </button>
+            
             {/* File List */}
             <ScrollReveal>
           <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
@@ -655,7 +682,34 @@ const CoursePage = ({ user, onSignIn }) => {
                           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>PDF, DOCX, PPTX (max 50 MB)</p>
                         </div>
                       )}
-                      <input id="file-input" type="file" style={{ display: 'none' }} onChange={e => setUploadFile(e.target.files[0])} />
+                      <input 
+                        id="file-input" 
+                        type="file" 
+                        style={{ display: 'none' }} 
+                        accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.zip,.png,.jpg,.jpeg"
+                        onChange={e => {
+                          const f = e.target.files[0];
+                          if (!f) return;
+                          
+                          // Check size
+                          if (f.size > 50 * 1024 * 1024) {
+                            alert("❌ File is too large! Maximum size allowed is 50MB.");
+                            e.target.value = '';
+                            return;
+                          }
+
+                          // Check extension
+                          const ext = f.name.split('.').pop().toLowerCase();
+                          const allowed = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg'];
+                          if (!allowed.includes(ext)) {
+                            alert(`❌ .${ext} files are not allowed. \nPlease upload PDF, DOCX, PPTX, TXT, ZIP, or common images.`);
+                            e.target.value = '';
+                            return;
+                          }
+
+                          setUploadFile(f);
+                        }} 
+                      />
                     </div>
                   </div>
                   {uploading ? (

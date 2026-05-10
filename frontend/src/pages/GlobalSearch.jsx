@@ -174,7 +174,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   📚 Courses ({results.courses.length})
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                   {results.courses.map(course => (
                     <div 
                       key={course.id} 
@@ -206,13 +206,13 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   📄 Resources ({results.files.length})
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
                   {results.files.map(file => (
                     <div 
                       key={file.id} 
                       style={{
                         background: 'white', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
-                        padding: '24px', boxShadow: '4px 4px 0px var(--text)', display: 'flex', flexDirection: 'column', gap: '12px'
+                        padding: '16px 20px', boxShadow: '4px 4px 0px var(--text)', display: 'flex', flexDirection: 'column', gap: '8px'
                       }}
                     >
                       <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.1rem' }}>{file.title}</div>

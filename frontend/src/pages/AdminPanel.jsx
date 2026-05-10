@@ -59,6 +59,7 @@ const AdminPanel = ({ user }) => {
     is_lab: false, icon: '📘', faculty_id: '', program_id: ''
   });
   const [editingCourse, setEditingCourse] = useState(null);
+  const [isExistingCode, setIsExistingCode] = useState(false);
 
   // Admin management form
   const [newAdminEmail, setNewAdminEmail] = useState('');
@@ -139,6 +140,47 @@ const AdminPanel = ({ user }) => {
     if (loader) loader().catch(() => {}).finally(() => setLoading(false));
     else setLoading(false);
   }, [tab, isAdmin, loadStats]);
+  
+  /* ── course code autofill ── */
+  useEffect(() => {
+    // Only autofill when adding a NEW course, and code is long enough
+    if (tab !== 'courses' || editingCourse || !courseForm.code || courseForm.code.length < 3) {
+      if (isExistingCode) setIsExistingCode(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      api.get(`/admin/courses/by-code/${courseForm.code}`)
+        .then(res => {
+          if (res.data.success && res.data.course) {
+            const c = res.data.course;
+            setIsExistingCode(true);
+            setCourseForm(prev => ({
+              ...prev,
+              name: c.name,
+              description: c.description || '',
+              icon: c.icon || prev.icon,
+              is_lab: c.is_lab || false
+            }));
+            showToast(`Course ${courseForm.code.toUpperCase()} exists. Details autofilled!`, 'success');
+          } else {
+            setIsExistingCode(false);
+          }
+        })
+        .catch(() => setIsExistingCode(false));
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [courseForm.code, tab, editingCourse]);
+
+  // Sync icon when faculty changes (only if not editing/autofilled)
+  useEffect(() => {
+    if (editingCourse || isExistingCode || !courseForm.faculty_id) return;
+    const fac = faculties.find(f => f.id == courseForm.faculty_id);
+    if (fac && fac.icon) {
+      setCourseForm(prev => ({ ...prev, icon: fac.icon }));
+    }
+  }, [courseForm.faculty_id, faculties, editingCourse, isExistingCode]);
 
   // Load faculty/program metadata if on courses tab
   useEffect(() => {
@@ -833,17 +875,23 @@ const AdminPanel = ({ user }) => {
               </h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Course Name *</label>
-                  <input value={courseForm.name} onChange={e => setCourseForm({...courseForm, name: e.target.value})} placeholder="Object Oriented Programming" required style={inputStyle} />
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>
+                    Course Name * {isExistingCode && <span style={{ color: 'var(--primary)', textTransform: 'none', marginLeft: '5px', background: 'var(--bg-subtle)', padding: '2px 6px', borderRadius: '4px' }}>🔗 (Shared)</span>}
+                  </label>
+                  <input 
+                    value={courseForm.name} 
+                    onChange={e => setCourseForm({...courseForm, name: e.target.value})} 
+                    placeholder="Object Oriented Programming" 
+                    required 
+                    readOnly={isExistingCode}
+                    style={{ ...inputStyle, background: isExistingCode ? '#F3F4F6' : 'white', cursor: isExistingCode ? 'not-allowed' : 'text' }} 
+                  />
                 </div>
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Course Code *</label>
                   <input value={courseForm.code} onChange={e => setCourseForm({...courseForm, code: e.target.value})} placeholder="CS112" required style={inputStyle} />
                 </div>
-                <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Icon</label>
-                  <input value={courseForm.icon} onChange={e => setCourseForm({...courseForm, icon: e.target.value})} placeholder="📘" style={inputStyle} />
-                </div>
+                {/* Icon field removed as per request - automated based on faculty */}
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Year</label>
                   <input type="number" value={courseForm.year} onChange={e => setCourseForm({...courseForm, year: e.target.value})} placeholder="1" style={inputStyle} />
@@ -873,7 +921,14 @@ const AdminPanel = ({ user }) => {
               </div>
               <div style={{ marginTop: '20px' }}>
                 <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Description</label>
-                <textarea value={courseForm.description} onChange={e => setCourseForm({...courseForm, description: e.target.value})} placeholder="Brief course overview…" rows={3} style={inputStyle} />
+                <textarea 
+                  value={courseForm.description} 
+                  onChange={e => setCourseForm({...courseForm, description: e.target.value})} 
+                  placeholder="Brief course overview…" 
+                  rows={3} 
+                  readOnly={isExistingCode}
+                  style={{ ...inputStyle, background: isExistingCode ? '#F3F4F6' : 'white', cursor: isExistingCode ? 'not-allowed' : 'text' }} 
+                />
               </div>
               <button type="submit" style={{ ...btnStyle('var(--primary)'), width: '100%', marginTop: '24px', padding: '16px', fontSize: '1rem', boxShadow: '4px 4px 0 var(--text)' }}>
                 {editingCourse ? 'Update Course Details' : 'Create Course'}

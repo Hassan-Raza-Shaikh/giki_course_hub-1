@@ -119,7 +119,23 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           <span>🔖</span> Bookmarks
         </button>
 
-        {user ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {isAdmin && (
+            <button
+              className="show-mobile-flex"
+              onClick={() => navigate('/admin')}
+              style={{
+                background: '#EDE9FE', color: '#5B21B6',
+                width: '38px', height: '38px', borderRadius: '10px',
+                border: '2px solid var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '1.2rem', cursor: 'pointer', boxShadow: '2px 2px 0px var(--text)'
+              }}
+            >
+              🛡️
+            </button>
+          )}
+
+          {user ? (
           <div ref={menuRef} style={{ position: 'relative' }}>
             {/* Trigger pill */}
             <button
@@ -282,7 +298,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           </button>
         )}
       </div>
-    </nav>
+    </div>
+  </nav>
   );
 };
 

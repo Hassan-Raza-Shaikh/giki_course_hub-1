@@ -637,6 +637,42 @@ def admin_faculties_programs():
         conn.close()
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Course Management
+# ─────────────────────────────────────────────────────────────────────────────
+
+@admin_bp.route('/api/admin/courses/by-code/<code>', methods=['GET'])
+def admin_get_course_by_code(code):
+    admin_email, err = _require_admin()
+    if err: return err
+    
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        # Find the most recent/common definition of this course code
+        cur.execute("""
+            SELECT name, description, icon, is_lab 
+            FROM courses 
+            WHERE code = %s 
+            ORDER BY course_id DESC LIMIT 1;
+        """, (code.strip().upper(),))
+        row = cur.fetchone()
+        cur.close()
+        
+        if row:
+            return jsonify({
+                "success": True, 
+                "course": {
+                    "name": row[0],
+                    "description": row[1],
+                    "icon": row[2],
+                    "is_lab": row[3]
+                }
+            })
+        return jsonify({"success": False, "message": "Course not found."}), 404
+    finally:
+        conn.close()
+
 @admin_bp.route('/api/admin/courses', methods=['GET'])
 def admin_list_courses():
     admin_email, err = _require_admin()
@@ -680,6 +716,16 @@ def admin_create_course():
     conn = get_connection()
     try:
         cur = conn.cursor()
+        
+        # Enforce "one code = one name" rule
+        cur.execute("SELECT name FROM courses WHERE code = %s LIMIT 1;", (code,))
+        existing = cur.fetchone()
+        if existing and existing[0].lower() != name.lower():
+            return jsonify({
+                "success": False, 
+                "message": f"Course code '{code}' is already assigned to '{existing[0]}'. To keep resources synced, please use the exact same name."
+            }), 400
+
         cur.execute(
             "INSERT INTO courses (name, code, description, year, semester, is_lab, icon, faculty_id, program_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING course_id;",
             (name, code, d.get('description') or None, d.get('year') or None, d.get('semester') or None,
@@ -703,15 +749,31 @@ def admin_update_course(course_id):
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute(
-            "UPDATE courses SET name=%s, code=%s, description=%s, year=%s, semester=%s, is_lab=%s, icon=%s, faculty_id=%s, program_id=%s WHERE course_id=%s RETURNING name;",
-            (d.get('name'), d.get('code'), d.get('description'), d.get('year'), d.get('semester'),
-             d.get('is_lab'), d.get('icon'), d.get('faculty_id'), d.get('program_id'), course_id))
+        name = d.get('name', '').strip()
+        code = d.get('code', '').strip()
+        
+        # 1. Update the specific course record
+        cur.execute("""
+            UPDATE courses 
+            SET name=%s, code=%s, description=%s, year=%s, semester=%s, is_lab=%s, icon=%s, faculty_id=%s, program_id=%s
+            WHERE course_id=%s RETURNING name;
+        """, (name, code, d.get('description'), d.get('year'), d.get('semester'), 
+              bool(d.get('is_lab')), d.get('icon'), d.get('faculty_id'), d.get('program_id'), course_id))
+        
         row = cur.fetchone()
         if not row: return jsonify({"success": False, "message": "Course not found."}), 404
+        
+        # 2. Sync Shared Details (Name, Icon, Description, Is_Lab) to all other programs using this code
+        # This fulfills the "one code = one name" requirement
+        cur.execute("""
+            UPDATE courses 
+            SET name=%s, description=%s, icon=%s, is_lab=%s
+            WHERE code=%s AND course_id != %s;
+        """, (name, d.get('description'), d.get('icon'), bool(d.get('is_lab')), code, course_id))
+
         conn.commit(); cur.close()
         _log(admin_email, 'update_course', course_id, row[0])
-        return jsonify({"success": True, "message": f"Course '{row[0]}' updated."})
+        return jsonify({"success": True, "message": f"Course '{row[0]}' updated and synced across programs."})
     except Exception as e:
         conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
     finally:

@@ -356,7 +356,7 @@ def get_me_stats():
         cur = conn.cursor()
         uid = session['user_id']
 
-        cur.execute("SELECT COUNT(*) FROM files WHERE uploaded_by = %s AND status = 'approved';", (uid,))
+        cur.execute("SELECT COUNT(*) FROM files WHERE uploaded_by = %s AND status IN ('approved', 'pending');", (uid,))
         uploads = cur.fetchone()[0]
 
         # bookmarks table may not exist yet — handle gracefully
@@ -367,7 +367,9 @@ def get_me_stats():
             bookmarks = 0
 
         cur.close()
-        return jsonify({"success": True, "uploads": uploads, "bookmarks": bookmarks})
+        resp = jsonify({"success": True, "uploads": uploads, "bookmarks": bookmarks})
+        resp.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        return resp
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
     finally:
