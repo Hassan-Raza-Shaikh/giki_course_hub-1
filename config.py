@@ -32,7 +32,7 @@ ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip',
 MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB
 
 # Cloudflare R2 (S3 Compatible)
-R2_BUCKET = os.environ.get('R2_BUCKET', 'giki-course-hub')
+R2_BUCKET = os.environ.get('R2_BUCKET', 'gikicoursehub')
 R2_ENDPOINT_URL = os.environ.get('R2_ENDPOINT_URL', '')
 R2_ACCESS_KEY = os.environ.get('R2_ACCESS_KEY', '')
 R2_SECRET_KEY = os.environ.get('R2_SECRET_KEY', '')

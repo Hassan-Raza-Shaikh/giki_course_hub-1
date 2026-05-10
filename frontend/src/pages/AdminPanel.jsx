@@ -398,6 +398,31 @@ const AdminPanel = ({ user }) => {
     f.course_code?.toLowerCase().includes(fileFilter.toLowerCase())
   );
 
+  const MobileBottomNav = () => (
+    <div className="show-mobile" style={{
+      position: 'fixed', bottom: 0, left: 0, right: 0,
+      background: 'white', borderTop: '2px solid var(--text)',
+      display: 'flex', justifyContent: 'space-around', padding: '10px 0 24px',
+      zIndex: 9999, boxShadow: '0 -10px 30px rgba(0,0,0,0.1)'
+    }}>
+      {[
+        { key: 'pending', icon: '⏳', label: 'Pending' },
+        { key: 'reports', icon: '🚩', label: 'Flags' },
+        { key: 'issues',  icon: '🛠️', label: 'Issues' },
+        { key: 'stats_detailed', icon: '📈', label: 'Stats' },
+      ].map(t => (
+        <button key={t.key} onClick={() => setTab(t.key)} style={{
+          background: 'none', border: 'none', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', gap: '4px', opacity: tab === t.key ? 1 : 0.5,
+          color: tab === t.key ? 'var(--primary)' : 'var(--text-muted)'
+        }}>
+          <span style={{ fontSize: '1.4rem' }}>{t.icon}</span>
+          <span style={{ fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase' }}>{t.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+
   return (
     <div style={{ paddingTop: '80px', minHeight: '100vh', background: 'var(--bg-subtle)' }}>
 
@@ -540,35 +565,49 @@ const AdminPanel = ({ user }) => {
 
       <div className="page-container">
         {/* Header */}
-        <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, letterSpacing: '-0.03em' }}>
-            🛡️ Admin <span className="gradient-text">Panel</span>
-          </h1>
-          <p style={{ color: 'var(--text-muted)', marginTop: '4px' }}>Manage content, users, and platform settings.</p>
+        <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'Outfit' }}>
+              🛡️ Admin <span className="gradient-text">Panel</span>
+            </h1>
+            <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.9rem' }}>Command center for GIKI Hub.</p>
+          </div>
+          <button onClick={loadStats} style={{ background: 'white', border: '2px solid var(--text)', padding: '8px 12px', borderRadius: '10px', boxShadow: '3px 3px 0 var(--text)', cursor: 'pointer' }}>
+            🔄
+          </button>
         </div>
 
         {/* Stats bar */}
         {stats && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '32px' }}>
             {[
-              { label: 'Pending',   value: stats.pending_files,  emoji: '⏳', accent: '#F59E0B' },
-              { label: 'Approved',  value: stats.approved_files, emoji: '✅', accent: '#10B981' },
-              { label: 'Rejected',  value: stats.rejected_files, emoji: '❌', accent: '#EF4444' },
-              { label: 'Users',     value: stats.total_users,    emoji: '👥', accent: '#6366F1' },
-              { label: 'Reports',   value: reportCounts.pending ?? 0, emoji: '🚩', accent: '#DC2626' },
-              { label: 'Admins',    value: stats.total_admins,   emoji: '🛡️', accent: '#8B5CF6' },
+              { label: 'Pending',   value: stats.pending_files,  emoji: '⏳', accent: '#F59E0B', key: 'pending' },
+              { label: 'Flags',     value: reportCounts.pending ?? 0, emoji: '🚩', accent: '#DC2626', key: 'reports' },
+              { label: 'Issues',    value: issueCounts.open ?? 0, emoji: '🛠️', accent: '#6366F1', key: 'issues' },
+              { label: 'Admins',    value: stats.total_admins,   emoji: '🛡️', accent: '#8B5CF6', key: 'admins' },
             ].map(s => (
-              <div key={s.label} style={{ background: 'white', border: `2px solid ${s.accent}`, borderRadius: '12px', padding: '16px 20px', textAlign: 'center' }}>
-                <div style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{s.emoji}</div>
-                <div style={{ fontSize: '1.8rem', fontWeight: 900, color: s.accent }}>{s.value}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>{s.label}</div>
+              <div 
+                key={s.label} 
+                onClick={() => setTab(s.key)}
+                style={{ 
+                  background: 'white', border: `2px solid var(--text)`, 
+                  borderRadius: '14px', padding: '20px', textAlign: 'center',
+                  boxShadow: `4px 4px 0px ${s.accent}`, cursor: 'pointer',
+                  transition: 'transform 0.1s'
+                }}
+                onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
+                onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{s.emoji}</div>
+                <div style={{ fontSize: '2.2rem', fontWeight: 950, color: 'var(--text)', fontFamily: 'Outfit' }}>{s.value}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
               </div>
             ))}
           </div>
         )}
 
-        {/* Tab bar */}
-        <div className="scroll-x" style={{ marginBottom: '24px', paddingBottom: '12px' }}>
+        {/* Tab bar (Desktop only) */}
+        <div className="scroll-x hide-mobile" style={{ marginBottom: '24px', paddingBottom: '12px' }}>
           {TABS.map(t => (
             <button
               key={t.key}
@@ -726,56 +765,56 @@ const AdminPanel = ({ user }) => {
         {tab === 'courses' && (
           <div>
             {/* Course Form */}
-            <form onSubmit={saveCourse} style={{ background: 'white', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
-              <h3 style={{ fontWeight: 900, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <form onSubmit={saveCourse} style={{ background: 'white', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
+              <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'Outfit' }}>
                 {editingCourse ? '✏️ Edit Course' : '📚 Add New Course'}
-                {editingCourse && <button type="button" onClick={() => { setEditingCourse(null); setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' }); }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer' }}>Cancel Edit</button>}
+                {editingCourse && <button type="button" onClick={() => { setEditingCourse(null); setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' }); }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Course Name *</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Course Name *</label>
                   <input value={courseForm.name} onChange={e => setCourseForm({...courseForm, name: e.target.value})} placeholder="Object Oriented Programming" required style={inputStyle} />
                 </div>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Course Code *</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Course Code *</label>
                   <input value={courseForm.code} onChange={e => setCourseForm({...courseForm, code: e.target.value})} placeholder="CS112" required style={inputStyle} />
                 </div>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Icon</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Icon</label>
                   <input value={courseForm.icon} onChange={e => setCourseForm({...courseForm, icon: e.target.value})} placeholder="📘" style={inputStyle} />
                 </div>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Year</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Year</label>
                   <input type="number" value={courseForm.year} onChange={e => setCourseForm({...courseForm, year: e.target.value})} placeholder="1" style={inputStyle} />
                 </div>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Semester</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Semester</label>
                   <input type="number" value={courseForm.semester} onChange={e => setCourseForm({...courseForm, semester: e.target.value})} placeholder="2" style={inputStyle} />
                 </div>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Faculty</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Faculty</label>
                   <select value={courseForm.faculty_id} onChange={e => setCourseForm({...courseForm, faculty_id: e.target.value})} style={inputStyle}>
                     <option value="">Select Faculty</option>
                     {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
                   </select>
                 </div>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Program</label>
+                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Program</label>
                   <select value={courseForm.program_id} onChange={e => setCourseForm({...courseForm, program_id: e.target.value})} style={inputStyle}>
                     <option value="">Select Program</option>
                     {programs.filter(p => !courseForm.faculty_id || p.faculty_id == courseForm.faculty_id).map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingTop: '24px' }}>
-                  <input type="checkbox" checked={courseForm.is_lab} onChange={e => setCourseForm({...courseForm, is_lab: e.target.checked})} id="is_lab" />
-                  <label htmlFor="is_lab" style={{ fontWeight: 700, cursor: 'pointer' }}>Lab Course</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0' }}>
+                  <input type="checkbox" checked={courseForm.is_lab} onChange={e => setCourseForm({...courseForm, is_lab: e.target.checked})} id="is_lab" style={{ width: '20px', height: '20px' }} />
+                  <label htmlFor="is_lab" style={{ fontWeight: 800, cursor: 'pointer', fontSize: '0.9rem' }}>Lab Course</label>
                 </div>
               </div>
               <div style={{ marginTop: '20px' }}>
-                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Description</label>
+                <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Description</label>
                 <textarea value={courseForm.description} onChange={e => setCourseForm({...courseForm, description: e.target.value})} placeholder="Brief course overview…" rows={3} style={inputStyle} />
               </div>
-              <button type="submit" style={{ ...btnStyle('var(--primary)'), width: '100%', marginTop: '24px', padding: '14px' }}>
+              <button type="submit" style={{ ...btnStyle('var(--primary)'), width: '100%', marginTop: '24px', padding: '16px', fontSize: '1rem', boxShadow: '4px 4px 0 var(--text)' }}>
                 {editingCourse ? 'Update Course Details' : 'Create Course'}
               </button>
             </form>
@@ -985,6 +1024,7 @@ const AdminPanel = ({ user }) => {
         )}
 
         <div style={{ height: '80px' }} />
+        <MobileBottomNav />
       </div>
     </div>
   );

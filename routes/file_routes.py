@@ -287,7 +287,7 @@ def upload_to_course(course_id):
             file, 
             R2_BUCKET, 
             unique_filename,
-            ExtraArgs={"ContentType": file.mimetype} # Omit ACL="public-read" as R2 relies on bucket policies
+            ExtraArgs={"ContentType": file.content_type} # Use content_type for Flask FileStorage
         )
         # R2 Public URL
         if R2_PUBLIC_URL_PREFIX:
@@ -362,7 +362,10 @@ def upload_to_course(course_id):
         return jsonify({"success": True, "message": msg, "file_id": new_file_id, "status": initial_status})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": f"Upload failed: {e}"}), 500
+        err_msg = str(e)
+        if "unique_file" in err_msg:
+            return jsonify({"success": False, "message": "A file with this title already exists in this category for this course."}), 400
+        return jsonify({"success": False, "message": f"Database error during upload: {err_msg}"}), 500
     finally:
         conn.close()
 

@@ -76,7 +76,7 @@ def admin_check():
         admin_row = cur2.fetchone()
         cur2.close()
         
-        is_admin = admin_row is not None or email == 'ammarbatman9@gmail.com'
+        is_admin = admin_row is not None or email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com']
         
         return jsonify({
             "is_admin": is_admin,

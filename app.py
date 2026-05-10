@@ -16,6 +16,13 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = SECRET_KEY
     app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+    
+    # Critical for cross-domain sessions (Vercel -> Render) on Mobile
+    app.config.update(
+        SESSION_COOKIE_SAMESITE='None',
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+    )
 
     # Support production and local origins
     allowed_origins = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
