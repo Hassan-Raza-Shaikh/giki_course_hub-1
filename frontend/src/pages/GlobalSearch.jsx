@@ -114,7 +114,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                     width: '100%', padding: '16px 16px 16px 48px',
                     borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
                     fontSize: '1rem', boxShadow: '4px 4px 0px var(--text)',
-                    outline: 'none'
+                    outline: 'none', background: 'var(--bg-white)', color: 'var(--text)'
                   }}
                 />
               </div>
@@ -124,12 +124,12 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 onChange={(e) => updateFilters('faculty_id', e.target.value)}
                 style={{
                   padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                  background: 'var(--bg-white)', fontWeight: 700, cursor: 'pointer',
+                  background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
                   boxShadow: '4px 4px 0px var(--text)', outline: 'none'
                 }}
               >
-                <option value="">All Faculties</option>
-                {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                <option value="" style={{ background: 'var(--bg-white)', color: 'var(--text)' }}>All Faculties</option>
+                {faculties.map(f => <option key={f.id} value={f.id} style={{ background: 'var(--bg-white)', color: 'var(--text)' }}>{f.name}</option>)}
               </select>
 
               <select 
@@ -137,12 +137,12 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 onChange={(e) => updateFilters('category_id', e.target.value)}
                 style={{
                   padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                  background: 'var(--bg-white)', fontWeight: 700, cursor: 'pointer',
+                  background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
                   boxShadow: '4px 4px 0px var(--text)', outline: 'none'
                 }}
               >
-                <option value="">All Categories</option>
-                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                <option value="" style={{ background: 'var(--bg-white)', color: 'var(--text)' }}>All Categories</option>
+                {categories.map(c => <option key={c.id} value={c.id} style={{ background: 'var(--bg-white)', color: 'var(--text)' }}>{c.name}</option>)}
               </select>
             </div>
           </div>

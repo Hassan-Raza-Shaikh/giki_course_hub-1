@@ -5,6 +5,21 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GIKI COURSE HUB</title>
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('giki-theme');
+          var supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+          if (!theme && supportDarkMode) theme = 'dark';
+          if (!theme) theme = 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+          
+          // Set immediate body background to prevent flash
+          var bgColor = theme === 'dark' ? '#000000' : '#F5F0FF';
+          document.write('<style>body { background-color: ' + bgColor + '; }</style>');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

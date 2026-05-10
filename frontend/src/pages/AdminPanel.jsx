@@ -718,8 +718,8 @@ const AdminPanel = ({ user }) => {
                 padding: '10px 18px', borderRadius: '100px',
                 fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
                 border: '2px solid var(--text)',
-                background: tab === t.key ? 'var(--text)' : 'white',
-                color: tab === t.key ? 'white' : 'var(--text)',
+                background: tab === t.key ? 'var(--text)' : 'var(--bg-white)',
+                color: tab === t.key ? 'var(--bg-hero)' : 'var(--text)',
                 boxShadow: tab === t.key ? 'none' : '2px 2px 0 var(--text)',
                 transition: 'all 0.15s',
                 whiteSpace: 'nowrap'
@@ -1167,7 +1167,8 @@ const btnStyle = (bg) => ({
 const inputStyle = {
   width: '100%', padding: '12px 14px', border: '2px solid var(--border)',
   borderRadius: '10px', fontSize: '0.9rem', outline: 'none',
-  boxSizing: 'border-box', fontFamily: 'inherit'
+  boxSizing: 'border-box', fontFamily: 'inherit',
+  background: 'var(--bg-white)', color: 'var(--text)'
 };
 
 const cardStyle = {

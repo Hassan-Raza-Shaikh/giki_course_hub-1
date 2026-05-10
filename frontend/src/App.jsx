@@ -13,7 +13,6 @@ import Bookmarks   from './pages/Bookmarks';
 import GlobalSearch from './pages/GlobalSearch';
 import AdminPanel  from './pages/AdminPanel';
 import ReportIssue from './pages/ReportIssue';
-import { ThemeProvider } from './context/ThemeContext';
 
 
 const App = () => {
@@ -102,29 +101,27 @@ const App = () => {
   }
 
   return (
-    <ThemeProvider>
-      <Router>
-        <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
+    <Router>
+      <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
 
-        {showLogin && (
-          <LoginModal
-            onClose={() => setShowLogin(false)}
-            onSuccess={(u) => { setUser(u); setShowLogin(false); }}
-          />
-        )}
+      {showLogin && (
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          onSuccess={(u) => { setUser(u); setShowLogin(false); }}
+        />
+      )}
 
-        <Routes>
-          <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
-          <Route path="/courses"    element={<Courses />} />
-          <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
-          <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
-          <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
-          <Route path="/admin"      element={user?.role === 'admin' ? <AdminPanel user={user} /> : <Navigate to="/" replace />} />
-          <Route path="/report-issue" element={<ReportIssue user={user} />} />
-          <Route path="*"           element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+      <Routes>
+        <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
+        <Route path="/courses"    element={<Courses />} />
+        <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
+        <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
+        <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
+        <Route path="/admin"      element={user?.role === 'admin' ? <AdminPanel user={user} /> : <Navigate to="/" replace />} />
+        <Route path="/report-issue" element={<ReportIssue user={user} />} />
+        <Route path="*"           element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 };
 
