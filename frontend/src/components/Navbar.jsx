@@ -85,7 +85,6 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           onMouseDown={e => e.currentTarget.style.transform = 'scale(0.9)'}
           onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
         >
-          {theme === 'light' ? '🌞' : '🌙'}
           <span style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text)' }}>
             {theme === 'light' ? 'Light' : 'Ember'}
           </span>
@@ -149,20 +148,6 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {isAdmin && (
-            <button
-              className="show-mobile-flex"
-              onClick={() => navigate('/admin')}
-              style={{
-                background: '#EDE9FE', color: '#5B21B6',
-                width: '38px', height: '38px', borderRadius: '10px',
-                border: '2px solid var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.2rem', cursor: 'pointer', boxShadow: '2px 2px 0px var(--text)'
-              }}
-            >
-              🛡️
-            </button>
-          )}
 
           {user ? (
           <div ref={menuRef} style={{ position: 'relative' }}>
@@ -170,7 +155,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
             <button
               onClick={() => setMenuOpen(o => !o)}
               style={{
-                background: menuOpen ? 'var(--primary)' : 'white',
+                background: menuOpen ? 'var(--primary)' : 'var(--bg-white)',
                 color: menuOpen ? 'white' : 'var(--text)',
                 padding: '8px 18px',
                 borderRadius: '100px',
@@ -200,7 +185,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
             {menuOpen && (
               <div style={{
                 position: 'absolute', top: 'calc(100% + 12px)', right: 0,
-                background: 'white', border: '2px solid var(--text)',
+                background: 'var(--bg-white)', border: '2px solid var(--text)',
                 borderRadius: '16px', boxShadow: '5px 5px 0px var(--text)',
                 width: '280px', overflow: 'hidden', zIndex: 9999,
               }}>
@@ -236,12 +221,12 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   {(user.batchYear || user.studentId) && (
                     <div style={{ display: 'flex', gap: '6px', marginTop: '10px', flexWrap: 'wrap' }}>
                       {user.batchYear && (
-                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: '#EEF2FF', color: '#4338CA', borderRadius: '100px', border: '1px solid #C7D2FE' }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: 'var(--bg-subtle)', color: 'var(--primary)', borderRadius: '100px', border: '1px solid var(--border)' }}>
                           Batch '{String(user.batchYear).slice(-2)}
                         </span>
                       )}
                       {user.studentId && (
-                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: '#F0FDF4', color: '#15803D', borderRadius: '100px', border: '1px solid #BBF7D0' }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: 'var(--bg-subtle)', color: '#10B981', borderRadius: '100px', border: '1px solid var(--border)' }}>
                           #{user.studentId}
                         </span>
                       )}
@@ -272,7 +257,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 ].map(link => (
                   <button key={link.label} onClick={link.action}
                     style={{ width: '100%', padding: '11px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s', borderBottom: '1px solid var(--border)' }}
-                    onMouseOver={e => e.currentTarget.style.background = '#F8F7FF'}
+                    onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                     onMouseOut={e => e.currentTarget.style.background = 'none'}
                   >
                     <span style={{ fontSize: '1rem' }}>{link.icon}</span>
@@ -285,8 +270,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 {isAdmin && (
                   <button
                     onClick={() => { setMenuOpen(false); navigate('/admin'); }}
-                    style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', borderTop: '1px solid var(--border)', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: '#7C3AED', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
-                    onMouseOver={e => e.currentTarget.style.background = '#EDE9FE'}
+                    style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', borderTop: '1px solid var(--border)', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
+                    onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                     onMouseOut={e => e.currentTarget.style.background = 'none'}
                   >
                     <span>🛡️</span> Admin Panel
@@ -298,7 +283,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 <button
                   onClick={() => { setMenuOpen(false); onSignOut(); }}
                   style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: '#dc2626', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
-                  onMouseOver={e => e.currentTarget.style.background = '#FEF2F2'}
+                  onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                   onMouseOut={e => e.currentTarget.style.background = 'none'}
                 >
                   <span>🚪</span> Sign Out
