@@ -350,14 +350,15 @@ def upload_to_course(course_id):
         msg = "Material published!" if initial_status == 'approved' else "Submitted for review — visible once an admin approves it."
         return jsonify({"success": True, "message": msg, "file_id": new_file_id, "status": initial_status})
     except Exception as e:
-        conn.rollback()
+        if conn:
+            conn.rollback()
         err_msg = str(e)
         if "unique_file" in err_msg:
             return jsonify({"success": False, "message": "A file with this title already exists in this category for this course."}), 400
         return jsonify({"success": False, "message": f"Database error during upload: {err_msg}"}), 500
     finally:
-        conn.close()
-
+        if conn:
+            conn.close()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Bookmark routes
