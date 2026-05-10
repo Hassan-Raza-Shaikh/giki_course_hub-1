@@ -82,7 +82,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
           <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '10px',
-              background: 'white', border: '2px solid var(--text)',
+              background: 'var(--bg-white)', border: '2px solid var(--text)',
               padding: '10px 24px', borderRadius: '100px', marginBottom: '48px',
               fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)',
               textTransform: 'uppercase', letterSpacing: '0.15em',
@@ -268,7 +268,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
               }}>
                 {statItems.map((s, i) => (
                   <div key={s.label} style={{
-                    background: 'white',
+                    background: 'var(--bg-white)',
                     border: '1px solid var(--border)',
                     borderRadius: 'var(--radius-lg)',
                     padding: '32px 20px',
@@ -295,7 +295,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
       </section>
 
       {/* ── Footer ───────────────────────────────────────── */}
-      <footer style={{ padding: '60px 24px', background: 'white', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
+      <footer style={{ padding: '60px 24px', background: 'var(--bg-white)', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
         <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.4rem', marginBottom: '16px' }}>
           <span style={{ color: 'var(--text)' }}>GIKI </span>
           <span style={{ color: 'var(--primary)' }}>COURSE HUB</span>

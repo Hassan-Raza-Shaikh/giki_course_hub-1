@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = ({ onSignIn, onSignOut, user }) => {
   const [scrolled, setScrolled]   = useState(false);
@@ -47,6 +48,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     }
   }, [user]);
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-logo" onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -62,6 +65,32 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        {/* Creative Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          title={`Switch to ${theme === 'light' ? 'Electric Ember' : 'Vibrant Light'} Mode`}
+          style={{
+            background: 'var(--bg-white)',
+            border: '2px solid var(--border)',
+            borderRadius: '50px',
+            padding: '4px 12px',
+            fontSize: '1.2rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: 'var(--shadow-sm)',
+            transition: 'var(--transition)',
+            transform: 'scale(1)',
+          }}
+          onMouseDown={e => e.currentTarget.style.transform = 'scale(0.9)'}
+          onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          {theme === 'light' ? '🌞' : '🌙'}
+          <span style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text)' }}>
+            {theme === 'light' ? 'Light' : 'Ember'}
+          </span>
+        </button>
+
         <button
           className="hide-mobile"
           onClick={() => navigate('/courses')}

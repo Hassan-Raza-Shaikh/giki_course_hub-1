@@ -3,49 +3,69 @@
 /* ── Reset ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: #F5F0FF;
-  color: #1A0B2E;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
 /* ── Design Tokens ───────────────────────────────────── */
 :root {
-  /* Vibrant & Professional Palette */
-  --primary:      #2563EB;   /* Bold Royal Blue */
+  /* Default Light Mode (Vibrant & Professional) */
+  --primary:      #2563EB;
   --primary-dark: #1E40AF;
   --primary-mid:  #3B82F6;
-  --secondary:    #F59E0B;   /* Amber/Gold */
-  --accent:       #EF4444;   /* Red-Orange (For strong pop) */
-  --hot-pink:     #EC4899;   /* For subtle accents */
+  --secondary:    #F59E0B;
+  --accent:       #EF4444;
+  --hot-pink:     #EC4899;
 
-  /* Backgrounds */
   --bg-hero:    #FFFFFF;
   --bg-dark:    #111827;
   --bg-subtle:  #F9FAFB;
   --bg-white:   #FFFFFF;
+  --bg-body:    #F5F0FF;
 
-  /* Text */
-  --text:       #0F172A;     /* Slate 900 */
-  --text-muted: #475569;     /* Slate 600 */
-  --text-light: #94A3B8;     /* Slate 400 */
+  --text:       #0F172A;
+  --text-muted: #475569;
+  --text-light: #94A3B8;
 
-  /* Borders & Shadows - Bolder Neo-brutalism */
   --border:     #0F172A;
   --shadow-sm:  4px 4px 0px #0F172A;
   --shadow-md:  8px 8px 0px #F59E0B;
   --shadow-lg:  12px 12px 0px #EF4444;
 
-  /* Radii */
   --radius-sm:  8px;
   --radius-md:  12px;
   --radius-lg:  16px;
   --radius-xl:  24px;
-
-  /* Transitions */
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Electric Ember Dark Mode ── */
+[data-theme='dark'] {
+  --primary:      #F59E0B;   /* Amber Gold */
+  --primary-dark: #D97706;
+  --primary-mid:  #FBBF24;
+  --secondary:    #EF4444;   /* Crimson */
+  --accent:       #F59E0B;
+
+  --bg-hero:    #0A0A0B;
+  --bg-dark:    #000000;
+  --bg-subtle:  #18181B;
+  --bg-white:   #121214;
+  --bg-body:    #000000;
+
+  --text:       #FDFCF2;     /* Creamy White */
+  --text-muted: #A1A1AA;
+  --text-light: #52525B;
+
+  --border:     #F59E0B;     /* Glowing Gold Border */
+  --shadow-sm:  4px 4px 0px #F59E0B;
+  --shadow-md:  8px 8px 0px #EF4444;
+  --shadow-lg:  12px 12px 0px #F59E0B;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-body);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* ── Scroll Reveal Animations ────────────────────────── */
@@ -120,8 +140,8 @@ a { text-decoration: none; color: inherit; }
   top: 0; left: 0; right: 0;
   z-index: 100;
   height: 70px;
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  background: var(--bg-nav, rgba(255, 255, 255, 0.3));
   border-bottom: 1px solid transparent;
   display: flex;
   align-items: center;
@@ -129,12 +149,16 @@ a { text-decoration: none; color: inherit; }
   padding: 0 40px;
   transition: var(--transition);
 }
+[data-theme='dark'] .navbar {
+  --bg-nav: rgba(10, 10, 11, 0.4);
+}
+
 @media (max-width: 768px) {
   .navbar { padding: 0 20px; height: 60px; }
 }
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 30px rgba(17, 24, 39, 0.05);
+  background: var(--bg-white);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border-bottom-color: var(--border);
 }
 .navbar-logo {

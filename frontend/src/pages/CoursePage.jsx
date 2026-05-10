@@ -234,7 +234,7 @@ const CoursePage = ({ user, onSignIn }) => {
           <button
             onClick={() => navigate('/courses')}
             style={{ 
-              background: 'white', border: '2px solid var(--border)', color: 'var(--text)', 
+              background: 'var(--bg-white)', border: '2px solid var(--border)', color: 'var(--text)', 
               padding: '8px 16px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700, 
               marginBottom: 32, cursor: 'pointer', transition: 'all 0.2s',
               boxShadow: '2px 2px 0px var(--border)'
@@ -257,7 +257,7 @@ const CoursePage = ({ user, onSignIn }) => {
                   background: 'var(--hot-pink)', color: 'white', border: '2px solid var(--text)' }}>
                   {course.program}
                 </span>
-                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.9rem', padding: '6px 14px', borderRadius: '100px', border: '2px solid var(--border)', background: 'white' }}>{course.code}</span>
+                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.9rem', padding: '6px 14px', borderRadius: '100px', border: '2px solid var(--border)', background: 'var(--bg-white)' }}>{course.code}</span>
               </div>
               <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
                 {course.name}
@@ -429,7 +429,7 @@ const CoursePage = ({ user, onSignIn }) => {
             
             {/* File List */}
             <ScrollReveal>
-          <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
+          <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
             <div style={{ padding: '28px 32px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
@@ -540,7 +540,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         setReportSent(false); 
                       }}
                       style={{
-                        background: 'white',
+                        background: 'var(--bg-white)',
                         border: '2px solid var(--text)',
                         borderRadius: '8px',
                         padding: '6px 12px',
@@ -572,7 +572,7 @@ const CoursePage = ({ user, onSignIn }) => {
 
         {/* Upload Section */}
         <ScrollReveal>
-          <div ref={uploadRef} style={{ background: 'white', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
+          <div ref={uploadRef} style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
             <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
               <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '8px',
                 color: 'var(--text)' }}>
@@ -614,7 +614,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       placeholder="e.g. CS-302 Mid Term 2023"
                       value={uploadTitle}
                       onChange={e => setUploadTitle(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'white', transition: 'border-color 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'border-color 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
                       onFocus={e => e.target.style.borderColor = 'var(--text)'}
                       onBlur={e => e.target.style.borderColor = 'var(--border)'}
                     />
@@ -627,7 +627,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       required
                       value={uploadCatId}
                       onChange={e => setUploadCatId(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'white', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
                     >
                       <option value="">Select material type…</option>
                       {categories.map(c => (
@@ -642,7 +642,7 @@ const CoursePage = ({ user, onSignIn }) => {
                     <select
                       value={uploadInstructorId}
                       onChange={e => setUploadInstructorId(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'white', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
                     >
                       <option value="">None / General Material</option>
                       {courseInstructors.length > 0 && (
@@ -748,7 +748,7 @@ const CoursePage = ({ user, onSignIn }) => {
         onClick={() => setReportModal(null)}
         style={{ position: 'fixed', inset: 0, zIndex: 10001, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
       >
-        <div onClick={e => e.stopPropagation()} style={{ background: 'white', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '460px' }}>
+        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '460px' }}>
           {reportSent ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <div style={{ fontSize: '3rem', marginBottom: '12px' }}>✅</div>
@@ -770,7 +770,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
               />
               <div style={{ display: 'flex', gap: '10px', marginTop: '16px', justifyContent: 'flex-end' }}>
-                <button onClick={() => setReportModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'white', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+                <button onClick={() => setReportModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
                 <button
                   onClick={async () => {
                     if (!reportReason.trim()) return;

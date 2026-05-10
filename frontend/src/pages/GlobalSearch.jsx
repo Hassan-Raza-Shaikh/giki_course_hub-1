@@ -124,7 +124,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 onChange={(e) => updateFilters('faculty_id', e.target.value)}
                 style={{
                   padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                  background: 'white', fontWeight: 700, cursor: 'pointer',
+                  background: 'var(--bg-white)', fontWeight: 700, cursor: 'pointer',
                   boxShadow: '4px 4px 0px var(--text)', outline: 'none'
                 }}
               >
@@ -137,7 +137,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 onChange={(e) => updateFilters('category_id', e.target.value)}
                 style={{
                   padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                  background: 'white', fontWeight: 700, cursor: 'pointer',
+                  background: 'var(--bg-white)', fontWeight: 700, cursor: 'pointer',
                   boxShadow: '4px 4px 0px var(--text)', outline: 'none'
                 }}
               >
@@ -180,7 +180,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                       key={course.id} 
                       onClick={() => navigate(`/course/${course.id}`)}
                       style={{
-                        background: 'white', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
+                        background: 'var(--bg-white)', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
                         padding: '20px', boxShadow: '4px 4px 0px var(--text)', cursor: 'pointer',
                         transition: '0.2s'
                       }}
@@ -211,7 +211,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                     <div 
                       key={file.id} 
                       style={{
-                        background: 'white', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
+                        background: 'var(--bg-white)', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
                         padding: '16px 20px', boxShadow: '4px 4px 0px var(--text)', display: 'flex', flexDirection: 'column', gap: '8px'
                       }}
                     >
