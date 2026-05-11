@@ -495,7 +495,7 @@ const CoursePage = ({ user, onSignIn }) => {
                     <button
                       onClick={() => toggleBookmark(file)}
                       style={{
-                        background: bookmarks.has(file.file_id ?? file.id) ? 'var(--accent)' : 'white',
+                        background: bookmarks.has(file.file_id ?? file.id) ? 'var(--accent)' : 'var(--bg-white)',
                         border: '2px solid var(--text)',
                         borderRadius: '8px',
                         padding: '6px 12px',
@@ -553,7 +553,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         whiteSpace: 'nowrap',
                       }}
                       onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
-                      onMouseOut={e => { e.currentTarget.style.background = 'white'; }}
+                      onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; }}
                     >
                       🚩 Flag
                     </button>

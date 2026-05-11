@@ -86,7 +86,7 @@ const App = () => {
             Waking up the server. This may take up to 30 seconds if the site hasn't been visited in a while.
           </p>
           <div style={{ marginTop: '32px', height: '6px', background: 'var(--border)', borderRadius: '10px', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '40%', background: 'var(--primary)', borderRadius: '10px', animation: 'loading-bar 2s infinite ease-in-out' }} />
+            <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: '40%', background: 'var(--electric)', borderRadius: '10px', animation: 'loading-bar 2s infinite ease-in-out' }} />
           </div>
           <style>{`
             @keyframes loading-bar {

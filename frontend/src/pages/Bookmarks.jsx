@@ -55,7 +55,7 @@ const Bookmarks = ({ user, onSignIn }) => {
 
         {!user ? (
           <ScrollReveal delay="reveal-delay-1">
-            <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
+            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
               <div style={{ fontSize: '4rem', marginBottom: '24px' }}>🔒</div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Account Required</h2>
               <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Please sign in to view and manage your saved resources.</p>
@@ -68,7 +68,7 @@ const Bookmarks = ({ user, onSignIn }) => {
           </div>
         ) : bookmarks.length === 0 ? (
           <ScrollReveal delay="reveal-delay-1">
-            <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
+            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
               <div style={{ fontSize: '4rem', marginBottom: '24px' }}>📚</div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Your bookmarks are empty</h2>
               <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Bookmark useful files while browsing courses to see them here.</p>
@@ -79,7 +79,7 @@ const Bookmarks = ({ user, onSignIn }) => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '24px', paddingBottom: '80px' }}>
             {bookmarks.map((file, i) => (
               <ScrollReveal key={file.file_id} delay={`reveal-delay-${(i % 3) + 1}`}>
-                <div style={{ background: 'white', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', boxShadow: '4px 4px 0px var(--text)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
+                <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', boxShadow: '4px 4px 0px var(--text)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
 
                   {/* Remove button */}
                   <button

@@ -48,7 +48,7 @@ const CourseRow = ({ course, onClick }) => (
         Semester {course.semester}
       </div>
     </div>
-    <span style={{ color: 'var(--hot-pink)', flexShrink: 0, fontSize: '1rem' }}>→</span>
+    <span style={{ color: 'var(--electric)', flexShrink: 0, fontSize: '1rem' }}>→</span>
   </div>
 );
 
@@ -90,7 +90,7 @@ const YearSection = ({ year, semesters, onCourseClick }) => {
             </span>
           </div>
         </div>
-        <span style={{ transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none', color: 'var(--hot-pink)' }}>⌄</span>
+        <span style={{ transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none', color: 'var(--electric)' }}>⌄</span>
       </div>
 
       {open && (
@@ -247,11 +247,11 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
 
         <div style={{
           width: 36, height: 36, borderRadius: '10px',
-          background: open ? 'rgba(255,255,255,0.18)' : '#FAF5FF',
+          background: open ? 'rgba(255,255,255,0.18)' : 'var(--bg-subtle)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '1.2rem', transition: 'all 0.3s', flexShrink: 0,
           transform: open ? 'rotate(180deg)' : 'none',
-          color: open ? 'white' : 'var(--hot-pink)',
+          color: open ? 'white' : 'var(--electric)',
         }}>
           ⌄
         </div>

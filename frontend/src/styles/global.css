@@ -52,10 +52,12 @@ html { scroll-behavior: smooth; }
   --text:       #FDFCF2;     /* Creamy White */
   --text-muted: #A1A1AA;
   --text-light: #52525B;
+  --hot-pink:   #A3E635;     /* Cyber Lime */
+  --electric:   #A3E635;
 
   --border:     #F59E0B;     /* Glowing Gold Border */
   --shadow-sm:  4px 4px 0px #F59E0B;
-  --shadow-md:  8px 8px 0px #EF4444;
+  --shadow-md:  8px 8px 0px #A3E635;
   --shadow-lg:  12px 12px 0px #F59E0B;
 }
 

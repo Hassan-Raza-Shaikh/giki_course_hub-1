@@ -214,7 +214,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                       {course.faculty} · {course.description?.slice(0, 60)}…
                     </p>
                     <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.9rem',
-                      color: 'var(--accent)' }}>
+                      color: 'var(--electric)' }}>
                       View Materials <span style={{ color: 'var(--text)' }}>→</span>
                     </div>
                   </div>
