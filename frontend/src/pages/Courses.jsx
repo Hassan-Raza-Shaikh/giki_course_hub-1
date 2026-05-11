@@ -135,11 +135,11 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '20px 24px', cursor: 'pointer',
-          background: open ? 'var(--bg-subtle)' : 'white',
+          background: open ? 'var(--bg-subtle)' : 'var(--bg-white)',
           transition: 'background 0.2s',
         }}
         onMouseOver={e => { if (!open) e.currentTarget.style.background = 'var(--bg-subtle)'; }}
-        onMouseOut={e => { if (!open) e.currentTarget.style.background = 'white'; }}
+        onMouseOut={e => { if (!open) e.currentTarget.style.background = 'var(--bg-white)'; }}
       >
         <div>
           <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem', fontFamily: 'Outfit' }}>
@@ -200,11 +200,11 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '28px 32px', cursor: 'pointer',
-          background: open ? 'var(--primary)' : 'white',
+          background: open ? 'var(--primary)' : 'var(--bg-white)',
           transition: 'background 0.3s',
         }}
         onMouseOver={e => { if (!open) e.currentTarget.style.background = 'var(--bg-subtle)'; }}
-        onMouseOut={e => { if (!open) e.currentTarget.style.background = 'white'; }}
+        onMouseOut={e => { if (!open) e.currentTarget.style.background = 'var(--bg-white)'; }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{
