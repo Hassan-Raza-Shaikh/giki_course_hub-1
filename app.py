@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_compress import Compress
 from config import SECRET_KEY, MAX_CONTENT_LENGTH
 from firebase_admin_init import init_firebase_admin
 
@@ -14,6 +15,7 @@ import os
 
 def create_app():
     app = Flask(__name__)
+    Compress(app)
     app.secret_key = SECRET_KEY
     app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
     
@@ -36,6 +38,30 @@ def create_app():
     app.register_blueprint(admin_bp)
     app.register_blueprint(issue_bp)
     app.register_blueprint(instructor_bp)
+
+    @app.before_request
+    def handle_mobile_auth():
+        """
+        Mobile browsers (Safari/iOS) aggressively block cross-domain cookies.
+        This intercepts Firebase Bearer tokens sent from the frontend and injects 
+        the user into the Flask session for the duration of the request, 
+        making all existing routes work seamlessly across all devices.
+        """
+        from flask import request, session
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split('Bearer ')[1]
+            try:
+                import firebase_admin.auth as fb_auth
+                from firebase_admin_init import is_initialized
+                if is_initialized():
+                    decoded = fb_auth.verify_id_token(token)
+                    uid = decoded.get('uid') or decoded.get('user_id')
+                    if uid:
+                        session['user_id'] = uid
+                        session['email'] = decoded.get('email', '')
+            except Exception as e:
+                print(f"Token verification failed in before_request: {e}")
 
     @app.errorhandler(404)
     def not_found(e):

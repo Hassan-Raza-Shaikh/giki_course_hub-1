@@ -61,6 +61,10 @@ html { scroll-behavior: smooth; }
   --shadow-lg:  12px 12px 0px #F59E0B;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: var(--bg-body);

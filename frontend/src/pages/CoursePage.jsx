@@ -336,8 +336,9 @@ const CoursePage = ({ user, onSignIn }) => {
                position: sticky;
                top: 60px;
                z-index: 100;
-               background: #F5F0FF;
+               background: var(--bg-hero);
                margin: 0 -16px;
+               border-bottom: 2px solid var(--border);
             }
             .sidebar-tabs { 
               flex-direction: row; 

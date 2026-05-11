@@ -6,3 +6,4 @@ firebase-admin
 boto3
 python-dotenv
 gunicorn
+Flask-Compress

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './services/firebase';
@@ -6,13 +6,15 @@ import api from './services/api';
 
 import Navbar      from './components/Navbar';
 import LoginModal  from './components/LoginModal';
-import Landing     from './pages/Landing';
-import Courses     from './pages/Courses';
-import CoursePage  from './pages/CoursePage';
-import Bookmarks   from './pages/Bookmarks';
-import GlobalSearch from './pages/GlobalSearch';
-import AdminPanel  from './pages/AdminPanel';
-import ReportIssue from './pages/ReportIssue';
+
+// Lazy loaded heavy routes to reduce initial bundle size
+const Landing      = lazy(() => import('./pages/Landing'));
+const Courses      = lazy(() => import('./pages/Courses'));
+const CoursePage   = lazy(() => import('./pages/CoursePage'));
+const Bookmarks    = lazy(() => import('./pages/Bookmarks'));
+const GlobalSearch = lazy(() => import('./pages/GlobalSearch'));
+const AdminPanel   = lazy(() => import('./pages/AdminPanel'));
+const ReportIssue  = lazy(() => import('./pages/ReportIssue'));
 
 
 const App = () => {
@@ -111,16 +113,25 @@ const App = () => {
         />
       )}
 
-      <Routes>
-        <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
-        <Route path="/courses"    element={<Courses />} />
-        <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
-        <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
-        <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
-        <Route path="/admin"      element={user?.role === 'admin' ? <AdminPanel user={user} /> : <Navigate to="/" replace />} />
-        <Route path="/report-issue" element={<ReportIssue user={user} />} />
-        <Route path="*"           element={<Navigate to="/" replace />} />
-      </Routes>
+      <Suspense fallback={
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-hero)' }}>
+          <div style={{ width: '200px', height: '4px', background: 'var(--bg-subtle)', borderRadius: '4px', overflow: 'hidden', marginBottom: '16px' }}>
+            <div style={{ width: '50%', height: '100%', background: 'var(--electric)', animation: 'slide 1.5s infinite ease-in-out', borderRadius: '4px' }} />
+          </div>
+          <div style={{ fontWeight: 800, color: 'var(--text)', fontSize: '0.9rem', letterSpacing: '0.05em' }}>LOADING GIKI HUB...</div>
+        </div>
+      }>
+        <Routes>
+          <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
+          <Route path="/courses"    element={<Courses />} />
+          <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
+          <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
+          <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
+          <Route path="/admin"      element={user?.role === 'admin' ? <AdminPanel user={user} /> : <Navigate to="/" replace />} />
+          <Route path="/report-issue" element={<ReportIssue user={user} />} />
+          <Route path="*"           element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 };
