@@ -40,7 +40,7 @@ html { scroll-behavior: smooth; }
   --primary:      #F59E0B;   /* Amber Gold */
   --primary-dark: #D97706;
   --primary-mid:  #FBBF24;
-  --secondary:    #EF4444;   /* Crimson */
+  --secondary:    #FF3366;   /* Neon Crimson */
   --accent:       #A3E635;   /* Cyber Lime Accent */
 
   --bg-hero:    #0A0A0B;
@@ -52,17 +52,14 @@ html { scroll-behavior: smooth; }
   --text:       #FDFCF2;     /* Creamy White */
   --text-muted: #A1A1AA;
   --text-light: #52525B;
-  --hot-pink:   #A3E635;     /* Cyber Lime */
-  --electric:   #A3E635;
+  
+  --hot-pink:   #F472B6;     /* Neon Pink */
+  --electric:   #06B6D4;     /* Neon Cyan */
 
   --border:     #F59E0B;     /* Glowing Gold Border */
   --shadow-sm:  4px 4px 0px #F59E0B;
   --shadow-md:  8px 8px 0px #A3E635;
-  --shadow-lg:  12px 12px 0px #F59E0B;
-}
-
-html, body {
-  overflow-x: hidden;
+  --shadow-lg:  12px 12px 0px #F472B6;
 }
 
 body {
@@ -125,9 +122,16 @@ body {
 /* ── Typography ──────────────────────────────────────── */
 h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; line-height: 1.15; }
 
-/* ── Global Button ───────────────────────────────────── */
+/* ── Global Elements ─────────────────────────────────── */
 button { cursor: pointer; border: none; font-family: 'Inter', sans-serif; }
 a { text-decoration: none; color: inherit; }
+input, select, textarea {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+}
+input::placeholder, textarea::placeholder {
+  color: var(--text-light);
+}
 
 /* ── Layout ──────────────────────────────────────────── */
 .page-container {

@@ -44,7 +44,7 @@ def create_app():
         """
         Mobile browsers (Safari/iOS) aggressively block cross-domain cookies.
         This intercepts Firebase Bearer tokens sent from the frontend and injects 
-        the user into the Flask session for the duration of the request, 
+        the internal user_id into the Flask session for the duration of the request, 
         making all existing routes work seamlessly across all devices.
         """
         from flask import request, session
@@ -58,10 +58,30 @@ def create_app():
                     decoded = fb_auth.verify_id_token(token)
                     uid = decoded.get('uid') or decoded.get('user_id')
                     if uid:
-                        session['user_id'] = uid
-                        session['email'] = decoded.get('email', '')
+                        # We must resolve the Firebase UID to the internal DB integer user_id
+                        from db import get_connection
+                        conn = get_connection()
+                        try:
+                            cur = conn.cursor()
+                            cur.execute("SELECT user_id, email, role, username FROM users WHERE firebase_uid = %s;", (uid,))
+                            row = cur.fetchone()
+                            if row:
+                                session['user_id']  = row[0]
+                                session['email']    = row[1]
+                                session['role']     = row[2]
+                                session['username'] = row[3]
+                        finally:
+                            conn.close()
             except Exception as e:
                 print(f"Token verification failed in before_request: {e}")
+        
+        # Aggressively purge any stale session cookies that contain a string Firebase UID 
+        # instead of the expected database Integer ID to prevent Postgres type syntax crashes.
+        if 'user_id' in session and isinstance(session['user_id'], str):
+            try:
+                int(session['user_id'])
+            except ValueError:
+                session.pop('user_id', None)
 
     @app.errorhandler(404)
     def not_found(e):
