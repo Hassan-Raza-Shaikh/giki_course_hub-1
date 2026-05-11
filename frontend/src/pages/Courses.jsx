@@ -153,7 +153,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
           <span style={{
             fontSize: '0.75rem', fontWeight: 700,
             color: open ? 'white' : 'var(--text)',
-            background: open ? 'var(--primary)' : 'white', border: '1px solid var(--text)',
+            background: open ? 'var(--primary)' : 'var(--bg-white)', border: '1px solid var(--text)',
             padding: '4px 12px', borderRadius: '100px', transition: 'all 0.2s',
           }}>
             {open ? 'Collapse' : 'Expand'}

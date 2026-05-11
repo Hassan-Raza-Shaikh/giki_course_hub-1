@@ -219,7 +219,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                         <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>{file.category}</span>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{file.course_name}</span>
-                        {file.instructor_name && <span style={{ padding: '3px 10px', background: '#FDE68A', color: '#92400E', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
+                        {file.instructor_name && <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
                       </div>
                       
                       <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

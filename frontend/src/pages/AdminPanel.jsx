@@ -798,7 +798,7 @@ const AdminPanel = ({ user }) => {
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 Preview</a>
                     <button onClick={() => openEditFile(f)} style={{ ...btnStyle('var(--text)'), flex: 1 }}>✏️ Edit</button>
-                    <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('#10B981'), flex: 1 }}>✅ Approve</button>
+                    <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}>✅ Approve</button>
                     <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>❌ Reject</button>
                   </div>
                 </div>
@@ -824,8 +824,8 @@ const AdminPanel = ({ user }) => {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 View File</a>
-                  <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('#10B981'), flex: 1 }}>🏁 Resolve</button>
+                  <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}>👁 View File</a>
+                  <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}>🏁 Resolve</button>
                   <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}>💤 Dismiss</button>
                 </div>
               </div>
@@ -1159,7 +1159,9 @@ const EmptyRow = ({ icon, msg }) => (
 );
 
 const btnStyle = (bg) => ({
-  background: bg, color: 'white', border: `2px solid ${bg}`,
+  background: bg, 
+  color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--hot-pink)') ? 'var(--bg-hero)' : 'white', 
+  border: `2px solid ${bg}`,
   borderRadius: '8px', padding: '7px 14px', fontWeight: 700,
   fontSize: '0.8rem', cursor: 'pointer', whiteSpace: 'nowrap',
 });

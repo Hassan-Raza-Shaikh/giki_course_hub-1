@@ -41,7 +41,7 @@ html { scroll-behavior: smooth; }
   --primary-dark: #D97706;
   --primary-mid:  #FBBF24;
   --secondary:    #EF4444;   /* Crimson */
-  --accent:       #F59E0B;
+  --accent:       #A3E635;   /* Cyber Lime Accent */
 
   --bg-hero:    #0A0A0B;
   --bg-dark:    #000000;
@@ -299,17 +299,17 @@ a { text-decoration: none; color: inherit; }
   flex-wrap: wrap;
 }
 .file-item:last-child { border-bottom: none; }
-.file-item:hover { background: #FAF5FF; }
+.file-item:hover { background: var(--bg-subtle); }
 
 /* ── Upload Form ─────────────────────────────────────── */
 .upload-zone {
-  border: 2px dashed #C4B5FD;
+  border: 2px dashed var(--border);
   border-radius: var(--radius-lg);
   padding: 48px 32px;
   text-align: center;
   cursor: pointer;
   transition: var(--transition);
-  background: #FAF5FF;
+  background: var(--bg-subtle);
 }
 .upload-zone:hover, .upload-zone.dragover {
   border-color: var(--primary);
@@ -349,7 +349,7 @@ a { text-decoration: none; color: inherit; }
 /* ── Primary Button ──────────────────────────────────── */
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--bg-hero);
   padding: 14px 32px;
   border-radius: var(--radius-md);
   font-weight: 800;
