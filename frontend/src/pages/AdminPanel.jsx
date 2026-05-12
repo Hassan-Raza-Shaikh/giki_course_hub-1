@@ -45,6 +45,7 @@ const AdminPanel = ({ user }) => {
   const [faculties, setFaculties] = useState([]);
   const [programs,  setPrograms]  = useState([]);
   const [categories, setCategories] = useState([]);
+  const [editCourses, setEditCourses] = useState([]); // flat list for the edit modal picker
   
   const [allFiles, setAllFiles] = useState([]);
   const [users,    setUsers]    = useState([]);
@@ -256,10 +257,8 @@ const AdminPanel = ({ user }) => {
       instructor_id: file.instructor_id || '',
       course_code: file.course_code || '',
     });
-    // Ensure courses list is available for the course picker
-    if (courses.length === 0) {
-      api.get('/admin/courses').then(r => setCourses(r.data.courses || [])).catch(() => {});
-    }
+    // Load all course codes for the course picker (use dedicated unpaginated endpoint)
+    api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(() => {});
   };
 
   const saveEditFile = async () => {
@@ -646,8 +645,8 @@ const AdminPanel = ({ user }) => {
                 style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
               />
               <datalist id="edit-course-list">
-                {courses.map(c => (
-                  <option key={c.course_id} value={c.code}>{c.code} — {c.name}</option>
+                {editCourses.map(c => (
+                  <option key={c.code} value={c.code}>{c.icon} {c.code} — {c.name}</option>
                 ))}
               </datalist>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>Type or select a course code. Leave blank to keep current.</p>

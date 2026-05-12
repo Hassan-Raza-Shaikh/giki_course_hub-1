@@ -355,11 +355,13 @@ def admin_update_file(file_id):
 
         old_title, old_course = row
 
-        # Validate the new course_code if provided
+        # Validate the new course_code if provided (case-insensitive)
         if new_course_code:
-            cur.execute("SELECT course_id FROM courses WHERE code = %s;", (new_course_code,))
-            if not cur.fetchone():
+            cur.execute("SELECT course_id, code FROM courses WHERE UPPER(code) = UPPER(%s);", (new_course_code,))
+            matched = cur.fetchone()
+            if not matched:
                 return jsonify({"success": False, "message": f"Course code '{new_course_code}' does not exist."}), 400
+            new_course_code = matched[1]  # use the exact stored code
 
         # Build update — only change course_code if explicitly provided
         effective_course = new_course_code if new_course_code else old_course
@@ -812,6 +814,24 @@ def admin_get_course_by_code(code):
                 }
             })
         return jsonify({"success": False, "message": "Course not found."}), 404
+    finally:
+        conn.close()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# GET /api/admin/courses/codes — all course codes + names, no pagination
+# Used by the file-edit modal dropdown
+# ─────────────────────────────────────────────────────────────────────────────
+@admin_bp.route('/api/admin/courses/codes', methods=['GET'])
+def admin_all_course_codes():
+    admin_email, err = _require_admin()
+    if err: return err
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT code, name, icon FROM courses ORDER BY code;")
+        rows = cur.fetchall()
+        cur.close()
+        return jsonify({"success": True, "courses": [{"code": r[0], "name": r[1], "icon": r[2] or '📘'} for r in rows]})
     finally:
         conn.close()
 
