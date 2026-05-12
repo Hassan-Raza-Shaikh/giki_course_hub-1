@@ -12,6 +12,7 @@ html { scroll-behavior: smooth; }
   --secondary:    #F59E0B;
   --accent:       #EF4444;
   --tertiary:     #8B5CF6; /* Violet */
+  --electric:     #0891B2; /* Cyan */
 
   --bg-hero:    #FFFFFF;
   --bg-dark:    #111827;
