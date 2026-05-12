@@ -689,6 +689,7 @@ def admin_faculties_programs():
         cur.execute("SELECT faculty_id, name, icon FROM faculties ORDER BY name;")
         faculties = [{"id": r[0], "name": r[1], "icon": r[2]} for r in cur.fetchall()]
         cur.execute("SELECT program_id, name, faculty_id FROM programs ORDER BY name;")
+        programs = [{"id": r[0], "name": r[1], "faculty_id": r[2]} for r in cur.fetchall()]
         cur.execute("SELECT category_id, name FROM categories ORDER BY name;")
         categories = [{"id": r[0], "name": r[1]} for r in cur.fetchall()]
         cur.close()
