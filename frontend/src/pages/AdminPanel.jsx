@@ -259,6 +259,8 @@ const AdminPanel = ({ user }) => {
     });
     // Load all course codes for the course picker (use dedicated unpaginated endpoint)
     api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(() => {});
+    // Load instructors (only fetched normally on the instructors tab, so always refresh here)
+    api.get('/instructors').then(r => setInstructors(r.data.instructors || [])).catch(() => {});
   };
 
   const saveEditFile = async () => {
