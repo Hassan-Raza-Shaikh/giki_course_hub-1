@@ -253,8 +253,13 @@ const AdminPanel = ({ user }) => {
     setEditFileForm({
       title: file.title || '',
       category_id: file.category_id || '',
-      instructor_id: file.instructor_id || ''
+      instructor_id: file.instructor_id || '',
+      course_code: file.course_code || '',
     });
+    // Ensure courses list is available for the course picker
+    if (courses.length === 0) {
+      api.get('/admin/courses').then(r => setCourses(r.data.courses || [])).catch(() => {});
+    }
   };
 
   const saveEditFile = async () => {
@@ -629,9 +634,28 @@ const AdminPanel = ({ user }) => {
               </select>
             </div>
 
+            {/* Course field */}
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Move to Course</label>
+              <input
+                type="text"
+                list="edit-course-list"
+                value={editFileForm.course_code}
+                onChange={e => setEditFileForm({ ...editFileForm, course_code: e.target.value.toUpperCase() })}
+                placeholder={`Current: ${editFileModal?.course_code || '—'}`}
+                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+              />
+              <datalist id="edit-course-list">
+                {courses.map(c => (
+                  <option key={c.course_id} value={c.code}>{c.code} — {c.name}</option>
+                ))}
+              </datalist>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>Type or select a course code. Leave blank to keep current.</p>
+            </div>
+
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--text)', background: 'var(--text)', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700 }}>Save Changes</button>
+              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'var(--primary)', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
             </div>
           </div>
         </div>

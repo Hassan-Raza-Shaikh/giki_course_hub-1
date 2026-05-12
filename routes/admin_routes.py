@@ -336,8 +336,9 @@ def admin_update_file(file_id):
 
     d = request.get_json() or {}
     new_title         = d.get('title', '').strip()
-    new_category_id   = d.get('category_id')
-    new_instructor_id = d.get('instructor_id')
+    new_category_id   = d.get('category_id') or None
+    new_instructor_id = d.get('instructor_id') or None
+    new_course_code   = (d.get('course_code') or '').strip().upper() or None
 
     if not new_title:
         return jsonify({"success": False, "message": "Title cannot be empty."}), 400
@@ -345,26 +346,36 @@ def admin_update_file(file_id):
     conn = get_connection()
     try:
         cur = conn.cursor()
-        
+
         # Verify file exists
-        cur.execute("SELECT title, uploaded_by FROM files WHERE file_id = %s;", (file_id,))
+        cur.execute("SELECT title, course_code FROM files WHERE file_id = %s;", (file_id,))
         row = cur.fetchone()
         if not row:
             return jsonify({"success": False, "message": "File not found."}), 404
-        
-        old_title = row[0]
 
-        # Update the file (uploaded_by remains UNCHANGED)
+        old_title, old_course = row
+
+        # Validate the new course_code if provided
+        if new_course_code:
+            cur.execute("SELECT course_id FROM courses WHERE code = %s;", (new_course_code,))
+            if not cur.fetchone():
+                return jsonify({"success": False, "message": f"Course code '{new_course_code}' does not exist."}), 400
+
+        # Build update — only change course_code if explicitly provided
+        effective_course = new_course_code if new_course_code else old_course
         cur.execute("""
-            UPDATE files 
-            SET title = %s, category_id = %s, instructor_id = %s 
+            UPDATE files
+            SET title = %s, category_id = %s, instructor_id = %s, course_code = %s
             WHERE file_id = %s;
-        """, (new_title, new_category_id, new_instructor_id, file_id))
+        """, (new_title, new_category_id, new_instructor_id, effective_course, file_id))
 
         conn.commit()
         cur.close()
 
-        _log(admin_email, 'update_file', file_id, f"Changed title from '{old_title}' to '{new_title}'")
+        changes = []
+        if new_title != old_title: changes.append(f"title: '{old_title}'→'{new_title}'")
+        if new_course_code and new_course_code != old_course: changes.append(f"course: '{old_course}'→'{new_course_code}'")
+        _log(admin_email, 'update_file', file_id, '; '.join(changes) or 'minor edit')
         return jsonify({"success": True, "message": "File details updated successfully."})
     except Exception as e:
         conn.rollback()
