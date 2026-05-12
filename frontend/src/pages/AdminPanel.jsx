@@ -1160,7 +1160,7 @@ const EmptyRow = ({ icon, msg }) => (
 
 const btnStyle = (bg) => ({
   background: bg, 
-  color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--hot-pink)') ? 'var(--bg-hero)' : 'white', 
+  color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--tertiary)' || bg === 'var(--text)') ? 'var(--bg-hero)' : 'white', 
   border: `2px solid ${bg}`,
   borderRadius: '8px', padding: '7px 14px', fontWeight: 700,
   fontSize: '0.8rem', cursor: 'pointer', whiteSpace: 'nowrap',

@@ -219,16 +219,44 @@ def admin_approve_file(file_id):
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s RETURNING title;",
+            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s RETURNING title, course_code, uploaded_by;",
             (admin_email, file_id)
         )
         row = cur.fetchone()
         if not row:
             return jsonify({"success": False, "message": "File not found."}), 404
+        
+        file_title, course_code, uploader_id = row
+        
+        # Send email to the submitter
+        if uploader_id:
+            try:
+                cur.execute("SELECT email, username FROM users WHERE user_id = %s;", (uploader_id,))
+                user_row = cur.fetchone()
+                if user_row:
+                    uploader_email, uploader_name = user_row
+                    from email_service import send_email
+                    subject = "Your Material was Approved! - GIKI Course Hub"
+                    body = f"""
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2 style="color: #059669;">Material Approved! 🎉</h2>
+                        <p>Hi {uploader_name},</p>
+                        <p>Great news! Your recent material submission has been reviewed and approved by an admin. It is now live and visible to all students on the GIKI Course Hub.</p>
+                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                            <li><strong>Title:</strong> {file_title}</li>
+                            <li><strong>Course:</strong> {course_code}</li>
+                        </ul>
+                        <p>Thank you for contributing to the community!</p>
+                    </div>
+                    """
+                    send_email(uploader_email, subject, body)
+            except Exception as e:
+                print(f"Failed to send approval email: {e}")
+
         conn.commit()
         cur.close()
-        _log(admin_email, 'approve_file', file_id, row[0])
-        return jsonify({"success": True, "message": f"'{row[0]}' approved."})
+        _log(admin_email, 'approve_file', file_id, file_title)
+        return jsonify({"success": True, "message": f"'{file_title}' approved."})
     except Exception as e:
         conn.rollback()
         return jsonify({"success": False, "message": str(e)}), 500
@@ -249,16 +277,48 @@ def admin_reject_file(file_id):
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s RETURNING title;",
+            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s RETURNING title, course_code, uploaded_by;",
             (reason, admin_email, file_id)
         )
         row = cur.fetchone()
         if not row:
             return jsonify({"success": False, "message": "File not found."}), 404
+            
+        file_title, course_code, uploader_id = row
+        
+        # Send email to the submitter
+        if uploader_id:
+            try:
+                cur.execute("SELECT email, username FROM users WHERE user_id = %s;", (uploader_id,))
+                user_row = cur.fetchone()
+                if user_row:
+                    uploader_email, uploader_name = user_row
+                    from email_service import send_email
+                    subject = "Update on Your Material Submission - GIKI Course Hub"
+                    body = f"""
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2 style="color: #DC2626;">Material Update</h2>
+                        <p>Hi {uploader_name},</p>
+                        <p>Your recent material submission has been reviewed by an admin and was unfortunately <strong>rejected</strong>.</p>
+                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                            <li><strong>Title:</strong> {file_title}</li>
+                            <li><strong>Course:</strong> {course_code}</li>
+                        </ul>
+                        <div style="background: #FEF2F2; color: #991B1B; padding: 16px; border-left: 4px solid #DC2626; margin-top: 20px;">
+                            <strong>Reason from Admin:</strong><br/>
+                            {reason}
+                        </div>
+                        <p>If you have any questions or wish to correct the material, feel free to upload a revised version.</p>
+                    </div>
+                    """
+                    send_email(uploader_email, subject, body)
+            except Exception as e:
+                print(f"Failed to send rejection email: {e}")
+
         conn.commit()
         cur.close()
-        _log(admin_email, 'reject_file', file_id, row[0])
-        return jsonify({"success": True, "message": f"'{row[0]}' rejected."})
+        _log(admin_email, 'reject_file', file_id, file_title)
+        return jsonify({"success": True, "message": f"'{file_title}' rejected."})
     except Exception as e:
         conn.rollback()
         return jsonify({"success": False, "message": str(e)}), 500

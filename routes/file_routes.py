@@ -373,6 +373,30 @@ def upload_to_course(course_id):
             (new_file_id, file_size, file_type)
         )
 
+        # Notify admins if the file requires review
+        if initial_status == 'pending':
+            try:
+                from email_service import send_email
+                cur.execute("SELECT email FROM admins;")
+                admins = cur.fetchall()
+                for admin in admins:
+                    admin_email = admin[0]
+                    subject = "New Material Pending Review - GIKI Course Hub"
+                    body = f"""
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2 style="color: #2563EB;">New Material Uploaded</h2>
+                        <p>A student has uploaded a new material that is waiting for your review.</p>
+                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                            <li><strong>Title:</strong> {title}</li>
+                            <li><strong>Course:</strong> {course_code}</li>
+                        </ul>
+                        <p>Please log in to the <a href="https://gikicoursehub.app/admin" style="color: #F59E0B; font-weight: bold;">Admin Panel</a> to approve or reject it.</p>
+                    </div>
+                    """
+                    send_email(admin_email, subject, body)
+            except Exception as e:
+                print(f"Failed to trigger admin notification email: {e}")
+
         conn.commit()
         cur.close()
         msg = "Material published!" if initial_status == 'approved' else "Submitted for review — visible once an admin approves it."

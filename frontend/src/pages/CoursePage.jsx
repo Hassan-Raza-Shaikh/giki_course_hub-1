@@ -254,7 +254,7 @@ const CoursePage = ({ user, onSignIn }) => {
                   Sem {course.semester}
                 </span>
                 <span style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '0.78rem', fontWeight: 800,
-                  background: 'var(--hot-pink)', color: 'white', border: '2px solid var(--text)' }}>
+                  background: 'var(--tertiary)', color: 'white', border: '2px solid var(--text)' }}>
                   {course.program}
                 </span>
                 <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.9rem', padding: '6px 14px', borderRadius: '100px', border: '2px solid var(--border)', background: 'var(--bg-white)' }}>{course.code}</span>
@@ -401,7 +401,7 @@ const CoursePage = ({ user, onSignIn }) => {
               }}
               className="upload-trigger-btn"
               style={{
-                marginTop: '24px', background: 'var(--hot-pink)', color: 'var(--bg-hero)', border: '2px solid var(--text)',
+                marginTop: '24px', background: 'var(--tertiary)', color: 'var(--bg-hero)', border: '2px solid var(--text)',
                 boxShadow: '4px 4px 0px var(--text)', padding: '16px 20px', borderRadius: 'var(--radius-md)',
                 fontWeight: 900, fontSize: '0.95rem', cursor: 'pointer', textAlign: 'center',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
@@ -420,7 +420,7 @@ const CoursePage = ({ user, onSignIn }) => {
                  setTimeout(() => uploadRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
               }}
               style={{
-                width: '100%', background: 'var(--hot-pink)', color: 'var(--bg-hero)', border: '2px solid var(--text)',
+                width: '100%', background: 'var(--tertiary)', color: 'var(--bg-hero)', border: '2px solid var(--text)',
                 boxShadow: '4px 4px 0px var(--text)', padding: '14px 20px', borderRadius: 'var(--radius-md)',
                 fontWeight: 900, marginBottom: '24px', justifyContent: 'center', alignItems: 'center', gap: '12px'
               }}

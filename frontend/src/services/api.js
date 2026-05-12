@@ -40,7 +40,9 @@ const originalGet = api.get;
 
 api.get = async (url, config) => {
   // Check if this endpoint should be cached
-  const isCacheable = CACHED_ENDPOINTS.some(endpoint => url.includes(endpoint));
+  const isCacheable = CACHED_ENDPOINTS.some(endpoint => 
+    url === endpoint || url.startsWith(`${endpoint}?`)
+  );
   
   if (isCacheable) {
     const cacheKey = `api_cache_${url}`;

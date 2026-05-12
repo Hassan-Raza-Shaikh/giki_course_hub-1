@@ -158,7 +158,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
           }}>
             {open ? 'Collapse' : 'Expand'}
           </span>
-          <span style={{ color: 'var(--hot-pink)', transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none' }}>⌄</span>
+          <span style={{ color: 'var(--tertiary)', transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none' }}>⌄</span>
         </div>
       </div>
 
@@ -399,7 +399,7 @@ const Courses = () => {
               searchResults.map(course => (
                 <div key={`${course.id}-${course.program}`} style={{ borderBottom: '1px solid var(--border)', padding: '16px 24px' }}>
                   <CourseRow course={course} onClick={handleCourseClick} />
-                  <div style={{ paddingLeft: '62px', fontSize: '0.75rem', color: 'var(--hot-pink)', fontWeight: 600, marginTop: '-6px', marginBottom: '4px' }}>
+                  <div style={{ paddingLeft: '62px', fontSize: '0.75rem', color: 'var(--tertiary)', fontWeight: 600, marginTop: '-6px', marginBottom: '4px' }}>
                     {course.faculty} · {course.program}
                   </div>
                 </div>

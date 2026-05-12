@@ -168,7 +168,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
         <div className="page-container">
           <ScrollReveal>
             <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-              <p style={{ color: 'var(--hot-pink)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px' }}>
+              <p style={{ color: 'var(--tertiary)', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px' }}>
                 Featured Resources
               </p>
               <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: 'var(--primary)', letterSpacing: '-0.03em' }}>
@@ -207,7 +207,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                         padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700,
                         background: 'rgba(124,58,237,0.1)', color: 'var(--primary)', border: '1px solid rgba(124,58,237,0.2)',
                       }}>Sem {course.semester}</span>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--hot-pink)', fontWeight: 700 }}>{course.code}</span>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--tertiary)', fontWeight: 700 }}>{course.code}</span>
                     </div>
                     <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px', lineHeight: 1.3 }}>{course.name}</h3>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.6 }}>
