@@ -221,7 +221,7 @@ const CoursePage = ({ user, onSignIn }) => {
 
   return (
     <>
-    <div style={{ paddingTop: '70px', minHeight: '100vh' }}>
+    <div style={{ paddingTop: '70px', minHeight: '100vh', overflowX: 'hidden' }}>
 
       {/* ── Course Header ──────────────────────────────────── */}
       <div style={{
@@ -281,7 +281,7 @@ const CoursePage = ({ user, onSignIn }) => {
       </div>
 
       {/* ── Materials Section ──────────────────────────────── */}
-      <div className="page-container" style={{ padding: '64px 24px' }}>
+      <div className="page-container" style={{ padding: '40px 24px 64px' }}>
 
         <style>{`
           .course-grid {
@@ -331,7 +331,7 @@ const CoursePage = ({ user, onSignIn }) => {
             transform: translateY(-2px);
           }
           @media (max-width: 768px) {
-            .course-grid { grid-template-columns: 1fr; gap: 32px; }
+            .course-grid { grid-template-columns: 1fr; gap: 0; }
             .sidebar-container {
                position: sticky;
                top: 60px;
@@ -339,6 +339,13 @@ const CoursePage = ({ user, onSignIn }) => {
                background: var(--bg-hero);
                margin: 0 -16px;
                border-bottom: 2px solid var(--border);
+               padding-bottom: 2px;
+               overflow: hidden;
+            }
+            .category-tabs-container {
+              margin: 0;
+              overflow-x: auto;
+              -webkit-overflow-scrolling: touch;
             }
             .sidebar-tabs { 
               flex-direction: row; 
@@ -347,6 +354,7 @@ const CoursePage = ({ user, onSignIn }) => {
               background: transparent;
               -webkit-overflow-scrolling: touch;
               scrollbar-width: none;
+              min-width: unset;
             }
             .sidebar-tabs::-webkit-scrollbar { display: none; }
             .sidebar-tabs .tab-btn { 
@@ -360,7 +368,7 @@ const CoursePage = ({ user, onSignIn }) => {
 
         <div className="course-grid">
           {/* Left Sidebar */}
-          <div className="sidebar-container" style={{ position: 'sticky', top: '100px', height: 'fit-content' }}>
+          <div className="sidebar-container">
             <div className="category-tabs-container">
               <div className="category-tabs-wrapper sidebar-tabs">
                 {allTabs.map(tab => {
@@ -433,7 +441,7 @@ const CoursePage = ({ user, onSignIn }) => {
             {/* File List */}
             <ScrollReveal>
           <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
-            <div style={{ padding: '28px 32px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ padding: '20px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
                   {CATEGORY_ICONS[activeTab] || '📁'} {activeTab}
