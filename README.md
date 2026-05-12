@@ -1,114 +1,87 @@
-# GIKI Course Hub
+# GIKI Course Hub 🚀
 
-A playful and colorful academic resource web application built with React, Vite, and Tailwind CSS.
+A modern, high-performance academic resource platform built for students. GIKI Course Hub provides a centralized repository for course materials, including notes, slides, past papers, and lab manuals, all wrapped in a premium, responsive interface.
 
-## Features
+---
 
-- 📚 **Organized Resources**: Browse resources by Semester → Course → Instructor → Category
-- 🔍 **Global Search**: Search across semesters, courses, instructors, and files
-- ⭐ **Ratings**: View and rate resources
-- 💾 **Save Favorites**: Bookmark your favorite resources
-- 📝 **Contribute**: Share your own notes and resources
-- 🎨 **Playful Design**: Vibrant gradients and colorful UI
-- 📱 **Responsive**: Works on all devices
+## ✨ Key Features
 
-## Tech Stack
+- **🎯 Organized Directory**: Browse materials by Faculty → Program → Semester → Course.
+- **⚡ Electric Ember Theme**: A stunning, premium dark mode design with neon accents and vibrant micro-animations.
+- **🔍 Global Search**: Instant, categorized search across the entire academic directory.
+- **📤 Smart Contributions**: Secure file upload system with admin review workflow.
+- **🔖 Bookmarking**: Save your most-used resources to your personal dashboard.
+- **📧 Notifications**: Automated email updates for material approvals and rejections.
+- **🛡️ Admin Command Center**: Comprehensive tools for content moderation, user management, and platform analytics.
 
-- **React** with TypeScript
-- **Vite** for fast development
-- **Tailwind CSS** for styling
-- **React Router DOM** for routing
-- **Lucide React** for icons
-- **Context API** for state management
+---
 
-## Getting Started
+## 🛠 Tech Stack
+
+### Frontend
+- **React (Vite)**: For a fast, modern single-page application experience.
+- **Vanilla CSS**: Custom-built "Electric Ember" design system for maximum performance and visual control.
+- **Firebase Auth**: Secure Google Sign-In integration.
+- **Lucide React**: Crisp, modern iconography.
+
+### Backend
+- **Flask (Python)**: Robust RESTful API handling business logic and security.
+- **PostgreSQL**: Relational database for complex academic hierarchies and data integrity.
+- **Cloudflare R2**: High-performance, S3-compatible object storage for academic documents.
+- **SMTP**: Integrated email notification system for user feedback loops.
+
+---
+
+## 🏗 Repository Structure
+
+```
+├── frontend/           # React + Vite frontend source code
+├── routes/             # Flask API endpoints (Admin, Auth, Files, etc.)
+├── sql/                # Database schema and PL/pgSQL functions
+├── static/             # Static assets and build output
+├── app.py              # Backend entry point and configuration
+├── email_service.py    # Asynchronous email notification logic
+├── db.py               # Database connection and pooling
+└── requirements.txt    # Python dependencies
+```
+
+---
+
+## 🚦 Getting Started
 
 ### Prerequisites
+- Node.js (v18+)
+- Python (3.9+)
+- PostgreSQL Instance
+- Cloudflare R2 / S3 Credentials
 
-- Node.js (v18 or higher)
-- npm or yarn
+### Local Development
 
-### Installation
+1. **Clone the repository**
+2. **Setup Backend**:
+   ```bash
+   pip install -r requirements.txt
+   # Configure your .env file with DB and R2 credentials
+   python app.py
+   ```
+3. **Setup Frontend**:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-1. Install dependencies:
-```bash
-npm install
-```
+---
 
-2. Start the development server:
-```bash
-npm run dev
-```
+## ☁️ Deployment
 
-3. Open your browser and navigate to `http://localhost:5173`
+The project is architected for modern cloud platforms:
+- **Frontend**: Optimized for Vercel / Netlify.
+- **Backend**: Containerized and ready for Render / Heroku / AWS.
+- **Database**: Compatible with any managed PostgreSQL service (Supabase, Neon, etc.).
 
-### Build for Production
+---
 
-```bash
-npm run build
-```
+## 📜 License
 
-### Preview Production Build
-
-```bash
-npm run preview
-```
-
-## Project Structure
-
-```
-src/
-├── components/       # Reusable components
-│   ├── layout/      # Layout components (Sidebar, TopBar)
-│   ├── navigation/  # Navigation components
-│   ├── course/      # Course-related components
-│   ├── resource/    # Resource components
-│   └── contribution/ # Contribution form
-├── pages/           # Page components
-├── context/         # Context providers
-├── data/           # Mock data
-├── types/          # TypeScript types
-└── utils/          # Utility functions
-```
-
-## Navigation Flow
-
-```
-Home → Semesters → Courses → Instructors → Resource Dashboard → File List
-```
-
-## Features in Detail
-
-### Global Search
-Search across all semesters, courses, instructors, and files. Results appear in a dropdown with categorized results.
-
-### Quote of the Day
-Each course page displays an inspirational quote that rotates daily based on the course subject.
-
-### Contribution
-Users can contribute resources by selecting semester, course, and instructor (or adding a new one), then uploading a file.
-
-### Saved Items
-Bookmark your favorite resources for quick access later. Saved items persist in localStorage.
-
-## Mock Data
-
-The application uses mock data located in `src/data/mockData.ts`. This includes:
-- 8 semesters
-- Multiple courses per semester
-- Multiple instructors per course
-- Resource categories (Quizzes, Assignments, Books, Notes, Past Papers)
-- File metadata with ratings
-
-## Color Scheme
-
-The app uses a vibrant, playful color palette:
-- Purple-Pink gradients
-- Cyan-Blue gradients
-- Orange-Yellow gradients
-- Green-Emerald gradients
-- Rainbow gradients for special elements
-
-## License
-
-This project is created for educational purposes.
+This project is developed for educational purposes at GIK Institute.

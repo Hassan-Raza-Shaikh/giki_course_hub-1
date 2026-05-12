@@ -742,7 +742,13 @@ const AdminPanel = ({ user }) => {
                       if (selectedPending.size === pending.length) setSelectedPending(new Set());
                       else setSelectedPending(new Set(pending.map(f => f.file_id)));
                     }}
-                    style={{ background: 'none', border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ 
+                      background: 'none', border: '1px solid var(--border)', padding: '4px 10px', 
+                      borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer',
+                      color: 'var(--text)', transition: 'all 0.2s'
+                    }}
+                    onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+                    onMouseOut={e => e.currentTarget.style.background = 'none'}
                   >
                     {selectedPending.size === pending.length ? 'Deselect' : 'Select All'}
                   </button>

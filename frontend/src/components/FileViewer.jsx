@@ -121,7 +121,7 @@ const FileViewer = ({ file, onClose }) => {
         onClick={e => e.stopPropagation()}
         style={{
           width: '100%', maxWidth: '900px', height: '85vh',
-          background: 'white', borderRadius: '14px',
+          background: 'var(--bg-white)', borderRadius: '14px',
           border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)',
           display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}
@@ -130,7 +130,7 @@ const FileViewer = ({ file, onClose }) => {
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '14px 20px', borderBottom: '2px solid var(--border)',
-          background: 'white', flexShrink: 0,
+          background: 'var(--bg-white)', flexShrink: 0,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
             <span style={{ fontSize: '1.1rem' }}>
@@ -158,7 +158,7 @@ const FileViewer = ({ file, onClose }) => {
               <button
                 onClick={() => window.open(url, '_blank')}
                 style={{
-                  padding: '7px 16px', background: 'white', color: 'var(--text)',
+                  padding: '7px 16px', background: 'var(--bg-subtle)', color: 'var(--text)',
                   borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem',
                   border: '2px solid var(--text)', boxShadow: '2px 2px 0 var(--text)',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px',
@@ -171,12 +171,12 @@ const FileViewer = ({ file, onClose }) => {
               onClick={onClose}
               style={{
                 width: '34px', height: '34px', borderRadius: '8px', border: '2px solid var(--border)',
-                background: 'white', cursor: 'pointer', fontWeight: 900, fontSize: '1rem',
+                background: 'var(--bg-subtle)', cursor: 'pointer', fontWeight: 900, fontSize: '1rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 color: 'var(--text-muted)', transition: 'all 0.15s',
               }}
-              onMouseOver={e => { e.currentTarget.style.background = '#FEE2E2'; e.currentTarget.style.borderColor = '#DC2626'; e.currentTarget.style.color = '#DC2626'; }}
-              onMouseOut={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+              onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-white)'; e.currentTarget.style.borderColor = '#DC2626'; e.currentTarget.style.color = '#DC2626'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
             >
               ✕
             </button>
@@ -260,7 +260,7 @@ const TextPreview = ({ url }) => {
     <pre style={{
       width: '100%', height: '100%', margin: 0, padding: '24px',
       overflow: 'auto', fontFamily: 'monospace', fontSize: '0.85rem',
-      color: 'var(--text)', background: 'white', boxSizing: 'border-box',
+      color: 'var(--text)', background: 'var(--bg-white)', boxSizing: 'border-box',
       whiteSpace: 'pre-wrap', wordBreak: 'break-word',
     }}>
       {text}

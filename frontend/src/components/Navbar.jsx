@@ -52,16 +52,16 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-logo" onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="navbar-logo" onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         <div style={{
           background: 'var(--primary)', color: 'white', 
-          padding: '4px 10px', borderRadius: '6px', 
-          border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--accent)',
-          lineHeight: 1, letterSpacing: '0.02em'
+          padding: '2px 8px', borderRadius: '6px', 
+          border: '1.5px solid var(--text)', boxShadow: '2px 2px 0px var(--accent)',
+          lineHeight: 1, letterSpacing: '0.02em', fontSize: '0.9rem'
         }}>
           GIKI
         </div>
-        <span style={{ color: 'var(--text)', fontWeight: 900 }}>HUB</span>
+        <span style={{ color: 'var(--text)', fontWeight: 900, fontSize: '1rem' }}>HUB</span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -73,11 +73,11 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
             background: 'var(--bg-white)',
             border: '2px solid var(--border)',
             borderRadius: '50px',
-            padding: '4px 12px',
-            fontSize: '1.2rem',
+            padding: '4px 8px',
+            fontSize: '1rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '6px',
             boxShadow: 'var(--shadow-sm)',
             transition: 'var(--transition)',
             transform: 'scale(1)',
@@ -85,9 +85,10 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           onMouseDown={e => e.currentTarget.style.transform = 'scale(0.9)'}
           onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
         >
-          <span style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text)' }}>
+          <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text)' }}>
             {theme === 'light' ? 'Light' : 'Ember'}
           </span>
+          <span style={{ fontSize: '1.1rem' }}>{theme === 'light' ? '☀️' : '🔥'}</span>
         </button>
 
         <button
@@ -157,28 +158,30 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
               style={{
                 background: menuOpen ? 'var(--primary)' : 'var(--bg-white)',
                 color: menuOpen ? 'white' : 'var(--text)',
-                padding: '8px 18px',
+                padding: '6px 14px',
                 borderRadius: '100px',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
                 fontWeight: 700,
                 border: '2px solid var(--text)',
                 boxShadow: menuOpen ? 'none' : '3px 3px 0px var(--text)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '6px',
                 cursor: 'pointer',
                 transition: 'all 0.15s',
               }}
             >
               {user.photoURL ? (
-                <img src={user.photoURL} alt="" style={{ width: '22px', height: '22px', borderRadius: '50%', border: '1.5px solid currentColor' }} />
+                <img src={user.photoURL} alt="" style={{ width: '20px', height: '20px', borderRadius: '50%', border: '1.5px solid currentColor' }} />
               ) : (
-                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'var(--accent)', border: '1.5px solid currentColor', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 900 }}>
+                <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'var(--accent)', border: '1.5px solid currentColor', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 900 }}>
                   {(user.displayName || user.username || '?')[0].toUpperCase()}
                 </span>
               )}
-              {(user.displayName || user.username)?.split(' ')[0]}
-              <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>{menuOpen ? '▲' : '▼'}</span>
+              <span className="hide-mobile">
+                {(user.displayName || user.username)?.split(' ')[0]}
+              </span>
+              <span style={{ fontSize: '0.6rem', opacity: 0.7 }}>{menuOpen ? '▲' : '▼'}</span>
             </button>
 
             {/* Dashboard panel */}

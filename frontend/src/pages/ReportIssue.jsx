@@ -44,7 +44,7 @@ const ReportIssue = ({ user }) => {
         </div>
 
         <div style={{ 
-          background: 'white', borderRadius: '24px', border: '3px solid var(--text)',
+          background: 'var(--bg-white)', borderRadius: '24px', border: '3px solid var(--text)',
           boxShadow: '10px 10px 0 var(--text)', padding: '40px'
         }}>
           {success ? (

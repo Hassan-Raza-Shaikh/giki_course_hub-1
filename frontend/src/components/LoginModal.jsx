@@ -47,7 +47,7 @@ const InputField = ({ label, type = 'text', value, onChange, placeholder, requir
       style={{
         width: '100%', padding: '11px 14px', borderRadius: '8px',
         border: '2px solid var(--border)', fontSize: '0.9rem',
-        background: 'white', outline: 'none', transition: 'border-color 0.2s',
+        background: 'var(--bg-white)', outline: 'none', transition: 'border-color 0.2s',
         boxSizing: 'border-box',
       }}
       onFocus={e => e.target.style.borderColor = 'var(--primary)'}
@@ -194,14 +194,14 @@ const LoginModal = ({ onClose, onSuccess }) => {
           style={{
             position: 'absolute', top: '16px', right: '16px',
             width: '32px', height: '32px', borderRadius: '8px',
-            background: 'white', border: '2px solid var(--text)',
+            background: 'var(--bg-white)', border: '2px solid var(--text)',
             boxShadow: '2px 2px 0px var(--text)',
             fontSize: '1.1rem', lineHeight: 1, cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: 'var(--text)', fontWeight: 900, transition: 'all 0.15s',
           }}
-          onMouseOver={e => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.color = 'white'; e.currentTarget.style.boxShadow = 'none'; }}
-          onMouseOut={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.boxShadow = '2px 2px 0px var(--text)'; }}
+          onMouseOver={e => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.color = 'var(--bg-hero)'; e.currentTarget.style.boxShadow = 'none'; }}
+          onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.boxShadow = '2px 2px 0px var(--text)'; }}
         >
           ✕
         </button>
@@ -229,8 +229,8 @@ const LoginModal = ({ onClose, onSuccess }) => {
               <button key={t} onClick={() => { setTab(t); setError(''); }}
                 style={{
                   flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.88rem',
-                  background: tab === t ? 'var(--primary)' : 'white',
-                  color: tab === t ? 'white' : 'var(--text-muted)',
+                  background: tab === t ? 'var(--primary)' : 'var(--bg-white)',
+                  color: tab === t ? 'var(--bg-hero)' : 'var(--text-muted)',
                   border: 'none', cursor: 'pointer', transition: 'all 0.2s',
                   textTransform: 'capitalize',
                 }}
@@ -291,7 +291,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
                     minLength={7} maxLength={8}
                     pattern="\d{7,8}"
                     title="Registration number must be 7 or 8 digits"
-                    style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.9rem', background: 'white', outline: 'none', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.9rem', background: 'var(--bg-white)', outline: 'none', boxSizing: 'border-box' }}
                     onFocus={e => e.target.style.borderColor = 'var(--primary)'}
                     onBlur={e => e.target.style.borderColor = 'var(--border)'}
                   />
@@ -307,7 +307,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
                 <div>
                   <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Program</label>
                   <select value={signupProgram} onChange={e => setSignupProgram(e.target.value)}
-                    style={{ width: '100%', padding: '11px 10px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.83rem', background: 'white', outline: 'none' }}>
+                    style={{ width: '100%', padding: '11px 10px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.83rem', background: 'var(--bg-white)', outline: 'none' }}>
                     <option value="">Select programme…</option>
                     {PROGRAMS.map(group => (
                       <optgroup key={group.faculty} label={group.faculty}>

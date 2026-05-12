@@ -361,38 +361,40 @@ const CoursePage = ({ user, onSignIn }) => {
         <div className="course-grid">
           {/* Left Sidebar */}
           <div className="sidebar-container" style={{ position: 'sticky', top: '100px', height: 'fit-content' }}>
-            <div className="sidebar-tabs">
-              {allTabs.map(tab => {
-                const count = (filesByCategory[tab] || []).length;
-                return (
-                  <button
-                    key={tab}
-                    className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                    onClick={() => setActiveTab(tab)}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
-                  >
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {CATEGORY_ICONS[tab] || '📁'} {tab}
-                    </span>
-                    {count > 0 && (
-                      <span style={{
-                        background: activeTab === tab ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)',
-                        color: activeTab === tab ? 'white' : 'var(--text-muted)',
-                        padding: '2px 10px',
-                        borderRadius: '100px',
-                        fontSize: '0.72rem',
-                        fontWeight: 900,
-                        backdropFilter: 'blur(4px)',
-                        border: activeTab === tab ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
-                        fontFamily: 'Outfit',
-                        flexShrink: 0
-                      }}>
-                        {count}
+            <div className="category-tabs-container">
+              <div className="category-tabs-wrapper sidebar-tabs">
+                {allTabs.map(tab => {
+                  const count = (filesByCategory[tab] || []).length;
+                  return (
+                    <button
+                      key={tab}
+                      className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                      onClick={() => setActiveTab(tab)}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
+                    >
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {CATEGORY_ICONS[tab] || '📁'} {tab}
                       </span>
-                    )}
-                  </button>
-                );
-              })}
+                      {count > 0 && (
+                        <span style={{
+                          background: activeTab === tab ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.05)',
+                          color: activeTab === tab ? 'white' : 'var(--text-muted)',
+                          padding: '2px 10px',
+                          borderRadius: '100px',
+                          fontSize: '0.72rem',
+                          fontWeight: 900,
+                          backdropFilter: 'blur(4px)',
+                          border: activeTab === tab ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
+                          fontFamily: 'Outfit',
+                          flexShrink: 0
+                        }}>
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
             
             <button 
@@ -457,32 +459,35 @@ const CoursePage = ({ user, onSignIn }) => {
               currentFiles.map((file, i) => (
                 <div
                   key={file.id ?? file.file_id}
-                  className="file-item"
+                  className="file-item responsive-flex"
                   onClick={() => setViewerFile(file)}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', alignItems: 'flex-start' }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', flex: 1, minWidth: 0 }}>
                     <div style={{
                       width: 44, height: 44, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-sm)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0,
+                      marginTop: '2px'
                     }}>
                       {CATEGORY_ICONS[file.category] || '📁'}
                     </div>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.95rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.05rem', wordBreak: 'break-word' }}>
                         {file.title}
                       </div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '3px' }}>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.4 }}>
                         Contributed by <strong>{file.uploader || 'Anonymous'}</strong> · {file.date ? new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
-                        {file.file_size && ` · ${(file.file_size / (1024 * 1024)).toFixed(2)} MB`}
-                        {file.instructor_name && <span style={{ marginLeft: '8px', color: 'var(--primary)', fontWeight: 600 }}>🧑‍🏫 {file.instructor_name}</span>}
+                        <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                          {file.file_size && <span style={{ background: 'var(--bg-white)', padding: '1px 6px', borderRadius: '4px', border: '1px solid var(--border)' }}>{(file.file_size / (1024 * 1024)).toFixed(2)} MB</span>}
+                          {file.instructor_name && <span style={{ color: 'var(--primary)', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
+                        </div>
                       </div>
                       {file.admin_note && (
                         <div style={{
                           marginTop: '8px', padding: '7px 12px',
-                          background: '#FFFBEB', border: '1px solid #FCD34D',
+                          background: 'var(--bg-subtle)', border: '1px solid var(--border)',
                           borderRadius: '8px', fontSize: '0.78rem',
-                          color: '#92400E', lineHeight: 1.5,
+                          color: 'var(--text)', lineHeight: 1.5,
                           display: 'flex', gap: '6px', alignItems: 'flex-start'
                         }}>
                           <span style={{ flexShrink: 0 }}>📌</span>
@@ -491,7 +496,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       )}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={e => e.stopPropagation()}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }} onClick={e => e.stopPropagation()}>
                     {/* Bookmark button */}
                     <button
                       onClick={() => toggleBookmark(file)}
@@ -499,7 +504,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         background: bookmarks.has(file.file_id ?? file.id) ? 'var(--accent)' : 'var(--bg-white)',
                         border: '2px solid var(--text)',
                         borderRadius: '8px',
-                        padding: '6px 12px',
+                        padding: '8px 12px',
                         fontSize: '0.75rem',
                         fontWeight: 800,
                         cursor: 'pointer',
@@ -507,11 +512,12 @@ const CoursePage = ({ user, onSignIn }) => {
                         color: 'var(--text)',
                         boxShadow: bookmarks.has(file.file_id ?? file.id) ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '2px 2px 0px var(--text)',
                         whiteSpace: 'nowrap',
+                        flex: 1, textAlign: 'center'
                       }}
                     >
-                      {bookmarks.has(file.file_id ?? file.id) ? '✓ Bookmarked' : '+ Bookmark'}
+                      {bookmarks.has(file.file_id ?? file.id) ? '✓ Saved' : '+ Bookmark'}
                     </button>
-                    {/* Download — direct browser download + tracking */}
+                    {/* Download */}
                     {file.file_url && (
                       <a
                         href={file.file_url}
@@ -521,43 +527,17 @@ const CoursePage = ({ user, onSignIn }) => {
                         }}
                         style={{
                           background: 'var(--primary)', color: 'white',
-                          padding: '8px 18px', borderRadius: 8,
+                          padding: '10px 18px', borderRadius: 8,
                           fontWeight: 700, fontSize: '0.85rem',
                           border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--text)',
                           textDecoration: 'none', whiteSpace: 'nowrap',
-                          display: 'inline-block',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                          flex: 1.5, textAlign: 'center'
                         }}
                       >
                         ⬇ Download
                       </a>
                     )}
-                    {/* Flag button */}
-                    <button
-                      onClick={(e) => { 
-                        e.stopPropagation();
-                        if (!user) { onSignIn(); return; }
-                        setReportModal(file); 
-                        setReportReason(''); 
-                        setReportSent(false); 
-                      }}
-                      style={{
-                        background: 'var(--bg-white)',
-                        border: '2px solid var(--text)',
-                        borderRadius: '8px',
-                        padding: '6px 12px',
-                        fontSize: '0.75rem',
-                        fontWeight: 800,
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        color: '#DC2626',
-                        boxShadow: '2px 2px 0px var(--text)',
-                        whiteSpace: 'nowrap',
-                      }}
-                      onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
-                      onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; }}
-                    >
-                      🚩 Flag
-                    </button>
                   </div>
                 </div>
               ))
