@@ -116,7 +116,7 @@ def get_public_stats():
         faculties = cur.fetchone()[0]
         cur.execute("SELECT COUNT(*) FROM programs;")
         programs = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'approved';")
+        cur.execute("SELECT COUNT(*) FROM files WHERE status != 'rejected';")
         materials = cur.fetchone()[0]
         cur.close()
         return jsonify({

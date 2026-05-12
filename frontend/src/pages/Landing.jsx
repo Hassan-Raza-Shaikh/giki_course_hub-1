@@ -263,7 +263,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
             <ScrollReveal delay="reveal-delay-2">
               <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+                gridTemplateColumns: 'repeat(2, 1fr)', 
                 gap: '16px' 
               }}>
                 {statItems.map((s, i) => (
