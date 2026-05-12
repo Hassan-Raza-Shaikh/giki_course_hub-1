@@ -44,6 +44,7 @@ const AdminPanel = ({ user }) => {
   const [courseSearch, setCourseSearch] = useState('');
   const [faculties, setFaculties] = useState([]);
   const [programs,  setPrograms]  = useState([]);
+  const [categories, setCategories] = useState([]);
   
   const [allFiles, setAllFiles] = useState([]);
   const [users,    setUsers]    = useState([]);
@@ -608,10 +609,9 @@ const AdminPanel = ({ user }) => {
                 style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               >
                 <option value="">Select Category</option>
-                {faculties.length > 0 && categories.map(c => (
+                {categories.length > 0 && categories.map(c => (
                   <option key={c.id} value={c.id}>{c.name}</option>
                 ))}
-                {/* Fallback if categories not loaded yet (categories usually fetched per course, but admin gets global list or from some tab) */}
               </select>
             </div>
 
