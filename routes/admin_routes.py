@@ -592,8 +592,44 @@ def admin_resolve_report(report_id):
         cur.execute(
             "UPDATE reports SET status='resolved', resolved_by=%s, resolved_at=NOW(), admin_notes=%s WHERE report_id=%s RETURNING file_id;",
             (admin_email, notes, report_id))
-        if not cur.fetchone():
+        row = cur.fetchone()
+        if not row:
             return jsonify({"success": False, "message": "Report not found."}), 404
+
+        file_id = row[0]
+        # Notify the reporter
+        try:
+            from email_service import send_email
+            cur.execute("""
+                SELECT u.email, u.username, f.title, f.course_code
+                FROM reports r
+                JOIN users u ON u.user_id = r.reporter_id
+                JOIN files f ON f.file_id = r.file_id
+                WHERE r.report_id = %s;
+            """, (report_id,))
+            info = cur.fetchone()
+            if info:
+                reporter_email, reporter_name, file_title, course_code = info
+                send_email(
+                    reporter_email,
+                    "Your Report Has Been Resolved - GIKI Course Hub",
+                    f"""
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2 style="color: #059669;">✅ Report Resolved</h2>
+                        <p>Hi {reporter_name},</p>
+                        <p>Your content report has been reviewed and resolved by an admin.</p>
+                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                            <li><strong>File:</strong> {file_title}</li>
+                            <li><strong>Course:</strong> {course_code}</li>
+                        </ul>
+                        {f'<div style="background: #ECFDF5; color: #065F46; padding: 16px; border-left: 4px solid #059669; margin-top: 20px;"><strong>Admin notes:</strong><br/>{notes}</div>' if notes else ''}
+                        <p>Thank you for helping keep GIKI Course Hub safe and accurate!</p>
+                    </div>
+                    """
+                )
+        except Exception as e:
+            print(f"Failed to send resolve report email: {e}")
+
         conn.commit(); cur.close()
         _log(admin_email, 'resolve_report', report_id)
         return jsonify({"success": True, "message": "Report resolved."})
@@ -612,7 +648,41 @@ def admin_dismiss_report(report_id):
         cur = conn.cursor()
         cur.execute("UPDATE reports SET status='dismissed', resolved_by=%s, resolved_at=NOW() WHERE report_id=%s;",
                     (admin_email, report_id))
-        conn.commit(); cur.close()
+        conn.commit()
+
+        # Notify the reporter
+        try:
+            from email_service import send_email
+            cur.execute("""
+                SELECT u.email, u.username, f.title, f.course_code
+                FROM reports r
+                JOIN users u ON u.user_id = r.reporter_id
+                JOIN files f ON f.file_id = r.file_id
+                WHERE r.report_id = %s;
+            """, (report_id,))
+            info = cur.fetchone()
+            if info:
+                reporter_email, reporter_name, file_title, course_code = info
+                send_email(
+                    reporter_email,
+                    "Update on Your Report - GIKI Course Hub",
+                    f"""
+                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                        <h2 style="color: #6B7280;">Report Update</h2>
+                        <p>Hi {reporter_name},</p>
+                        <p>Your content report has been reviewed by an admin and was <strong>dismissed</strong> — the flagged content was found to be within platform guidelines.</p>
+                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                            <li><strong>File:</strong> {file_title}</li>
+                            <li><strong>Course:</strong> {course_code}</li>
+                        </ul>
+                        <p>If you believe this was an error, please use the <a href="https://gikicoursehub.app/report-issue" style="color: #F59E0B;">Report an Issue</a> page to contact us.</p>
+                    </div>
+                    """
+                )
+        except Exception as e:
+            print(f"Failed to send dismiss report email: {e}")
+
+        cur.close()
         _log(admin_email, 'dismiss_report', report_id)
         return jsonify({"success": True, "message": "Report dismissed."})
     except Exception as e:

@@ -546,6 +546,41 @@ def report_file(file_id):
         cur.close()
         if not row:
             return jsonify({"success": False, "message": "You have already reported this file."}), 409
+
+        # Notify all admins
+        try:
+            from email_service import send_email
+            cur.execute("""
+                SELECT a.email, f.title, f.course_code, u.username
+                FROM admins a, files f, users u
+                WHERE f.file_id = %s AND u.user_id = %s;
+            """, (file_id, session['user_id']))
+            info = cur.fetchall()
+            if info:
+                file_title = info[0][1]
+                course_code = info[0][2]
+                reporter_name = info[0][3]
+                for row_info in info:
+                    send_email(
+                        row_info[0],
+                        "Content Report Filed - GIKI Course Hub",
+                        f"""
+                        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                            <h2 style="color: #DC2626;">⚠️ New Content Report</h2>
+                            <p>A user has flagged a file for review.</p>
+                            <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
+                                <li><strong>File:</strong> {file_title}</li>
+                                <li><strong>Course:</strong> {course_code}</li>
+                                <li><strong>Reported by:</strong> {reporter_name}</li>
+                                <li><strong>Reason:</strong> {reason}</li>
+                            </ul>
+                            <p>Please log in to the <a href="https://gikicoursehub.app/admin" style="color: #F59E0B; font-weight: bold;">Admin Panel</a> to review this report.</p>
+                        </div>
+                        """
+                    )
+        except Exception as e:
+            print(f"Failed to send report notification email: {e}")
+
         return jsonify({"success": True, "message": "Report submitted. Thank you for keeping the platform safe."})
     except Exception as e:
         conn.rollback()
