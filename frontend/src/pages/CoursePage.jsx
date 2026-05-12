@@ -519,8 +519,8 @@ const CoursePage = ({ user, onSignIn }) => {
                         transition: 'all 0.2s',
                         color: 'var(--text)',
                         boxShadow: bookmarks.has(file.file_id ?? file.id) ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '2px 2px 0px var(--text)',
-                        whiteSpace: 'nowrap',
-                        flex: 1, textAlign: 'center'
+                      whiteSpace: 'nowrap',
+                      textAlign: 'center'
                       }}
                     >
                       {bookmarks.has(file.file_id ?? file.id) ? '✓ Saved' : '+ Bookmark'}
@@ -567,7 +567,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         color: '#DC2626',
                         boxShadow: '2px 2px 0px var(--text)',
                         whiteSpace: 'nowrap',
-                        flex: 1, textAlign: 'center'
+                        textAlign: 'center'
                       }}
                       onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
                       onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; }}
@@ -610,8 +610,8 @@ const CoursePage = ({ user, onSignIn }) => {
               ) : uploadSuccess ? (
                 <div style={{ textAlign: 'center', padding: '32px 0', animation: 'scaleIn 0.3s ease' }}>
                   <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
-                  <p style={{ fontWeight: 800, color: '#059669', fontSize: '1.2rem', marginBottom: '8px' }}>Material uploaded!</p>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Your contribution is now live and visible to all students.</p>
+                  <p style={{ fontWeight: 800, color: '#059669', fontSize: '1.2rem', marginBottom: '8px' }}>Material submitted!</p>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Your contribution is pending admin review and will go live once approved. You'll receive an email when it's processed.</p>
                   <button className="btn-primary" onClick={() => setUploadSuccess(false)}>Upload Another</button>
                 </div>
               ) : (
@@ -678,7 +678,7 @@ const CoursePage = ({ user, onSignIn }) => {
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
-                      File (optional)
+                      File *
                     </label>
                     <div
                       className="upload-zone"
@@ -787,7 +787,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
               />
               <div style={{ display: 'flex', gap: '10px', marginTop: '16px', justifyContent: 'flex-end' }}>
-                <button onClick={() => setReportModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+                <button onClick={() => setReportModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
                 <button
                   onClick={async () => {
                     if (!reportReason.trim()) return;
