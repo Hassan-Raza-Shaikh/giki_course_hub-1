@@ -108,13 +108,7 @@ const CoursePage = ({ user, onSignIn }) => {
       .catch(console.error)
       .finally(() => setLoading(false));
 
-    api.get('/instructors').then(res => {
-      if (res.data.success) setInstructors(res.data.instructors);
-    }).catch(console.error);
-
-    api.get(`/courses/${id}/instructors`).then(res => {
-      if (res.data.success) setCourseInstructors(res.data.instructors);
-    }).catch(console.error);
+    // Note: all_instructors and course_instructors are now provided by the main course detail call above.
   }, [id]);
 
   const handleUpload = async (e) => {
@@ -290,17 +284,17 @@ const CoursePage = ({ user, onSignIn }) => {
             gap: 48px;
             align-items: start;
           }
-          .sidebar-tabs {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            position: sticky;
-            top: 100px;
-          }
           .sidebar-container { 
             position: sticky; 
             top: 100px; 
             height: fit-content; 
+            z-index: 10;
+          }
+          .sidebar-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-top: 4px; /* Room for active tab transform */
           }
           .sidebar-tabs .tab-btn {
             justify-content: flex-start;
