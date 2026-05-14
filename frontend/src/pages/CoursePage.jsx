@@ -616,7 +616,7 @@ const CoursePage = ({ user, onSignIn }) => {
                     </div>
                   )}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
                       Title *
                     </label>
                     <input
@@ -625,20 +625,22 @@ const CoursePage = ({ user, onSignIn }) => {
                       placeholder="e.g. CS-302 Mid Term 2023"
                       value={uploadTitle}
                       onChange={e => setUploadTitle(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'border-color 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
-                      onFocus={e => e.target.style.borderColor = 'var(--text)'}
-                      onBlur={e => e.target.style.borderColor = 'var(--border)'}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'all 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+                      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
                       Category *
                     </label>
                     <select
                       required
                       value={uploadCatId}
                       onChange={e => setUploadCatId(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'all 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+                      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
                     >
                       <option value="">Select material type…</option>
                       {categories.map(c => (
@@ -647,13 +649,15 @@ const CoursePage = ({ user, onSignIn }) => {
                     </select>
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
                       Instructor (Optional)
                     </label>
                     <select
                       value={uploadInstructorId}
                       onChange={e => setUploadInstructorId(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'all 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
+                      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+                      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
                     >
                       <option value="">None / General Material</option>
                       {courseInstructors.length > 0 && (
@@ -671,12 +675,15 @@ const CoursePage = ({ user, onSignIn }) => {
                     </select>
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
                       File *
                     </label>
                     <div
                       className="upload-zone"
                       onClick={() => document.getElementById('file-input').click()}
+                      style={{ border: '2px dashed #CBD5E1', transition: 'all 0.2s' }}
+                      onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary)'}
+                      onMouseOut={e => e.currentTarget.style.borderColor = '#CBD5E1'}
                     >
                       {uploadFile ? (
                         <div>

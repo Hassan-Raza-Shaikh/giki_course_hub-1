@@ -86,23 +86,27 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Username</label>
+            <label style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Username</label>
             <input 
               type="text" 
               required
               placeholder="Your username"
-              style={{ padding: '14px', borderRadius: '12px', border: '1px solid var(--border)', outline: 'none', backgroundColor: '#F8FAFC', transition: 'var(--transition)' }}
+              style={{ padding: '14px', borderRadius: '12px', border: '2px solid #CBD5E1', outline: 'none', backgroundColor: '#F8FAFC', transition: 'all 0.2s' }}
+              onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+              onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
               value={formData.username}
               onChange={(e) => setFormData({...formData, username: e.target.value})}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Password</label>
+            <label style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Password</label>
             <input 
               type="password" 
               required
               placeholder="••••••••"
-              style={{ padding: '14px', borderRadius: '12px', border: '1px solid var(--border)', outline: 'none', backgroundColor: '#F8FAFC', transition: 'var(--transition)' }}
+              style={{ padding: '14px', borderRadius: '12px', border: '2px solid #CBD5E1', outline: 'none', backgroundColor: '#F8FAFC', transition: 'all 0.2s' }}
+              onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+              onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
             />

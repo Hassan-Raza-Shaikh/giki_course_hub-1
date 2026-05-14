@@ -35,7 +35,7 @@ const PROGRAMS = [
 
 const InputField = ({ label, type = 'text', value, onChange, placeholder, required }) => (
   <div>
-    <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>
+    <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>
       {label}{required && ' *'}
     </label>
     <input
@@ -46,12 +46,12 @@ const InputField = ({ label, type = 'text', value, onChange, placeholder, requir
       placeholder={placeholder}
       style={{
         width: '100%', padding: '11px 14px', borderRadius: '8px',
-        border: '2px solid var(--border)', fontSize: '0.9rem',
-        background: 'var(--bg-white)', outline: 'none', transition: 'border-color 0.2s',
+        border: '2px solid #CBD5E1', fontSize: '0.9rem',
+        background: 'var(--bg-white)', outline: 'none', transition: 'all 0.2s',
         boxSizing: 'border-box',
       }}
-      onFocus={e => e.target.style.borderColor = 'var(--primary)'}
-      onBlur={e => e.target.style.borderColor = 'var(--border)'}
+      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
     />
   </div>
 );
@@ -230,7 +230,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
                 style={{
                   flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.88rem',
                   background: tab === t ? 'var(--primary)' : 'var(--bg-white)',
-                  color: tab === t ? 'var(--bg-hero)' : 'var(--text-muted)',
+                  color: tab === t ? 'var(--bg-hero)' : 'var(--text)',
                   border: 'none', cursor: 'pointer', transition: 'all 0.2s',
                   textTransform: 'capitalize',
                 }}
@@ -257,9 +257,9 @@ const LoginModal = ({ onClose, onSuccess }) => {
 
           {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-muted)' }}>OR</span>
-            <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'var(--text-light)', opacity: 0.3 }} />
+            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text)' }}>OR</span>
+            <div style={{ flex: 1, height: '1px', background: 'var(--text-light)', opacity: 0.3 }} />
           </div>
 
           {/* ── LOGIN FORM ── */}
@@ -279,7 +279,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                 <InputField label="Full Name" required value={signupName} onChange={e => setSignupName(e.target.value)} placeholder="Ali Hassan" />
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Reg No</label>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Reg No</label>
                   <input
                     type="text"
                     value={signupStudentId}
@@ -291,9 +291,9 @@ const LoginModal = ({ onClose, onSuccess }) => {
                     minLength={7} maxLength={8}
                     pattern="\d{7,8}"
                     title="Registration number must be 7 or 8 digits"
-                    style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.9rem', background: 'var(--bg-white)', outline: 'none', boxSizing: 'border-box' }}
-                    onFocus={e => e.target.style.borderColor = 'var(--primary)'}
-                    onBlur={e => e.target.style.borderColor = 'var(--border)'}
+                    style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '2px solid #CBD5E1', fontSize: '0.9rem', background: 'var(--bg-white)', outline: 'none', boxSizing: 'border-box', transition: 'all 0.2s' }}
+                    onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+                    onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
                   />
                 </div>
               </div>
@@ -305,9 +305,12 @@ const LoginModal = ({ onClose, onSuccess }) => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                 <InputField label="Batch Year" type="number" value={signupBatch} onChange={e => setSignupBatch(e.target.value)} placeholder="2021" />
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Program</label>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Program</label>
                   <select value={signupProgram} onChange={e => setSignupProgram(e.target.value)}
-                    style={{ width: '100%', padding: '11px 10px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.83rem', background: 'var(--bg-white)', outline: 'none' }}>
+                    style={{ width: '100%', padding: '11px 10px', borderRadius: '8px', border: '2px solid #CBD5E1', fontSize: '0.83rem', background: 'var(--bg-white)', outline: 'none', transition: 'all 0.2s' }}
+                    onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
+                    onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
+                  >
                     <option value="">Select programme…</option>
                     {PROGRAMS.map(group => (
                       <optgroup key={group.faculty} label={group.faculty}>
