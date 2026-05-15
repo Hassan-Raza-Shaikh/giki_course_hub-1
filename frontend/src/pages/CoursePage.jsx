@@ -605,7 +605,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 <div style={{ textAlign: 'center', padding: '32px 0', animation: 'scaleIn 0.3s ease' }}>
                   <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
                   <p style={{ fontWeight: 800, color: '#059669', fontSize: '1.2rem', marginBottom: '8px' }}>Material submitted!</p>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Your contribution is pending admin review and will go live once approved. You'll receive an email when it's processed.</p>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Your contribution is pending admin review and will go live once approved.</p>
                   <button className="btn-primary" onClick={() => setUploadSuccess(false)}>Upload Another</button>
                 </div>
               ) : (

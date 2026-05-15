@@ -6,6 +6,7 @@ import { auth } from './firebase';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'https://giki-course-hub-backend.onrender.com/api',
   withCredentials: true,
+  timeout: 60000, // Global 60s timeout to prevent infinite hanging
   headers: {
     'Content-Type': 'application/json',
   },
