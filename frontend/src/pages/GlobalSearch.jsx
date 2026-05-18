@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
@@ -15,6 +15,8 @@ const GlobalSearch = ({ user, onSignIn }) => {
   const [faculties, setFaculties]   = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading]       = useState(false);
+
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
     let attempts = 0;
@@ -106,17 +108,30 @@ const GlobalSearch = ({ user, onSignIn }) => {
               <div style={{ position: 'relative', flex: 1, minWidth: '300px' }}>
                 <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.2rem' }}>🔍</span>
                 <input 
+                  id="global-search-input"
+                  ref={searchInputRef}
+                  autoFocus
                   type="text" 
                   placeholder="Search for courses, file titles, or codes..."
                   value={query}
                   onChange={(e) => updateFilters('q', e.target.value)}
                   style={{
-                    width: '100%', padding: '16px 16px 16px 48px',
+                    width: '100%', padding: '16px 56px 16px 48px',
                     borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
                     fontSize: '1rem', boxShadow: '4px 4px 0px var(--text)',
                     outline: 'none', background: 'var(--bg-white)', color: 'var(--text)'
                   }}
                 />
+                {/* '/' shortcut hint — hides when user has typed something */}
+                {!query && (
+                  <kbd style={{
+                    position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)',
+                    background: 'var(--bg-subtle)', border: '1.5px solid var(--border)',
+                    borderRadius: '6px', padding: '2px 8px', fontSize: '0.8rem',
+                    fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-muted)',
+                    pointerEvents: 'none', lineHeight: 1.6
+                  }}>/</kbd>
+                )}
               </div>
 
               <select 

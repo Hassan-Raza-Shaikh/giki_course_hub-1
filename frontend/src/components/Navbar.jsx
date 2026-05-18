@@ -126,6 +126,19 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
         >
           <span>🔍</span> Search
+          <kbd style={{
+            background: 'var(--bg-subtle)',
+            border: '1.5px solid var(--border)',
+            borderRadius: '5px',
+            padding: '1px 6px',
+            fontSize: '0.72rem',
+            fontFamily: 'monospace',
+            fontWeight: 700,
+            color: 'var(--text-muted)',
+            letterSpacing: 0,
+            lineHeight: 1.6,
+            marginLeft: '2px',
+          }}>/</kbd>
         </button>
 
         <button
@@ -254,7 +267,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 {/* Quick links */}
                 {[
                   { icon: '🔖', label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
-                  { icon: '🔍', label: 'Global Search', action: () => { setMenuOpen(false); navigate('/search'); } },
+                  { icon: '🔍', label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
                   { icon: '📚', label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
                   { icon: '🚩', label: 'Report an Issue', action: () => { setMenuOpen(false); navigate('/report-issue'); } },
                 ].map(link => (
@@ -265,7 +278,16 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   >
                     <span style={{ fontSize: '1rem' }}>{link.icon}</span>
                     {link.label}
-                    <span style={{ marginLeft: 'auto', color: 'var(--text-muted)', fontSize: '0.75rem' }}>→</span>
+                    <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      {link.badge && (
+                        <kbd style={{
+                          background: 'var(--bg-subtle)', border: '1.5px solid var(--border)',
+                          borderRadius: '5px', padding: '1px 6px', fontSize: '0.72rem',
+                          fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-muted)', lineHeight: 1.6
+                        }}>{link.badge}</kbd>
+                      )}
+                      <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>→</span>
+                    </span>
                   </button>
                 ))}
 

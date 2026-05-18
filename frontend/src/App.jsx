@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from './services/firebase';
 import api from './services/api';
@@ -152,6 +152,48 @@ const App = () => {
 
   return (
     <Router>
+      <AppContent
+        user={user}
+        showLogin={showLogin}
+        setShowLogin={setShowLogin}
+        setUser={setUser}
+        handleSignIn={handleSignIn}
+        handleSignOut={handleSignOut}
+      />
+    </Router>
+  );
+};
+
+// Inner component that lives inside <Router> so useNavigate works
+const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, handleSignOut }) => {
+  const navigate = useNavigate();
+
+  // Global '/' keyboard shortcut → navigate to search and auto-focus input
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ignore if user is typing in an input, textarea, or contenteditable
+      const tag = document.activeElement?.tagName;
+      const isEditable = document.activeElement?.isContentEditable;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || isEditable) return;
+      // Ignore if any modifier key is held
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      if (e.key === '/') {
+        e.preventDefault();
+        navigate('/search');
+        // Small delay to let the page mount before focusing the input
+        setTimeout(() => {
+          const input = document.getElementById('global-search-input');
+          if (input) input.focus();
+        }, 80);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
+
+  return (
+    <>
       <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
 
       {showLogin && (
@@ -180,7 +222,7 @@ const App = () => {
           <Route path="*"           element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
-    </Router>
+    </>
   );
 };
 
