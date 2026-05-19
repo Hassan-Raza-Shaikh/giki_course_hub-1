@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
+import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 
 const GlobalSearch = ({ user, onSignIn }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,6 +18,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
   const [loading, setLoading]       = useState(false);
 
   const searchInputRef = useRef(null);
+  const { copiedId, msg, copyLink } = useCopyLink();
 
   useEffect(() => {
     let attempts = 0;
@@ -237,20 +239,29 @@ const GlobalSearch = ({ user, onSignIn }) => {
                         {file.instructor_name && <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
                       </div>
                       
-                      <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                           {file.file_size ? `${(file.file_size / (1024*1024)).toFixed(2)} MB` : ''}
                         </div>
-                        <button 
-                          onClick={() => {
-                            if(user) window.open(file.file_url, '_blank');
-                            else onSignIn();
-                          }}
-                          className="btn-primary" 
-                          style={{ padding: '8px 16px', fontSize: '0.85rem' }}
-                        >
-                          Download
-                        </button>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          <CopyLinkButton
+                            id={file.id}
+                            url={file.file_url}
+                            copyLink={copyLink}
+                            copiedId={copiedId}
+                            msg={msg}
+                          />
+                          <button 
+                            onClick={() => {
+                              if(user) window.open(file.file_url, '_blank');
+                              else onSignIn();
+                            }}
+                            className="btn-primary" 
+                            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                          >
+                            Download
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import FileViewer from '../components/FileViewer';
+import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 
 const CATEGORY_ICONS = {
   'Outline':         '📋',
@@ -18,6 +19,7 @@ const CATEGORY_ICONS = {
 const CoursePage = ({ user, onSignIn }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { copiedId, msg, copyLink } = useCopyLink();
   const uploadRef = useRef(null);
 
   const [course, setCourse]           = useState(null);
@@ -519,6 +521,14 @@ const CoursePage = ({ user, onSignIn }) => {
                     >
                       {bookmarks.has(file.file_id ?? file.id) ? '✓ Saved' : '+ Bookmark'}
                     </button>
+                    {/* Copy Link */}
+                    <CopyLinkButton
+                      id={file.file_id ?? file.id}
+                      url={file.file_url}
+                      copyLink={copyLink}
+                      copiedId={copiedId}
+                      msg={msg}
+                    />
                     {/* Download */}
                     {file.file_url && (
                       <a

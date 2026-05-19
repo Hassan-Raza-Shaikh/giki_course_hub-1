@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
+import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 
 const CATEGORY_ICONS = {
   'Outline':     '📋',
@@ -18,6 +19,7 @@ const Bookmarks = ({ user, onSignIn }) => {
   const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading]     = useState(false);
   const navigate = useNavigate();
+  const { copiedId, msg, copyLink } = useCopyLink();
 
   useEffect(() => {
     if (!user) { setBookmarks([]); return; }
@@ -115,7 +117,7 @@ const Bookmarks = ({ user, onSignIn }) => {
                     )}
                   </div>
 
-                  <div style={{ marginTop: '8px', display: 'flex', gap: '12px' }}>
+                  <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <a
                       href={file.file_url}
                       target="_blank"
@@ -125,6 +127,14 @@ const Bookmarks = ({ user, onSignIn }) => {
                     >
                       Download
                     </a>
+                    <CopyLinkButton
+                      id={file.file_id}
+                      url={file.file_url}
+                      copyLink={copyLink}
+                      copiedId={copiedId}
+                      msg={msg}
+                      style={{ flex: 1 }}
+                    />
                     <button
                       onClick={() => navigate(`/course/${file.course_id}`)}
                       className="btn-outline"
