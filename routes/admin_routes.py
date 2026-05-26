@@ -141,7 +141,8 @@ def admin_pending_files():
         cur.execute("""
             SELECT f.file_id, f.title, f.file_url, f.course_code,
                    f.upload_date, cat.name AS category,
-                   u.email AS uploader_email, u.username AS uploader
+                   u.email AS uploader_email, u.username AS uploader,
+                   f.category_id, f.instructor_id
             FROM files f
             JOIN categories cat ON cat.category_id = f.category_id
             LEFT JOIN users u   ON u.user_id = f.uploaded_by
@@ -180,7 +181,8 @@ def admin_all_files():
                    f.upload_date, f.reviewed_at, f.reviewed_by,
                    cat.name AS category,
                    u.email AS uploader_email, u.username AS uploader,
-                   m.file_size, fn.note_text AS admin_note
+                   m.file_size, fn.note_text AS admin_note,
+                   f.category_id, f.instructor_id
             FROM files f
             JOIN categories cat ON cat.category_id = f.category_id
             LEFT JOIN users u   ON u.user_id = f.uploaded_by

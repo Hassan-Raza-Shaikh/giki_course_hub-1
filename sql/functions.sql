@@ -106,13 +106,15 @@ BEGIN
                     'file_id', f.file_id,
                     'title', f.title,
                     'category', COALESCE(cat.name, 'General'),
+                    'category_id', f.category_id,
                     'uploader', u.username,
                     'date', f.upload_date,
                     'file_url', f.file_url,
                     'file_size', m.file_size,
                     'file_type', m.file_type,
                     'admin_note', fn.note_text,
-                    'instructor_name', i.name
+                    'instructor_name', i.name,
+                    'instructor_id', f.instructor_id
                 ) ORDER BY f.upload_date DESC
             ) AS files
         FROM files f

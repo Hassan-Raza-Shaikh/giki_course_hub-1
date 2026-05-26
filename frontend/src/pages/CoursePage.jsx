@@ -28,6 +28,7 @@ const CoursePage = ({ user, onSignIn }) => {
   const [instructors, setInstructors] = useState([]);
   const [courseInstructors, setCourseInstructors] = useState([]);
   const [instructorFilter, setInstructorFilter] = useState('');
+  const [sortBy, setSortBy]           = useState('name-asc');
   const [activeTab, setActiveTab]     = useState('');
   const [loading, setLoading]         = useState(true);
   const [viewerFile, setViewerFile]   = useState(null);
@@ -37,6 +38,10 @@ const CoursePage = ({ user, onSignIn }) => {
   // bookmarks = Set of file_ids the user has bookmarked
   const [bookmarks, setBookmarks] = useState(new Set());
 
+  // Admin Edit File state
+  const [editFileModal, setEditFileModal] = useState(null);
+  const [editFileForm, setEditFileForm] = useState({ title: '', category_id: '', instructor_id: '', course_code: '' });
+  const [editCourses, setEditCourses] = useState([]);
   useEffect(() => {
     if (!user) { setBookmarks(new Set()); return; }
     api.get('/bookmarks')
@@ -85,9 +90,10 @@ const CoursePage = ({ user, onSignIn }) => {
   const [uploadSummary, setUploadSummary] = useState(null);
 
   const ALLOWED_EXTS = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg'];
-  const MAX_FILES = 10;
-  const DEFAULT_MAX_MB = 10;
-  const REFERENCE_MAX_MB = 50;
+  const isAdmin = user?.role === 'admin';
+  const MAX_FILES = isAdmin ? 1000 : 10;
+  const DEFAULT_MAX_MB = isAdmin ? 10000 : 10;
+  const REFERENCE_MAX_MB = isAdmin ? 10000 : 50;
 
   const getCatNameById = (catId) => {
     const c = categories.find(c => String(c.id) === String(catId));
@@ -177,6 +183,40 @@ const CoursePage = ({ user, onSignIn }) => {
 
     // Note: all_instructors and course_instructors are now provided by the main course detail call above.
   }, [id]);
+
+  const openEditFile = (file) => {
+    setEditFileModal(file);
+    setEditFileForm({
+      title: file.title || '',
+      category_id: file.category_id || '',
+      instructor_id: file.instructor_id || '',
+      course_code: file.course_code || course?.code || '',
+    });
+    if (isAdmin) {
+      api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(() => {});
+      if (instructors.length === 0) {
+          api.get('/instructors').then(r => setInstructors(r.data.instructors || [])).catch(() => {});
+      }
+    }
+  };
+
+  const saveEditFile = async () => {
+    if (!editFileModal) return;
+    try {
+      await api.put(`/admin/files/${editFileModal.file_id ?? editFileModal.id}`, editFileForm);
+      setEditFileModal(null);
+      // Reload current course
+      api.get(`/courses/${id}`).then(res => {
+        if (res.data.success) {
+          setFiles(res.data.files_by_category);
+          setCourseInstructors(res.data.course_instructors || []);
+        }
+      });
+      alert('File updated successfully! ✨');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Update failed.');
+    }
+  };
 
   const handleBulkUpload = async (e) => {
     e.preventDefault();
@@ -308,9 +348,27 @@ const CoursePage = ({ user, onSignIn }) => {
 
   // ── Derived data — MUST be above any early returns (Rules of Hooks) ──────
   const allTabs = categories.map(c => c.name);
-  const currentFiles = (filesByCategory[activeTab] || []).filter(
-    f => !instructorFilter || (instructorFilter === 'general' ? !f.instructor_name : f.instructor_name === instructorFilter)
-  );
+  const currentFiles = React.useMemo(() => {
+    const rawFiles = (filesByCategory[activeTab] || []).filter(
+      f => !instructorFilter || (instructorFilter === 'general' ? !f.instructor_name : f.instructor_name === instructorFilter)
+    );
+
+    return [...rawFiles].sort((a, b) => {
+      if (sortBy === 'name-asc') {
+        return a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' });
+      }
+      if (sortBy === 'name-desc') {
+        return b.title.localeCompare(a.title, undefined, { numeric: true, sensitivity: 'base' });
+      }
+      if (sortBy === 'date-desc') {
+        return new Date(b.date || 0) - new Date(a.date || 0);
+      }
+      if (sortBy === 'date-asc') {
+        return new Date(a.date || 0) - new Date(b.date || 0);
+      }
+      return 0;
+    });
+  }, [filesByCategory, activeTab, instructorFilter, sortBy]);
 
   // Group instructors by faculty for organized dropdown
   const otherInstructorsGrouped = React.useMemo(() => {
@@ -584,17 +642,29 @@ const CoursePage = ({ user, onSignIn }) => {
                   {currentFiles.length} {currentFiles.length === 1 ? 'resource' : 'resources'} available
                 </p>
               </div>
-              {courseInstructors.length > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                {courseInstructors.length > 0 && (
+                  <select
+                    value={instructorFilter}
+                    onChange={e => setInstructorFilter(e.target.value)}
+                    style={{ padding: '8px 12px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.85rem', fontWeight: 700, outline: 'none', background: 'var(--bg-subtle)', cursor: 'pointer' }}
+                  >
+                    <option value="">All Instructors</option>
+                    <option value="general">General Material</option>
+                    {courseInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
+                  </select>
+                )}
                 <select
-                  value={instructorFilter}
-                  onChange={e => setInstructorFilter(e.target.value)}
+                  value={sortBy}
+                  onChange={e => setSortBy(e.target.value)}
                   style={{ padding: '8px 12px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.85rem', fontWeight: 700, outline: 'none', background: 'var(--bg-subtle)', cursor: 'pointer' }}
                 >
-                  <option value="">All Instructors</option>
-                  <option value="general">General Material</option>
-                  {courseInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
+                  <option value="name-asc">🔤 Sort by Name (A-Z)</option>
+                  <option value="name-desc">🔤 Sort by Name (Z-A)</option>
+                  <option value="date-desc">📅 Sort by Date (Newest)</option>
+                  <option value="date-asc">📅 Sort by Date (Oldest)</option>
                 </select>
-              )}
+              </div>
             </div>
 
             {currentFiles.length > 0 ? (
@@ -639,6 +709,22 @@ const CoursePage = ({ user, onSignIn }) => {
                     </div>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }} onClick={e => e.stopPropagation()}>
+                    {isAdmin && (
+                      <button
+                        onClick={() => openEditFile(file)}
+                        style={{
+                          background: 'var(--bg-white)',
+                          border: '2px solid var(--text)',
+                          borderRadius: '8px',
+                          padding: '6px 12px',
+                          cursor: 'pointer',
+                          fontWeight: 700,
+                          fontSize: '0.85rem'
+                        }}
+                      >
+                        ✏️ Edit
+                      </button>
+                    )}
                     {/* Bookmark button */}
                     <button
                       onClick={() => toggleBookmark(file)}
@@ -738,7 +824,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 📤 Contribute Materials
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                Share your notes, past papers, or slides with the GIKI community. You can upload up to 10 files at once.
+                Share your notes, past papers, or slides with the GIKI community. {isAdmin ? 'Admin bulk upload unlocked (up to 1,000 files).' : 'You can upload up to 10 files at once.'}
               </p>
             </div>
 
@@ -787,7 +873,9 @@ const CoursePage = ({ user, onSignIn }) => {
                       <div>
                         <div style={{ fontSize: '2rem', marginBottom: '12px' }}>☁️</div>
                         <div style={{ fontWeight: 700, color: 'var(--primary)' }}>Drop files here or click to browse</div>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>PDF, DOCX, PPTX, TXT, ZIP, images · Max 10MB per file (50MB for Reference)</p>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
+                          PDF, DOCX, PPTX, TXT, ZIP, images · {isAdmin ? 'No size limits for Admin' : 'Max 10MB per file (50MB for Reference)'}
+                        </p>
                       </div>
                       <input
                         id="file-input-bulk"
@@ -861,7 +949,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           <div key={idx} style={{
                             padding: '14px 16px', borderRadius: 'var(--radius-md)',
                             border: `1px solid ${item.status === 'error' ? '#FCA5A5' : item.status === 'done' ? '#86EFAC' : item.status === 'skipped' ? '#FDE68A' : 'var(--border)'}`,
-                            background: item.status === 'error' ? '#FEF2F2' : item.status === 'done' ? '#F0FDF4' : item.status === 'skipped' ? '#FFFBEB' : 'var(--bg-white)',
+                            background: item.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : item.status === 'done' ? 'rgba(34, 197, 94, 0.1)' : item.status === 'skipped' ? 'rgba(234, 179, 8, 0.1)' : 'var(--bg-white)',
                             transition: 'all 0.2s',
                           }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
@@ -874,7 +962,7 @@ const CoursePage = ({ user, onSignIn }) => {
                                   value={item.title}
                                   onChange={e => updateQueueItem(idx, { title: e.target.value })}
                                   placeholder="File title"
-                                  style={{ flex: '1 1 180px', padding: '8px 10px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', minWidth: 0 }}
+                                  style={{ flex: '1 1 180px', padding: '8px 10px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)', minWidth: 0 }}
                                   onFocus={e => e.target.style.borderColor = 'var(--primary)'}
                                   onBlur={e => e.target.style.borderColor = '#CBD5E1'}
                                 />
@@ -894,7 +982,7 @@ const CoursePage = ({ user, onSignIn }) => {
                                 <select
                                   value={item.category_id}
                                   onChange={e => updateQueueItem(idx, { category_id: e.target.value })}
-                                  style={{ padding: '6px 8px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.8rem', outline: 'none', background: 'var(--bg-white)', maxWidth: '140px' }}
+                                  style={{ padding: '6px 8px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.8rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)', maxWidth: '140px' }}
                                 >
                                   <option value="">Category…</option>
                                   {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -977,6 +1065,76 @@ const CoursePage = ({ user, onSignIn }) => {
     )}
 
     {/* Report modal */}
+    {/* Edit File Modal (Admins only) */}
+    {editFileModal && (
+      <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '500px' }}>
+          <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>✏️ Edit File Details</h3>
+          
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>File Title</label>
+            <input 
+              type="text" 
+              value={editFileForm.title} 
+              onChange={e => setEditFileForm({ ...editFileForm, title: e.target.value })}
+              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Category</label>
+            <select 
+              value={editFileForm.category_id}
+              onChange={e => setEditFileForm({ ...editFileForm, category_id: e.target.value })}
+              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+            >
+              <option value="">Select Category</option>
+              {categories.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Instructor (Optional)</label>
+            <select 
+              value={editFileForm.instructor_id}
+              onChange={e => setEditFileForm({ ...editFileForm, instructor_id: e.target.value })}
+              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+            >
+              <option value="">None / General</option>
+              {instructors.map(i => (
+                <option key={i.id} value={i.id}>{i.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Move to Course</label>
+            <input
+              type="text"
+              list="edit-course-list"
+              value={editFileForm.course_code}
+              onChange={e => setEditFileForm({ ...editFileForm, course_code: e.target.value.toUpperCase() })}
+              placeholder={`Current: ${editFileModal?.course_code || course?.code || '—'}`}
+              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+            />
+            <datalist id="edit-course-list">
+              {editCourses.map(c => (
+                <option key={c.code} value={c.code}>{c.icon} {c.code} — {c.name}</option>
+              ))}
+            </datalist>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>Type or select a course code. Leave blank to keep current.</p>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+            <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+            <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'var(--primary)', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
+          </div>
+        </div>
+      </div>
+    )}
+
     {reportModal && (
       <div
         onClick={() => setReportModal(null)}
