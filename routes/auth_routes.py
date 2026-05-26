@@ -146,13 +146,13 @@ def firebase_auth():
 
         session['user_id']  = user_id
         session['username'] = user[1]
-        session['role']     = user[2]
+        session['role']     = role  # use the updated role variable
 
         return jsonify({
             "success": True,
             "message": f"Welcome, {user[1]}!",
             "user": {
-                "id": user_id, "username": user[1], "role": user[2],
+                "id": user_id, "username": user[1], "role": role,
                 "displayName": display_name, "photoURL": photo_url, "email": email
             }
         })
