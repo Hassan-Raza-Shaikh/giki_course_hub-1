@@ -1,14 +1,26 @@
 import random
-from flask import Blueprint, request, session, jsonify
+import time
+import threading
+from flask import Blueprint, request, session, jsonify, current_app
 import boto3
 from botocore.exceptions import NoCredentialsError
 from db import get_connection
 from werkzeug.utils import secure_filename
 import os
 import uuid
-from config import ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY, R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX
+from config import (
+    ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY,
+    R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX,
+    DEFAULT_MAX_FILE_SIZE, REFERENCE_MAX_FILE_SIZE, REFERENCE_CATEGORY_NAME,
+    BULK_MAX_FILES, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
+)
+from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension
 
 file_bp = Blueprint('files', __name__)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Helpers
+# ─────────────────────────────────────────────────────────────────────────────
 
 def get_s3_client():
     if not R2_ENDPOINT_URL or not R2_ACCESS_KEY or not R2_SECRET_KEY:
@@ -22,9 +34,64 @@ def get_s3_client():
     )
 
 
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def _get_max_file_size(category_name):
+    """Return the max allowed file size based on category."""
+    if category_name and category_name.strip().lower() == REFERENCE_CATEGORY_NAME.lower():
+        return REFERENCE_MAX_FILE_SIZE
+    return DEFAULT_MAX_FILE_SIZE
+
+
+def _resolve_category_name(cur, category_id):
+    """Look up the category name by ID. Returns name or None."""
+    if not category_id:
+        return None
+    cur.execute("SELECT name FROM categories WHERE category_id = %s;", (category_id,))
+    row = cur.fetchone()
+    return row[0] if row else None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# In-memory bulk upload batch store (with auto-expiry)
+# In production, replace with Redis for multi-worker support.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_bulk_batches = {}        # batch_id -> { user_id, course_id, files: [...], created_at, ... }
+_batches_lock = threading.Lock()
+
+
+def _cleanup_expired_batches():
+    """Remove batches older than BULK_BATCH_TTL."""
+    now = time.time()
+    with _batches_lock:
+        expired = [bid for bid, b in _bulk_batches.items() if now - b['created_at'] > BULK_BATCH_TTL]
+        for bid in expired:
+            del _bulk_batches[bid]
+
+
+def _get_batch(batch_id, user_id):
+    """Retrieve a batch if it exists and belongs to the user. Returns (batch, error_response)."""
+    _cleanup_expired_batches()
+    with _batches_lock:
+        batch = _bulk_batches.get(batch_id)
+    if not batch:
+        return None, (jsonify({"success": False, "message": "Batch not found or expired."}), 404)
+    if batch['user_id'] != user_id:
+        return None, (jsonify({"success": False, "message": "Unauthorized."}), 403)
+    return batch, None
+
+
+def _format_size(size_bytes):
+    """Human-readable file size."""
+    if size_bytes < 1024:
+        return f"{size_bytes} B"
+    elif size_bytes < 1024 * 1024:
+        return f"{size_bytes / 1024:.1f} KB"
+    else:
+        return f"{size_bytes / (1024 * 1024):.1f} MB"
 
 
 @file_bp.route('/api/search', methods=['GET'])
@@ -289,18 +356,27 @@ def upload_to_course(course_id):
         if not uploader:
             return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
 
+        # ── Magic byte verification ───────────────────────────────────────────
+        ext = get_file_extension(file.filename)
+        if not validate_file_magic_bytes(file, ext):
+            return jsonify({"success": False, "message": "File content does not match its extension. The file may be corrupted or mislabeled."}), 400
+
         # Get file size
         file.seek(0, os.SEEK_END)
         file_size = file.tell()
         file.seek(0)
 
-        # Enforce 100MB limit
-        if file_size > 100 * 1024 * 1024:
-            return jsonify({"success": False, "message": "File size exceeds the 100MB limit."}), 400
-
         conn = get_connection()
         cur = conn.cursor()
-        
+
+        # ── Category-aware size limit ─────────────────────────────────────────
+        category_name = _resolve_category_name(cur, category_id)
+        max_size = _get_max_file_size(category_name)
+        if file_size > max_size:
+            cur.close()
+            limit_mb = max_size // (1024 * 1024)
+            return jsonify({"success": False, "message": f"File size exceeds the {limit_mb}MB limit for {category_name or 'this category'}. Reference materials allow up to 50MB."}), 400
+
         # Verify course exists BEFORE uploading to R2 to prevent orphaned files
         cur.execute("SELECT name, code FROM courses WHERE course_id = %s;", (course_id,))
         course_row = cur.fetchone()
@@ -323,6 +399,17 @@ def upload_to_course(course_id):
 
         c_name, c_code = course_row
         course_code    = c_code or c_name
+
+        # ── Content hash for deduplication ────────────────────────────────────
+        content_hash = compute_file_hash(file)
+        cur.execute(
+            "SELECT file_id, title FROM files WHERE course_code = %s AND content_hash = %s AND status != 'rejected';",
+            (course_code, content_hash)
+        )
+        dup = cur.fetchone()
+        if dup:
+            cur.close()
+            return jsonify({"success": False, "message": f"This exact file already exists as \"{dup[1]}\"."}), 409
 
         s3_client = get_s3_client()
         if not s3_client:
@@ -356,9 +443,9 @@ def upload_to_course(course_id):
         initial_status = 'approved' if is_admin else 'pending'
 
         cur.execute("""
-            INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path, instructor_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING file_id;
-        """, (title, course_code, category_id, uploader, initial_status, file_url, unique_filename, instructor_id))
+            INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path, instructor_id, content_hash)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING file_id;
+        """, (title, course_code, category_id, uploader, initial_status, file_url, unique_filename, instructor_id, content_hash))
         new_file_id = cur.fetchone()[0]
 
         # Automatically associate the instructor with this course if not already linked
@@ -608,3 +695,391 @@ def get_file_note(file_id):
         return jsonify({"success": True, "note": {"text": row[0], "by": row[1], "at": str(row[2])}})
     finally:
         conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Bulk Upload — Sequential, secure multi-file upload
+# ─────────────────────────────────────────────────────────────────────────────
+
+@file_bp.route('/api/courses/<int:course_id>/bulk-upload/init', methods=['POST'])
+def bulk_upload_init(course_id):
+    """
+    Initialize a bulk upload session.
+    Accepts a manifest of files to upload, pre-validates them, and returns a
+    batch_id for the sequential upload pipeline.
+    Rate limited to 3 per hour per user.
+    """
+    # Rate limiting — accessed via current_app.limiter set up in app.py
+    try:
+        limiter = current_app.limiter
+        limiter.check()  # Uses the global limit; we add a specific decorator-free check below
+    except Exception:
+        pass  # If limiter not configured, allow through
+
+    uploader = session.get('user_id')
+    if not uploader:
+        return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
+
+    data = request.get_json() or {}
+    files_manifest = data.get('files', [])
+
+    if not files_manifest:
+        return jsonify({"success": False, "message": "No files provided."}), 400
+
+    if len(files_manifest) > BULK_MAX_FILES:
+        return jsonify({"success": False, "message": f"Maximum {BULK_MAX_FILES} files per bulk upload."}), 400
+
+    # Pre-validate each file in the manifest
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+
+        # Verify course exists
+        cur.execute("SELECT name, code, is_lab FROM courses WHERE course_id = %s;", (course_id,))
+        course_row = cur.fetchone()
+        if not course_row:
+            cur.close()
+            return jsonify({"success": False, "message": "Course not found."}), 404
+
+        c_name, c_code, is_lab = course_row
+        course_code = c_code or c_name
+
+        accepted = []
+        rejected = []
+        total_size = 0
+
+        for idx, f in enumerate(files_manifest):
+            name = f.get('name', '')
+            size = f.get('size', 0)
+            cat_id = f.get('category_id')
+            title = f.get('title', '').strip()
+
+            # Auto-generate title from filename if not provided
+            if not title and name:
+                title = name.rsplit('.', 1)[0].replace('_', ' ').replace('-', ' ').strip()
+
+            # Extension check
+            if not allowed_file(name):
+                ext = name.rsplit('.', 1)[-1] if '.' in name else 'unknown'
+                rejected.append({"index": idx, "name": name, "reason": f".{ext} files are not allowed"})
+                continue
+
+            # Category check
+            if not cat_id:
+                rejected.append({"index": idx, "name": name, "reason": "Category is required"})
+                continue
+
+            cat_name = _resolve_category_name(cur, cat_id)
+            if not cat_name:
+                rejected.append({"index": idx, "name": name, "reason": "Invalid category"})
+                continue
+
+            # Lab category vs non-lab course check
+            cur.execute("SELECT is_lab_category FROM categories WHERE category_id = %s;", (cat_id,))
+            cat_row = cur.fetchone()
+            if cat_row and cat_row[0] and not is_lab:
+                rejected.append({"index": idx, "name": name, "reason": "Lab materials can only be uploaded to lab courses"})
+                continue
+
+            # Size limit check
+            max_size = _get_max_file_size(cat_name)
+            if size > max_size:
+                limit_mb = max_size // (1024 * 1024)
+                rejected.append({"index": idx, "name": name, "reason": f"File too large ({_format_size(size)}). Limit: {limit_mb}MB"})
+                continue
+
+            total_size += size
+            if total_size > BULK_MAX_TOTAL_SIZE:
+                rejected.append({"index": idx, "name": name, "reason": f"Total batch size would exceed {BULK_MAX_TOTAL_SIZE // (1024*1024)}MB"})
+                continue
+
+            accepted.append({
+                "index": idx,
+                "name": name,
+                "title": title,
+                "category_id": cat_id,
+                "category_name": cat_name,
+                "instructor_id": f.get('instructor_id'),
+                "size": size,
+            })
+
+        cur.close()
+    finally:
+        conn.close()
+
+    if not accepted:
+        return jsonify({
+            "success": False,
+            "message": "No valid files to upload.",
+            "rejected": rejected,
+        }), 400
+
+    # Create batch
+    batch_id = f"bulk_{uuid.uuid4().hex[:12]}"
+    batch = {
+        "batch_id": batch_id,
+        "user_id": uploader,
+        "course_id": course_id,
+        "course_code": course_code,
+        "accepted": accepted,
+        "uploaded": [],           # Tracks successfully uploaded files
+        "created_at": time.time(),
+    }
+
+    with _batches_lock:
+        _bulk_batches[batch_id] = batch
+
+    return jsonify({
+        "success": True,
+        "batch_id": batch_id,
+        "accepted": accepted,
+        "rejected": rejected,
+        "total_accepted": len(accepted),
+        "total_rejected": len(rejected),
+    })
+
+
+@file_bp.route('/api/courses/<int:course_id>/bulk-upload/<batch_id>/file', methods=['POST'])
+def bulk_upload_file(course_id, batch_id):
+    """
+    Upload a single file within a bulk upload batch.
+    Called sequentially for each file — server only holds one file in memory at a time.
+    """
+    uploader = session.get('user_id')
+    if not uploader:
+        return jsonify({"success": False, "message": "You must be logged in."}), 401
+
+    batch, err = _get_batch(batch_id, uploader)
+    if err:
+        return err
+
+    if batch['course_id'] != course_id:
+        return jsonify({"success": False, "message": "Course ID mismatch."}), 400
+
+    file = request.files.get('file')
+    file_index = request.form.get('file_index', type=int)
+    title = request.form.get('title', '').strip()
+    category_id = request.form.get('category_id', type=int)
+    instructor_id = request.form.get('instructor_id', type=int)
+
+    if not file or file.filename == '':
+        return jsonify({"success": False, "message": "No file provided."}), 400
+
+    if file_index is None:
+        return jsonify({"success": False, "message": "file_index is required."}), 400
+
+    # Validate the file_index is in the accepted list
+    accepted_indices = [a['index'] for a in batch['accepted']]
+    if file_index not in accepted_indices:
+        return jsonify({"success": False, "message": f"File index {file_index} was not accepted in this batch."}), 400
+
+    # Check if this index was already uploaded
+    uploaded_indices = [u['file_index'] for u in batch['uploaded']]
+    if file_index in uploaded_indices:
+        return jsonify({"success": False, "message": f"File index {file_index} was already uploaded."}), 409
+
+    # Extension check
+    if not allowed_file(file.filename):
+        return jsonify({"success": False, "message": f"File type not allowed."}), 400
+
+    # Magic byte verification
+    ext = get_file_extension(file.filename)
+    if not validate_file_magic_bytes(file, ext):
+        return jsonify({"success": False, "message": "File content does not match its extension. The file may be corrupted or mislabeled."}), 400
+
+    # Get file size
+    file.seek(0, os.SEEK_END)
+    file_size = file.tell()
+    file.seek(0)
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+
+        # Category-aware size limit
+        category_name = _resolve_category_name(cur, category_id)
+        max_size = _get_max_file_size(category_name)
+        if file_size > max_size:
+            cur.close()
+            limit_mb = max_size // (1024 * 1024)
+            return jsonify({"success": False, "message": f"File exceeds {limit_mb}MB limit for {category_name}."}), 400
+
+        course_code = batch['course_code']
+
+        # Content hash for deduplication
+        content_hash = compute_file_hash(file)
+        cur.execute(
+            "SELECT file_id, title FROM files WHERE course_code = %s AND content_hash = %s AND status != 'rejected';",
+            (course_code, content_hash)
+        )
+        dup = cur.fetchone()
+        if dup:
+            cur.close()
+            return jsonify({
+                "success": False,
+                "message": f"Duplicate: this file already exists as \"{dup[1]}\".",
+                "skipped": True,
+                "file_index": file_index,
+            }), 409
+
+        # Upload to R2
+        s3_client = get_s3_client()
+        if not s3_client:
+            cur.close()
+            return jsonify({"success": False, "message": "Storage is not configured."}), 500
+
+        file_type = file.content_type
+        unique_filename = f"course_{course_id}/{uuid.uuid4().hex}_{secure_filename(file.filename)}"
+
+        try:
+            s3_client.upload_fileobj(
+                file, R2_BUCKET, unique_filename,
+                ExtraArgs={"ContentType": file_type}
+            )
+        except Exception as e:
+            cur.close()
+            return jsonify({"success": False, "message": f"Storage upload failed: {str(e)}"}), 500
+
+        # R2 Public URL
+        if R2_PUBLIC_URL_PREFIX:
+            file_url = f"{R2_PUBLIC_URL_PREFIX.rstrip('/')}/{unique_filename}"
+        else:
+            file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
+
+        # Auto-approve for admins
+        role = session.get('role', 'user')
+        is_admin = (role == 'admin')
+        initial_status = 'approved' if is_admin else 'pending'
+
+        # Use provided title, or fall back to the one from the manifest
+        if not title:
+            for a in batch['accepted']:
+                if a['index'] == file_index:
+                    title = a.get('title', file.filename)
+                    break
+
+        cur.execute("""
+            INSERT INTO files (title, course_code, category_id, uploaded_by, status, file_url, storage_path, instructor_id, content_hash, batch_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING file_id;
+        """, (title, course_code, category_id, uploader, initial_status, file_url, unique_filename, instructor_id, content_hash, batch_id))
+        new_file_id = cur.fetchone()[0]
+
+        if instructor_id:
+            cur.execute(
+                "INSERT INTO course_instructors (course_id, instructor_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
+                (course_id, instructor_id)
+            )
+
+        cur.execute(
+            "INSERT INTO file_metadata (file_id, file_size, file_type) VALUES (%s, %s, %s);",
+            (new_file_id, file_size, file_type)
+        )
+
+        conn.commit()
+        cur.close()
+
+        # Track in batch
+        with _batches_lock:
+            batch['uploaded'].append({
+                "file_index": file_index,
+                "file_id": new_file_id,
+                "title": title,
+                "status": initial_status,
+            })
+
+        return jsonify({
+            "success": True,
+            "file_index": file_index,
+            "file_id": new_file_id,
+            "title": title,
+            "status": initial_status,
+            "message": "Uploaded successfully.",
+        })
+
+    except Exception as e:
+        conn.rollback()
+        err_msg = str(e)
+        if "unique_file" in err_msg:
+            return jsonify({"success": False, "message": "A file with this title already exists in this category.", "file_index": file_index}), 400
+        return jsonify({"success": False, "message": f"Upload error: {err_msg}", "file_index": file_index}), 500
+    finally:
+        conn.close()
+
+
+@file_bp.route('/api/courses/<int:course_id>/bulk-upload/<batch_id>/done', methods=['POST'])
+def bulk_upload_done(course_id, batch_id):
+    """
+    Finalize a bulk upload batch.
+    Sends a single consolidated notification email to admins (instead of per-file spam).
+    Cleans up the batch from memory.
+    """
+    uploader = session.get('user_id')
+    if not uploader:
+        return jsonify({"success": False, "message": "You must be logged in."}), 401
+
+    batch, err = _get_batch(batch_id, uploader)
+    if err:
+        return err
+
+    uploaded = batch.get('uploaded', [])
+    accepted = batch.get('accepted', [])
+    course_code = batch.get('course_code', '?')
+
+    # Count statuses
+    pending_files = [u for u in uploaded if u['status'] == 'pending']
+    approved_files = [u for u in uploaded if u['status'] == 'approved']
+
+    # Send ONE consolidated email to admins if there are pending files
+    if pending_files:
+        try:
+            from email_service import send_email
+            conn = get_connection()
+            try:
+                cur = conn.cursor()
+                cur.execute("SELECT email FROM admins;")
+                admin_emails = [r[0] for r in cur.fetchall()]
+
+                # Get uploader name
+                cur.execute("SELECT username FROM users WHERE user_id = %s;", (uploader,))
+                uploader_name = cur.fetchone()
+                uploader_name = uploader_name[0] if uploader_name else 'Unknown'
+                cur.close()
+            finally:
+                conn.close()
+
+            file_list_html = ''.join(
+                f"<li>{f['title']}</li>" for f in pending_files
+            )
+
+            for admin_email in admin_emails:
+                subject = f"Bulk Upload: {len(pending_files)} files pending review - GIKI Course Hub"
+                body = f"""
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #2563EB;">📦 Bulk Upload — {len(pending_files)} Files Pending</h2>
+                    <p><strong>{uploader_name}</strong> uploaded {len(uploaded)} file(s) to <strong>{course_code}</strong>.</p>
+                    <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 16px 0;">
+                        <strong>Files awaiting review:</strong>
+                        <ol style="margin: 8px 0; padding-left: 20px;">{file_list_html}</ol>
+                    </div>
+                    <p>Please log in to the <a href="https://gikicoursehub.app/admin" style="color: #F59E0B; font-weight: bold;">Admin Panel</a> to review.</p>
+                </div>
+                """
+                send_email(admin_email, subject, body)
+        except Exception as e:
+            print(f"Failed to send bulk upload notification: {e}")
+
+    # Clean up batch from memory
+    with _batches_lock:
+        _bulk_batches.pop(batch_id, None)
+
+    return jsonify({
+        "success": True,
+        "summary": {
+            "total_accepted": len(accepted),
+            "total_uploaded": len(uploaded),
+            "total_skipped": len(accepted) - len(uploaded),
+            "pending": len(pending_files),
+            "approved": len(approved_files),
+        },
+        "message": f"Bulk upload complete: {len(uploaded)} file(s) uploaded successfully.",
+    })

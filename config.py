@@ -29,7 +29,18 @@ FIREBASE_STORAGE_BUCKET   = os.environ.get('FIREBASE_BUCKET', 'your-project.apps
 
 # Upload settings
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip', 'png', 'jpg', 'jpeg'}
-MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB
+MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB (Flask-level cap, must be >= largest allowed single file)
+
+# Per-file size limits (enforced by application logic)
+DEFAULT_MAX_FILE_SIZE  = 10 * 1024 * 1024   # 10 MB for most categories
+REFERENCE_MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB for Reference (books are heavy)
+REFERENCE_CATEGORY_NAME = 'Reference'       # Must match the category name in the DB
+
+# Bulk upload settings
+BULK_MAX_FILES       = 10                          # Max files per bulk batch
+BULK_MAX_TOTAL_SIZE  = 200 * 1024 * 1024           # 200 MB total per bulk upload
+BULK_BATCH_TTL       = 30 * 60                     # 30 minutes before a batch expires
+BULK_RATE_LIMIT      = "3 per hour"                # Per-user rate limit for bulk init
 
 # Cloudflare R2 (S3 Compatible)
 R2_BUCKET = os.environ.get('R2_BUCKET', 'gikicoursehub')

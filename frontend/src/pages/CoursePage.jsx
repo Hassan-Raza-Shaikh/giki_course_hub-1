@@ -75,15 +75,80 @@ const CoursePage = ({ user, onSignIn }) => {
   };
 
 
-  // Upload state
-  const [uploadTitle, setUploadTitle]     = useState('');
-  const [uploadCatId, setUploadCatId]     = useState('');
-  const [uploadInstructorId, setUploadInstructorId] = useState('');
-  const [uploadFile, setUploadFile]       = useState(null);
-  const [uploading, setUploading]         = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);   // 0-100
+  // Upload state — supports both single and bulk
+  const [uploadQueue, setUploadQueue]   = useState([]);  // [{file, title, category_id, instructor_id, status, progress, error, file_id}]
+  const [sharedCatId, setSharedCatId]   = useState('');
+  const [sharedInstructorId, setSharedInstructorId] = useState('');
+  const [uploading, setUploading]       = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [uploadError, setUploadError]     = useState('');
+  const [uploadError, setUploadError]   = useState('');
+  const [uploadSummary, setUploadSummary] = useState(null);
+
+  const ALLOWED_EXTS = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg'];
+  const MAX_FILES = 10;
+  const DEFAULT_MAX_MB = 10;
+  const REFERENCE_MAX_MB = 50;
+
+  const getCatNameById = (catId) => {
+    const c = categories.find(c => String(c.id) === String(catId));
+    return c ? c.name : '';
+  };
+
+  const getMaxSizeMB = (catId) => {
+    const name = getCatNameById(catId);
+    return name && name.toLowerCase() === 'reference' ? REFERENCE_MAX_MB : DEFAULT_MAX_MB;
+  };
+
+  const addFilesToQueue = (fileList) => {
+    const newFiles = Array.from(fileList);
+    setUploadError('');
+
+    const current = uploadQueue.length;
+    if (current + newFiles.length > MAX_FILES) {
+      setUploadError(`Maximum ${MAX_FILES} files per upload. You already have ${current} queued.`);
+      return;
+    }
+
+    const validated = [];
+    for (const f of newFiles) {
+      const ext = f.name.split('.').pop().toLowerCase();
+      if (!ALLOWED_EXTS.includes(ext)) {
+        setUploadError(`"${f.name}" — .${ext} files are not allowed.`);
+        continue;
+      }
+      const title = f.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ').trim();
+      validated.push({
+        file: f,
+        title,
+        category_id: sharedCatId || '',
+        instructor_id: sharedInstructorId || '',
+        status: 'queued',
+        progress: 0,
+        error: '',
+        file_id: null,
+      });
+    }
+    setUploadQueue(prev => [...prev, ...validated]);
+  };
+
+  const removeFromQueue = (idx) => {
+    setUploadQueue(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const updateQueueItem = (idx, updates) => {
+    setUploadQueue(prev => prev.map((item, i) => i === idx ? { ...item, ...updates } : item));
+  };
+
+  const applySharedMeta = (field, value) => {
+    if (field === 'category_id') {
+      setSharedCatId(value);
+      setUploadQueue(prev => prev.map(item => item.status === 'queued' ? { ...item, category_id: value } : item));
+    }
+    if (field === 'instructor_id') {
+      setSharedInstructorId(value);
+      setUploadQueue(prev => prev.map(item => item.status === 'queued' ? { ...item, instructor_id: value } : item));
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -113,56 +178,129 @@ const CoursePage = ({ user, onSignIn }) => {
     // Note: all_instructors and course_instructors are now provided by the main course detail call above.
   }, [id]);
 
-  const handleUpload = async (e) => {
+  const handleBulkUpload = async (e) => {
     e.preventDefault();
     if (!user) { onSignIn(); return; }
-    if (!uploadTitle || !uploadCatId) {
-      setUploadError('Please fill in the title and select a category.');
+
+    const ready = uploadQueue.filter(f => f.status === 'queued');
+    const missing = ready.filter(f => !f.category_id || !f.title.trim());
+    if (missing.length > 0) {
+      setUploadError('All files need a title and category.');
       return;
     }
+    if (ready.length === 0) {
+      setUploadError('Add at least one file to upload.');
+      return;
+    }
+
     setUploading(true);
     setUploadError('');
-    setUploadProgress(0);
-
-    const form = new FormData();
-    form.append('title', uploadTitle);
-    form.append('category_id', uploadCatId);
-    if (uploadInstructorId) form.append('instructor_id', uploadInstructorId);
-    if (uploadFile) {
-      form.append('file', uploadFile);
-    } else {
-      setUploadError('Please select a file to upload.');
-      setUploading(false);
-      return;
-    }
+    setUploadSummary(null);
 
     try {
-      const res = await api.post(`/courses/${id}/upload`, form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (progressEvent) => {
-          if (progressEvent.lengthComputable) {
-            const pct = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            setUploadProgress(pct);
-          }
-        }
-      });
+      // Single file: use the simpler endpoint
+      if (ready.length === 1) {
+        const f = ready[0];
+        const qIdx = uploadQueue.indexOf(f);
+        updateQueueItem(qIdx, { status: 'uploading', progress: 0 });
 
-      if (res.data.success) {
-        setUploadSuccess(true);
-        setUploadTitle('');
-        setUploadCatId('');
-        setUploadInstructorId('');
-        setUploadFile(null);
-        setUploadProgress(0);
-        // Refresh file list
-        const refresh = await api.get(`/courses/${id}`);
-        if (refresh.data.success) setFiles(refresh.data.files_by_category);
-      } else {
-        setUploadError(res.data.message || 'Upload failed.');
+        const form = new FormData();
+        form.append('title', f.title);
+        form.append('category_id', f.category_id);
+        if (f.instructor_id) form.append('instructor_id', f.instructor_id);
+        form.append('file', f.file);
+
+        try {
+          const res = await api.post(`/courses/${id}/upload`, form, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            onUploadProgress: (evt) => {
+              if (evt.lengthComputable) updateQueueItem(qIdx, { progress: Math.round((evt.loaded * 100) / evt.total) });
+            }
+          });
+          if (res.data.success) {
+            updateQueueItem(qIdx, { status: 'done', progress: 100, file_id: res.data.file_id });
+            setUploadSuccess(true);
+            setUploadSummary({ total_uploaded: 1, total_accepted: 1, total_skipped: 0 });
+          } else {
+            updateQueueItem(qIdx, { status: 'error', error: res.data.message });
+            setUploadError(res.data.message);
+          }
+        } catch (err) {
+          const msg = err.response?.data?.message || 'Upload failed';
+          updateQueueItem(qIdx, { status: 'error', error: msg });
+          setUploadError(msg);
+        }
+
+        try { const r = await api.get(`/courses/${id}`); if (r.data.success) setFiles(r.data.files_by_category); } catch {}
+        setUploading(false);
+        return;
       }
+
+      // Multi-file: bulk pipeline
+      const manifest = ready.map(f => ({
+        name: f.file.name, size: f.file.size, title: f.title,
+        category_id: parseInt(f.category_id),
+        instructor_id: f.instructor_id ? parseInt(f.instructor_id) : null,
+      }));
+
+      const initRes = await api.post(`/courses/${id}/bulk-upload/init`, { files: manifest });
+      if (!initRes.data.success) {
+        setUploadError(initRes.data.message || 'Failed to initialize bulk upload.');
+        setUploading(false);
+        return;
+      }
+
+      const { batch_id, accepted, rejected } = initRes.data;
+
+      // Mark rejected
+      for (const rej of (rejected || [])) {
+        const globalIdx = uploadQueue.indexOf(ready[rej.index]);
+        if (globalIdx >= 0) updateQueueItem(globalIdx, { status: 'error', error: rej.reason });
+      }
+
+      // Upload each accepted file sequentially
+      for (const acc of accepted) {
+        const readyFile = ready[acc.index];
+        if (!readyFile) continue;
+        const globalIdx = uploadQueue.indexOf(readyFile);
+        updateQueueItem(globalIdx, { status: 'uploading', progress: 0 });
+
+        const form = new FormData();
+        form.append('file', readyFile.file);
+        form.append('file_index', acc.index);
+        form.append('title', readyFile.title);
+        form.append('category_id', readyFile.category_id);
+        if (readyFile.instructor_id) form.append('instructor_id', readyFile.instructor_id);
+
+        try {
+          const fileRes = await api.post(`/courses/${id}/bulk-upload/${batch_id}/file`, form, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            onUploadProgress: (evt) => {
+              if (evt.lengthComputable) updateQueueItem(globalIdx, { progress: Math.round((evt.loaded * 100) / evt.total) });
+            }
+          });
+          if (fileRes.data.success) {
+            updateQueueItem(globalIdx, { status: 'done', progress: 100, file_id: fileRes.data.file_id });
+          } else {
+            updateQueueItem(globalIdx, { status: fileRes.data.skipped ? 'skipped' : 'error', error: fileRes.data.message });
+          }
+        } catch (err) {
+          const msg = err.response?.data?.message || 'Upload failed';
+          updateQueueItem(globalIdx, { status: err.response?.data?.skipped ? 'skipped' : 'error', error: msg });
+        }
+      }
+
+      // Finalize
+      try {
+        const doneRes = await api.post(`/courses/${id}/bulk-upload/${batch_id}/done`);
+        if (doneRes.data.success) { setUploadSummary(doneRes.data.summary); setUploadSuccess(true); }
+      } catch {}
+
+      try { const r = await api.get(`/courses/${id}`); if (r.data.success) setFiles(r.data.files_by_category); } catch {}
+
     } catch (err) {
-      console.error('Upload error:', err);
-      setUploadError(err.response?.data?.message || err.message || 'Upload failed. Please try again.');
+      console.error('Bulk upload error:', err);
+      setUploadError(err.response?.data?.message || 'Bulk upload failed. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -600,7 +738,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 📤 Contribute Materials
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                Share your notes, past papers, or slides with the GIKI community.
+                Share your notes, past papers, or slides with the GIKI community. You can upload up to 10 files at once.
               </p>
             </div>
 
@@ -614,146 +752,214 @@ const CoursePage = ({ user, onSignIn }) => {
               ) : uploadSuccess ? (
                 <div style={{ textAlign: 'center', padding: '32px 0', animation: 'scaleIn 0.3s ease' }}>
                   <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
-                  <p style={{ fontWeight: 800, color: '#059669', fontSize: '1.2rem', marginBottom: '8px' }}>Material submitted!</p>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Your contribution is pending admin review and will go live once approved.</p>
-                  <button className="btn-primary" onClick={() => setUploadSuccess(false)}>Upload Another</button>
+                  <p style={{ fontWeight: 800, color: '#059669', fontSize: '1.2rem', marginBottom: '8px' }}>
+                    {uploadSummary && uploadSummary.total_uploaded > 1 ? `${uploadSummary.total_uploaded} files submitted!` : 'Material submitted!'}
+                  </p>
+                  <p style={{ color: 'var(--text-muted)', marginBottom: '8px' }}>Your contribution is pending admin review and will go live once approved.</p>
+                  {uploadSummary && uploadSummary.total_skipped > 0 && (
+                    <p style={{ color: '#D97706', fontSize: '0.9rem', marginBottom: '16px' }}>⚠️ {uploadSummary.total_skipped} file(s) were skipped (duplicates or errors).</p>
+                  )}
+                  <button className="btn-primary" onClick={() => { setUploadSuccess(false); setUploadQueue([]); setUploadSummary(null); }}>Upload More</button>
                 </div>
               ) : (
-                <form onSubmit={handleUpload} style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: 600 }}>
+                <form onSubmit={handleBulkUpload} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   {uploadError && (
                     <div style={{ padding: '14px', background: '#FEF2F2', color: '#B91C1C', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', fontWeight: 600, border: '1px solid #FCA5A5' }}>
                       {uploadError}
                     </div>
                   )}
+
+                  {/* Drag & Drop Zone */}
                   <div>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
-                      Title *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. CS-302 Mid Term 2023"
-                      value={uploadTitle}
-                      onChange={e => setUploadTitle(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'all 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
-                      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-                      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
-                      Category *
-                    </label>
-                    <select
-                      required
-                      value={uploadCatId}
-                      onChange={e => setUploadCatId(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'all 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
-                      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-                      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
-                    >
-                      <option value="">Select material type…</option>
-                      {categories.map(c => (
-                        <option key={c.id} value={c.id}>{CATEGORY_ICONS[c.name] || '📁'} {c.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
-                      Instructor (Optional)
-                    </label>
-                    <select
-                      value={uploadInstructorId}
-                      onChange={e => setUploadInstructorId(e.target.value)}
-                      style={{ width: '100%', padding: '14px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.95rem', outline: 'none', background: 'var(--bg-white)', transition: 'all 0.2s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}
-                      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-                      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
-                    >
-                      <option value="">None / General Material</option>
-                      {courseInstructors.length > 0 && (
-                        <optgroup label={`Teaches ${course.code}`}>
-                          {courseInstructors.map(i => <option key={`ci-${i.id}`} value={i.id}>{i.name}</option>)}
-                        </optgroup>
-                      )}
-                      {otherInstructorsGrouped.map(group => (
-                        <optgroup key={`group-${group.name}`} label={`${group.name} Instructors`}>
-                          {group.list.map(i => (
-                            <option key={`i-${i.id}`} value={i.id}>{i.name}</option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
-                      File *
+                      Files * <span style={{ fontWeight: 500, textTransform: 'none', color: 'var(--text-muted)' }}>— up to {MAX_FILES} files</span>
                     </label>
                     <div
                       className="upload-zone"
-                      onClick={() => document.getElementById('file-input').click()}
-                      style={{ border: '2px dashed #CBD5E1', transition: 'all 0.2s' }}
+                      onClick={() => document.getElementById('file-input-bulk').click()}
+                      onDragOver={e => { e.preventDefault(); e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.background = 'rgba(37,99,235,0.04)'; }}
+                      onDragLeave={e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = 'transparent'; }}
+                      onDrop={e => { e.preventDefault(); e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = 'transparent'; addFilesToQueue(e.dataTransfer.files); }}
+                      style={{ border: '2px dashed #CBD5E1', transition: 'all 0.2s', cursor: 'pointer' }}
                       onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary)'}
                       onMouseOut={e => e.currentTarget.style.borderColor = '#CBD5E1'}
                     >
-                      {uploadFile ? (
-                        <div>
-                          <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>📄</div>
-                          <div style={{ fontWeight: 700, color: 'var(--primary)' }}>{uploadFile.name}</div>
-                          <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
-                            {(uploadFile.size / 1024 / 1024).toFixed(2)} MB
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <div style={{ fontSize: '2rem', marginBottom: '12px' }}>☁️</div>
-                          <div style={{ fontWeight: 700, color: 'var(--primary)' }}>Click to upload</div>
-                          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>PDF, DOCX, PPTX (max 50 MB)</p>
-                        </div>
-                      )}
-                      <input 
-                        id="file-input" 
-                        type="file" 
-                        style={{ display: 'none' }} 
+                      <div>
+                        <div style={{ fontSize: '2rem', marginBottom: '12px' }}>☁️</div>
+                        <div style={{ fontWeight: 700, color: 'var(--primary)' }}>Drop files here or click to browse</div>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>PDF, DOCX, PPTX, TXT, ZIP, images · Max 10MB per file (50MB for Reference)</p>
+                      </div>
+                      <input
+                        id="file-input-bulk"
+                        type="file"
+                        multiple
+                        style={{ display: 'none' }}
                         accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.zip,.png,.jpg,.jpeg"
-                        onChange={e => {
-                          const f = e.target.files[0];
-                          if (!f) return;
-                          
-                          // Check size
-                          if (f.size > 50 * 1024 * 1024) {
-                            alert("❌ File is too large! Maximum size allowed is 50MB.");
-                            e.target.value = '';
-                            return;
-                          }
-
-                          // Check extension
-                          const ext = f.name.split('.').pop().toLowerCase();
-                          const allowed = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg'];
-                          if (!allowed.includes(ext)) {
-                            alert(`❌ .${ext} files are not allowed. \nPlease upload PDF, DOCX, PPTX, TXT, ZIP, or common images.`);
-                            e.target.value = '';
-                            return;
-                          }
-
-                          setUploadFile(f);
-                        }} 
+                        onChange={e => { addFilesToQueue(e.target.files); e.target.value = ''; }}
                       />
                     </div>
                   </div>
-                  {uploading ? (
-                    <div style={{ alignSelf: 'flex-start', width: '100%', maxWidth: '300px', padding: '8px 0' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary)' }}>
-                        <span>Uploading to secure storage…</span>
-                        <span>{uploadProgress}%</span>
+
+                  {/* Shared metadata */}
+                  {uploadQueue.length > 0 && (
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                      <div style={{ flex: '1 1 200px' }}>
+                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                          Category for all *
+                        </label>
+                        <select
+                          value={sharedCatId}
+                          onChange={e => applySharedMeta('category_id', e.target.value)}
+                          style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)' }}
+                        >
+                          <option value="">Select category…</option>
+                          {categories.map(c => (
+                            <option key={c.id} value={c.id}>{CATEGORY_ICONS[c.name] || '📁'} {c.name}</option>
+                          ))}
+                        </select>
                       </div>
-                      <div style={{ height: '8px', background: 'var(--border)', borderRadius: '4px', overflow: 'hidden' }}>
-                        <div style={{ width: `${uploadProgress}%`, height: '100%', background: 'linear-gradient(90deg, #7C3AED, #EC4899)', transition: 'width 0.2s', borderRadius: '4px' }} />
+                      <div style={{ flex: '1 1 200px' }}>
+                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                          Instructor for all
+                        </label>
+                        <select
+                          value={sharedInstructorId}
+                          onChange={e => applySharedMeta('instructor_id', e.target.value)}
+                          style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)' }}
+                        >
+                          <option value="">None / General</option>
+                          {courseInstructors.length > 0 && (
+                            <optgroup label={`Teaches ${course.code}`}>
+                              {courseInstructors.map(i => <option key={`ci-${i.id}`} value={i.id}>{i.name}</option>)}
+                            </optgroup>
+                          )}
+                          {otherInstructorsGrouped.map(group => (
+                            <optgroup key={`group-${group.name}`} label={`${group.name} Instructors`}>
+                              {group.list.map(i => <option key={`i-${i.id}`} value={i.id}>{i.name}</option>)}
+                            </optgroup>
+                          ))}
+                        </select>
                       </div>
                     </div>
-                  ) : (
-                    <button type="submit" className="btn-primary" disabled={uploading} style={{ alignSelf: 'flex-start', opacity: uploading ? 0.7 : 1 }}>
-                      Publish Material
-                    </button>
+                  )}
+
+                  {/* File Queue */}
+                  {uploadQueue.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <label style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        Upload Queue ({uploadQueue.length}/{MAX_FILES})
+                      </label>
+                      {uploadQueue.map((item, idx) => {
+                        const statusIcon = { queued: '⏳', uploading: '⬆️', done: '✅', error: '❌', skipped: '⚠️' }[item.status] || '⏳';
+                        const isEditable = item.status === 'queued';
+                        const sizeMB = (item.file.size / 1024 / 1024).toFixed(1);
+                        const catName = getCatNameById(item.category_id);
+                        const maxMB = getMaxSizeMB(item.category_id);
+                        const isTooLarge = item.file.size > maxMB * 1024 * 1024;
+
+                        return (
+                          <div key={idx} style={{
+                            padding: '14px 16px', borderRadius: 'var(--radius-md)',
+                            border: `1px solid ${item.status === 'error' ? '#FCA5A5' : item.status === 'done' ? '#86EFAC' : item.status === 'skipped' ? '#FDE68A' : 'var(--border)'}`,
+                            background: item.status === 'error' ? '#FEF2F2' : item.status === 'done' ? '#F0FDF4' : item.status === 'skipped' ? '#FFFBEB' : 'var(--bg-white)',
+                            transition: 'all 0.2s',
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                              <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>{statusIcon}</span>
+
+                              {/* Title input */}
+                              {isEditable ? (
+                                <input
+                                  type="text"
+                                  value={item.title}
+                                  onChange={e => updateQueueItem(idx, { title: e.target.value })}
+                                  placeholder="File title"
+                                  style={{ flex: '1 1 180px', padding: '8px 10px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', minWidth: 0 }}
+                                  onFocus={e => e.target.style.borderColor = 'var(--primary)'}
+                                  onBlur={e => e.target.style.borderColor = '#CBD5E1'}
+                                />
+                              ) : (
+                                <span style={{ flex: '1 1 180px', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {item.title}
+                                </span>
+                              )}
+
+                              {/* File size */}
+                              <span style={{ fontSize: '0.8rem', color: isTooLarge ? '#DC2626' : 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>
+                                {sizeMB} MB {isTooLarge && `(>${maxMB}MB)`}
+                              </span>
+
+                              {/* Per-file category override */}
+                              {isEditable && (
+                                <select
+                                  value={item.category_id}
+                                  onChange={e => updateQueueItem(idx, { category_id: e.target.value })}
+                                  style={{ padding: '6px 8px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.8rem', outline: 'none', background: 'var(--bg-white)', maxWidth: '140px' }}
+                                >
+                                  <option value="">Category…</option>
+                                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                </select>
+                              )}
+
+                              {/* Remove button */}
+                              {isEditable && (
+                                <button
+                                  type="button"
+                                  onClick={() => removeFromQueue(idx)}
+                                  style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid #E5E7EB', background: 'transparent', cursor: 'pointer', fontSize: '0.8rem', color: '#9CA3AF', fontWeight: 700 }}
+                                  title="Remove from queue"
+                                >✕</button>
+                              )}
+                            </div>
+
+                            {/* Progress bar for uploading */}
+                            {item.status === 'uploading' && (
+                              <div style={{ marginTop: '10px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '4px' }}>
+                                  <span>Uploading…</span>
+                                  <span>{item.progress}%</span>
+                                </div>
+                                <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
+                                  <div style={{ width: `${item.progress}%`, height: '100%', background: 'linear-gradient(90deg, #7C3AED, #EC4899)', transition: 'width 0.2s', borderRadius: '3px' }} />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Error message */}
+                            {item.error && (
+                              <div style={{ marginTop: '6px', fontSize: '0.8rem', color: item.status === 'skipped' ? '#92400E' : '#DC2626', fontWeight: 500 }}>
+                                {item.error}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Submit */}
+                  {uploadQueue.length > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+                      <button
+                        type="submit"
+                        className="btn-primary"
+                        disabled={uploading || uploadQueue.filter(f => f.status === 'queued').length === 0}
+                        style={{ opacity: uploading ? 0.7 : 1, position: 'relative' }}
+                      >
+                        {uploading ? (
+                          <>Uploading {uploadQueue.filter(f => f.status === 'done').length}/{uploadQueue.filter(f => f.status !== 'error').length}…</>
+                        ) : (
+                          <>Upload {uploadQueue.filter(f => f.status === 'queued').length} file{uploadQueue.filter(f => f.status === 'queued').length !== 1 ? 's' : ''}</>
+                        )}
+                      </button>
+                      {!uploading && (
+                        <button
+                          type="button"
+                          onClick={() => { setUploadQueue([]); setUploadError(''); }}
+                          style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'transparent', cursor: 'pointer', fontWeight: 700, color: 'var(--text-muted)', fontSize: '0.9rem' }}
+                        >Clear All</button>
+                      )}
+                    </div>
                   )}
                 </form>
               )}

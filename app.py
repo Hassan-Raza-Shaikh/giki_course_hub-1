@@ -1,6 +1,8 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session, request
 from flask_cors import CORS
 from flask_compress import Compress
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from config import SECRET_KEY, MAX_CONTENT_LENGTH
 from firebase_admin_init import init_firebase_admin
 
@@ -18,6 +20,18 @@ def create_app():
     Compress(app)
     app.secret_key = SECRET_KEY
     app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+
+    # Rate limiter — keyed by session user_id, falls back to IP
+    def _rate_limit_key():
+        return str(session.get('user_id', '')) or get_remote_address()
+
+    limiter = Limiter(
+        key_func=_rate_limit_key,
+        app=app,
+        default_limits=["200 per minute"],   # generous global default
+        storage_uri="memory://",
+    )
+    app.limiter = limiter  # expose for route decorators
     
     # Critical for cross-domain sessions (Vercel -> Render) on Mobile
     app.config.update(
