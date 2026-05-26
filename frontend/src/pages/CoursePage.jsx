@@ -712,15 +712,21 @@ const CoursePage = ({ user, onSignIn }) => {
                     {isAdmin && (
                       <button
                         onClick={() => openEditFile(file)}
+                        title="Edit file (Admin only)"
                         style={{
-                          background: 'var(--bg-white)',
+                          background: 'var(--primary)',
+                          color: 'var(--bg-hero)',
                           border: '2px solid var(--text)',
                           borderRadius: '8px',
                           padding: '6px 12px',
                           cursor: 'pointer',
                           fontWeight: 700,
-                          fontSize: '0.85rem'
+                          fontSize: '0.8rem',
+                          boxShadow: '2px 2px 0 var(--text)',
+                          transition: 'all 0.15s',
                         }}
+                        onMouseOver={e => { e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '3px 3px 0 var(--text)'; }}
+                        onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}
                       >
                         ✏️ Edit
                       </button>
