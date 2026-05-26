@@ -29,7 +29,7 @@ FIREBASE_STORAGE_BUCKET   = os.environ.get('FIREBASE_BUCKET', 'your-project.apps
 
 # Upload settings
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip', 'png', 'jpg', 'jpeg'}
-MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB (Flask-level cap, must be >= largest allowed single file)
+MAX_CONTENT_LENGTH = 10 * 1024 * 1024 * 1024  # 10 GB (Flask HTTP cap — per-file logic enforced in routes)
 
 # Per-file size limits (enforced by application logic)
 DEFAULT_MAX_FILE_SIZE  = 10 * 1024 * 1024   # 10 MB for most categories
@@ -37,8 +37,9 @@ REFERENCE_MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB for Reference (books are hea
 REFERENCE_CATEGORY_NAME = 'Reference'       # Must match the category name in the DB
 
 # Bulk upload settings
-BULK_MAX_FILES       = 10                          # Max files per bulk batch
-BULK_MAX_TOTAL_SIZE  = 200 * 1024 * 1024           # 200 MB total per bulk upload
+BULK_MAX_FILES       = 10                          # Max files per bulk batch (non-admin)
+BULK_MAX_FILES_ADMIN = 1000                        # Unlimited for admins
+BULK_MAX_TOTAL_SIZE  = 200 * 1024 * 1024           # 200 MB total per bulk upload (non-admin)
 BULK_BATCH_TTL       = 30 * 60                     # 30 minutes before a batch expires
 BULK_RATE_LIMIT      = "3 per hour"                # Per-user rate limit for bulk init
 
@@ -48,3 +49,8 @@ R2_ENDPOINT_URL = os.environ.get('R2_ENDPOINT_URL', '')
 R2_ACCESS_KEY = os.environ.get('R2_ACCESS_KEY', '')
 R2_SECRET_KEY = os.environ.get('R2_SECRET_KEY', '')
 R2_PUBLIC_URL_PREFIX = os.environ.get('R2_PUBLIC_URL_PREFIX', '')
+
+# Bootstrap admins — comma-separated list of emails that are always admin,
+# regardless of the admins table. Set via env var in production.
+_raw_admins = os.environ.get('BOOTSTRAP_ADMIN_EMAILS', 'ammarbatman9@gmail.com,hassan.raza.shaikh.hrs@gmail.com')
+BOOTSTRAP_ADMIN_EMAILS = {e.strip().lower() for e in _raw_admins.split(',') if e.strip()}

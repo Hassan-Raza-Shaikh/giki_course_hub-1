@@ -838,19 +838,19 @@ const CoursePage = ({ user, onSignIn }) => {
               ) : uploadSuccess ? (
                 <div style={{ textAlign: 'center', padding: '32px 0', animation: 'scaleIn 0.3s ease' }}>
                   <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
-                  <p style={{ fontWeight: 800, color: '#059669', fontSize: '1.2rem', marginBottom: '8px' }}>
+                  <p style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '8px' }}>
                     {uploadSummary && uploadSummary.total_uploaded > 1 ? `${uploadSummary.total_uploaded} files submitted!` : 'Material submitted!'}
                   </p>
                   <p style={{ color: 'var(--text-muted)', marginBottom: '8px' }}>Your contribution is pending admin review and will go live once approved.</p>
                   {uploadSummary && uploadSummary.total_skipped > 0 && (
-                    <p style={{ color: '#D97706', fontSize: '0.9rem', marginBottom: '16px' }}>⚠️ {uploadSummary.total_skipped} file(s) were skipped (duplicates or errors).</p>
+                    <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '16px' }}>⚠️ {uploadSummary.total_skipped} file(s) were skipped (duplicates or errors).</p>
                   )}
                   <button className="btn-primary" onClick={() => { setUploadSuccess(false); setUploadQueue([]); setUploadSummary(null); }}>Upload More</button>
                 </div>
               ) : (
                 <form onSubmit={handleBulkUpload} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   {uploadError && (
-                    <div style={{ padding: '14px', background: '#FEF2F2', color: '#B91C1C', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', fontWeight: 600, border: '1px solid #FCA5A5' }}>
+                    <div style={{ padding: '14px', background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', fontWeight: 600, border: '1px solid rgba(185,28,28,0.3)' }}>
                       {uploadError}
                     </div>
                   )}
@@ -864,11 +864,11 @@ const CoursePage = ({ user, onSignIn }) => {
                       className="upload-zone"
                       onClick={() => document.getElementById('file-input-bulk').click()}
                       onDragOver={e => { e.preventDefault(); e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.background = 'rgba(37,99,235,0.04)'; }}
-                      onDragLeave={e => { e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = 'transparent'; }}
-                      onDrop={e => { e.preventDefault(); e.currentTarget.style.borderColor = '#CBD5E1'; e.currentTarget.style.background = 'transparent'; addFilesToQueue(e.dataTransfer.files); }}
-                      style={{ border: '2px dashed #CBD5E1', transition: 'all 0.2s', cursor: 'pointer' }}
+                      onDragLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}
+                      onDrop={e => { e.preventDefault(); e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; addFilesToQueue(e.dataTransfer.files); }}
+                      style={{ border: '2px dashed var(--border)', transition: 'all 0.2s', cursor: 'pointer' }}
                       onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary)'}
-                      onMouseOut={e => e.currentTarget.style.borderColor = '#CBD5E1'}
+                      onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}
                     >
                       <div>
                         <div style={{ fontSize: '2rem', marginBottom: '12px' }}>☁️</div>
@@ -962,9 +962,9 @@ const CoursePage = ({ user, onSignIn }) => {
                                   value={item.title}
                                   onChange={e => updateQueueItem(idx, { title: e.target.value })}
                                   placeholder="File title"
-                                  style={{ flex: '1 1 180px', padding: '8px 10px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)', minWidth: 0 }}
+                                  style={{ flex: '1 1 180px', padding: '8px 10px', borderRadius: '6px', border: '1.5px solid var(--border)', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-subtle)', color: 'var(--text)', minWidth: 0 }}
                                   onFocus={e => e.target.style.borderColor = 'var(--primary)'}
-                                  onBlur={e => e.target.style.borderColor = '#CBD5E1'}
+                                  onBlur={e => e.target.style.borderColor = 'var(--border)'}
                                 />
                               ) : (
                                 <span style={{ flex: '1 1 180px', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -982,7 +982,7 @@ const CoursePage = ({ user, onSignIn }) => {
                                 <select
                                   value={item.category_id}
                                   onChange={e => updateQueueItem(idx, { category_id: e.target.value })}
-                                  style={{ padding: '6px 8px', borderRadius: '6px', border: '1.5px solid #CBD5E1', fontSize: '0.8rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)', maxWidth: '140px' }}
+                                  style={{ padding: '6px 8px', borderRadius: '6px', border: '1.5px solid var(--border)', fontSize: '0.8rem', outline: 'none', background: 'var(--bg-subtle)', color: 'var(--text)', maxWidth: '140px' }}
                                 >
                                   <option value="">Category…</option>
                                   {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -994,7 +994,7 @@ const CoursePage = ({ user, onSignIn }) => {
                                 <button
                                   type="button"
                                   onClick={() => removeFromQueue(idx)}
-                                  style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid #E5E7EB', background: 'transparent', cursor: 'pointer', fontSize: '0.8rem', color: '#9CA3AF', fontWeight: 700 }}
+                                  style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border)', background: 'transparent', cursor: 'pointer', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700 }}
                                   title="Remove from queue"
                                 >✕</button>
                               )}

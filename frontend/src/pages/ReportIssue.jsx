@@ -57,7 +57,7 @@ const ReportIssue = ({ user }) => {
           ) : (
             <form onSubmit={handleSubmit}>
               {error && (
-                <div style={{ background: '#FEE2E2', color: '#B91C1C', padding: '14px', borderRadius: '12px', border: '2px solid #B91C1C', marginBottom: '24px', fontWeight: 700, fontSize: '0.9rem' }}>
+              <div style={{ background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', padding: '14px', borderRadius: '12px', border: '2px solid rgba(185,28,28,0.4)', marginBottom: '24px', fontWeight: 700, fontSize: '0.9rem' }}>
                   ⚠️ {error}
                 </div>
               )}

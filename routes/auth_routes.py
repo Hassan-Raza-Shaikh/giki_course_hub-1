@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from db import get_connection
 from firebase_admin_init import is_initialized
 import firebase_admin.auth as fb_auth
+from config import BOOTSTRAP_ADMIN_EMAILS
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -42,13 +43,13 @@ def _verify_id_token(id_token):
 # ─────────────────────────────────────────────────────────────────────────────
 @auth_bp.route('/api/auth/firebase', methods=['POST'])
 def firebase_auth():
-    data = request.get_json()
+    data = request.get_json() or {}
 
     id_token     = data.get('idToken')
     uid_fallback = data.get('uid')
-    email        = data.get('email', '')
-    display_name = data.get('displayName', email.split('@')[0] if email else 'user')
-    photo_url    = data.get('photoURL', '')
+    email        = (data.get('email', '') or '').strip().lower()
+    display_name = (data.get('displayName', '') or '').strip() or (email.split('@')[0] if email else 'user')
+    photo_url    = (data.get('photoURL', '') or '').strip()
 
     # Optional profile fields — only sent during native email/password sign-up
     student_id = data.get('studentId', '').strip() or None  if data.get('studentId') else None
@@ -112,7 +113,7 @@ def firebase_auth():
 
         # 4. Check if user is an admin to sync role
         cur.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
-        is_admin_in_db = cur.fetchone() is not None or email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com']
+        is_admin_in_db = cur.fetchone() is not None or email.lower() in BOOTSTRAP_ADMIN_EMAILS
         
         if is_admin_in_db and role != 'admin':
             cur.execute("UPDATE users SET role = 'admin' WHERE user_id = %s;", (user_id,))
@@ -166,11 +167,12 @@ def firebase_auth():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# POST /api/signup  — username/password signup
+# POST /api/signup  — native email/password signup (profile upsert)
 # ─────────────────────────────────────────────────────────────────────────────
 @auth_bp.route('/api/signup', methods=['POST'])
 def signup():
-    data         = request.get_json()
+    import re
+    data         = request.get_json() or {}
     email        = data.get('email', '').strip().lower()
     password     = data.get('password', '').strip()
     display_name = data.get('displayName', '').strip()
@@ -178,23 +180,36 @@ def signup():
     batch_year   = data.get('batchYear', None)
     program      = data.get('program', '').strip() or None
 
+    # ── Input validation ──────────────────────────────────────────────────────
     if not email:
         return jsonify({"success": False, "message": "Email is required."}), 400
+
+    email_regex = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+    if not email_regex.match(email):
+        return jsonify({"success": False, "message": "Please enter a valid email address."}), 400
+
+    if not display_name:
+        return jsonify({"success": False, "message": "Full name is required."}), 400
+
+    if password and len(password) < 6:
+        return jsonify({"success": False, "message": "Password must be at least 6 characters."}), 400
 
     conn = get_connection()
     try:
         cur = conn.cursor()
 
-        # The user was already created in `users` by /api/auth/firebase.
-        # Look them up by email to get their user_id.
-        cur.execute("SELECT user_id, username FROM users WHERE email = %s;", (email,))
+        # Check if user already exists by email — reject duplicates clearly
+        cur.execute("SELECT user_id, username, firebase_uid FROM users WHERE email = %s;", (email,))
         existing = cur.fetchone()
 
         if existing:
             user_id  = existing[0]
             username = existing[1]
+            # If they already have a Firebase UID, this is a returning user — just upsert profile
+            # (This path is hit when /api/auth/firebase already created the row and calls /api/signup
+            #  as the second step to save profile data. That's the normal flow.)
         else:
-            # Fallback: create the user if somehow they don't exist yet
+            # Fallback: direct DB creation (should rarely happen — Firebase creates the row first)
             if not password or len(password) < 6:
                 return jsonify({"success": False, "message": "Password must be at least 6 characters."}), 400
             username = email.split('@')[0]
@@ -209,15 +224,15 @@ def signup():
             row = cur.fetchone()
             user_id, username = row[0], row[1]
 
-        # Upsert into user_profiles (INSERT or UPDATE if they re-submit)
+        # Upsert into user_profiles
         cur.execute(
             """INSERT INTO user_profiles (user_id, display_name, student_id, batch_year, program)
                VALUES (%s, %s, %s, %s, %s)
                ON CONFLICT (user_id) DO UPDATE
                  SET display_name = EXCLUDED.display_name,
-                     student_id   = EXCLUDED.student_id,
-                     batch_year   = EXCLUDED.batch_year,
-                     program      = EXCLUDED.program,
+                     student_id   = COALESCE(EXCLUDED.student_id,  user_profiles.student_id),
+                     batch_year   = COALESCE(EXCLUDED.batch_year,  user_profiles.batch_year),
+                     program      = COALESCE(EXCLUDED.program,     user_profiles.program),
                      updated_at   = CURRENT_TIMESTAMP;""",
             (user_id, display_name or username, student_id, batch_year, program)
         )
@@ -227,7 +242,7 @@ def signup():
 
         return jsonify({
             "success": True,
-            "message": "Profile saved.",
+            "message": "Account created successfully.",
             "user": {
                 "id": user_id, "username": username,
                 "displayName": display_name or username, "email": email
@@ -235,7 +250,7 @@ def signup():
         })
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        return jsonify({"success": False, "message": f"Signup error: {e}"}), 500
     finally:
         conn.close()
 
@@ -245,11 +260,10 @@ def signup():
 # ─────────────────────────────────────────────────────────────────────────────
 @auth_bp.route('/api/login', methods=['POST'])
 def login():
-    data     = request.get_json()
+    data     = request.get_json() or {}
     # Accept email OR username
-    login_id = data.get('email', '') or data.get('username', '')
-    login_id = login_id.strip()
-    password = data.get('password', '').strip()
+    login_id = (data.get('email', '') or data.get('username', '') or '').strip().lower()
+    password = (data.get('password', '') or '').strip()
 
     if not login_id or not password:
         return jsonify({"success": False, "message": "Email and password are required."}), 400
@@ -257,31 +271,30 @@ def login():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        # Try email first, then username
+        # Try email first, then username (case-insensitive)
         cur.execute(
             """SELECT user_id, username, password, role, display_name, photo_url, email
-               FROM users WHERE email = %s OR username = %s;""",
+               FROM users WHERE LOWER(email) = %s OR LOWER(username) = %s;""",
             (login_id, login_id)
         )
         user = cur.fetchone()
         cur.close()
 
-        if not user or not user[2]:
+        # user[2] is the hashed password — Google-only users have NULL here
+        if not user or not user[2] or not check_password_hash(user[2], password):
             return jsonify({"success": False, "message": "Invalid email or password."}), 401
 
-        if check_password_hash(user[2], password):
-            session['user_id']  = user[0]
-            session['username'] = user[1]
-            session['role']     = user[3]
-            return jsonify({
-                "success": True,
-                "message": f"Welcome back, {user[4] or user[1]}!",
-                "user": {
-                    "id": user[0], "username": user[1], "role": user[3],
-                    "displayName": user[4] or user[1], "photoURL": user[5], "email": user[6]
-                }
-            })
-        return jsonify({"success": False, "message": "Invalid email or password."}), 401
+        session['user_id']  = user[0]
+        session['username'] = user[1]
+        session['role']     = user[3]
+        return jsonify({
+            "success": True,
+            "message": f"Welcome back, {user[4] or user[1]}!",
+            "user": {
+                "id": user[0], "username": user[1], "role": user[3],
+                "displayName": user[4] or user[1], "photoURL": user[5], "email": user[6]
+            }
+        })
     except Exception as e:
         return jsonify({"success": False, "message": f"Login error: {e}"}), 500
     finally:

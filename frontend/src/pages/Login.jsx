@@ -18,7 +18,6 @@ const Login = () => {
       const user = result.user;
       const idToken = await user.getIdToken();
       
-      // Sync with our backend
       const res = await api.post('/auth/firebase', {
         idToken,
         uid: user.uid,
@@ -29,9 +28,10 @@ const Login = () => {
 
       if (res.data.success) {
         window.location.href = res.data.user.role === 'admin' ? '/admin' : '/dashboard';
+      } else {
+        setError(res.data.message || 'Google Sign-In failed.');
       }
     } catch (err) {
-      console.error("Google login failed", err);
       setError('Google Sign-In failed. Please try again.');
     } finally {
       setLoading(false);
@@ -46,6 +46,8 @@ const Login = () => {
       const res = await api.post('/login', formData);
       if (res.data.success) {
         window.location.href = res.data.user.role === 'admin' ? '/admin' : '/dashboard';
+      } else {
+        setError(res.data.message || 'Login failed.');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
@@ -60,17 +62,17 @@ const Login = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center', 
-      background: 'linear-gradient(135deg, #f8faff 0%, #e8f0fe 100%)',
+      background: 'var(--bg-body)',
       padding: '24px'
     }}>
       <div style={{ 
         width: '100%', 
-        maxWidth: '400px', 
-        backgroundColor: 'white', 
+        maxWidth: '420px', 
+        backgroundColor: 'var(--bg-white)', 
         borderRadius: '24px', 
         padding: '48px 40px',
         boxShadow: 'var(--shadow-lg)',
-        border: '1px solid var(--border)'
+        border: '2px solid var(--border)'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📚</div>
@@ -79,21 +81,21 @@ const Login = () => {
         </div>
 
         {error && (
-          <div style={{ padding: '14px', backgroundColor: '#FEF2F2', color: '#B91C1C', borderRadius: '12px', fontSize: '0.85rem', marginBottom: '24px', textAlign: 'center', fontWeight: 600, border: '1px solid #FCA5A5' }}>
+          <div style={{ padding: '14px', background: 'rgba(185,28,28,0.1)', color: 'var(--accent)', borderRadius: '12px', fontSize: '0.85rem', marginBottom: '24px', textAlign: 'center', fontWeight: 600, border: '1px solid rgba(185,28,28,0.3)' }}>
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Username</label>
+            <label style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Username or Email</label>
             <input 
               type="text" 
               required
-              placeholder="Your username"
-              style={{ padding: '14px', borderRadius: '12px', border: '2px solid #CBD5E1', outline: 'none', backgroundColor: '#F8FAFC', transition: 'all 0.2s' }}
-              onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-              onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
+              placeholder="Your username or email"
+              style={{ padding: '14px', borderRadius: '12px', border: '2px solid var(--border)', outline: 'none', background: 'var(--bg-subtle)', color: 'var(--text)', transition: 'all 0.2s', width: '100%', boxSizing: 'border-box' }}
+              onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.15)'; }}
+              onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
               value={formData.username}
               onChange={(e) => setFormData({...formData, username: e.target.value})}
             />
@@ -104,9 +106,9 @@ const Login = () => {
               type="password" 
               required
               placeholder="••••••••"
-              style={{ padding: '14px', borderRadius: '12px', border: '2px solid #CBD5E1', outline: 'none', backgroundColor: '#F8FAFC', transition: 'all 0.2s' }}
-              onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-              onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
+              style={{ padding: '14px', borderRadius: '12px', border: '2px solid var(--border)', outline: 'none', background: 'var(--bg-subtle)', color: 'var(--text)', transition: 'all 0.2s', width: '100%', boxSizing: 'border-box' }}
+              onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.15)'; }}
+              onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
             />
@@ -115,44 +117,28 @@ const Login = () => {
           <button 
             type="submit" 
             disabled={loading}
-            style={{ 
-              backgroundColor: 'var(--primary)', 
-              color: 'white', 
-              padding: '16px', 
-              borderRadius: '12px', 
-              fontWeight: 800, 
-              fontSize: '1rem',
-              marginTop: '12px',
-              transition: 'var(--transition)',
-              boxShadow: '0 4px 12px rgba(0, 58, 143, 0.2)',
-              opacity: loading ? 0.7 : 1
-            }}
+            className="btn-primary"
+            style={{ width: '100%', marginTop: '4px', opacity: loading ? 0.7 : 1 }}
           >
-            {loading ? 'Authenticating...' : 'Sign In to Hub'}
+            {loading ? 'Signing in…' : 'Sign In to Hub'}
           </button>
         </form>
 
-        <div style={{ margin: '32px 0', position: 'relative', textAlign: 'center' }}>
-          <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '1px', backgroundColor: 'var(--border)', zIndex: 1 }}></div>
-          <span style={{ position: 'relative', zIndex: 2, backgroundColor: 'white', padding: '0 16px', color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600 }}>OR CONTINUE WITH</span>
+        <div style={{ margin: '28px 0', position: 'relative', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: '50%', left: 0, width: '100%', height: '1px', background: 'var(--border)', opacity: 0.4, zIndex: 1 }}></div>
+          <span style={{ position: 'relative', zIndex: 2, background: 'var(--bg-white)', padding: '0 16px', color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 700 }}>OR CONTINUE WITH</span>
         </div>
 
         <button 
           onClick={handleGoogleLogin}
           disabled={loading}
+          className="btn-outline"
           style={{ 
             width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '12px',
-            backgroundColor: 'white',
-            border: '1px solid var(--border)',
-            padding: '14px',
-            borderRadius: '12px',
-            fontWeight: 700,
-            color: 'var(--text)',
-            transition: 'var(--transition)',
             opacity: loading ? 0.7 : 1
           }}
         >
@@ -160,9 +146,9 @@ const Login = () => {
           Log in with Google
         </button>
 
-        <div style={{ marginTop: '32px', textAlign: 'center', fontSize: '0.95rem' }}>
+        <div style={{ marginTop: '28px', textAlign: 'center', fontSize: '0.95rem' }}>
           <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}>New to Course Hub? </span>
-          <NavLink to="/signup" style={{ color: 'var(--secondary)', fontWeight: 800 }}>Create Account</NavLink>
+          <NavLink to="/signup" style={{ color: 'var(--primary)', fontWeight: 800 }}>Create Account</NavLink>
         </div>
       </div>
     </div>

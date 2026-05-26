@@ -1,5 +1,6 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
+from config import BOOTSTRAP_ADMIN_EMAILS
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -25,7 +26,7 @@ def _require_admin():
         email = row[0].lower().strip()
         
         # OWNER BOOTSTRAP: Always allow the primary developers
-        if email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com']:
+        if email in BOOTSTRAP_ADMIN_EMAILS:
             return email, None
 
         cur2 = conn.cursor()
@@ -76,13 +77,13 @@ def admin_check():
         admin_row = cur2.fetchone()
         cur2.close()
         
-        is_admin = admin_row is not None or email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com']
+        is_admin = admin_row is not None or email in BOOTSTRAP_ADMIN_EMAILS
         
         return jsonify({
             "is_admin": is_admin,
             "email": email,
-            "granted_by": admin_row[0] if admin_row else ('System' if email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com'] else None),
-            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in ['ammarbatman9@gmail.com', 'hassan.raza.shaikh.hrs@gmail.com'] else None),
+            "granted_by": admin_row[0] if admin_row else ('System' if email in BOOTSTRAP_ADMIN_EMAILS else None),
+            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in BOOTSTRAP_ADMIN_EMAILS else None),
         })
     finally:
         conn.close()

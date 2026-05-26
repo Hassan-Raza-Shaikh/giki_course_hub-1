@@ -12,7 +12,7 @@ from config import (
     ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY,
     R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX,
     DEFAULT_MAX_FILE_SIZE, REFERENCE_MAX_FILE_SIZE, REFERENCE_CATEGORY_NAME,
-    BULK_MAX_FILES, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
+    BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
 )
 from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension
 
@@ -707,8 +707,11 @@ def bulk_upload_init(course_id):
     if not files_manifest:
         return jsonify({"success": False, "message": "No files provided."}), 400
 
-    if len(files_manifest) > BULK_MAX_FILES:
-        return jsonify({"success": False, "message": f"Maximum {BULK_MAX_FILES} files per bulk upload."}), 400
+    is_admin = session.get('role') == 'admin'
+    max_files_allowed = BULK_MAX_FILES_ADMIN if is_admin else BULK_MAX_FILES
+
+    if len(files_manifest) > max_files_allowed:
+        return jsonify({"success": False, "message": f"Maximum {max_files_allowed} files per bulk upload."}), 400
 
     # Pre-validate each file in the manifest
     conn = get_connection()

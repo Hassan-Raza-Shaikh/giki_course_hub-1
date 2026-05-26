@@ -46,18 +46,18 @@ const InputField = ({ label, type = 'text', value, onChange, placeholder, requir
       placeholder={placeholder}
       style={{
         width: '100%', padding: '11px 14px', borderRadius: '8px',
-        border: '2px solid #CBD5E1', fontSize: '0.9rem',
-        background: 'var(--bg-white)', outline: 'none', transition: 'all 0.2s',
+        border: '2px solid var(--border)', fontSize: '0.9rem',
+        background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none', transition: 'all 0.2s',
         boxSizing: 'border-box',
       }}
-      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-      onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
+      onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.15)'; }}
+      onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
     />
   </div>
 );
 
 const LoginModal = ({ onClose, onSuccess }) => {
-  const [tab, setTab] = useState('login');   // 'login' | 'signup'
+  const [tab, setTab] = useState('login');   // 'login' | 'signup' | 'signup-success'
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -135,12 +135,29 @@ const LoginModal = ({ onClose, onSuccess }) => {
   const handleEmailSignup = async (e) => {
     e.preventDefault();
     setError('');
-    if (signupPassword !== signupConfirm) { setError('Passwords do not match.'); return; }
-    if (signupPassword.length < 6) { setError('Password must be at least 6 characters.'); return; }
+
+    // Client-side validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!signupEmail || !emailRegex.test(signupEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (!signupName.trim()) {
+      setError('Full name is required.');
+      return;
+    }
+    if (signupPassword.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    if (signupPassword !== signupConfirm) {
+      setError('Passwords do not match.');
+      return;
+    }
 
     setLoading(true);
     try {
-      // 1. Create the Firebase account
+      // 1. Create the Firebase account (catches duplicate email)
       const result = await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
       const fbUser = result.user;
       const idToken = await fbUser.getIdToken();
@@ -164,17 +181,22 @@ const LoginModal = ({ onClose, onSuccess }) => {
         return;
       }
 
-      onSuccess({
-        ...firebaseRes.data.user,
-        displayName: signupName || fbUser.email.split('@')[0],
-        email:       fbUser.email,
-      });
+      // 3. Show success screen — pre-fill login tab with email
+      setLoginEmail(signupEmail);
+      setSignupPassword('');
+      setSignupConfirm('');
+      setTab('signup-success');
+
     } catch (err) {
       const code = err.code;
       if (code === 'auth/email-already-in-use') {
-        setError('An account with this email already exists. Please sign in.');
+        setError('An account with this email already exists. Please sign in instead.');
+        // Helpfully pre-fill the login tab
+        setLoginEmail(signupEmail);
       } else if (code === 'auth/invalid-email') {
         setError('Please enter a valid email address.');
+      } else if (code === 'auth/weak-password') {
+        setError('Password is too weak. Use at least 6 characters with a mix of letters and numbers.');
       } else {
         setError(err.response?.data?.message || 'Sign-up failed. Please try again.');
       }
@@ -216,51 +238,80 @@ const LoginModal = ({ onClose, onSuccess }) => {
               fontSize: '1.4rem', boxShadow: '3px 3px 0px var(--text)',
             }}>📚</div>
             <h2 style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '3px', color: 'var(--text)' }}>
-              {tab === 'login' ? 'Welcome Back' : 'Create Account'}
+              {tab === 'login' ? 'Welcome Back' : tab === 'signup-success' ? '🎉 Account Created!' : 'Create Account'}
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.83rem' }}>
-              {tab === 'login' ? 'Sign in to access your GIKI Hub.' : 'Join the GIKI academic community.'}
+              {tab === 'login' ? 'Sign in to access your GIKI Hub.' : tab === 'signup-success' ? 'You can now sign in with your new account.' : 'Join the GIKI academic community.'}
             </p>
           </div>
 
-          {/* Tab switcher */}
-          <div style={{ display: 'flex', border: '2px solid var(--text)', borderRadius: '10px', marginBottom: '18px', overflow: 'hidden' }}>
-            {['login', 'signup'].map(t => (
-              <button key={t} onClick={() => { setTab(t); setError(''); }}
-                style={{
-                  flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.88rem',
-                  background: tab === t ? 'var(--primary)' : 'var(--bg-white)',
-                  color: tab === t ? 'var(--bg-hero)' : 'var(--text)',
-                  border: 'none', cursor: 'pointer', transition: 'all 0.2s',
-                  textTransform: 'capitalize',
-                }}
-              >
-                {t === 'login' ? 'Sign In' : 'Sign Up'}
-              </button>
-            ))}
-          </div>
+          {/* Tab switcher — hidden on success screen */}
+          {tab !== 'signup-success' && (
+            <div style={{ display: 'flex', border: '2px solid var(--text)', borderRadius: '10px', marginBottom: '18px', overflow: 'hidden' }}>
+              {['login', 'signup'].map(t => (
+                <button key={t} onClick={() => { setTab(t); setError(''); }}
+                  style={{
+                    flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.88rem',
+                    background: tab === t ? 'var(--primary)' : 'var(--bg-white)',
+                    color: tab === t ? 'var(--bg-hero)' : 'var(--text)',
+                    border: 'none', cursor: 'pointer', transition: 'all 0.2s',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  {t === 'login' ? 'Sign In' : 'Sign Up'}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Error */}
           {error && (
-            <div style={{ padding: '10px 14px', background: '#FEF2F2', color: '#B91C1C', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '18px', fontWeight: 600, border: '1px solid #FCA5A5' }}>
+            <div style={{ padding: '10px 14px', background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '18px', fontWeight: 600, border: '1px solid rgba(185,28,28,0.3)' }}>
               {error}
             </div>
           )}
 
-          {/* Google button */}
-          <button onClick={handleGoogle} disabled={loading} className="btn-outline"
-            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px', opacity: loading ? 0.7 : 1 }}
-          >
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" style={{ width: '20px' }} />
-            Continue with Google
-          </button>
+          {/* Google button — hidden on success screen */}
+          {tab !== 'signup-success' && (
+            <button onClick={handleGoogle} disabled={loading} className="btn-outline"
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px', opacity: loading ? 0.7 : 1 }}
+            >
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" style={{ width: '20px' }} />
+              Continue with Google
+            </button>
+          )}
 
-          {/* Divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-            <div style={{ flex: 1, height: '1px', background: 'var(--text-light)', opacity: 0.3 }} />
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text)' }}>OR</span>
-            <div style={{ flex: 1, height: '1px', background: 'var(--text-light)', opacity: 0.3 }} />
-          </div>
+          {/* Divider — hidden on success screen */}
+          {tab !== 'signup-success' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ flex: 1, height: '1px', background: 'var(--text-light)', opacity: 0.3 }} />
+              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text)' }}>OR</span>
+              <div style={{ flex: 1, height: '1px', background: 'var(--text-light)', opacity: 0.3 }} />
+            </div>
+          )}
+
+          {/* ── SIGNUP SUCCESS SCREEN ── */}
+          {tab === 'signup-success' && (
+            <div style={{ textAlign: 'center', padding: '12px 0 8px' }}>
+              <div style={{ fontSize: '3.5rem', marginBottom: '16px', animation: 'scaleIn 0.4s ease' }}>🎉</div>
+              <h3 style={{ fontWeight: 900, fontSize: '1.2rem', marginBottom: '10px', color: 'var(--text)' }}>
+                Welcome to GIKI Hub, {signupName.split(' ')[0] || 'scholar'}!
+              </h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '24px' }}>
+                Your account has been created successfully. Sign in below to start uploading and discovering course materials.
+              </p>
+              <button
+                className="btn-primary"
+                style={{ width: '100%', marginBottom: '12px' }}
+                onClick={() => { setTab('login'); setError(''); }}
+              >
+                ✅ Sign In Now
+              </button>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                Your email is pre-filled — just enter your password.
+              </p>
+            </div>
+          )}
 
           {/* ── LOGIN FORM ── */}
           {tab === 'login' && (
@@ -291,9 +342,9 @@ const LoginModal = ({ onClose, onSuccess }) => {
                     minLength={7} maxLength={8}
                     pattern="\d{7,8}"
                     title="Registration number must be 7 or 8 digits"
-                    style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '2px solid #CBD5E1', fontSize: '0.9rem', background: 'var(--bg-white)', outline: 'none', boxSizing: 'border-box', transition: 'all 0.2s' }}
-                    onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-                    onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
+                    style={{ width: '100%', padding: '11px 14px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.9rem', background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none', boxSizing: 'border-box', transition: 'all 0.2s' }}
+                    onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.15)'; }}
+                    onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
                   />
                 </div>
               </div>
@@ -307,9 +358,9 @@ const LoginModal = ({ onClose, onSuccess }) => {
                 <div>
                   <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Program</label>
                   <select value={signupProgram} onChange={e => setSignupProgram(e.target.value)}
-                    style={{ width: '100%', padding: '11px 10px', borderRadius: '8px', border: '2px solid #CBD5E1', fontSize: '0.83rem', background: 'var(--bg-white)', outline: 'none', transition: 'all 0.2s' }}
-                    onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.1)'; }}
-                    onBlur={e => { e.target.style.borderColor = '#CBD5E1'; e.target.style.boxShadow = 'none'; }}
+                    style={{ width: '100%', padding: '11px 10px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.83rem', background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none', transition: 'all 0.2s' }}
+                    onFocus={e => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.15)'; }}
+                    onBlur={e => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = 'none'; }}
                   >
                     <option value="">Select programme…</option>
                     {PROGRAMS.map(group => (
@@ -326,9 +377,11 @@ const LoginModal = ({ onClose, onSuccess }) => {
             </form>
           )}
 
-          <p style={{ textAlign: 'center', marginTop: '14px', fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-            By continuing, you agree to contribute respectfully to the GIKI community.
-          </p>
+          {tab !== 'signup-success' && (
+            <p style={{ textAlign: 'center', marginTop: '14px', fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+              By continuing, you agree to contribute respectfully to the GIKI community.
+            </p>
+          )}
         </div>
       </div>
     </div>

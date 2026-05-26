@@ -167,9 +167,9 @@ const GlobalSearch = ({ user, onSignIn }) => {
 
         {error && (
           <div style={{ 
-            background: '#FEF2F2', border: '2px solid #EF4444', borderRadius: '12px', 
-            padding: '16px 24px', marginBottom: '32px', color: '#B91C1C', fontWeight: 600,
-            boxShadow: '4px 4px 0px #EF4444'
+            background: 'rgba(185,28,28,0.1)', border: '2px solid rgba(185,28,28,0.4)', borderRadius: '12px', 
+            padding: '16px 24px', marginBottom: '32px', color: 'var(--accent, #B91C1C)', fontWeight: 600,
+            boxShadow: '4px 4px 0px rgba(185,28,28,0.3)'
           }}>
             ⚠️ {error}
           </div>
