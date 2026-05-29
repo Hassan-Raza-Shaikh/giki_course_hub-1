@@ -7,6 +7,7 @@ const EXT_GROUPS = {
   video:['mp4', 'webm', 'ogg'],
   text: ['txt', 'md', 'csv'],
   docx: ['docx', 'doc'],
+  pptx: ['pptx', 'ppt'],
 };
 
 function getFileType(url = '') {
@@ -73,12 +74,16 @@ const FileViewer = ({ file, onClose }) => {
       return <DocxPreview url={url} />;
     }
 
+    if (fileType === 'pptx') {
+      return <PptxPreview url={url} title={title} />;
+    }
+
     if (fileType === 'text') {
       return <TextPreview url={url} />;
     }
 
-    // Office docs / unknown: Google Docs viewer (works if server is public; graceful fallback otherwise)
-    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + url)}&embedded=true`;
+    // Unknown format: Google Docs viewer as best-effort fallback
+    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     return (
       <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px', padding: '40px', borderRadius: '0 0 12px 12px', background: 'var(--bg-subtle)' }}>
         <div style={{ fontSize: '4rem' }}>📎</div>
@@ -134,7 +139,7 @@ const FileViewer = ({ file, onClose }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
             <span style={{ fontSize: '1.1rem' }}>
-              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : '📎'}
+              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : '📎'}
             </span>
             <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {title}
@@ -265,6 +270,73 @@ const TextPreview = ({ url }) => {
     }}>
       {text}
     </pre>
+  );
+};
+
+// PPTX/PPT viewer using Google Docs Viewer
+const PptxPreview = ({ url, title }) => {
+  const [key, setKey] = useState(0); // used to force-reload the iframe
+  const [loaded, setLoaded] = useState(false);
+  const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#f3f4f6' }}>
+      {/* Loading overlay — hidden once iframe fires onLoad */}
+      {!loaded && (
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 2,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          gap: '16px', background: '#f3f4f6',
+        }}>
+          <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>📊</span>
+          <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>Loading presentation…</p>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', maxWidth: '340px', lineHeight: 1.5 }}>
+            Powered by Google Docs Viewer. Large files may take a few seconds to render.
+          </p>
+        </div>
+      )}
+
+      <iframe
+        key={key}
+        src={viewerUrl}
+        title={title}
+        onLoad={() => setLoaded(true)}
+        style={{ width: '100%', height: '100%', border: 'none', position: 'relative', zIndex: 1 }}
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+      />
+
+      {/* Reload hint shown after loading, in case Google viewer shows its own error */}
+      {loaded && (
+        <div style={{
+          position: 'absolute', bottom: '14px', right: '14px', zIndex: 3,
+          display: 'flex', gap: '8px',
+        }}>
+          <button
+            onClick={() => { setLoaded(false); setKey(k => k + 1); }}
+            style={{
+              padding: '6px 14px', borderRadius: '8px', border: '2px solid var(--border)',
+              background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700,
+              fontSize: '0.78rem', cursor: 'pointer', boxShadow: '2px 2px 0 var(--border)',
+            }}
+          >
+            🔄 Retry
+          </button>
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              padding: '6px 14px', borderRadius: '8px', border: '2px solid var(--border)',
+              background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700,
+              fontSize: '0.78rem', cursor: 'pointer', boxShadow: '2px 2px 0 var(--border)',
+              textDecoration: 'none',
+            }}
+          >
+            ↗ Open in Google
+          </a>
+        </div>
+      )}
+    </div>
   );
 };
 
