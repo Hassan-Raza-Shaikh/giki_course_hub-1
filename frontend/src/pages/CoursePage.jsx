@@ -27,6 +27,7 @@ const CoursePage = ({ user, onSignIn }) => {
   const [categories, setCategories]   = useState([]);
   const [instructors, setInstructors] = useState([]);
   const [courseInstructors, setCourseInstructors] = useState([]);
+  const [fileInstructors, setFileInstructors] = useState([]); // instructors with actual files in this course
   const [instructorFilter, setInstructorFilter] = useState('');
   const [sortBy, setSortBy]           = useState('name-asc');
   const [activeTab, setActiveTab]     = useState('');
@@ -166,6 +167,7 @@ const CoursePage = ({ user, onSignIn }) => {
           setCategories(res.data.categories);
           setInstructors(res.data.all_instructors || []);
           setCourseInstructors(res.data.course_instructors || []);
+          setFileInstructors(res.data.file_instructors || []);
           // Default to Outline for non-lab, Lab Manuals for lab — fall back to first populated tab
           const courseData = res.data.course;
           const preferred = courseData.is_lab ? 'Lab Manuals' : 'Outline';
@@ -210,6 +212,7 @@ const CoursePage = ({ user, onSignIn }) => {
         if (res.data.success) {
           setFiles(res.data.files_by_category);
           setCourseInstructors(res.data.course_instructors || []);
+          setFileInstructors(res.data.file_instructors || []);
         }
       });
       alert('File updated successfully! ✨');
@@ -457,10 +460,10 @@ const CoursePage = ({ user, onSignIn }) => {
               <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '600px', lineHeight: 1.7, fontWeight: 500 }}>
                 {course.description}
               </p>
-              {courseInstructors.length > 0 && (
+              {fileInstructors.length > 0 && (
                 <div style={{ marginTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
-                  {courseInstructors.map(inst => (
+                  {fileInstructors.map(inst => (
                     <span key={inst.id} style={{ background: 'var(--bg-subtle)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 600, border: '1px solid var(--border)' }}>
                       🧑‍🏫 {inst.name}
                     </span>
@@ -643,7 +646,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 </p>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                {courseInstructors.length > 0 && (
+                {fileInstructors.length > 0 && (
                   <select
                     value={instructorFilter}
                     onChange={e => setInstructorFilter(e.target.value)}
@@ -651,7 +654,7 @@ const CoursePage = ({ user, onSignIn }) => {
                   >
                     <option value="">All Instructors</option>
                     <option value="general">General Material</option>
-                    {courseInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
+                    {fileInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                   </select>
                 )}
                 <select

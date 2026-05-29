@@ -163,7 +163,7 @@ def get_public_stats():
         faculties = cur.fetchone()[0]
         cur.execute("SELECT COUNT(*) FROM programs;")
         programs = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM files WHERE status != 'rejected';")
+        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'approved';")
         materials = cur.fetchone()[0]
         cur.close()
         return jsonify({
@@ -276,14 +276,27 @@ def course_detail(course_id):
         )
         categories = [{"id": r[0], "name": r[1]} for r in cur.fetchall()]
 
-        # Instructors linked to this course
+        # Instructors linked to this course (admin-assigned relationship)
         cur.execute("""
             SELECT i.instructor_id, i.name, i.faculty_name
             FROM instructors i
             JOIN course_instructors ci ON i.instructor_id = ci.instructor_id
-            WHERE ci.course_id = %s;
+            WHERE ci.course_id = %s
+            ORDER BY i.name;
         """, (course_id,))
         course_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
+
+        # Instructors who actually have approved files in this course
+        # (used for the header chips and filter dropdown)
+        cur.execute("""
+            SELECT DISTINCT i.instructor_id, i.name, i.faculty_name
+            FROM instructors i
+            JOIN files f ON f.instructor_id = i.instructor_id
+            WHERE f.course_id = %s
+              AND f.status = 'approved'
+            ORDER BY i.name;
+        """, (course_id,))
+        file_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
 
         # All instructors (for the upload dropdown autocomplete)
         cur.execute("SELECT instructor_id, name, faculty_name FROM instructors ORDER BY name;")
@@ -302,6 +315,7 @@ def course_detail(course_id):
             "files_by_category": by_category,
             "categories": categories,
             "course_instructors": course_instructors,
+            "file_instructors": file_instructors,
             "all_instructors": all_instructors
         })
     except Exception as e:
@@ -501,8 +515,9 @@ def get_bookmarks():
                       b.created_at AS bookmarked_at
                FROM bookmarks b
                JOIN files      f   ON f.file_id      = b.file_id
-               JOIN categories cat ON cat.category_id = f.category_id
-               JOIN courses    c   ON c.code          = f.course_code
+               LEFT JOIN categories cat ON cat.category_id = f.category_id
+               LEFT JOIN courses    c   ON c.code = f.course_code
+                                       OR c.name = f.course_code
                LEFT JOIN file_metadata m ON m.file_id = f.file_id
                WHERE b.user_id = %s AND f.status = 'approved'
                ORDER BY b.file_id, b.created_at DESC;""",

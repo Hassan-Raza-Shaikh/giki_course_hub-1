@@ -88,7 +88,15 @@ CREATE OR REPLACE FUNCTION get_api_course_files(p_course_id INT)
 RETURNS jsonb AS $$
 DECLARE
     result jsonb;
+    v_code TEXT;
+    v_name TEXT;
 BEGIN
+    -- Fetch both code and name so we can match files uploaded either way
+    SELECT COALESCE(code, name), name
+      INTO v_code, v_name
+      FROM courses
+     WHERE course_id = p_course_id;
+
     SELECT 
         COALESCE(
             jsonb_object_agg(
@@ -115,7 +123,7 @@ BEGIN
                     'admin_note', fn.note_text,
                     'instructor_name', i.name,
                     'instructor_id', f.instructor_id
-                ) ORDER BY f.upload_date DESC
+                ) ORDER BY f.title ASC
             ) AS files
         FROM files f
         LEFT JOIN categories cat ON f.category_id = cat.category_id
@@ -123,11 +131,11 @@ BEGIN
         LEFT JOIN file_metadata m ON f.file_id = m.file_id
         LEFT JOIN file_notes fn ON fn.file_id = f.file_id
         LEFT JOIN instructors i ON f.instructor_id = i.instructor_id
-        WHERE f.course_code = (SELECT COALESCE(code, name) FROM courses WHERE course_id = p_course_id) 
+        WHERE (f.course_code = v_code OR f.course_code = v_name)
           AND f.status = 'approved'
         GROUP BY COALESCE(cat.name, 'General')
     ) cat_group;
 
-    RETURN result;
+    RETURN COALESCE(result, '{}'::jsonb);
 END;
 $$ LANGUAGE plpgsql STABLE;
