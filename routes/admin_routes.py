@@ -956,10 +956,37 @@ def admin_delete_course(course_id):
         row = cur.fetchone()
         if not row: return jsonify({"success": False, "message": "Course not found."}), 404
         name = row[0]
+
+        # Collect R2 storage paths for all files in this course before deleting
+        cur.execute("""
+            SELECT storage_path FROM files
+            WHERE course_code = (SELECT COALESCE(code, name) FROM courses WHERE course_id = %s)
+              AND storage_path IS NOT NULL AND storage_path != '';
+        """, (course_id,))
+        storage_paths = [r[0] for r in cur.fetchall()]
+
+        # Delete from DB — FK cascades clean up files, bookmarks, metadata, notes, reports
         cur.execute("DELETE FROM courses WHERE course_id = %s;", (course_id,))
-        conn.commit(); cur.close()
+        conn.commit()
+        cur.close()
+
+        # Delete all associated files from R2 (best-effort, don't block on failure)
+        if storage_paths:
+            try:
+                from routes.file_routes import get_s3_client
+                from config import R2_BUCKET
+                s3_client = get_s3_client()
+                if s3_client:
+                    for sp in storage_paths:
+                        try:
+                            s3_client.delete_object(Bucket=R2_BUCKET, Key=sp)
+                        except Exception as e:
+                            print(f"R2 delete failed for {sp}: {e}")
+            except Exception as e:
+                print(f"R2 cleanup error during course delete: {e}")
+
         _log(admin_email, 'delete_course', course_id, name)
-        return jsonify({"success": True, "message": f"Course '{name}' deleted."})
+        return jsonify({"success": True, "message": f"Course '{name}' and {len(storage_paths)} associated file(s) deleted."})
     except Exception as e:
         conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
     finally:
