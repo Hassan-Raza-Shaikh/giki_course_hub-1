@@ -42,6 +42,9 @@ const AdminPanel = ({ user }) => {
   const [instructors, setInstructors] = useState([]);
   const [instructorForm, setInstructorForm] = useState({ name: '', faculty_name: '' });
   const [courseSearch, setCourseSearch] = useState('');
+  const [coursesPage, setCoursesPage] = useState(1);
+  const [coursesTotalPages, setCoursesTotalPages] = useState(1);
+  const [coursesTotalCount, setCoursesTotalCount] = useState(0);
   const [faculties, setFaculties] = useState([]);
   const [programs,  setPrograms]  = useState([]);
   const [categories, setCategories] = useState([]);
@@ -134,7 +137,11 @@ const AdminPanel = ({ user }) => {
       pending: () => api.get('/admin/files/pending').then(r => setPending(r.data.files || [])),
       reports: () => api.get('/admin/reports').then(r => { setReports(r.data.reports || []); setReportCounts(r.data.counts || {}); }),
       issues:  () => api.get('/admin/issues').then(r => { setIssues(r.data.issues || []); setIssueCounts(r.data.counts || {}); }),
-      courses: () => api.get('/admin/courses').then(r => setCourses(r.data.courses || [])),
+      courses: () => api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } }).then(r => {
+        setCourses(r.data.courses || []);
+        setCoursesTotalPages(r.data.pages || 1);
+        setCoursesTotalCount(r.data.total || 0);
+      }),
       instructors: () => api.get('/instructors').then(r => setInstructors(r.data.instructors || [])),
       stats_detailed: () => api.get('/admin/stats/detailed').then(r => setDetailedStats(r.data)),
       files: () => api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } }).then(r => {
@@ -164,8 +171,24 @@ const AdminPanel = ({ user }) => {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [filesPage, filesStatusFilter]);
-  
-  /* ── course code autofill ── */
+  // Re-fetch courses when page or search changes
+  useEffect(() => {
+    if (tab !== 'courses' || !isAdmin) return;
+    const timer = setTimeout(() => {
+      setLoading(true);
+      api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } })
+        .then(r => {
+          setCourses(r.data.courses || []);
+          setCoursesTotalPages(r.data.pages || 1);
+          setCoursesTotalCount(r.data.total || 0);
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+    }, courseSearch ? 400 : 0); // debounce search
+    return () => clearTimeout(timer);
+  }, [coursesPage, courseSearch]);
+
+
   useEffect(() => {
     // Only autofill when adding a NEW course, and code is long enough
     if (tab !== 'courses' || editingCourse || !courseForm.code || courseForm.code.length < 3) {
@@ -417,7 +440,12 @@ const AdminPanel = ({ user }) => {
       }
       setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
       setEditingCourse(null);
-      api.get('/admin/courses').then(r => setCourses(r.data.courses || []));
+      // Refresh current page
+      api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } }).then(r => {
+        setCourses(r.data.courses || []);
+        setCoursesTotalPages(r.data.pages || 1);
+        setCoursesTotalCount(r.data.total || 0);
+      });
     } catch (err) {
       showToast(err.response?.data?.message || 'Error saving course', 'error');
     }
@@ -431,7 +459,12 @@ const AdminPanel = ({ user }) => {
       onConfirm: async () => {
         await api.delete(`/admin/courses/${id}`);
         showToast('Course deleted 🗑️');
-        setCourses(c => c.filter(x => x.course_id !== id));
+        // Refresh current page
+        api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } }).then(r => {
+          setCourses(r.data.courses || []);
+          setCoursesTotalPages(r.data.pages || 1);
+          setCoursesTotalCount(r.data.total || 0);
+        });
         setConfirmModal(null);
       }
     });
@@ -1000,11 +1033,20 @@ const AdminPanel = ({ user }) => {
             </form>
 
             {/* Course List */}
-            <div style={{ marginBottom: '16px' }}>
-              <input value={courseSearch} onChange={e => setCourseSearch(e.target.value)} placeholder="Search courses by name or code…" style={inputStyle} />
+            {/* Search + count row */}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
+              <input
+                value={courseSearch}
+                onChange={e => { setCourseSearch(e.target.value); setCoursesPage(1); }}
+                placeholder="Search courses by name or code…"
+                style={{ ...inputStyle, flex: 1, minWidth: '200px', maxWidth: '400px', marginBottom: 0 }}
+              />
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                {coursesTotalCount} course{coursesTotalCount !== 1 ? 's' : ''} · Page {coursesPage} of {coursesTotalPages}
+              </span>
             </div>
             <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
-              {loading ? <LoadingRow /> : courses.filter(c => !courseSearch || c.name.toLowerCase().includes(courseSearch.toLowerCase()) || c.code.toLowerCase().includes(courseSearch.toLowerCase())).map(c => (
+              {loading ? <LoadingRow /> : courses.map(c => (
                 <div key={c.course_id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
                   <span style={{ fontSize: '1.5rem' }}>{c.icon || '📘'}</span>
                   <div style={{ flex: 1 }}>
@@ -1018,6 +1060,23 @@ const AdminPanel = ({ user }) => {
                 </div>
               ))}
             </div>
+
+            {/* Courses pagination */}
+            {coursesTotalPages > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '20px' }}>
+                <button
+                  disabled={coursesPage <= 1}
+                  onClick={() => setCoursesPage(p => p - 1)}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage <= 1 ? 'not-allowed' : 'pointer', opacity: coursesPage <= 1 ? 0.4 : 1 }}
+                >← Prev</button>
+                <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {coursesPage} / {coursesTotalPages}</span>
+                <button
+                  disabled={coursesPage >= coursesTotalPages}
+                  onClick={() => setCoursesPage(p => p + 1)}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage >= coursesTotalPages ? 'not-allowed' : 'pointer', opacity: coursesPage >= coursesTotalPages ? 0.4 : 1 }}
+                >Next →</button>
+              </div>
+            )}
           </div>
         )}
 

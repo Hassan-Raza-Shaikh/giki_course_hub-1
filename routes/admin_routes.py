@@ -556,7 +556,7 @@ def admin_activity_logs():
             SELECT log_id, admin_email, action, target_id, target_desc, performed_at
             FROM admin_logs
             ORDER BY performed_at DESC
-            LIMIT 100;
+            LIMIT 500;
         """)
         rows = cur.fetchall()
         cols = [d[0] for d in cur.description]
