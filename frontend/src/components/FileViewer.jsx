@@ -229,7 +229,7 @@ const DocxPreview = ({ url }) => {
   }, [url]);
 
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#f3f4f6', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: 'var(--bg-subtle)', position: 'relative' }}>
       {status === 'loading' && (
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>
           <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
@@ -280,13 +280,13 @@ const PptxPreview = ({ url, title }) => {
   const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#f3f4f6' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: 'var(--bg-subtle)' }}>
       {/* Loading overlay — hidden once iframe fires onLoad */}
       {!loaded && (
         <div style={{
           position: 'absolute', inset: 0, zIndex: 2,
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          gap: '16px', background: '#f3f4f6',
+          gap: '16px', background: 'var(--bg-subtle)',
         }}>
           <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>📊</span>
           <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>Loading presentation…</p>
