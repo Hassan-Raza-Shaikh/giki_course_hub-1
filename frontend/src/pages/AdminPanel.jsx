@@ -93,8 +93,12 @@ const AdminPanel = ({ user }) => {
   // shape: { title, body, onConfirm, danger? }
   const [confirmModal, setConfirmModal] = useState(null);
 
-  // File list filter
+  // File list filter + pagination
   const [fileFilter, setFileFilter] = useState('');
+  const [filesPage, setFilesPage] = useState(1);
+  const [filesTotalPages, setFilesTotalPages] = useState(1);
+  const [filesTotalCount, setFilesTotalCount] = useState(0);
+  const [filesStatusFilter, setFilesStatusFilter] = useState('');
 
   const showToast = (msg, type = 'success') => {
     let finalMsg = msg;
@@ -133,7 +137,11 @@ const AdminPanel = ({ user }) => {
       courses: () => api.get('/admin/courses').then(r => setCourses(r.data.courses || [])),
       instructors: () => api.get('/instructors').then(r => setInstructors(r.data.instructors || [])),
       stats_detailed: () => api.get('/admin/stats/detailed').then(r => setDetailedStats(r.data)),
-      files:   () => api.get('/admin/files/all').then(r => setAllFiles(r.data.files || [])),
+      files: () => api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } }).then(r => {
+        setAllFiles(r.data.files || []);
+        setFilesTotalPages(r.data.pages || 1);
+        setFilesTotalCount(r.data.total || 0);
+      }),
       users:   () => api.get('/admin/users').then(r => setUsers(r.data.users || [])),
       admins:  () => api.get('/admin/admins').then(r => setAdmins(r.data.admins || [])),
       logs:    () => api.get('/admin/logs').then(r => setLogs(r.data.logs || [])),
@@ -142,6 +150,20 @@ const AdminPanel = ({ user }) => {
     if (loader) loader().catch(() => {}).finally(() => setLoading(false));
     else setLoading(false);
   }, [tab, isAdmin, loadStats]);
+
+  // Re-fetch files when page or status filter changes
+  useEffect(() => {
+    if (tab !== 'files' || !isAdmin) return;
+    setLoading(true);
+    api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } })
+      .then(r => {
+        setAllFiles(r.data.files || []);
+        setFilesTotalPages(r.data.pages || 1);
+        setFilesTotalCount(r.data.total || 0);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [filesPage, filesStatusFilter]);
   
   /* ── course code autofill ── */
   useEffect(() => {
@@ -242,7 +264,13 @@ const AdminPanel = ({ user }) => {
       onConfirm: async () => {
         await api.delete(`/admin/files/${id}`);
         showToast('File deleted 🗑️');
-        setAllFiles(f => f.filter(x => x.file_id !== id));
+        // Refresh current page with current filters
+        api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } })
+          .then(r => {
+            setAllFiles(r.data.files || []);
+            setFilesTotalPages(r.data.pages || 1);
+            setFilesTotalCount(r.data.total || 0);
+          });
         loadStats();
         setConfirmModal(null);
       }
@@ -273,7 +301,12 @@ const AdminPanel = ({ user }) => {
       if (tab === 'pending') {
         api.get('/admin/files/pending').then(r => setPending(r.data.files || []));
       } else if (tab === 'files') {
-        api.get('/admin/files/all').then(r => setAllFiles(r.data.files || []));
+        api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } })
+          .then(r => {
+            setAllFiles(r.data.files || []);
+            setFilesTotalPages(r.data.pages || 1);
+            setFilesTotalCount(r.data.total || 0);
+          });
       }
       loadStats();
     } catch (err) {
@@ -1082,12 +1115,29 @@ const AdminPanel = ({ user }) => {
         {/* ── All Files tab ── */}
         {tab === 'files' && (
           <div>
-            <input
-              value={fileFilter}
-              onChange={e => setFileFilter(e.target.value)}
-              placeholder="Filter by title or course code…"
-              style={{ width: '100%', maxWidth: '400px', padding: '10px 16px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', marginBottom: '16px', boxSizing: 'border-box' }}
-            />
+            {/* Controls row */}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
+              <input
+                value={fileFilter}
+                onChange={e => setFileFilter(e.target.value)}
+                placeholder="Filter by title or course code…"
+                style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+              />
+              <select
+                value={filesStatusFilter}
+                onChange={e => { setFilesStatusFilter(e.target.value); setFilesPage(1); }}
+                style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+              >
+                <option value="">All Statuses</option>
+                <option value="approved">✅ Approved</option>
+                <option value="pending">⏳ Pending</option>
+                <option value="rejected">❌ Rejected</option>
+              </select>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                {filesTotalCount} file{filesTotalCount !== 1 ? 's' : ''} · Page {filesPage} of {filesTotalPages}
+              </span>
+            </div>
+
             <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
               {loading ? <LoadingRow /> : filteredAll.length === 0 ? <EmptyRow icon="📂" msg="No files found." /> : filteredAll.map(f => (
                 <div key={f.file_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
@@ -1109,6 +1159,23 @@ const AdminPanel = ({ user }) => {
                 </div>
               ))}
             </div>
+
+            {/* Pagination controls */}
+            {filesTotalPages > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '20px' }}>
+                <button
+                  disabled={filesPage <= 1}
+                  onClick={() => setFilesPage(p => p - 1)}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage <= 1 ? 'not-allowed' : 'pointer', opacity: filesPage <= 1 ? 0.4 : 1 }}
+                >← Prev</button>
+                <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {filesPage} / {filesTotalPages}</span>
+                <button
+                  disabled={filesPage >= filesTotalPages}
+                  onClick={() => setFilesPage(p => p + 1)}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage >= filesTotalPages ? 'not-allowed' : 'pointer', opacity: filesPage >= filesTotalPages ? 0.4 : 1 }}
+                >Next →</button>
+              </div>
+            )}
           </div>
         )}
 
