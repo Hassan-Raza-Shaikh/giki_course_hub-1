@@ -288,11 +288,12 @@ def course_detail(course_id):
 
         # Instructors who actually have approved files in this course
         # (used for the header chips and filter dropdown)
+        # files table stores course_code (string), not course_id
         cur.execute("""
             SELECT DISTINCT i.instructor_id, i.name, i.faculty_name
             FROM instructors i
             JOIN files f ON f.instructor_id = i.instructor_id
-            WHERE f.course_id = %s
+            WHERE f.course_code = (SELECT COALESCE(code, name) FROM courses WHERE course_id = %s)
               AND f.status = 'approved'
             ORDER BY i.name;
         """, (course_id,))
