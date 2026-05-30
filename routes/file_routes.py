@@ -269,11 +269,18 @@ def course_detail(course_id):
         cur.execute("SELECT get_api_course_files(%s);", (course_id,))
         by_category = cur.fetchone()[0] or {}
 
-        # Only return categories that match the course type
-        cur.execute(
-            "SELECT category_id, name FROM categories WHERE is_lab_category = %s ORDER BY category_id;",
-            (is_lab,)
-        )
+        # Return categories matching the course type.
+        # Lab courses also get 'Reference' since reference materials apply to both.
+        if is_lab:
+            cur.execute(
+                """SELECT category_id, name FROM categories
+                   WHERE is_lab_category = TRUE OR name = 'Reference'
+                   ORDER BY category_id;""",
+            )
+        else:
+            cur.execute(
+                "SELECT category_id, name FROM categories WHERE is_lab_category = FALSE ORDER BY category_id;",
+            )
         categories = [{"id": r[0], "name": r[1]} for r in cur.fetchall()]
 
         # Instructors linked to this course (admin-assigned relationship)

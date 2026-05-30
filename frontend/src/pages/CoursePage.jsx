@@ -11,8 +11,10 @@ const CATEGORY_ICONS = {
   'Slides':          '📊',
   'Quizzes':         '📝',
   'Assignments':     '📄',
+  'Past Papers':     '🗂️',
   'Lab Manuals':     '🧪',
   'Lab Tasks':       '⚗️',
+  'Lab Reports':     '📋',
   'Reference':       '📚',
 };
 
