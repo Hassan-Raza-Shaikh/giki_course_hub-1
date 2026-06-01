@@ -459,9 +459,6 @@ const CoursePage = ({ user, onSignIn }) => {
               <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
                 {course.name}
               </h1>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '600px', lineHeight: 1.7, fontWeight: 500 }}>
-                {course.description}
-              </p>
               {fileInstructors.length > 0 && (
                 <div style={{ marginTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>

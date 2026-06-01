@@ -808,9 +808,9 @@ def admin_get_course_by_code(code):
         cur = conn.cursor()
         code_upper = code.strip().upper()
 
-        # Canonical name/description/icon/is_lab from the most recently added row
+        # Canonical name/icon/is_lab from the most recently added row
         cur.execute("""
-            SELECT name, description, icon, is_lab, year, semester
+            SELECT name, icon, is_lab, year, semester
             FROM courses
             WHERE code = %s
             ORDER BY course_id DESC LIMIT 1;
@@ -833,11 +833,10 @@ def admin_get_course_by_code(code):
             "success": True,
             "course": {
                 "name":        row[0],
-                "description": row[1],
-                "icon":        row[2],
-                "is_lab":      row[3],
-                "year":        row[4],
-                "semester":    row[5],
+                "icon":        row[1],
+                "is_lab":      row[2],
+                "year":        row[3],
+                "semester":    row[4],
             },
             "existing_program_ids": existing_program_ids,
             "existing_count": len(existing_program_ids),
@@ -877,7 +876,7 @@ def admin_list_courses():
         where  = "WHERE (c.name ILIKE %s OR c.code ILIKE %s)" if q else ""
         params = [f'%{q}%', f'%{q}%'] if q else []
         cur.execute(f"""
-            SELECT c.course_id, c.name, c.code, c.description, c.year, c.semester,
+            SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    c.is_lab, c.icon, f.name AS faculty_name, p.name AS program_name,
                    c.faculty_id, c.program_id
             FROM courses c
@@ -918,8 +917,8 @@ def admin_create_course():
             }), 400
 
         cur.execute(
-            "INSERT INTO courses (name, code, description, year, semester, is_lab, icon, faculty_id, program_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING course_id;",
-            (name, code, d.get('description') or None, d.get('year') or None, d.get('semester') or None,
+            "INSERT INTO courses (name, code, year, semester, is_lab, icon, faculty_id, program_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING course_id;",
+            (name, code, d.get('year') or None, d.get('semester') or None,
              bool(d.get('is_lab', False)), d.get('icon', '📘') or '📘',
              d.get('faculty_id') or None, d.get('program_id') or None))
         new_id = cur.fetchone()[0]
@@ -984,11 +983,10 @@ def admin_bulk_create_courses():
 
             cur.execute(
                 """INSERT INTO courses
-                   (name, code, description, year, semester, is_lab, icon, faculty_id, program_id)
-                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                   (name, code, year, semester, is_lab, icon, faculty_id, program_id)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
                    RETURNING course_id;""",
                 (name, code,
-                 d.get('description') or None,
                  d.get('year') or None,
                  d.get('semester') or None,
                  bool(d.get('is_lab', False)),
@@ -1033,21 +1031,21 @@ def admin_update_course(course_id):
         # 1. Update the specific course record
         cur.execute("""
             UPDATE courses 
-            SET name=%s, code=%s, description=%s, year=%s, semester=%s, is_lab=%s, icon=%s, faculty_id=%s, program_id=%s
+            SET name=%s, code=%s, year=%s, semester=%s, is_lab=%s, icon=%s, faculty_id=%s, program_id=%s
             WHERE course_id=%s RETURNING name;
-        """, (name, code, d.get('description'), d.get('year'), d.get('semester'), 
+        """, (name, code, d.get('year'), d.get('semester'), 
               bool(d.get('is_lab')), d.get('icon'), d.get('faculty_id'), d.get('program_id'), course_id))
         
         row = cur.fetchone()
         if not row: return jsonify({"success": False, "message": "Course not found."}), 404
         
-        # 2. Sync Shared Details (Name, Icon, Description, Is_Lab) to all other programs using this code
+        # 2. Sync Shared Details (Name, Icon, Is_Lab) to all other programs using this code
         # This fulfills the "one code = one name" requirement
         cur.execute("""
             UPDATE courses 
-            SET name=%s, description=%s, icon=%s, is_lab=%s
+            SET name=%s, icon=%s, is_lab=%s
             WHERE code=%s AND course_id != %s;
-        """, (name, d.get('description'), d.get('icon'), bool(d.get('is_lab')), code, course_id))
+        """, (name, d.get('icon'), bool(d.get('is_lab')), code, course_id))
 
         conn.commit(); cur.close()
         _log(admin_email, 'update_course', course_id, row[0])

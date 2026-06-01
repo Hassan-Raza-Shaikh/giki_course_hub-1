@@ -60,7 +60,7 @@ const AdminPanel = ({ user }) => {
 
   // Course Form
   const [courseForm, setCourseForm] = useState({
-    name: '', code: '', description: '', year: '', semester: '', 
+    name: '', code: '', year: '', semester: '', 
     is_lab: false, icon: '📘', faculty_id: '', program_id: ''
   });
   const [editingCourse, setEditingCourse] = useState(null);
@@ -211,7 +211,6 @@ const AdminPanel = ({ user }) => {
             setCourseForm(prev => ({
               ...prev,
               name:        c.name,
-              description: c.description || '',
               icon:        c.icon || prev.icon,
               is_lab:      c.is_lab || false,
               year:        c.year     != null ? String(c.year)     : prev.year,
@@ -453,7 +452,7 @@ const AdminPanel = ({ user }) => {
         await api.post('/admin/courses', courseForm);
         showToast('Course created 📚');
       }
-      setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
+      setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
       setEditingCourse(null);
       setIsExistingCode(false);
       setExistingProgramIds([]);
@@ -491,7 +490,7 @@ const AdminPanel = ({ user }) => {
   const editCourse = (c) => {
     setEditingCourse(c);
     setCourseForm({
-      name: c.name || '', code: c.code || '', description: c.description || '',
+      name: c.name || '', code: c.code || '',
       year: c.year || '', semester: c.semester || '', is_lab: !!c.is_lab,
       icon: c.icon || '📘', faculty_id: c.faculty_id || '', program_id: c.program_id || ''
     });
@@ -988,7 +987,7 @@ const AdminPanel = ({ user }) => {
                 {editingCourse ? '✏️ Edit Course' : '📚 Add New Course'}
                 {editingCourse && <button type="button" onClick={() => {
                   setEditingCourse(null);
-                  setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
+                  setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
                   setIsExistingCode(false);
                   setExistingProgramIds([]);
                 }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
@@ -1065,24 +1064,14 @@ const AdminPanel = ({ user }) => {
                   <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>ℹ️</span>
                   <div style={{ fontSize: '0.83rem', lineHeight: 1.5, color: 'var(--text)' }}>
                     <strong>{courseForm.code}</strong> already exists in <strong>{existingProgramIds.length} program{existingProgramIds.length !== 1 ? 's' : ''}</strong>.
-                    {' '}Name & description are locked to keep resources synced across programs.
+                    {' '}Name is locked to keep resources synced across programs.
                     {' '}Simply pick a program that doesn't have it yet
                     {bulkCourseMode ? ' (greyed-out ones already have it)' : ''} and submit.
                   </div>
                 </div>
               )}
 
-              <div style={{ marginTop: '16px' }}>
-                <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Description</label>
-                <textarea
-                  value={courseForm.description}
-                  onChange={e => setCourseForm({...courseForm, description: e.target.value})}
-                  placeholder="Brief course overview…"
-                  rows={3}
-                  readOnly={isExistingCode}
-                  style={{ ...inputStyle, background: isExistingCode ? 'var(--bg-subtle)' : 'var(--bg-white)', cursor: isExistingCode ? 'not-allowed' : 'text' }}
-                />
-              </div>
+
 
               {/* ── Bulk mode toggle (hidden when editing) ── */}
               {!editingCourse && (

@@ -211,7 +211,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                     </div>
                     <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px', lineHeight: 1.3 }}>{course.name}</h3>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.6 }}>
-                      {course.faculty} · {course.description?.slice(0, 60)}…
+                      {course.faculty}
                     </p>
                     <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.9rem',
                       color: 'var(--electric)' }}>

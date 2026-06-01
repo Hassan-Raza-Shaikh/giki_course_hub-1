@@ -224,7 +224,7 @@ def random_courses():
     try:
         cur = conn.cursor()
         cur.execute("""
-            SELECT c.course_id, c.name, c.code, c.description, c.year, c.semester,
+            SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    f.icon AS faculty_icon, f.name AS faculty_name
             FROM courses c
             JOIN faculties f ON c.faculty_id = f.faculty_id
@@ -233,8 +233,8 @@ def random_courses():
         rows = cur.fetchall()
         cur.close()
         courses = [{
-            "id": r[0], "name": r[1], "code": r[2], "description": r[3],
-            "year": r[4], "semester": r[5], "icon": r[6], "faculty": r[7]
+            "id": r[0], "name": r[1], "code": r[2], 
+            "year": r[3], "semester": r[4], "icon": r[5], "faculty": r[6]
         } for r in rows]
         return jsonify({"success": True, "courses": courses})
     except Exception as e:
@@ -251,7 +251,7 @@ def course_detail(course_id):
         cur = conn.cursor()
         # Course info with faculty/program context
         cur.execute("""
-            SELECT c.course_id, c.name, c.code, c.description, c.year, c.semester,
+            SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    f.name AS faculty_name, f.icon AS faculty_icon,
                    p.name AS program_name, c.is_lab
             FROM courses c
@@ -263,7 +263,7 @@ def course_detail(course_id):
         if not c:
             return jsonify({"success": False, "message": "Course not found."}), 404
 
-        is_lab = c[9]
+        is_lab = c[8]
 
         # Files grouped by category
         cur.execute("SELECT get_api_course_files(%s);", (course_id,))
@@ -315,9 +315,8 @@ def course_detail(course_id):
         return jsonify({
             "success": True,
             "course": {
-                "id": c[0], "name": c[1], "code": c[2], "description": c[3],
-                "year": c[4], "semester": c[5],
-                "faculty": c[6], "icon": c[7], "program": c[8],
+                "id": c[0], "name": c[1], "code": c[2], 
+                "year": c[3], "semester": c[4], "faculty": c[5], "icon": c[6], "program": c[7],
                 "is_lab": is_lab
             },
             "files_by_category": by_category,
