@@ -892,7 +892,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         <div style={{ fontSize: '2rem', marginBottom: '12px' }}>☁️</div>
                         <div style={{ fontWeight: 700, color: 'var(--primary)' }}>Drop files here or click to browse</div>
                         <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
-                          PDF, DOCX, PPTX, TXT, ZIP, images · {isAdmin ? 'No size limits for Admin' : 'Max 10MB per file (50MB for Reference)'}
+                          PDF, DOCX, PPTX, TXT, IPYNB, Code, ZIP, images · {isAdmin ? 'No size limits for Admin' : 'Max 10MB per file (50MB for Reference)'}
                         </p>
                       </div>
                       <input
@@ -900,7 +900,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         type="file"
                         multiple
                         style={{ display: 'none' }}
-                        accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.zip,.png,.jpg,.jpeg"
+                        accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.zip,.png,.jpg,.jpeg,.ipynb,.py,.js,.jsx,.ts,.tsx,.cpp,.c,.h,.hpp,.java,.rs,.go,.rb,.php,.css,.html,.json,.yaml,.yml,.sh,.md"
                         onChange={e => { addFilesToQueue(e.target.files); e.target.value = ''; }}
                       />
                     </div>
