@@ -28,7 +28,7 @@ FIREBASE_CREDENTIALS_PATH = os.environ.get('FIREBASE_CREDENTIALS', 'firebase/ser
 FIREBASE_STORAGE_BUCKET   = os.environ.get('FIREBASE_BUCKET', 'your-project.appspot.com')
 
 # Upload settings
-ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip', 'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip', 'png', 'jpg', 'jpeg', 'ipynb', 'py', 'js', 'jsx', 'ts', 'tsx', 'cpp', 'c', 'h', 'hpp', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'}
 MAX_CONTENT_LENGTH = 10 * 1024 * 1024 * 1024  # 10 GB (Flask HTTP cap — per-file logic enforced in routes)
 
 # Per-file size limits (enforced by application logic)
