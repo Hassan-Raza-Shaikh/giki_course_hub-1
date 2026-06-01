@@ -65,6 +65,8 @@ const AdminPanel = ({ user }) => {
   });
   const [editingCourse, setEditingCourse] = useState(null);
   const [isExistingCode, setIsExistingCode] = useState(false);
+  const [bulkCourseMode, setBulkCourseMode] = useState(false);   // add to multiple programs at once
+  const [selectedPrograms, setSelectedPrograms] = useState([]);   // program_ids for bulk mode
 
   // Admin management form
   const [newAdminEmail, setNewAdminEmail] = useState('');
@@ -434,6 +436,11 @@ const AdminPanel = ({ user }) => {
       if (editingCourse) {
         await api.put(`/admin/courses/${editingCourse.course_id}`, courseForm);
         showToast('Course updated ✏️');
+      } else if (bulkCourseMode) {
+        if (selectedPrograms.length === 0) { showToast('Select at least one program.', 'error'); return; }
+        const r = await api.post('/admin/courses/bulk', { ...courseForm, program_ids: selectedPrograms });
+        showToast(r.data.message || `Created for ${selectedPrograms.length} program(s) 📚`);
+        setSelectedPrograms([]);
       } else {
         await api.post('/admin/courses', courseForm);
         showToast('Course created 📚');
@@ -1018,17 +1025,141 @@ const AdminPanel = ({ user }) => {
               </div>
               <div style={{ marginTop: '20px' }}>
                 <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Description</label>
-                <textarea 
-                  value={courseForm.description} 
-                  onChange={e => setCourseForm({...courseForm, description: e.target.value})} 
-                  placeholder="Brief course overview…" 
-                  rows={3} 
+                <textarea
+                  value={courseForm.description}
+                  onChange={e => setCourseForm({...courseForm, description: e.target.value})}
+                  placeholder="Brief course overview…"
+                  rows={3}
                   readOnly={isExistingCode}
-                  style={{ ...inputStyle, background: isExistingCode ? '#F3F4F6' : 'white', cursor: isExistingCode ? 'not-allowed' : 'text' }} 
+                  style={{ ...inputStyle, background: isExistingCode ? '#F3F4F6' : 'white', cursor: isExistingCode ? 'not-allowed' : 'text' }}
                 />
               </div>
+
+              {/* ── Bulk mode toggle (hidden when editing) ── */}
+              {!editingCourse && (
+                <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '10px', border: '2px solid var(--border)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>
+                        🏫 {bulkCourseMode ? 'Multi-Program Mode' : 'Single Program Mode'}
+                      </div>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                        {bulkCourseMode
+                          ? 'The course will be added to every checked program at once.'
+                          : 'Toggle to add this course across multiple programs simultaneously.'}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setBulkCourseMode(b => !b); setSelectedPrograms([]); }}
+                      style={{
+                        padding: '7px 16px', borderRadius: '8px', fontWeight: 800, fontSize: '0.82rem',
+                        border: '2px solid var(--text)', cursor: 'pointer',
+                        background: bulkCourseMode ? 'var(--primary)' : 'var(--bg-white)',
+                        color: bulkCourseMode ? 'white' : 'var(--text)',
+                        boxShadow: '2px 2px 0 var(--border)',
+                      }}
+                    >
+                      {bulkCourseMode ? '✓ Enabled' : 'Enable'}
+                    </button>
+                  </div>
+
+                  {/* Single-program selectors (default) */}
+                  {!bulkCourseMode && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
+                      <div className="form-group">
+                        <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Faculty</label>
+                        <select value={courseForm.faculty_id} onChange={e => setCourseForm({...courseForm, faculty_id: e.target.value})} style={inputStyle}>
+                          <option value="">Select Faculty</option>
+                          {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Program</label>
+                        <select value={courseForm.program_id} onChange={e => setCourseForm({...courseForm, program_id: e.target.value})} style={inputStyle}>
+                          <option value="">Select Program</option>
+                          {programs.filter(p => !courseForm.faculty_id || p.faculty_id == courseForm.faculty_id).map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Multi-program checklist (bulk mode) */}
+                  {bulkCourseMode && (
+                    <div style={{ marginTop: '16px' }}>
+                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap' }}>
+                        <button type="button" onClick={() => setSelectedPrograms(programs.map(p => p.id))}
+                          style={{ padding: '4px 12px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-white)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}>
+                          ✓ Select All
+                        </button>
+                        <button type="button" onClick={() => setSelectedPrograms([])}
+                          style={{ padding: '4px 12px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-white)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}>
+                          ✕ Clear
+                        </button>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', alignSelf: 'center', fontWeight: 600 }}>
+                          {selectedPrograms.length} of {programs.length} selected
+                        </span>
+                      </div>
+                      {faculties.map(fac => {
+                        const facProgs = programs.filter(p => p.faculty_id === fac.id);
+                        if (!facProgs.length) return null;
+                        const allFacSelected = facProgs.every(p => selectedPrograms.includes(p.id));
+                        return (
+                          <div key={fac.id} style={{ marginBottom: '12px' }}>
+                            <div
+                              style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', cursor: 'pointer' }}
+                              onClick={() => {
+                                const ids = facProgs.map(p => p.id);
+                                setSelectedPrograms(prev =>
+                                  allFacSelected
+                                    ? prev.filter(id => !ids.includes(id))
+                                    : [...new Set([...prev, ...ids])]
+                                );
+                              }}
+                            >
+                              <span style={{
+                                width: '16px', height: '16px', border: '2px solid var(--primary)',
+                                borderRadius: '4px', display: 'inline-flex', alignItems: 'center',
+                                justifyContent: 'center', background: allFacSelected ? 'var(--primary)' : 'transparent',
+                                flexShrink: 0,
+                              }}>
+                                {allFacSelected && <span style={{ color: 'white', fontSize: '11px', fontWeight: 900 }}>✓</span>}
+                              </span>
+                              <span style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--primary)' }}>{fac.name}</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '24px' }}>
+                              {facProgs.map(p => {
+                                const checked = selectedPrograms.includes(p.id);
+                                return (
+                                  <label key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.83rem', fontWeight: checked ? 700 : 500 }}>
+                                    <input
+                                      type="checkbox"
+                                      checked={checked}
+                                      onChange={e => setSelectedPrograms(prev =>
+                                        e.target.checked ? [...prev, p.id] : prev.filter(id => id !== p.id)
+                                      )}
+                                      style={{ width: '14px', height: '14px', accentColor: 'var(--primary)' }}
+                                    />
+                                    {p.name}
+                                  </label>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Submit */}
               <button type="submit" style={{ ...btnStyle('var(--primary)'), width: '100%', marginTop: '24px', padding: '16px', fontSize: '1rem', boxShadow: '4px 4px 0 var(--text)' }}>
-                {editingCourse ? 'Update Course Details' : 'Create Course'}
+                {editingCourse
+                  ? 'Update Course Details'
+                  : bulkCourseMode
+                    ? `➕ Create for ${selectedPrograms.length || '…'} Program${selectedPrograms.length !== 1 ? 's' : ''}`
+                    : 'Create Course'}
               </button>
             </form>
 

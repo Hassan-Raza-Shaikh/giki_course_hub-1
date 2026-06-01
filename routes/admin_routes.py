@@ -906,6 +906,93 @@ def admin_create_course():
         conn.close()
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# POST /api/admin/courses/bulk — create one course per selected program
+# ─────────────────────────────────────────────────────────────────────────────
+@admin_bp.route('/api/admin/courses/bulk', methods=['POST'])
+def admin_bulk_create_courses():
+    admin_email, err = _require_admin()
+    if err: return err
+    d = request.get_json() or {}
+    name        = d.get('name', '').strip()
+    code        = d.get('code', '').strip()
+    program_ids = d.get('program_ids', [])   # list of int program_ids
+
+    if not name or not code:
+        return jsonify({"success": False, "message": "Name and code are required."}), 400
+    if not program_ids:
+        return jsonify({"success": False, "message": "Select at least one program."}), 400
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+
+        # Enforce one-code-one-name rule
+        cur.execute("SELECT name FROM courses WHERE code = %s LIMIT 1;", (code,))
+        existing_name = cur.fetchone()
+        if existing_name and existing_name[0].lower() != name.lower():
+            return jsonify({
+                "success": False,
+                "message": f"Code '{code}' already belongs to '{existing_name[0]}'. Use the same name."
+            }), 400
+
+        # Resolve faculty_id for each program
+        cur.execute("SELECT program_id, faculty_id FROM programs WHERE program_id = ANY(%s);", (program_ids,))
+        prog_to_fac = {r[0]: r[1] for r in cur.fetchall()}
+
+        created = []
+        skipped = []
+
+        for prog_id in program_ids:
+            prog_id = int(prog_id)
+            fac_id  = prog_to_fac.get(prog_id)
+
+            # Skip if this exact code + program already exists
+            cur.execute(
+                "SELECT course_id FROM courses WHERE code = %s AND program_id = %s LIMIT 1;",
+                (code, prog_id)
+            )
+            if cur.fetchone():
+                skipped.append(prog_id)
+                continue
+
+            cur.execute(
+                """INSERT INTO courses
+                   (name, code, description, year, semester, is_lab, icon, faculty_id, program_id)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                   RETURNING course_id;""",
+                (name, code,
+                 d.get('description') or None,
+                 d.get('year') or None,
+                 d.get('semester') or None,
+                 bool(d.get('is_lab', False)),
+                 d.get('icon', '📘') or '📘',
+                 fac_id, prog_id)
+            )
+            new_id = cur.fetchone()[0]
+            created.append(new_id)
+            _log(admin_email, 'create_course', new_id, f"{name} (prog {prog_id})")
+
+        conn.commit()
+        cur.close()
+
+        parts = [f"{len(created)} course(s) created"]
+        if skipped:
+            parts.append(f"{len(skipped)} already existed and were skipped")
+        return jsonify({
+            "success": True,
+            "created": len(created),
+            "skipped": len(skipped),
+            "message": " · ".join(parts) + "."
+        })
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
+
 @admin_bp.route('/api/admin/courses/<int:course_id>', methods=['PUT'])
 def admin_update_course(course_id):
     admin_email, err = _require_admin()
