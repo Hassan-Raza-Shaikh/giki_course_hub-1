@@ -229,26 +229,31 @@ const DocxPreview = ({ url }) => {
   }, [url]);
 
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: 'var(--bg-subtle)', position: 'relative' }}>
+    /* Outer scroll wrapper — neutral grey surround (dark-mode safe) */
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#4a4a4a', position: 'relative', colorScheme: 'light' }}>
       {status === 'loading' && (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', background: '#4a4a4a', color: '#e5e7eb', fontSize: '0.95rem', fontWeight: 600 }}>
           <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
           Rendering document…
         </div>
       )}
       {status === 'error' && (
-        <div style={{ padding: '60px', textAlign: 'center', color: '#dc2626' }}>
+        <div style={{ padding: '60px', textAlign: 'center', background: '#4a4a4a' }}>
           <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚠️</div>
-          <p style={{ fontWeight: 700 }}>Could not render this document.</p>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>The file may be corrupted or in an unsupported format. Try downloading it instead.</p>
+          <p style={{ fontWeight: 700, color: '#f87171' }}>Could not render this document.</p>
+          <p style={{ fontSize: '0.85rem', color: '#9ca3af' }}>The file may be corrupted or in an unsupported format. Try downloading it instead.</p>
         </div>
       )}
+      {/* Force light colour-scheme so docx-preview HTML always renders on white paper */}
       <div
         ref={containerRef}
         style={{
           padding: '32px',
           minHeight: '100%',
           visibility: status === 'done' ? 'visible' : 'hidden',
+          background: 'white',
+          color: 'black',
+          colorScheme: 'light',
         }}
       />
     </div>
