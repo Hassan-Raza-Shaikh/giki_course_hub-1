@@ -167,6 +167,7 @@ def admin_all_files():
     if err: return err
 
     status_filter = request.args.get('status', '')  # '' = all
+    category_filter = request.args.get('category', '')
     page          = request.args.get('page', 1, type=int)
     per_page      = 30
     offset        = (page - 1) * per_page
@@ -174,8 +175,17 @@ def admin_all_files():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        where = "WHERE f.status = %s" if status_filter else ""
-        params = [status_filter] if status_filter else []
+        
+        conditions = []
+        params = []
+        if status_filter:
+            conditions.append("f.status = %s")
+            params.append(status_filter)
+        if category_filter:
+            conditions.append("cat.name = %s")
+            params.append(category_filter)
+            
+        where = "WHERE " + " AND ".join(conditions) if conditions else ""
 
         cur.execute(f"""
             SELECT f.file_id, f.title, f.file_url, f.course_code, f.status,

@@ -106,6 +106,7 @@ const AdminPanel = ({ user }) => {
   const [filesTotalPages, setFilesTotalPages] = useState(1);
   const [filesTotalCount, setFilesTotalCount] = useState(0);
   const [filesStatusFilter, setFilesStatusFilter] = useState('');
+  const [filesCategoryFilter, setFilesCategoryFilter] = useState('');
 
   const showToast = (msg, type = 'success') => {
     let finalMsg = msg;
@@ -148,7 +149,7 @@ const AdminPanel = ({ user }) => {
       }),
       instructors: () => api.get('/instructors').then(r => setInstructors(r.data.instructors || [])),
       stats_detailed: () => api.get('/admin/stats/detailed').then(r => setDetailedStats(r.data)),
-      files: () => api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } }).then(r => {
+      files: () => api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter } }).then(r => {
         setAllFiles(r.data.files || []);
         setFilesTotalPages(r.data.pages || 1);
         setFilesTotalCount(r.data.total || 0);
@@ -166,7 +167,7 @@ const AdminPanel = ({ user }) => {
   useEffect(() => {
     if (tab !== 'files' || !isAdmin) return;
     setLoading(true);
-    api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } })
+    api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter } })
       .then(r => {
         setAllFiles(r.data.files || []);
         setFilesTotalPages(r.data.pages || 1);
@@ -174,7 +175,7 @@ const AdminPanel = ({ user }) => {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [filesPage, filesStatusFilter]);
+  }, [filesPage, filesStatusFilter, filesCategoryFilter]);
   // Re-fetch courses when page or search changes
   useEffect(() => {
     if (tab !== 'courses' || !isAdmin) return;
@@ -297,7 +298,7 @@ const AdminPanel = ({ user }) => {
         await api.delete(`/admin/files/${id}`);
         showToast('File deleted 🗑️');
         // Refresh current page with current filters
-        api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } })
+        api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter } })
           .then(r => {
             setAllFiles(r.data.files || []);
             setFilesTotalPages(r.data.pages || 1);
@@ -333,7 +334,7 @@ const AdminPanel = ({ user }) => {
       if (tab === 'pending') {
         api.get('/admin/files/pending').then(r => setPending(r.data.files || []));
       } else if (tab === 'files') {
-        api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter } })
+        api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter } })
           .then(r => {
             setAllFiles(r.data.files || []);
             setFilesTotalPages(r.data.pages || 1);
@@ -1365,6 +1366,16 @@ const AdminPanel = ({ user }) => {
                 <option value="approved">✅ Approved</option>
                 <option value="pending">⏳ Pending</option>
                 <option value="rejected">❌ Rejected</option>
+              </select>
+              <select
+                value={filesCategoryFilter}
+                onChange={e => { setFilesCategoryFilter(e.target.value); setFilesPage(1); }}
+                style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+              >
+                <option value="">All Categories</option>
+                {categories.length > 0 && categories.map(c => (
+                  <option key={c.id} value={c.name}>{c.name}</option>
+                ))}
               </select>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
                 {filesTotalCount} file{filesTotalCount !== 1 ? 's' : ''} · Page {filesPage} of {filesTotalPages}
