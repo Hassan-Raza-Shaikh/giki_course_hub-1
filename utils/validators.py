@@ -23,7 +23,7 @@ MAGIC_BYTES = {
 }
 
 # Extensions that have no reliable magic bytes (plain text formats)
-PLAINTEXT_EXTENSIONS = {'txt'}
+PLAINTEXT_EXTENSIONS = {'txt', 'ipynb', 'py', 'js', 'jsx', 'ts', 'tsx', 'cpp', 'c', 'h', 'hpp', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'}
 
 
 def validate_file_magic_bytes(file_stream, extension):
