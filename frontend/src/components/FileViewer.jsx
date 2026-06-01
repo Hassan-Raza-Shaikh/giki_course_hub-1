@@ -3,6 +3,7 @@ import { renderAsync } from 'docx-preview';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 const EXT_GROUPS = {
   pdf:  ['pdf'],
@@ -413,7 +414,7 @@ const IpynbPreview = ({ url }) => {
           if (cell.cell_type === 'markdown') {
             return (
               <div key={idx} style={{ padding: '16px 32px', color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>
-                <ReactMarkdown>{source}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{source}</ReactMarkdown>
               </div>
             );
           }
