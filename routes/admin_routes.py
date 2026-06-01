@@ -206,7 +206,7 @@ def admin_all_files():
         rows = cur.fetchall()
         cols = [d[0] for d in cur.description]
 
-        cur.execute(f"SELECT COUNT(*) FROM files f {where};", params)
+        cur.execute(f"SELECT COUNT(*) FROM files f JOIN categories cat ON cat.category_id = f.category_id {where};", params)
         total = cur.fetchone()[0]
         cur.close()
         return jsonify({
