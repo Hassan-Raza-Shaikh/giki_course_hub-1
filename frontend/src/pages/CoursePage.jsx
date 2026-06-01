@@ -92,7 +92,7 @@ const CoursePage = ({ user, onSignIn }) => {
   const [uploadError, setUploadError]   = useState('');
   const [uploadSummary, setUploadSummary] = useState(null);
 
-  const ALLOWED_EXTS = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg'];
+  const ALLOWED_EXTS = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg', 'ipynb', 'py', 'js', 'jsx', 'ts', 'tsx', 'cpp', 'c', 'h', 'hpp', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'];
   const isAdmin = user?.role === 'admin';
   const MAX_FILES = isAdmin ? 1000 : 10;
   const DEFAULT_MAX_MB = isAdmin ? 10000 : 10;
