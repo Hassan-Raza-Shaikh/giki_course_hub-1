@@ -570,11 +570,16 @@ const CoursePage = ({ user, onSignIn }) => {
               <div className="category-tabs-wrapper sidebar-tabs">
                 {allTabs.map(tab => {
                   const count = (filesByCategory[tab] || []).length;
+                  const filteredCount = tab === activeTab && instructorFilter
+                    ? (filesByCategory[tab] || []).filter(
+                        f => instructorFilter === 'general' ? !f.instructor_name : f.instructor_name === instructorFilter
+                      ).length
+                    : count;
                   return (
                     <button
                       key={tab}
                       className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                      onClick={() => setActiveTab(tab)}
+                      onClick={() => { setActiveTab(tab); setInstructorFilter(''); }}
                       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -593,7 +598,9 @@ const CoursePage = ({ user, onSignIn }) => {
                           fontFamily: 'Outfit',
                           flexShrink: 0
                         }}>
-                          {count}
+                          {tab === activeTab && instructorFilter && filteredCount !== count
+                            ? `${filteredCount}/${count}`
+                            : count}
                         </span>
                       )}
                     </button>
