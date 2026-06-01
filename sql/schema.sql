@@ -44,7 +44,6 @@ CREATE TABLE courses (
     course_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     code TEXT,
-    description TEXT,
     year INT,
     semester INT,
     program_id INT REFERENCES programs(program_id) ON DELETE CASCADE,
