@@ -40,7 +40,6 @@ BEGIN
                                                             'id', c3.course_id,
                                                             'name', c3.name,
                                                             'code', c3.code,
-                                                            'description', c3.description,
                                                             'year', c3.year,
                                                             'semester', c3.semester
                                                         ) AS course_obj
