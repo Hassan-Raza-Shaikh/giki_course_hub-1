@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { renderAsync } from 'docx-preview';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import ReactMarkdown from 'react-markdown';
 
 const EXT_GROUPS = {
   pdf:  ['pdf'],
   image:['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
   video:['mp4', 'webm', 'ogg'],
-  text: ['txt', 'md', 'csv'],
+  text: ['txt', 'csv'],
+  code: ['cpp', 'c', 'h', 'hpp', 'py', 'js', 'jsx', 'ts', 'tsx', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'],
+  ipynb:['ipynb'],
   docx: ['docx', 'doc'],
   pptx: ['pptx', 'ppt'],
 };
@@ -82,6 +87,14 @@ const FileViewer = ({ file, onClose }) => {
       return <TextPreview url={url} />;
     }
 
+    if (fileType === 'code') {
+      return <CodePreview url={url} extension={url.split('?')[0].split('.').pop().toLowerCase()} />;
+    }
+
+    if (fileType === 'ipynb') {
+      return <IpynbPreview url={url} />;
+    }
+
     // Unknown format: Google Docs viewer as best-effort fallback
     const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     return (
@@ -139,7 +152,7 @@ const FileViewer = ({ file, onClose }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
             <span style={{ fontSize: '1.1rem' }}>
-              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : '📎'}
+              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : fileType === 'code' ? '💻' : fileType === 'ipynb' ? '📓' : '📎'}
             </span>
             <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {title}
@@ -341,6 +354,112 @@ const PptxPreview = ({ url, title }) => {
           </a>
         </div>
       )}
+    </div>
+  );
+};
+
+// Code Preview using react-syntax-highlighter
+const CodePreview = ({ url, extension }) => {
+  const [code, setCode] = useState('Loading…');
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch(url).then(r => r.text()).then(text => { setCode(text); setError(false); }).catch(() => { setCode('Could not load file.'); setError(true); });
+  }, [url]);
+
+  // Map common extensions to prism languages
+  const langMap = {
+    py: 'python', js: 'javascript', jsx: 'jsx', ts: 'typescript', tsx: 'tsx',
+    cpp: 'cpp', c: 'c', h: 'cpp', hpp: 'cpp', java: 'java', rs: 'rust',
+    go: 'go', rb: 'ruby', php: 'php', html: 'html', css: 'css',
+    json: 'json', yaml: 'yaml', yml: 'yaml', sh: 'bash', md: 'markdown'
+  };
+  const language = langMap[extension] || 'text';
+
+  return (
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#1d1f21', padding: '16px', boxSizing: 'border-box' }}>
+      {error ? (
+        <div style={{ color: '#f87171', fontWeight: 'bold' }}>{code}</div>
+      ) : (
+        <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, padding: 0, background: 'transparent' }} showLineNumbers={true}>
+          {code}
+        </SyntaxHighlighter>
+      )}
+    </div>
+  );
+};
+
+// Jupyter Notebook Preview (.ipynb)
+const IpynbPreview = ({ url }) => {
+  const [notebook, setNotebook] = useState(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch(url)
+      .then(r => r.json())
+      .then(data => { setNotebook(data); setError(false); })
+      .catch(err => { console.error('Failed to parse ipynb:', err); setError(true); });
+  }, [url]);
+
+  if (error) return <div style={{ padding: '24px', color: '#f87171' }}>Could not parse Jupyter Notebook.</div>;
+  if (!notebook) return <div style={{ padding: '24px', color: 'var(--text-muted)' }}>Loading notebook…</div>;
+
+  return (
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: 'var(--bg-subtle)', padding: '24px', boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', background: 'var(--bg-white)', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
+        {notebook.cells && notebook.cells.map((cell, idx) => {
+          const source = Array.isArray(cell.source) ? cell.source.join('') : cell.source || '';
+          
+          if (cell.cell_type === 'markdown') {
+            return (
+              <div key={idx} style={{ padding: '16px 32px', color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>
+                <ReactMarkdown>{source}</ReactMarkdown>
+              </div>
+            );
+          }
+          
+          if (cell.cell_type === 'code') {
+            return (
+              <div key={idx} style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ background: '#f6f8fa', borderRadius: '8px', border: '1px solid #d0d7de', overflow: 'hidden', marginBottom: cell.outputs?.length ? '12px' : 0 }}>
+                  <SyntaxHighlighter language="python" style={atomDark} customStyle={{ margin: 0, padding: '16px', fontSize: '0.9rem' }}>
+                    {source}
+                  </SyntaxHighlighter>
+                </div>
+                {cell.outputs && cell.outputs.length > 0 && (
+                  <div style={{ padding: '12px 16px', background: '#ffffff', border: '1px solid #d0d7de', borderRadius: '8px', borderLeft: '4px solid #0969da' }}>
+                    {cell.outputs.map((out, oIdx) => {
+                      if (out.output_type === 'stream') {
+                        return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#24292f' }}>{Array.isArray(out.text) ? out.text.join('') : out.text}</pre>;
+                      }
+                      if (out.output_type === 'error') {
+                        return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#cf222e' }}>{out.traceback?.join('\n') || out.ename + ': ' + out.evalue}</pre>;
+                      }
+                      if (out.output_type === 'execute_result' || out.output_type === 'display_data') {
+                        const html = out.data?.['text/html'];
+                        if (html) {
+                          const htmlStr = Array.isArray(html) ? html.join('') : html;
+                          return <div key={oIdx} dangerouslySetInnerHTML={{ __html: htmlStr }} style={{ margin: '8px 0', overflow: 'auto' }} />;
+                        }
+                        const img = out.data?.['image/png'];
+                        if (img) {
+                          return <img key={oIdx} src={`data:image/png;base64,${img.replace(/\n/g, '')}`} alt="output" style={{ maxWidth: '100%', height: 'auto', margin: '8px 0' }} />;
+                        }
+                        const text = out.data?.['text/plain'];
+                        if (text) {
+                          return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#24292f' }}>{Array.isArray(text) ? text.join('') : text}</pre>;
+                        }
+                      }
+                      return null;
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
     </div>
   );
 };
