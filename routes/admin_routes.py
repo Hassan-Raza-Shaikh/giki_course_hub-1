@@ -909,7 +909,7 @@ def admin_create_course():
         cur = conn.cursor()
         
         # Enforce "one code = one name" rule
-        cur.execute("SELECT name FROM courses WHERE code = %s LIMIT 1;", (code,))
+        cur.execute("SELECT name FROM courses WHERE code = %s ORDER BY course_id DESC LIMIT 1;", (code,))
         existing = cur.fetchone()
         if existing and existing[0].lower() != name.lower():
             return jsonify({
@@ -954,7 +954,7 @@ def admin_bulk_create_courses():
         cur = conn.cursor()
 
         # Enforce one-code-one-name rule
-        cur.execute("SELECT name FROM courses WHERE code = %s LIMIT 1;", (code,))
+        cur.execute("SELECT name FROM courses WHERE code = %s ORDER BY course_id DESC LIMIT 1;", (code,))
         existing_name = cur.fetchone()
         if existing_name and existing_name[0].lower() != name.lower():
             return jsonify({
