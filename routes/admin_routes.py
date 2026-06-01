@@ -792,33 +792,49 @@ def admin_faculties_programs():
 def admin_get_course_by_code(code):
     admin_email, err = _require_admin()
     if err: return err
-    
+
     conn = get_connection()
     try:
         cur = conn.cursor()
-        # Find the most recent/common definition of this course code
+        code_upper = code.strip().upper()
+
+        # Canonical name/description/icon/is_lab from the most recently added row
         cur.execute("""
-            SELECT name, description, icon, is_lab 
-            FROM courses 
-            WHERE code = %s 
+            SELECT name, description, icon, is_lab, year, semester
+            FROM courses
+            WHERE code = %s
             ORDER BY course_id DESC LIMIT 1;
-        """, (code.strip().upper(),))
+        """, (code_upper,))
         row = cur.fetchone()
+
+        if not row:
+            cur.close()
+            return jsonify({"success": False, "message": "Course not found."}), 404
+
+        # Which programs already have this code?
+        cur.execute(
+            "SELECT program_id FROM courses WHERE code = %s AND program_id IS NOT NULL;",
+            (code_upper,)
+        )
+        existing_program_ids = [r[0] for r in cur.fetchall()]
         cur.close()
-        
-        if row:
-            return jsonify({
-                "success": True, 
-                "course": {
-                    "name": row[0],
-                    "description": row[1],
-                    "icon": row[2],
-                    "is_lab": row[3]
-                }
-            })
-        return jsonify({"success": False, "message": "Course not found."}), 404
+
+        return jsonify({
+            "success": True,
+            "course": {
+                "name":        row[0],
+                "description": row[1],
+                "icon":        row[2],
+                "is_lab":      row[3],
+                "year":        row[4],
+                "semester":    row[5],
+            },
+            "existing_program_ids": existing_program_ids,
+            "existing_count": len(existing_program_ids),
+        })
     finally:
         conn.close()
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # GET /api/admin/courses/codes — all course codes + names, no pagination

@@ -65,8 +65,10 @@ const AdminPanel = ({ user }) => {
   });
   const [editingCourse, setEditingCourse] = useState(null);
   const [isExistingCode, setIsExistingCode] = useState(false);
+  const [existingProgramIds, setExistingProgramIds] = useState([]); // programs that already have this code
   const [bulkCourseMode, setBulkCourseMode] = useState(false);   // add to multiple programs at once
   const [selectedPrograms, setSelectedPrograms] = useState([]);   // program_ids for bulk mode
+  const courseListRef = React.useRef(null);
 
   // Admin management form
   const [newAdminEmail, setNewAdminEmail] = useState('');
@@ -204,19 +206,24 @@ const AdminPanel = ({ user }) => {
           if (res.data.success && res.data.course) {
             const c = res.data.course;
             setIsExistingCode(true);
+            setExistingProgramIds(res.data.existing_program_ids || []);
             setCourseForm(prev => ({
               ...prev,
-              name: c.name,
+              name:        c.name,
               description: c.description || '',
-              icon: c.icon || prev.icon,
-              is_lab: c.is_lab || false
+              icon:        c.icon || prev.icon,
+              is_lab:      c.is_lab || false,
+              year:        c.year     != null ? String(c.year)     : prev.year,
+              semester:    c.semester != null ? String(c.semester) : prev.semester,
             }));
-            showToast(`Course ${courseForm.code.toUpperCase()} exists. Details autofilled!`, 'success');
+            const n = res.data.existing_count || 0;
+            showToast(`${courseForm.code.toUpperCase()} already exists in ${n} program${n !== 1 ? 's' : ''} — details autofilled!`, 'success');
           } else {
             setIsExistingCode(false);
+            setExistingProgramIds([]);
           }
         })
-        .catch(() => setIsExistingCode(false));
+        .catch(() => { setIsExistingCode(false); setExistingProgramIds([]); });
     }, 600);
 
     return () => clearTimeout(timer);
@@ -447,11 +454,14 @@ const AdminPanel = ({ user }) => {
       }
       setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
       setEditingCourse(null);
-      // Refresh current page
+      setIsExistingCode(false);
+      setExistingProgramIds([]);
+      // Refresh list then scroll to it
       api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } }).then(r => {
         setCourses(r.data.courses || []);
         setCoursesTotalPages(r.data.pages || 1);
         setCoursesTotalCount(r.data.total || 0);
+        setTimeout(() => courseListRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
       });
     } catch (err) {
       showToast(err.response?.data?.message || 'Error saving course', 'error');
@@ -461,7 +471,7 @@ const AdminPanel = ({ user }) => {
   const deleteCourse = async (id, name) => {
     setConfirmModal({
       title: '🗑 Delete Course',
-      body: `Delete course "${name}" and all associated metadata? This cannot be undone.`,
+      body: `Permanently delete "${name}" and ALL its uploaded files (PDFs, slides, etc.) from storage? This cannot be undone.`,
       danger: true,
       onConfirm: async () => {
         await api.delete(`/admin/courses/${id}`);
@@ -975,55 +985,93 @@ const AdminPanel = ({ user }) => {
             <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
               <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'Outfit' }}>
                 {editingCourse ? '✏️ Edit Course' : '📚 Add New Course'}
-                {editingCourse && <button type="button" onClick={() => { setEditingCourse(null); setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' }); }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
+                {editingCourse && <button type="button" onClick={() => {
+                  setEditingCourse(null);
+                  setCourseForm({ name: '', code: '', description: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
+                  setIsExistingCode(false);
+                  setExistingProgramIds([]);
+                }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>
-                    Course Name * {isExistingCode && <span style={{ color: 'var(--primary)', textTransform: 'none', marginLeft: '5px', background: 'var(--bg-subtle)', padding: '2px 6px', borderRadius: '4px' }}>🔗 (Shared)</span>}
+                    Course Name * {isExistingCode && <span style={{ color: 'var(--primary)', textTransform: 'none', marginLeft: '5px', background: 'var(--bg-subtle)', padding: '2px 6px', borderRadius: '4px' }}>🔗 Shared</span>}
                   </label>
-                  <input 
-                    value={courseForm.name} 
-                    onChange={e => setCourseForm({...courseForm, name: e.target.value})} 
-                    placeholder="Object Oriented Programming" 
-                    required 
+                  <input
+                    value={courseForm.name}
+                    onChange={e => setCourseForm({...courseForm, name: e.target.value})}
+                    placeholder="Object Oriented Programming"
+                    required
                     readOnly={isExistingCode}
-                    style={{ ...inputStyle, background: isExistingCode ? '#F3F4F6' : 'white', cursor: isExistingCode ? 'not-allowed' : 'text' }} 
+                    style={{ ...inputStyle, background: isExistingCode ? 'var(--bg-subtle)' : 'var(--bg-white)', cursor: isExistingCode ? 'not-allowed' : 'text' }}
                   />
                 </div>
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Course Code *</label>
-                  <input value={courseForm.code} onChange={e => setCourseForm({...courseForm, code: e.target.value})} placeholder="CS112" required style={inputStyle} />
+                  <input value={courseForm.code} onChange={e => setCourseForm({...courseForm, code: e.target.value.toUpperCase()})} placeholder="CS112" required style={inputStyle} />
                 </div>
-                {/* Icon field removed as per request - automated based on faculty */}
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Year</label>
-                  <input type="number" value={courseForm.year} onChange={e => setCourseForm({...courseForm, year: e.target.value})} placeholder="1" style={inputStyle} />
+                  <input type="number" min="1" max="4" value={courseForm.year} onChange={e => setCourseForm({...courseForm, year: e.target.value})} placeholder="1" style={inputStyle} />
                 </div>
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Semester</label>
-                  <input type="number" value={courseForm.semester} onChange={e => setCourseForm({...courseForm, semester: e.target.value})} placeholder="2" style={inputStyle} />
+                  <input type="number" min="1" max="8" value={courseForm.semester} onChange={e => setCourseForm({...courseForm, semester: e.target.value})} placeholder="2" style={inputStyle} />
                 </div>
-                <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Faculty</label>
-                  <select value={courseForm.faculty_id} onChange={e => setCourseForm({...courseForm, faculty_id: e.target.value})} style={inputStyle}>
-                    <option value="">Select Faculty</option>
-                    {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Program</label>
-                  <select value={courseForm.program_id} onChange={e => setCourseForm({...courseForm, program_id: e.target.value})} style={inputStyle}>
-                    <option value="">Select Program</option>
-                    {programs.filter(p => !courseForm.faculty_id || p.faculty_id == courseForm.faculty_id).map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                  </select>
-                </div>
+
+                {/* Faculty + Program — always visible in single/edit mode */}
+                {(!bulkCourseMode || editingCourse) && (
+                  <>
+                    <div className="form-group">
+                      <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Faculty</label>
+                      <select value={courseForm.faculty_id} onChange={e => setCourseForm({...courseForm, faculty_id: e.target.value, program_id: ''})} style={inputStyle}>
+                        <option value="">Select Faculty</option>
+                        {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Program</label>
+                      <select value={courseForm.program_id} onChange={e => setCourseForm({...courseForm, program_id: e.target.value})} style={inputStyle}>
+                        <option value="">Select Program</option>
+                        {programs
+                          .filter(p => !courseForm.faculty_id || p.faculty_id == courseForm.faculty_id)
+                          .map(p => {
+                            const alreadyHas = isExistingCode && existingProgramIds.includes(p.id);
+                            return (
+                              <option key={p.id} value={p.id} disabled={alreadyHas}>
+                                {alreadyHas ? `✓ ${p.name} (already added)` : p.name}
+                              </option>
+                            );
+                          })}
+                      </select>
+                    </div>
+                  </>
+                )}
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0' }}>
                   <input type="checkbox" checked={courseForm.is_lab} onChange={e => setCourseForm({...courseForm, is_lab: e.target.checked})} id="is_lab" style={{ width: '20px', height: '20px' }} />
                   <label htmlFor="is_lab" style={{ fontWeight: 800, cursor: 'pointer', fontSize: '0.9rem' }}>Lab Course</label>
                 </div>
               </div>
-              <div style={{ marginTop: '20px' }}>
+
+              {/* Autofill info banner */}
+              {isExistingCode && !editingCourse && (
+                <div style={{
+                  marginTop: '16px', padding: '12px 16px',
+                  background: 'rgba(124,58,237,0.07)', border: '2px solid var(--primary)',
+                  borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '10px',
+                }}>
+                  <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>ℹ️</span>
+                  <div style={{ fontSize: '0.83rem', lineHeight: 1.5, color: 'var(--text)' }}>
+                    <strong>{courseForm.code}</strong> already exists in <strong>{existingProgramIds.length} program{existingProgramIds.length !== 1 ? 's' : ''}</strong>.
+                    {' '}Name & description are locked to keep resources synced across programs.
+                    {' '}Simply pick a program that doesn't have it yet
+                    {bulkCourseMode ? ' (greyed-out ones already have it)' : ''} and submit.
+                  </div>
+                </div>
+              )}
+
+              <div style={{ marginTop: '16px' }}>
                 <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Description</label>
                 <textarea
                   value={courseForm.description}
@@ -1031,7 +1079,7 @@ const AdminPanel = ({ user }) => {
                   placeholder="Brief course overview…"
                   rows={3}
                   readOnly={isExistingCode}
-                  style={{ ...inputStyle, background: isExistingCode ? '#F3F4F6' : 'white', cursor: isExistingCode ? 'not-allowed' : 'text' }}
+                  style={{ ...inputStyle, background: isExistingCode ? 'var(--bg-subtle)' : 'var(--bg-white)', cursor: isExistingCode ? 'not-allowed' : 'text' }}
                 />
               </div>
 
@@ -1045,8 +1093,8 @@ const AdminPanel = ({ user }) => {
                       </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                         {bulkCourseMode
-                          ? 'The course will be added to every checked program at once.'
-                          : 'Toggle to add this course across multiple programs simultaneously.'}
+                          ? 'Course will be added to every checked program simultaneously.'
+                          : 'Enable to add this course to multiple programs at once.'}
                       </div>
                     </div>
                     <button
@@ -1064,52 +1112,37 @@ const AdminPanel = ({ user }) => {
                     </button>
                   </div>
 
-                  {/* Single-program selectors (default) */}
-                  {!bulkCourseMode && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
-                      <div className="form-group">
-                        <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Faculty</label>
-                        <select value={courseForm.faculty_id} onChange={e => setCourseForm({...courseForm, faculty_id: e.target.value})} style={inputStyle}>
-                          <option value="">Select Faculty</option>
-                          {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
-                        </select>
-                      </div>
-                      <div className="form-group">
-                        <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>Program</label>
-                        <select value={courseForm.program_id} onChange={e => setCourseForm({...courseForm, program_id: e.target.value})} style={inputStyle}>
-                          <option value="">Select Program</option>
-                          {programs.filter(p => !courseForm.faculty_id || p.faculty_id == courseForm.faculty_id).map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Multi-program checklist (bulk mode) */}
+                  {/* Multi-program checklist */}
                   {bulkCourseMode && (
                     <div style={{ marginTop: '16px' }}>
-                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap' }}>
-                        <button type="button" onClick={() => setSelectedPrograms(programs.map(p => p.id))}
+                      <div style={{ display: 'flex', gap: '8px', marginBottom: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+                        <button type="button"
+                          onClick={() => setSelectedPrograms(programs.filter(p => !existingProgramIds.includes(p.id)).map(p => p.id))}
                           style={{ padding: '4px 12px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-white)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}>
-                          ✓ Select All
+                          ✓ Select All New
                         </button>
                         <button type="button" onClick={() => setSelectedPrograms([])}
                           style={{ padding: '4px 12px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-white)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}>
                           ✕ Clear
                         </button>
-                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', alignSelf: 'center', fontWeight: 600 }}>
-                          {selectedPrograms.length} of {programs.length} selected
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                          {selectedPrograms.length} selected
+                          {isExistingCode && existingProgramIds.length > 0 && ` · ${existingProgramIds.length} already added (greyed)`}
                         </span>
                       </div>
                       {faculties.map(fac => {
                         const facProgs = programs.filter(p => p.faculty_id === fac.id);
                         if (!facProgs.length) return null;
-                        const allFacSelected = facProgs.every(p => selectedPrograms.includes(p.id));
+                        const availableProgs = facProgs.filter(p => !existingProgramIds.includes(p.id));
+                        const allFacSelected = availableProgs.length > 0 && availableProgs.every(p => selectedPrograms.includes(p.id));
                         return (
-                          <div key={fac.id} style={{ marginBottom: '12px' }}>
+                          <div key={fac.id} style={{ marginBottom: '14px' }}>
+                            {/* Faculty row — click toggles all available progs in this faculty */}
                             <div
-                              style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', cursor: 'pointer' }}
+                              style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', cursor: availableProgs.length ? 'pointer' : 'default' }}
                               onClick={() => {
-                                const ids = facProgs.map(p => p.id);
+                                if (!availableProgs.length) return;
+                                const ids = availableProgs.map(p => p.id);
                                 setSelectedPrograms(prev =>
                                   allFacSelected
                                     ? prev.filter(id => !ids.includes(id))
@@ -1118,29 +1151,39 @@ const AdminPanel = ({ user }) => {
                               }}
                             >
                               <span style={{
-                                width: '16px', height: '16px', border: '2px solid var(--primary)',
+                                width: '16px', height: '16px', border: `2px solid ${availableProgs.length ? 'var(--primary)' : 'var(--border)'}`,
                                 borderRadius: '4px', display: 'inline-flex', alignItems: 'center',
-                                justifyContent: 'center', background: allFacSelected ? 'var(--primary)' : 'transparent',
+                                justifyContent: 'center',
+                                background: allFacSelected ? 'var(--primary)' : 'transparent',
                                 flexShrink: 0,
                               }}>
                                 {allFacSelected && <span style={{ color: 'white', fontSize: '11px', fontWeight: 900 }}>✓</span>}
                               </span>
-                              <span style={{ fontWeight: 800, fontSize: '0.82rem', color: 'var(--primary)' }}>{fac.name}</span>
+                              <span style={{ fontWeight: 800, fontSize: '0.82rem', color: availableProgs.length ? 'var(--primary)' : 'var(--text-muted)' }}>{fac.name}</span>
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '24px' }}>
                               {facProgs.map(p => {
+                                const alreadyHas = existingProgramIds.includes(p.id);
                                 const checked = selectedPrograms.includes(p.id);
                                 return (
-                                  <label key={p.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.83rem', fontWeight: checked ? 700 : 500 }}>
+                                  <label key={p.id} style={{
+                                    display: 'flex', alignItems: 'center', gap: '8px',
+                                    cursor: alreadyHas ? 'not-allowed' : 'pointer',
+                                    fontSize: '0.83rem',
+                                    fontWeight: checked ? 700 : 500,
+                                    opacity: alreadyHas ? 0.45 : 1,
+                                  }}>
                                     <input
                                       type="checkbox"
-                                      checked={checked}
-                                      onChange={e => setSelectedPrograms(prev =>
+                                      checked={alreadyHas ? true : checked}
+                                      disabled={alreadyHas}
+                                      onChange={e => !alreadyHas && setSelectedPrograms(prev =>
                                         e.target.checked ? [...prev, p.id] : prev.filter(id => id !== p.id)
                                       )}
                                       style={{ width: '14px', height: '14px', accentColor: 'var(--primary)' }}
                                     />
                                     {p.name}
+                                    {alreadyHas && <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>✓ already added</span>}
                                   </label>
                                 );
                               })}
@@ -1158,14 +1201,14 @@ const AdminPanel = ({ user }) => {
                 {editingCourse
                   ? 'Update Course Details'
                   : bulkCourseMode
-                    ? `➕ Create for ${selectedPrograms.length || '…'} Program${selectedPrograms.length !== 1 ? 's' : ''}`
-                    : 'Create Course'}
+                    ? `➕ Add to ${selectedPrograms.length || '…'} Program${selectedPrograms.length !== 1 ? 's' : ''}`
+                    : '➕ Create Course'}
               </button>
             </form>
 
             {/* Course List */}
             {/* Search + count row */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
+            <div ref={courseListRef} style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
               <input
                 value={courseSearch}
                 onChange={e => { setCourseSearch(e.target.value); setCoursesPage(1); }}
