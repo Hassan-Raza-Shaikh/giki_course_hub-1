@@ -402,16 +402,46 @@ def upload_to_course(course_id):
         c_name, c_code = course_row
         course_code    = c_code or c_name
 
-        # ── Content hash for deduplication ────────────────────────────────────
+        # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)
         cur.execute(
-            "SELECT file_id, title FROM files WHERE course_code = %s AND content_hash = %s AND status != 'rejected';",
-            (course_code, content_hash)
+            "SELECT file_id, title, course_code FROM files WHERE content_hash = %s AND status != 'rejected' LIMIT 1;",
+            (content_hash,)
         )
         dup = cur.fetchone()
         if dup:
-            cur.close()
-            return jsonify({"success": False, "message": f"This exact file already exists as \"{dup[1]}\"."}), 409
+            dup_file_id, dup_title, dup_course = dup
+            # Check if this course already has it (natively or via link)
+            cur.execute(
+                "SELECT 1 FROM files WHERE file_id = %s AND (course_code = %s);",
+                (dup_file_id, course_code)
+            )
+            native_match = cur.fetchone()
+            cur.execute(
+                "SELECT 1 FROM file_course_links WHERE file_id = %s AND course_id = %s;",
+                (dup_file_id, course_id)
+            )
+            link_match = cur.fetchone()
+
+            if native_match or link_match:
+                cur.close()
+                return jsonify({"success": False, "message": f'This file already exists in this course as "{dup_title}".'}), 409
+
+            # Different course — create a cross-link instead of re-uploading
+            custom_title = title if title != dup_title else None
+            cur.execute(
+                """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
+                   VALUES (%s, %s, %s, %s, %s) ON CONFLICT (file_id, course_id) DO NOTHING;""",
+                (dup_file_id, course_id, category_id, custom_title, uploader)
+            )
+            conn.commit(); cur.close()
+            return jsonify({
+                "success": True,
+                "deduplicated": True,
+                "message": f'♻️ This file already exists (uploaded in {dup_course}). It has been linked here as "{title}" — no extra storage used!',
+                "file_id": dup_file_id,
+                "status": "approved"
+            })
 
         s3_client = get_s3_client()
         if not s3_client:
@@ -890,21 +920,40 @@ def bulk_upload_file(course_id, batch_id):
             return jsonify({"success": False, "message": "Course not found."}), 404
         course_code = course_row[0] or course_row[1]
 
-        # Content hash for deduplication
+        # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)
         cur.execute(
-            "SELECT file_id, title FROM files WHERE course_code = %s AND content_hash = %s AND status != 'rejected';",
-            (course_code, content_hash)
+            "SELECT file_id, title, course_code FROM files WHERE content_hash = %s AND status != 'rejected' LIMIT 1;",
+            (content_hash,)
         )
         dup = cur.fetchone()
         if dup:
-            cur.close()
+            dup_file_id, dup_title, dup_course = dup
+            cur.execute("SELECT 1 FROM files WHERE file_id = %s AND course_code = %s;", (dup_file_id, course_code))
+            native_match = cur.fetchone()
+            cur.execute("SELECT 1 FROM file_course_links WHERE file_id = %s AND course_id = %s;", (dup_file_id, course_id))
+            link_match = cur.fetchone()
+
+            if native_match or link_match:
+                cur.close()
+                return jsonify({"success": False, "skipped": True, "file_index": file_index,
+                                "message": f'Duplicate: "{dup_title}" already in this course.'}), 409
+
+            custom_title = title if title != dup_title else None
+            cur.execute(
+                """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
+                   VALUES (%s, %s, %s, %s, %s) ON CONFLICT (file_id, course_id) DO NOTHING;""",
+                (dup_file_id, course_id, category_id, custom_title, uploader)
+            )
+            conn.commit(); cur.close()
             return jsonify({
-                "success": False,
-                "message": f"Duplicate: this file already exists as \"{dup[1]}\".",
-                "skipped": True,
+                "success": True,
+                "deduplicated": True,
+                "skipped": False,
                 "file_index": file_index,
-            }), 409
+                "message": f'♻️ Linked from {dup_course} as "{title}" — no re-upload needed.',
+                "file_id": dup_file_id,
+            })
 
         # Upload to R2
         s3_client = get_s3_client()
@@ -1061,3 +1110,115 @@ def bulk_upload_done(course_id, batch_id):
         },
         "message": f"Bulk upload complete: {len(uploaded)} file(s) uploaded successfully.",
     })
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# File Cross-Link Endpoints
+# ─────────────────────────────────────────────────────────────────────────────
+
+@file_bp.route('/api/files/<int:file_id>/links', methods=['GET'])
+def get_file_links(file_id):
+    """Return all courses this file is cross-linked to."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT fcl.link_id, fcl.course_id, c.name AS course_name, c.code AS course_code,
+                   cat.name AS category, fcl.custom_title, fcl.linked_at
+            FROM file_course_links fcl
+            JOIN courses c ON c.course_id = fcl.course_id
+            LEFT JOIN categories cat ON cat.category_id = fcl.category_id
+            WHERE fcl.file_id = %s
+            ORDER BY fcl.linked_at DESC;
+        """, (file_id,))
+        rows = cur.fetchall()
+        cur.close()
+        links = [{
+            "link_id": r[0], "course_id": r[1], "course_name": r[2],
+            "course_code": r[3], "category": r[4],
+            "custom_title": r[5], "linked_at": str(r[6])
+        } for r in rows]
+        return jsonify({"success": True, "links": links})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
+@file_bp.route('/api/files/<int:file_id>/links', methods=['POST'])
+def add_file_link(file_id):
+    """Manually cross-link a file to another course (admin or any logged-in user)."""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"success": False, "message": "Login required."}), 401
+
+    d = request.get_json() or {}
+    target_course_id = d.get('course_id')
+    category_id      = d.get('category_id')
+    custom_title     = (d.get('custom_title') or '').strip() or None
+
+    if not target_course_id or not category_id:
+        return jsonify({"success": False, "message": "course_id and category_id are required."}), 400
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        # Verify file exists and is approved
+        cur.execute("SELECT title, course_code FROM files WHERE file_id = %s AND status = 'approved';", (file_id,))
+        file_row = cur.fetchone()
+        if not file_row:
+            cur.close()
+            return jsonify({"success": False, "message": "File not found or not yet approved."}), 404
+
+        # Verify target course exists
+        cur.execute("SELECT name, code FROM courses WHERE course_id = %s;", (target_course_id,))
+        course_row = cur.fetchone()
+        if not course_row:
+            cur.close()
+            return jsonify({"success": False, "message": "Target course not found."}), 404
+
+        # Prevent linking a file to its own origin course
+        origin_code = file_row[1]
+        if course_row[1] == origin_code or course_row[0] == origin_code:
+            cur.close()
+            return jsonify({"success": False, "message": "This file already belongs to that course."}), 409
+
+        cur.execute(
+            """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
+               VALUES (%s, %s, %s, %s, %s)
+               ON CONFLICT (file_id, course_id) DO NOTHING;""",
+            (file_id, target_course_id, category_id, custom_title, user_id)
+        )
+        conn.commit(); cur.close()
+        return jsonify({"success": True, "message": f'📌 File linked to {course_row[0]} successfully!'})
+    except Exception as e:
+        if conn: conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
+@file_bp.route('/api/files/<int:file_id>/links/<int:course_id>', methods=['DELETE'])
+def remove_file_link(file_id, course_id):
+    """Remove a cross-link. Does NOT delete the physical file."""
+    if not session.get('user_id'):
+        return jsonify({"success": False, "message": "Login required."}), 401
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "DELETE FROM file_course_links WHERE file_id = %s AND course_id = %s RETURNING link_id;",
+            (file_id, course_id)
+        )
+        deleted = cur.fetchone()
+        if not deleted:
+            cur.close()
+            return jsonify({"success": False, "message": "Link not found."}), 404
+        conn.commit(); cur.close()
+        return jsonify({"success": True, "message": "Link removed."})
+    except Exception as e:
+        if conn: conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()

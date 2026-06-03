@@ -693,7 +693,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       {CATEGORY_ICONS[file.category] || '📁'}
                     </div>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.05rem', wordBreak: 'break-word' }}>
+                      <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.05rem', wordBreak: 'break-word', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                         {file.title}
                       </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.4 }}>

@@ -121,7 +121,9 @@ BEGIN
                     'file_type', m.file_type,
                     'admin_note', fn.note_text,
                     'instructor_name', i.name,
-                    'instructor_id', f.instructor_id
+                    'instructor_id', f.instructor_id,
+                    'is_shared', false,
+                    'shared_from', null::text
                 ) ORDER BY f.title ASC
             ) AS files
         FROM files f
@@ -133,8 +135,46 @@ BEGIN
         WHERE (f.course_code = v_code OR f.course_code = v_name)
           AND f.status = 'approved'
         GROUP BY COALESCE(cat.name, 'General')
+
+        UNION ALL
+
+        -- Cross-linked files from other courses
+        SELECT 
+            COALESCE(link_cat.name, 'General') AS category,
+            jsonb_agg(
+                jsonb_build_object(
+                    'id', f.file_id,
+                    'file_id', f.file_id,
+                    'title', COALESCE(fcl.custom_title, f.title),
+                    'category', COALESCE(link_cat.name, 'General'),
+                    'category_id', fcl.category_id,
+                    'uploader', u.username,
+                    'date', f.upload_date,
+                    'file_url', f.file_url,
+                    'file_size', m.file_size,
+                    'file_type', m.file_type,
+                    'admin_note', fn.note_text,
+                    'instructor_name', i.name,
+                    'instructor_id', f.instructor_id,
+                    'is_shared', true,
+                    'shared_from', origin_c.code
+                ) ORDER BY COALESCE(fcl.custom_title, f.title) ASC
+            ) AS files
+        FROM file_course_links fcl
+        JOIN files f          ON f.file_id      = fcl.file_id
+        JOIN courses origin_c ON origin_c.code  = f.course_code
+                              OR origin_c.name  = f.course_code
+        LEFT JOIN categories link_cat ON link_cat.category_id = fcl.category_id
+        LEFT JOIN users u             ON f.uploaded_by = u.user_id
+        LEFT JOIN file_metadata m     ON f.file_id = m.file_id
+        LEFT JOIN file_notes fn       ON fn.file_id = f.file_id
+        LEFT JOIN instructors i       ON f.instructor_id = i.instructor_id
+        WHERE fcl.course_id = p_course_id
+          AND f.status = 'approved'
+        GROUP BY COALESCE(link_cat.name, 'General')
     ) cat_group;
 
     RETURN COALESCE(result, '{}'::jsonb);
 END;
 $$ LANGUAGE plpgsql STABLE;
+

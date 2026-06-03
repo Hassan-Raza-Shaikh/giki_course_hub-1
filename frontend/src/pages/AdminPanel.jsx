@@ -96,6 +96,11 @@ const AdminPanel = ({ user }) => {
   const [editFileModal, setEditFileModal] = useState(null); // full file object
   const [editFileForm, setEditFileForm] = useState({ title: '', category_id: '', instructor_id: '' });
 
+  // Cross-link file modal
+  const [linkModal, setLinkModal] = useState(null);
+  const [linkForm, setLinkForm] = useState({ course_id: '', category_id: '', custom_title: '' });
+  const [existingLinks, setExistingLinks] = useState([]);
+
   // Generic confirm modal (replaces window.confirm)
   // shape: { title, body, onConfirm, danger? }
   const [confirmModal, setConfirmModal] = useState(null);
@@ -345,6 +350,49 @@ const AdminPanel = ({ user }) => {
       showToast(err.response?.data?.message || 'Update failed.', 'error');
     }
   };
+
+  /* ── actions: File Links ── */
+  const openLinkModal = async (file) => {
+    setLinkModal(file);
+    setLinkForm({ course_id: '', category_id: '', custom_title: file.title });
+    setExistingLinks([]);
+    
+    api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(() => {});
+    
+    try {
+      const res = await api.get(`/files/${file.file_id}/links`);
+      setExistingLinks(res.data.links || []);
+    } catch (err) {
+      console.error("Failed to load existing links", err);
+    }
+  };
+
+  const submitLink = async () => {
+    if (!linkForm.course_id || !linkForm.category_id) {
+      return showToast('Course and Category are required.', 'error');
+    }
+    try {
+      const res = await api.post(`/files/${linkModal.file_id}/links`, linkForm);
+      showToast(res.data.message || 'File linked successfully! ✨');
+      // refresh existing links
+      const linksRes = await api.get(`/files/${linkModal.file_id}/links`);
+      setExistingLinks(linksRes.data.links || []);
+      setLinkForm({ course_id: '', category_id: '', custom_title: linkModal.title });
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Failed to link file.', 'error');
+    }
+  };
+
+  const removeLink = async (courseId) => {
+    try {
+      await api.delete(`/files/${linkModal.file_id}/links/${courseId}`);
+      showToast('Link removed.');
+      setExistingLinks(existingLinks.filter(l => l.course_id !== courseId));
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Failed to remove link.', 'error');
+    }
+  };
+
 
   /* ── actions: Reports ── */
   const openResolveModal = (report) => {
@@ -740,6 +788,89 @@ const AdminPanel = ({ user }) => {
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
               <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'var(--primary)', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cross-Link File Modal */}
+      {linkModal && (
+        <div onClick={() => setLinkModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+              <div>
+                <h3 style={{ fontWeight: 900, fontSize: '1.4rem' }}>🔗 Cross-Link File</h3>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
+                  Make <strong>"{linkModal.title}"</strong> available in other courses without re-uploading.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Target Course</label>
+                <select 
+                  value={linkForm.course_id}
+                  onChange={e => setLinkForm({ ...linkForm, course_id: e.target.value })}
+                  style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
+                >
+                  <option value="">Select Course...</option>
+                  {editCourses.map(c => (
+                    <option key={c.course_id} value={c.course_id}>{c.icon} {c.code} — {c.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Category</label>
+                <select 
+                  value={linkForm.category_id}
+                  onChange={e => setLinkForm({ ...linkForm, category_id: e.target.value })}
+                  style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
+                >
+                  <option value="">Select Category...</option>
+                  {categories.map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Custom Title (Optional)</label>
+                <input 
+                  type="text" 
+                  value={linkForm.custom_title} 
+                  onChange={e => setLinkForm({ ...linkForm, custom_title: e.target.value })}
+                  placeholder="Override the display title for this course..."
+                  style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
+                />
+              </div>
+              <button onClick={submitLink} style={{ width: '100%', padding: '10px', background: '#6366F1', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>
+                Add Link
+              </button>
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <h4 style={{ fontWeight: 800, marginBottom: '12px', fontSize: '1rem' }}>Active Links</h4>
+              {existingLinks.length === 0 ? (
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontStyle: 'italic' }}>Not linked anywhere else.</div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {existingLinks.map(l => (
+                    <div key={l.link_id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', border: '1px solid var(--border)', borderRadius: '8px' }}>
+                      <div>
+                        <div style={{ fontWeight: 700 }}>{l.course_code} - {l.course_name}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>As "{l.custom_title || linkModal.title}" in {l.category}</div>
+                      </div>
+                      <button onClick={() => removeLink(l.course_id)} style={{ padding: '6px 12px', border: '1px solid #EF4444', color: '#EF4444', borderRadius: '6px', background: 'transparent', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
+              <button onClick={() => setLinkModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Close</button>
             </div>
           </div>
         </div>
@@ -1385,6 +1516,7 @@ const AdminPanel = ({ user }) => {
                   </span>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 View</a>
+                    <button onClick={() => openLinkModal(f)} style={btnStyle('#8B5CF6')}>🔗 Link</button>
                     <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}>✏️ Edit</button>
                     <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}>📌 {f.admin_note ? 'Edit Note' : 'Add Note'}</button>
                     <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
