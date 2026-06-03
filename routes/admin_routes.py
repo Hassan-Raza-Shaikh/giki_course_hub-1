@@ -591,6 +591,7 @@ def admin_list_reports():
         cur.execute("""
             SELECT r.report_id, r.reason, r.status, r.created_at, r.admin_notes,
                    f.file_id, f.title AS file_title, f.course_code, f.file_url,
+                   f.admin_note AS file_admin_note, f.category_id, f.instructor_id, f.status AS file_status,
                    u.email AS reporter_email, u.username AS reporter
             FROM reports r
             JOIN files f ON f.file_id = r.file_id

@@ -1073,6 +1073,16 @@ const AdminPanel = ({ user }) => {
                   <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}>🏁 Resolve</button>
                   <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}>💤 Dismiss</button>
                 </div>
+                
+                <div style={{ marginTop: '4px', paddingTop: '16px', borderTop: '1px dashed var(--border)' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quick File Actions</div>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <button onClick={() => openLinkModal({ file_id: r.file_id, title: r.file_title, course_code: r.course_code })} style={btnStyle('#8B5CF6')}>🔗 Link</button>
+                    <button onClick={() => openEditFile({ file_id: r.file_id, title: r.file_title, course_code: r.course_code, category_id: r.category_id, instructor_id: r.instructor_id, status: r.file_status })} style={btnStyle('var(--text)')}>✏️ Edit</button>
+                    <button onClick={() => openNoteModal({ file_id: r.file_id, title: r.file_title, admin_note: r.file_admin_note })} style={{ ...btnStyle(r.file_admin_note ? '#D97706' : '#9CA3AF') }}>📌 {r.file_admin_note ? 'Edit Note' : 'Add Note'}</button>
+                    <button onClick={() => deleteFile(r.file_id, r.file_title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
