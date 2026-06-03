@@ -53,15 +53,22 @@ const CourseRow = ({ course, onClick }) => (
 );
 
 // ── Year sub-section inside a program ─────────────────────────────────────────
-const YearSection = ({ year, semesters, onCourseClick }) => {
-  const [open, setOpen] = useState(false);
+const YearSection = ({ year, semesters, onCourseClick, programId }) => {
+  const storageKey = `courses_year_${programId}_${year}`;
+  const [open, setOpen] = useState(() => sessionStorage.getItem(storageKey) === 'true');
+
+  const toggle = () => setOpen(o => {
+    const next = !o;
+    sessionStorage.setItem(storageKey, next);
+    return next;
+  });
   const allCourses = semesters.flatMap(s => s.courses);
   const bySem = semesters.reduce((acc, s) => { acc[s.semester] = s.courses; return acc; }, {});
 
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
       <div
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '16px 28px', cursor: 'pointer',
@@ -120,7 +127,14 @@ const YearSection = ({ year, semesters, onCourseClick }) => {
 
 // ── Program accordion inside a faculty ────────────────────────────────────────
 const ProgramAccordion = ({ program, onCourseClick }) => {
-  const [open, setOpen] = useState(false);
+  const storageKey = `courses_prog_${program.id}`;
+  const [open, setOpen] = useState(() => sessionStorage.getItem(storageKey) === 'true');
+
+  const toggle = () => setOpen(o => {
+    const next = !o;
+    sessionStorage.setItem(storageKey, next);
+    return next;
+  });
   const totalCourses = program.years.reduce((acc, y) => acc + y.semesters.reduce((a, s) => a + s.courses.length, 0), 0);
 
   return (
@@ -131,7 +145,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
       background: 'var(--bg-white)',
     }}>
       <div
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '20px 24px', cursor: 'pointer',
@@ -168,6 +182,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
             <YearSection
               key={yr.year}
               year={yr.year}
+              programId={program.id}
               semesters={yr.semesters}
               onCourseClick={onCourseClick}
             />
@@ -180,7 +195,17 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
 
 // ── Faculty top-level accordion ───────────────────────────────────────────────
 const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
-  const [open, setOpen] = useState(defaultOpen || false);
+  const storageKey = `courses_fac_${faculty.id}`;
+  const [open, setOpen] = useState(() => {
+    const saved = sessionStorage.getItem(storageKey);
+    return saved !== null ? saved === 'true' : (defaultOpen || false);
+  });
+
+  const toggle = () => setOpen(o => {
+    const next = !o;
+    sessionStorage.setItem(storageKey, next);
+    return next;
+  });
   const totalCourses = faculty.programs.reduce(
     (acc, p) => acc + p.years.reduce((a, y) => a + y.semesters.reduce((x, s) => x + s.courses.length, 0), 0), 0
   );
@@ -196,7 +221,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
     }}>
       {/* Faculty Header */}
       <div
-        onClick={() => setOpen(o => !o)}
+        onClick={toggle}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '28px 32px', cursor: 'pointer',
