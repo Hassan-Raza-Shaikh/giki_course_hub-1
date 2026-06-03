@@ -203,7 +203,12 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 position: 'absolute', top: 'calc(100% + 12px)', right: 0,
                 background: 'var(--bg-white)', border: '2px solid var(--text)',
                 borderRadius: '16px', boxShadow: '5px 5px 0px var(--text)',
-                width: '280px', overflow: 'hidden', zIndex: 9999,
+                width: 'min(280px, calc(100vw - 24px))',
+                maxHeight: 'min(520px, calc(100vh - 100px))',
+                overflowY: 'auto',
+                zIndex: 9999,
+                // On very small screens push it away from the right edge
+                ...(window.innerWidth < 400 ? { right: 'auto', left: '50%', transform: 'translateX(-50%)' } : {}),
               }}>
                 {/* Top accent */}
                 <div style={{ height: '5px', background: 'var(--primary)' }} />
