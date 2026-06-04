@@ -562,10 +562,10 @@ input::placeholder, textarea::placeholder {
 /* ── Admin modals: responsive padding + safe scroll ─── */
 @media (max-width: 640px) {
   /* All admin overlay modal boxes */
-  [style*="maxWidth: '480px'"],
-  [style*="maxWidth: '500px'"],
-  [style*="maxWidth: '540px'"],
-  [style*="maxWidth: '440px'"] {
+  [style*="max-width: 480px"],
+  [style*="max-width: 500px"],
+  [style*="max-width: 540px"],
+  [style*="max-width: 440px"] {
     padding: 20px !important;
   }
 }
