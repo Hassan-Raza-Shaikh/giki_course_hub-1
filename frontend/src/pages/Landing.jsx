@@ -81,14 +81,16 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: '10px',
+              display: 'inline-flex', alignItems: 'center', gap: '8px',
               background: 'var(--bg-white)', border: '2px solid var(--text)',
-              padding: '10px 24px', borderRadius: '100px', marginBottom: '48px',
-              fontSize: '0.85rem', fontWeight: 800, color: 'var(--text)',
-              textTransform: 'uppercase', letterSpacing: '0.15em',
-              boxShadow: '4px 4px 0px var(--secondary)'
+              padding: '8px 18px', borderRadius: '100px', marginBottom: '40px',
+              fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)',
+              textTransform: 'uppercase', letterSpacing: '0.1em',
+              boxShadow: '4px 4px 0px var(--secondary)',
+              maxWidth: '100%', boxSizing: 'border-box',
             }}>
-              <span style={{ color: 'var(--accent)', fontSize: '1.2rem' }}>✦</span> GIK Institute of Engineering
+              <span style={{ color: 'var(--accent)', fontSize: '1.1rem', flexShrink: 0 }}>✦</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>GIK Institute of Engineering</span>
             </div>
 
             <h1 style={{

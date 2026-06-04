@@ -224,7 +224,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
         onClick={toggle}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '28px 32px', cursor: 'pointer',
+          padding: 'clamp(16px, 4vw, 28px) clamp(16px, 4vw, 32px)', cursor: 'pointer',
           background: open ? 'var(--primary)' : 'var(--bg-white)',
           transition: 'background 0.3s',
         }}
@@ -356,7 +356,7 @@ const Courses = () => {
       {/* ── Header ──────────────────────────────────────────────── */}
       <div style={{
         background: 'var(--bg-hero)',
-        padding: '80px 0 100px', borderBottom: '2px solid var(--border)',
+        padding: 'clamp(48px, 8vw, 80px) 0 clamp(60px, 8vw, 100px)', borderBottom: '2px solid var(--border)',
         position: 'relative', overflow: 'hidden',
       }}>
         <div style={{ position: 'absolute', width: 400, height: 400, background: 'var(--accent)', top: -100, right: -100, borderRadius: '50px', transform: 'rotate(15deg)', opacity: 0.15 }} />

@@ -442,28 +442,28 @@ const CoursePage = ({ user, onSignIn }) => {
             ← Back to Courses
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '28px', flexWrap: 'wrap' }}>
-            <div style={{ fontSize: '4rem', filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.1))' }}>{course.icon || '📘'}</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap' }}>
-                <span style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '0.78rem', fontWeight: 800,
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '3.5rem', filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.1))', lineHeight: 1 }}>{course.icon || '📘'}</div>
+            <div style={{ flex: 1, minWidth: '220px' }}>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap' }}>
+                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
                   background: 'var(--accent)', color: 'var(--text)', border: '2px solid var(--text)' }}>
                   Sem {course.semester}
                 </span>
-                <span style={{ padding: '6px 14px', borderRadius: '100px', fontSize: '0.78rem', fontWeight: 800,
-                  background: 'var(--tertiary)', color: 'white', border: '2px solid var(--text)' }}>
+                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
+                  background: 'var(--tertiary)', color: 'white', border: '2px solid var(--text)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {course.program}
                 </span>
-                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.9rem', padding: '6px 14px', borderRadius: '100px', border: '2px solid var(--border)', background: 'var(--bg-white)' }}>{course.code}</span>
+                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '2px solid var(--border)', background: 'var(--bg-white)' }}>{course.code}</span>
               </div>
-              <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
+              <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
                 {course.name}
               </h1>
               {fileInstructors.length > 0 && (
-                <div style={{ marginTop: '16px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
+                <div style={{ marginTop: '12px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
                   {fileInstructors.map(inst => (
-                    <span key={inst.id} style={{ background: 'var(--bg-subtle)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 600, border: '1px solid var(--border)' }}>
+                    <span key={inst.id} style={{ background: 'var(--bg-subtle)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.82rem', fontWeight: 600, border: '1px solid var(--border)' }}>
                       🧑‍🏫 {inst.name}
                     </span>
                   ))}
@@ -528,7 +528,7 @@ const CoursePage = ({ user, onSignIn }) => {
             .course-grid { grid-template-columns: 1fr; gap: 0; }
             .sidebar-container {
                position: sticky;
-               top: 60px;
+               top: 59px;
                z-index: 100;
                background: var(--bg-hero);
                margin: 0 -16px;
@@ -717,7 +717,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       )}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }} onClick={e => e.stopPropagation()}>
+                  <div className="file-actions-row" onClick={e => e.stopPropagation()}>
                     {isAdmin && (
                       <button
                         onClick={() => openEditFile(file)}
@@ -733,6 +733,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           fontSize: '0.8rem',
                           boxShadow: '2px 2px 0 var(--text)',
                           transition: 'all 0.15s',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}
                         onMouseOver={e => { e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '3px 3px 0 var(--text)'; }}
                         onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}
@@ -754,11 +755,11 @@ const CoursePage = ({ user, onSignIn }) => {
                         transition: 'all 0.2s',
                         color: 'var(--text)',
                         boxShadow: bookmarks.has(file.file_id ?? file.id) ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '2px 2px 0px var(--text)',
-                      whiteSpace: 'nowrap',
-                      textAlign: 'center'
+                        whiteSpace: 'nowrap',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
                     >
-                      {bookmarks.has(file.file_id ?? file.id) ? '✓ Saved' : '+ Bookmark'}
+                      {bookmarks.has(file.file_id ?? file.id) ? '✓ Saved' : '+ Save'}
                     </button>
                     {/* Copy Link */}
                     <CopyLinkButton
@@ -778,15 +779,14 @@ const CoursePage = ({ user, onSignIn }) => {
                         }}
                         style={{
                           background: 'var(--primary)', color: 'white',
-                          padding: '10px 18px', borderRadius: 8,
-                          fontWeight: 700, fontSize: '0.85rem',
+                          padding: '8px 14px', borderRadius: 8,
+                          fontWeight: 700, fontSize: '0.82rem',
                           border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--text)',
                           textDecoration: 'none', whiteSpace: 'nowrap',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                          flex: 1.5, textAlign: 'center'
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
                         }}
                       >
-                      ⬇ Download
+                        ⬇ Download
                       </a>
                     )}
                     {/* Flag button */}
@@ -810,7 +810,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         color: '#DC2626',
                         boxShadow: '2px 2px 0px var(--text)',
                         whiteSpace: 'nowrap',
-                        textAlign: 'center'
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
                       onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
                       onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; }}
@@ -843,7 +843,7 @@ const CoursePage = ({ user, onSignIn }) => {
               </p>
             </div>
 
-            <div style={{ padding: '40px 32px' }}>
+            <div style={{ padding: '28px 24px' }}>
               {!user ? (
                 <div style={{ textAlign: 'center', padding: '32px 0' }}>
                   <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🔐</div>

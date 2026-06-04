@@ -372,11 +372,13 @@ input::placeholder, textarea::placeholder {
   border-radius: var(--radius-xl);
   padding: 0;
   max-width: 440px;
-  width: 90%;
+  width: 92%;
   box-shadow: 0 30px 80px rgba(124,58,237,0.35);
   animation: scaleIn 0.25s ease;
   border: 2px solid var(--border);
   overflow: hidden;
+  max-height: 90dvh;
+  overflow-y: auto;
 }
 [data-theme='dark'] .modal-box {
   box-shadow: 0 0 60px rgba(245,158,11,0.25), 4px 4px 0px var(--border);
@@ -386,6 +388,7 @@ input::placeholder, textarea::placeholder {
 }
 @media (max-width: 640px) {
   .modal-content { padding: 20px 20px 24px; }
+  .modal-box { width: 96%; border-radius: var(--radius-lg); }
 }
 
 /* ── Primary Button ──────────────────────────────────── */
@@ -486,7 +489,6 @@ input::placeholder, textarea::placeholder {
   .navbar { padding: 0 20px; }
   .page-container { padding: 0 16px; }
   .accordion-header { padding: 18px 20px; }
-  .modal-box { padding: 32px 24px; }
   h1 { font-size: 2.2rem !important; }
   h2 { font-size: 1.8rem !important; }
 }
@@ -495,4 +497,47 @@ input::placeholder, textarea::placeholder {
   .btn-primary, .btn-outline { width: 100%; }
   .file-item { padding: 14px 16px; }
   h1 { font-size: 1.8rem !important; }
+}
+
+/* ── File action buttons (CoursePage file list) ───────── */
+.file-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+  .file-actions-row {
+    width: 100%;
+    gap: 6px;
+  }
+  .file-actions-row a,
+  .file-actions-row button {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
+    justify-content: center;
+    font-size: 0.75rem !important;
+    padding: 8px 8px !important;
+  }
+}
+
+/* ── Admin panel file row buttons ────────────────────── */
+.admin-file-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+@media (max-width: 900px) {
+  .admin-file-actions {
+    width: 100%;
+    margin-top: 4px;
+  }
+  .admin-file-actions a,
+  .admin-file-actions button {
+    flex: 1 1 auto;
+    text-align: center;
+    font-size: 0.75rem !important;
+    padding: 6px 8px !important;
+  }
 }

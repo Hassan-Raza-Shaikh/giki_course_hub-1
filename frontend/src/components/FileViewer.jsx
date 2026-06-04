@@ -139,48 +139,50 @@ const FileViewer = ({ file, onClose }) => {
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          width: '100%', maxWidth: '900px', height: '85vh',
+          width: '100%', maxWidth: '900px',
+          height: 'min(85vh, 85dvh)',
           background: 'var(--bg-white)', borderRadius: '14px',
           border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)',
           display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}
       >
-        {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '14px 20px', borderBottom: '2px solid var(--border)',
-          background: 'var(--bg-white)', flexShrink: 0,
+          padding: '10px 14px', borderBottom: '2px solid var(--border)',
+          background: 'var(--bg-white)', flexShrink: 0, gap: '8px',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-            <span style={{ fontSize: '1.1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1 }}>
+            <span style={{ fontSize: '1rem', flexShrink: 0 }}>
               {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : fileType === 'code' ? '💻' : fileType === 'ipynb' ? '📓' : '📎'}
             </span>
-            <span style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {title}
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: '6px', flexShrink: 0, alignItems: 'center' }}>
             <a
               href={url}
               download={title}
               style={{
-                padding: '7px 16px', background: 'var(--primary)', color: 'white',
-                borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem',
+                padding: '6px 12px', background: 'var(--primary)', color: 'white',
+                borderRadius: '8px', fontWeight: 700, fontSize: '0.78rem',
                 border: '2px solid var(--text)', boxShadow: '2px 2px 0 var(--text)',
-                textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px',
+                textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px',
+                whiteSpace: 'nowrap',
               }}
               onClick={e => e.stopPropagation()}
             >
-              ⬇ Download
+              ⬇ <span className="hide-mobile">Download</span>
             </a>
             {fileType === 'pdf' && (
               <button
                 onClick={() => window.open(url, '_blank')}
+                className="hide-mobile"
                 style={{
-                  padding: '7px 16px', background: 'var(--bg-subtle)', color: 'var(--text)',
-                  borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem',
+                  padding: '6px 12px', background: 'var(--bg-subtle)', color: 'var(--text)',
+                  borderRadius: '8px', fontWeight: 700, fontSize: '0.78rem',
                   border: '2px solid var(--text)', boxShadow: '2px 2px 0 var(--text)',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px',
                 }}
               >
                 📄 Open Full
@@ -189,10 +191,10 @@ const FileViewer = ({ file, onClose }) => {
             <button
               onClick={onClose}
               style={{
-                width: '34px', height: '34px', borderRadius: '8px', border: '2px solid var(--border)',
+                width: '32px', height: '32px', borderRadius: '8px', border: '2px solid var(--border)',
                 background: 'var(--bg-subtle)', cursor: 'pointer', fontWeight: 900, fontSize: '1rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'var(--text-muted)', transition: 'all 0.15s',
+                color: 'var(--text-muted)', transition: 'all 0.15s', flexShrink: 0,
               }}
               onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-white)'; e.currentTarget.style.borderColor = '#DC2626'; e.currentTarget.style.color = '#DC2626'; }}
               onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}

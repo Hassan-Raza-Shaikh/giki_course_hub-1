@@ -1524,11 +1524,11 @@ const AdminPanel = ({ user }) => {
                   <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.72rem', fontWeight: 700, ...STATUS_COLORS[f.status] }}>
                     {f.status}
                   </span>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div className="admin-file-actions">
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 View</a>
                     <button onClick={() => openLinkModal(f)} style={btnStyle('#8B5CF6')}>🔗 Link</button>
                     <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}>✏️ Edit</button>
-                    <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}>📌 {f.admin_note ? 'Edit Note' : 'Add Note'}</button>
+                    <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}>📌 Note</button>
                     <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
                   </div>
                 </div>
