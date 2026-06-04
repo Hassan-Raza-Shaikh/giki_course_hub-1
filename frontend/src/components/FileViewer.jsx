@@ -132,7 +132,7 @@ const FileViewer = ({ file, onClose }) => {
         position: 'fixed', inset: 0, zIndex: 10000,
         background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '24px',
+        padding: 'clamp(12px, 3vw, 24px)',
       }}
     >
       {/* Modal panel — stop propagation so clicking inside doesn't close */}
@@ -263,8 +263,8 @@ const DocxPreview = ({ url }) => {
       {/* Force light colour-scheme so docx-preview HTML always renders on white paper */}
       <div
         ref={containerRef}
+        className="docx-viewer-content"
         style={{
-          padding: '32px',
           minHeight: '100%',
           visibility: status === 'done' ? 'visible' : 'hidden',
           background: 'white',

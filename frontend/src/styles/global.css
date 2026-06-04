@@ -624,3 +624,28 @@ input::placeholder, textarea::placeholder {
   .report-issue-card { padding: 24px !important; }
   .report-issue-card h1 { font-size: 2rem !important; }
 }
+
+/* ── Docx Preview: responsive sizing for docx-preview library ── */
+.docx-viewer-content {
+  padding: clamp(10px, 4vw, 32px) !important;
+}
+.docx-viewer-content .docx-wrapper {
+  padding: 0 !important;
+  background: transparent !important;
+}
+.docx-viewer-content section.docx {
+  width: 100% !important;
+  min-width: unset !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 0 !important;
+}
+.docx-viewer-content img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+.docx-viewer-content table {
+  width: 100% !important;
+  table-layout: auto !important;
+  word-break: break-word !important;
+}
