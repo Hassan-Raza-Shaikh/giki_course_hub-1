@@ -288,7 +288,9 @@ const BulkUploader = ({
         <p style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '8px' }}>
           {uploadSummary && uploadSummary.total_uploaded > 1 ? `${uploadSummary.total_uploaded} files submitted!` : 'Material submitted!'}
         </p>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '8px' }}>Your contribution is pending admin review and will go live once approved.</p>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '8px' }}>
+          {isAdmin ? 'Your files have been directly uploaded and are now live.' : 'Your contribution is pending admin review and will go live once approved.'}
+        </p>
         {uploadSummary && uploadSummary.total_skipped > 0 && (
           <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '16px' }}>⚠️ {uploadSummary.total_skipped} file(s) were skipped (duplicates or errors).</p>
         )}
