@@ -7,12 +7,7 @@ import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
-import {
-  FileText, FileEdit, Presentation, HelpCircle,
-  ClipboardList, Archive, FlaskConical, Terminal,
-  ClipboardCheck, Library, FolderOpen, AlertTriangle,
-  Inbox, UploadCloud, CheckCircle, Flag, Download, Edit3, BookmarkPlus, BookmarkCheck, User, AlertCircle
-} from 'lucide-react';
+import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud } from 'lucide-react';
 
 const CATEGORY_ICONS = {
   'Outline':         <FileText size={18} strokeWidth={1.5} />,
@@ -150,7 +145,7 @@ const CoursePage = ({ user, onSignIn }) => {
           setFileInstructors(res.data.file_instructors || []);
         }
       });
-      alert('File updated successfully! ✨');
+      alert('File updated successfully!');
     } catch (err) {
       alert(err.response?.data?.message || 'Update failed.');
     }
@@ -211,12 +206,14 @@ const CoursePage = ({ user, onSignIn }) => {
 
   if (!course) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70, flexDirection: 'column', gap: 20, textAlign: 'center', padding: '0 20px' }}>
-      <div style={{ fontSize: '4rem' }}>😕</div>
-      <h2 style={{ color: 'var(--primary)', fontWeight: 900 }}>Course not found</h2>
-      <p style={{ color: 'var(--text-muted)', maxWidth: '500px', lineHeight: 1.6 }}>
-        We couldn't find the course you're looking for. Please report this issue so the developers can get on it—your reporting helps us improve the app experience!
-      </p>
-      <button className="btn-primary" onClick={() => navigate('/courses')} style={{ marginTop: '10px' }}>Back to Courses</button>
+      <div style={{ textAlign: 'center', padding: '60px 20px', maxWidth: '400px' }}>
+        <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}><FileQuestion size={64} color="var(--text-muted)" /></div>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: 900, marginBottom: '12px' }}>Course Not Found</h2>
+        <p style={{ color: 'var(--text-muted)', maxWidth: '500px', lineHeight: 1.6 }}>
+          We couldn't find the course you're looking for. Please report this issue so the developers can get on it—your reporting helps us improve the app experience!
+        </p>
+        <button className="btn-primary" onClick={() => navigate('/courses')} style={{ marginTop: '10px' }}>Back to Courses</button>
+      </div>
     </div>
   );
 
@@ -267,9 +264,13 @@ const CoursePage = ({ user, onSignIn }) => {
                 <div style={{ marginTop: '12px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
                   {fileInstructors.map(inst => (
-                    <span key={inst.id} style={{ background: 'var(--bg-subtle)', padding: '4px 10px', borderRadius: '100px', fontSize: '0.82rem', fontWeight: 600, border: '1px solid var(--border)' }}>
-                      🧑‍🏫 {inst.name}
-                    </span>
+                    <span key={inst.instructor_id} style={{
+                    background: 'var(--bg-white)', border: '1.5px solid var(--border)',
+                    padding: '6px 12px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700,
+                    color: 'var(--text)', boxShadow: '2px 2px 0 var(--border)', display: 'flex', alignItems: 'center', gap: '6px'
+                  }}>
+                    <User size={14} color="var(--primary)" /> {inst.name}
+                  </span>
                   ))}
                 </div>
               )}
@@ -396,7 +397,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           fontWeight: 900,
                           backdropFilter: 'blur(4px)',
                           border: activeTab === tab ? '1px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
-                          fontFamily: 'Outfit',
+                          fontFamily: 'var(--font-primary)',
                           flexShrink: 0
                         }}>
                           {tab === activeTab && instructorFilter && filteredCount !== count
@@ -448,7 +449,7 @@ const CoursePage = ({ user, onSignIn }) => {
           <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
             <div style={{ padding: '20px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {CATEGORY_ICONS[activeTab] || <FolderOpen size={22} />} {activeTab}
                 </h2>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
@@ -638,7 +639,7 @@ const CoursePage = ({ user, onSignIn }) => {
         <ScrollReveal>
           <div ref={uploadRef} style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
             <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '8px', color: 'var(--text)', display: 'flex', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'var(--font-primary)', marginBottom: '8px', color: 'var(--text)', display: 'flex', alignItems: 'center' }}>
                 <UploadCloud size={22} style={{ marginRight: '8px' }} /> Contribute Materials
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>

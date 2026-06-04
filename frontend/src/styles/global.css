@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&display=swap');
 
 /* ── Reset ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -6,6 +6,9 @@ html { scroll-behavior: smooth; }
 body { overflow-x: hidden; }
 /* ── Design Tokens ───────────────────────────────────── */
 :root {
+  --font-primary: 'Outfit', sans-serif;
+  --font-secondary: 'Inter', sans-serif;
+
   /* Default Light Mode (Vibrant & Professional) */
   --primary:      #2563EB;
   --primary-dark: #1E40AF;
@@ -66,8 +69,8 @@ body { overflow-x: hidden; }
   --nav-btn-text: #000000;
 }
 
-/* ── Dusk Mode (Nord + Solarized Mix) ── */
-[data-theme='dusk'] {
+/* ── Nord Mode ── */
+[data-theme='nord'] {
   --primary:      #5FB3B3;   /* Frosty Teal */
   --primary-dark: #4F9B9B;
   --primary-mid:  #66C2C2;
@@ -93,6 +96,179 @@ body { overflow-x: hidden; }
   --shadow-lg:  12px 12px 0px #F99157;
   --nav-btn-text: #1B2B34;
 }
+
+/* ── Solarized Light ── */
+[data-theme='solarized'] {
+  --primary:      #b58900;
+  --primary-dark: #cb4b16;
+  --primary-mid:  #2aa198;
+  --secondary:    #d33682;
+  --accent:       #268bd2;
+  --bg-hero:      #fdf6e3;
+  --bg-dark:      #eee8d5;
+  --bg-subtle:    #eee8d5;
+  --bg-white:     #fdf6e3;
+  --bg-body:      #eee8d5;
+  --text:         #073642;
+  --text-muted:   #586e75;
+  --text-light:   #657b83;
+  --tertiary:     #6c71c4;
+  --electric:     #859900;
+  --border:       #93a1a1;
+  --shadow-sm:    4px 4px 0px #93a1a1;
+  --shadow-md:    8px 8px 0px #2aa198;
+  --shadow-lg:    12px 12px 0px #b58900;
+  --nav-btn-text: #fdf6e3;
+}
+
+/* ── Dracula ── */
+[data-theme='dracula'] {
+  --primary:      #bd93f9;
+  --primary-dark: #ff79c6;
+  --primary-mid:  #8be9fd;
+  --secondary:    #ffb86c;
+  --accent:       #50fa7b;
+  --bg-hero:      #282a36;
+  --bg-dark:      #21222c;
+  --bg-subtle:    #44475a;
+  --bg-white:     #282a36;
+  --bg-body:      #282a36;
+  --text:         #f8f8f2;
+  --text-muted:   #6272a4;
+  --text-light:   #6272a4;
+  --tertiary:     #ff79c6;
+  --electric:     #f1fa8c;
+  --border:       #44475a;
+  --shadow-sm:    4px 4px 0px #44475a;
+  --shadow-md:    8px 8px 0px #bd93f9;
+  --shadow-lg:    12px 12px 0px #ff79c6;
+  --nav-btn-text: #282a36;
+}
+
+/* ── Retro Synthwave ── */
+[data-theme='retro'] {
+  --primary:      #ff007f;
+  --primary-dark: #cc0066;
+  --primary-mid:  #ff66b2;
+  --secondary:    #00ffff;
+  --accent:       #ffff00;
+  --bg-hero:      #1a0033;
+  --bg-dark:      #0d001a;
+  --bg-subtle:    #2a004d;
+  --bg-white:     #1a0033;
+  --bg-body:      #1a0033;
+  --text:         #ffffff;
+  --text-muted:   #ffb3d9;
+  --text-light:   #cc99ff;
+  --tertiary:     #ff9900;
+  --electric:     #00ffcc;
+  --border:       #ff007f;
+  --shadow-sm:    4px 4px 0px #ff007f;
+  --shadow-md:    8px 8px 0px #00ffff;
+  --shadow-lg:    12px 12px 0px #ffff00;
+  --nav-btn-text: #0d001a;
+}
+
+/* ── Pac-Man ── */
+[data-theme='pacman'] {
+  --font-primary: 'Press Start 2P', system-ui;
+  --primary:      #ffff00;
+  --primary-dark: #cccc00;
+  --primary-mid:  #ffb8ae;
+  --secondary:    #ff0000;
+  --accent:       #00ffff;
+  --bg-hero:      #000000;
+  --bg-dark:      #000000;
+  --bg-subtle:    #111111;
+  --bg-white:     #000000;
+  --bg-body:      #000000;
+  --text:         #ffffff;
+  --text-muted:   #aaaaaa;
+  --text-light:   #555555;
+  --tertiary:     #ffb8ae;
+  --electric:     #ffb8ff;
+  --border:       #0000ff;
+  --shadow-sm:    4px 4px 0px #0000ff;
+  --shadow-md:    8px 8px 0px #ffff00;
+  --shadow-lg:    12px 12px 0px #ff0000;
+  --nav-btn-text: #000000;
+}
+
+/* ── Minecraft ── */
+[data-theme='minecraft'] {
+  --font-primary: 'Silkscreen', cursive;
+  --primary:      #5a8f30;
+  --primary-dark: #3a5c1f;
+  --primary-mid:  #7ba554;
+  --secondary:    #744c29;
+  --accent:       #969696;
+  --bg-hero:      #866043;
+  --bg-dark:      #513a29;
+  --bg-subtle:    #9e714f;
+  --bg-white:     #866043;
+  --bg-body:      #866043;
+  --text:         #ffffff;
+  --text-muted:   #cccccc;
+  --text-light:   #999999;
+  --tertiary:     #555555;
+  --electric:     #5a8f30;
+  --border:       #3a291d;
+  --shadow-sm:    4px 4px 0px #3a291d;
+  --shadow-md:    8px 8px 0px #5a8f30;
+  --shadow-lg:    12px 12px 0px #744c29;
+  --nav-btn-text: #ffffff;
+}
+
+/* ── Matrix ── */
+[data-theme='matrix'] {
+  --font-primary: 'VT323', monospace;
+  --primary:      #00ff00;
+  --primary-dark: #009900;
+  --primary-mid:  #33ff33;
+  --secondary:    #00cc00;
+  --accent:       #00ff00;
+  --bg-hero:      #000000;
+  --bg-dark:      #000000;
+  --bg-subtle:    #0a1f0a;
+  --bg-white:     #000000;
+  --bg-body:      #000000;
+  --text:         #00ff00;
+  --text-muted:   #00cc00;
+  --text-light:   #009900;
+  --tertiary:     #00ff00;
+  --electric:     #00ff00;
+  --border:       #00ff00;
+  --shadow-sm:    4px 4px 0px #009900;
+  --shadow-md:    8px 8px 0px #00cc00;
+  --shadow-lg:    12px 12px 0px #00ff00;
+  --nav-btn-text: #000000;
+}
+
+/* ── Cyberpunk ── */
+[data-theme='cyberpunk'] {
+  --font-primary: 'Share Tech Mono', monospace;
+  --primary:      #fce205;
+  --primary-dark: #cca300;
+  --primary-mid:  #ffe633;
+  --secondary:    #00f0ff;
+  --accent:       #ff003c;
+  --bg-hero:      #121212;
+  --bg-dark:      #000000;
+  --bg-subtle:    #1f1f1f;
+  --bg-white:     #121212;
+  --bg-body:      #121212;
+  --text:         #fce205;
+  --text-muted:   #00f0ff;
+  --text-light:   #888888;
+  --tertiary:     #ff003c;
+  --electric:     #00f0ff;
+  --border:       #00f0ff;
+  --shadow-sm:    4px 4px 0px #00f0ff;
+  --shadow-md:    8px 8px 0px #ff003c;
+  --shadow-lg:    12px 12px 0px #fce205;
+  --nav-btn-text: #000000;
+}
+
 
 body {
   font-family: 'Inter', sans-serif;
@@ -152,7 +328,7 @@ body {
 .reveal-delay-3 { transition-delay: 0.3s; }
 
 /* ── Typography ──────────────────────────────────────── */
-h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; line-height: 1.15; }
+h1, h2, h3, h4 { font-family: var(--font-primary), sans-serif; line-height: 1.15; }
 
 /* ── Global Elements ─────────────────────────────────── */
 button { cursor: pointer; border: none; font-family: 'Inter', sans-serif; }
@@ -205,7 +381,7 @@ input::placeholder, textarea::placeholder {
   border-bottom-color: var(--border);
 }
 .navbar-logo {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-primary), sans-serif;
   font-weight: 900;
   font-size: 1.3rem;
   color: var(--text);

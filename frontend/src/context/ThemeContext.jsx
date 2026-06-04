@@ -12,16 +12,8 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem('giki-theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => {
-      if (prev === 'light') return 'dark';
-      if (prev === 'dark') return 'dusk';
-      return 'light';
-    });
-  };
-
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );

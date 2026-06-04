@@ -16,7 +16,7 @@ export const Card = ({ children, title, subtitle, footer, icon, style }) => (
       <div style={{ padding: '32px 32px 24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
         {icon && <div style={{ fontSize: '1.5rem', color: 'var(--primary)' }}>{icon}</div>}
         <div>
-          {title && <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', letterSpacing: '-0.02em' }}>{title}</h3>}
+          {title && <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-primary)', letterSpacing: '-0.02em' }}>{title}</h3>}
           {subtitle && <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '4px', fontWeight: 500 }}>{subtitle}</p>}
         </div>
       </div>
@@ -60,7 +60,7 @@ export const StatCard = ({ icon, label, value, color }) => (
     </div>
     <div style={{ zIndex: 1 }}>
       <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>{label}</p>
-      <p style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', letterSpacing: '-0.03em' }}>{value}</p>
+      <p style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-primary)', letterSpacing: '-0.03em' }}>{value}</p>
     </div>
     <div style={{ position: 'absolute', right: '-10px', bottom: '-10px', fontSize: '5rem', opacity: 0.03, color: color, zIndex: 0 }}>{icon}</div>
   </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Search, FileText, BookOpen, AlertTriangle, User, Sunset } from 'lucide-react';
 import api from '../services/api';
 import IconMapper from '../components/IconMapper';
 import ScrollReveal from '../components/ScrollReveal';
@@ -104,13 +105,13 @@ const GlobalSearch = ({ user, onSignIn }) => {
         {/* Search Header */}
         <ScrollReveal>
           <div style={{ marginBottom: '40px' }}>
-            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '24px' }}>
-              Search <span className="gradient-text">Everything</span> 🔍
+            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 900, marginBottom: '20px', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+              Search <span className="gradient-text">Everything</span> <Search size={48} color="var(--primary)" />
             </h1>
 
             <div className="search-filters">
               <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
-                <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.2rem' }}>🔍</span>
+                <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}><Search size={20} color="var(--text-muted)" /></div>
                 <input 
                   id="global-search-input"
                   ref={searchInputRef}
@@ -167,12 +168,8 @@ const GlobalSearch = ({ user, onSignIn }) => {
         </ScrollReveal>
 
         {error && (
-          <div style={{ 
-            background: 'rgba(185,28,28,0.1)', border: '2px solid rgba(185,28,28,0.4)', borderRadius: '12px', 
-            padding: '16px 24px', marginBottom: '32px', color: 'var(--accent, #B91C1C)', fontWeight: 600,
-            boxShadow: '4px 4px 0px rgba(185,28,28,0.3)'
-          }}>
-            ⚠️ {error}
+          <div style={{ padding: '12px 16px', background: '#FEE2E2', border: '2px solid #EF4444', borderRadius: '12px', color: '#B91C1C', fontWeight: 700, fontSize: '0.9rem', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AlertTriangle size={18} /> {error}
           </div>
         )}
 
@@ -184,8 +181,8 @@ const GlobalSearch = ({ user, onSignIn }) => {
             {/* Courses Results */}
             {results.courses.length > 0 && (
               <section>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  📚 Courses ({results.courses.length})
+                <h2 style={{ fontSize: '1.4rem', fontWeight: 900, marginBottom: '16px', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <BookOpen size={24} color="var(--primary)" /> Courses ({results.courses.length})
                 </h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                   {results.courses.map(course => (
@@ -216,8 +213,8 @@ const GlobalSearch = ({ user, onSignIn }) => {
             {/* Files Results */}
             {results.files.length > 0 && (
               <section>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  📄 Resources ({results.files.length})
+                <h2 style={{ fontSize: '1.4rem', fontWeight: 900, marginBottom: '16px', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <FileText size={24} color="var(--primary)" /> Resources ({results.files.length})
                 </h2>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
                   {results.files.map(file => (
@@ -232,7 +229,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                         <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>{file.category}</span>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{file.course_name}</span>
-                        {file.instructor_name && <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
+                        {file.instructor_name && <span style={{ padding: '3px 10px', background: 'var(--bg-subtle)', color: 'var(--primary)', border: '1px solid var(--primary)', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}><User size={12} /> {file.instructor_name}</span>}
                       </div>
                       
                       <div style={{ marginTop: 'auto', paddingTop: '12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -274,10 +271,10 @@ const GlobalSearch = ({ user, onSignIn }) => {
             )}
             
             {!query && !facultyId && !categoryId && (
-                <div style={{ padding: '80px 20px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🔦</div>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Search for anything...</h3>
-                    <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Type a course name, resource title, or course code to begin.</p>
+                <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--bg-white)', borderRadius: '24px', border: '2px solid var(--border)' }}>
+                  <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}><Sunset size={64} color="var(--text-muted)" /></div>
+                  <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Search for anything...</h3>
+                  <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Type a course name, resource title, or course code to begin.</p>
                 </div>
             )}
 

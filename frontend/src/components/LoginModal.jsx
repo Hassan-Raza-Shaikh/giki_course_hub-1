@@ -237,7 +237,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '1.4rem', boxShadow: '3px 3px 0px var(--text)',
             }}>📚</div>
-            <h2 style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '3px', color: 'var(--text)' }}>
+            <h2 style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'var(--font-primary)', marginBottom: '3px', color: 'var(--text)' }}>
               {tab === 'login' ? 'Welcome Back' : tab === 'signup-success' ? '🎉 Account Created!' : 'Create Account'}
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.83rem' }}>

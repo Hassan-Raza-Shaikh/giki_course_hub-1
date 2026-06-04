@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Flag, Rocket, AlertTriangle, Send } from 'lucide-react';
 import api from '../services/api';
 
 const ReportIssue = ({ user }) => {
@@ -35,8 +36,8 @@ const ReportIssue = ({ user }) => {
       
       <div className="page-container" style={{ maxWidth: '600px', position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.04em', marginBottom: '12px' }}>
-            🚩 Report an <span className="gradient-text">Issue</span>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, marginBottom: '8px', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+            <Flag size={36} color="var(--accent)" /> Report an <span className="gradient-text">Issue</span>
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto', lineHeight: 1.5 }}>
             Found a bug? UI looking weird? Let us know! Please report this issue so the developers can get on it—your reporting helps us improve the app experience!
@@ -49,7 +50,7 @@ const ReportIssue = ({ user }) => {
         }}>
           {success ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
-              <div style={{ fontSize: '5rem', marginBottom: '20px' }}>🚀</div>
+              <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}><Rocket size={80} color="var(--primary)" /></div>
               <h2 style={{ fontWeight: 900, fontSize: '2rem', marginBottom: '12px' }}>Thank You!</h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Your report has been received. Our team will look into it ASAP.</p>
               <p style={{ marginTop: '24px', fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 700 }}>Redirecting you home...</p>
@@ -57,8 +58,8 @@ const ReportIssue = ({ user }) => {
           ) : (
             <form onSubmit={handleSubmit}>
               {error && (
-              <div style={{ background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', padding: '14px', borderRadius: '12px', border: '2px solid rgba(185,28,28,0.4)', marginBottom: '24px', fontWeight: 700, fontSize: '0.9rem' }}>
-                  ⚠️ {error}
+                <div style={{ padding: '12px 16px', background: '#FEE2E2', border: '2px solid #EF4444', borderRadius: '12px', color: '#B91C1C', fontWeight: 700, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+                  <AlertTriangle size={18} /> {error}
                 </div>
               )}
 
@@ -69,11 +70,11 @@ const ReportIssue = ({ user }) => {
                   onChange={e => setFormData({...formData, type: e.target.value})}
                   style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '2px solid var(--text)', fontSize: '1rem', fontWeight: 600, outline: 'none', background: 'var(--bg-subtle)' }}
                 >
-                  <option value="ui">🎨 UI / Design Glitch</option>
-                  <option value="material">📚 Course Material Issue</option>
-                  <option value="bug">🐛 Functional Bug</option>
-                  <option value="feature">💡 Feature Request</option>
-                  <option value="other">❓ Other</option>
+                  <option value="ui">UI / Design Glitch</option>
+                  <option value="material">Course Material Issue</option>
+                  <option value="bug">Functional Bug</option>
+                  <option value="feature">Feature Request</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 
@@ -112,7 +113,7 @@ const ReportIssue = ({ user }) => {
                 onMouseDown={e => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}
                 onMouseUp={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0 var(--text)'; }}
               >
-                {loading ? 'Submitting...' : '🚀 Send Report'}
+                {loading ? 'Submitting...' : <><Send size={18} /> Send Report</>}
               </button>
             </form>
           )}

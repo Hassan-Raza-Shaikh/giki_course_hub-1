@@ -7,7 +7,7 @@ const LoadingSpinner = ({
   return (
     <div style={{ textAlign: 'center', padding: '80px 24px' }}>
       <div style={{ fontSize: '2.5rem', marginBottom: '20px' }}>⏳</div>
-      <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--primary)', marginBottom: '10px', fontFamily: 'Outfit' }}>
+      <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--primary)', marginBottom: '10px', fontFamily: 'var(--font-primary)' }}>
         {message}
       </div>
       {subMessage && (

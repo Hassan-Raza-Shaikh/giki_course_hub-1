@@ -597,13 +597,13 @@ const AdminPanel = ({ user }) => {
     { key: 'pending', label: `⏳ Pending (${stats?.pending_files ?? '…'})` },
     { key: 'reports', label: `🚩 Content Flags (${reportCounts.pending ?? 0})` },
     { key: 'issues',  label: `🛠️ Platform Issues (${issueCounts.open ?? 0})` },
-    { key: 'courses', label: '📚 Courses' },
-    { key: 'instructors', label: '🧑‍🏫 Instructors' },
-    { key: 'stats_detailed', label: '📈 Stats' },
-    { key: 'files',   label: '📁 All Files' },
-    { key: 'users',   label: `👥 Users (${stats?.total_users ?? '…'})` },
-    { key: 'admins',  label: `🛡️ Admins (${stats?.total_admins ?? '…'})` },
-    { key: 'logs',    label: '📋 Activity' },
+    { key: 'courses', label: <><BookOpen size={16} /> Courses</> },
+    { key: 'instructors', label: <><GraduationCap size={16} /> Instructors</> },
+    { key: 'stats_detailed', label: <><BarChart3 size={16} /> Stats</> },
+    { key: 'files',   label: <><Folder size={16} /> All Files</> },
+    { key: 'users',   label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Users size={16} /> Users ({stats?.total_users ?? '…'})</div> },
+    { key: 'admins',  label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Shield size={16} /> Admins ({stats?.total_admins ?? '…'})</div> },
+    { key: 'logs',    label: <><Activity size={16} /> Activity</> },
   ];
 
   const filteredAll = allFiles.filter(f =>
@@ -657,7 +657,7 @@ const AdminPanel = ({ user }) => {
       {resolveModal && (
         <div onClick={() => setResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
-            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}>🏁 Resolve Content Flag</h3>
+            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Flag size={24} color="var(--accent)" /> Resolve Content Flag</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Flagged file: <strong>{resolveModal.file_title}</strong>
             </p>
@@ -668,7 +668,7 @@ const AdminPanel = ({ user }) => {
               rows={3} style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
             />
 
-            <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>📌 Leave a note on this file <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(visible to all users)</span></label>
+            <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}><Pin size={14} /> Leave a note on this file <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(visible to all users)</span></label>
             <textarea value={resolveLeaveNote} onChange={e => setResolveLeaveNote(e.target.value)}
               placeholder="Optional: e.g. 'Question 3 contains an error — please ignore it.'"
               rows={3} style={{ width: '100%', border: '2px solid #FCD34D', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
@@ -680,7 +680,7 @@ const AdminPanel = ({ user }) => {
             </label>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
               <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>✅ Confirm Resolve</button>
+              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
             </div>
           </div>
         </div>
@@ -690,7 +690,7 @@ const AdminPanel = ({ user }) => {
       {issueResolveModal && (
         <div onClick={() => setIssueResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
-            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}>✅ Resolve Platform Issue</h3>
+            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><CheckCircle size={24} color="#10B981" /> Resolve Platform Issue</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.9rem' }}>
               <strong>{issueResolveModal.title}</strong>
             </p>
@@ -704,7 +704,7 @@ const AdminPanel = ({ user }) => {
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
               <button onClick={() => setIssueResolveModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>✅ Mark Resolved</button>
+              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
             </div>
           </div>
         </div>
@@ -727,7 +727,7 @@ const AdminPanel = ({ user }) => {
       {editFileModal && (
         <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
-            <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>✏️ Edit File Details</h3>
+            <h3 style={{ fontWeight: 900, marginBottom: '12px' }}><Edit3 size={24} /> Edit File Details</h3>
             
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>File Title</label>
@@ -800,7 +800,7 @@ const AdminPanel = ({ user }) => {
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
               <div>
-                <h3 style={{ fontWeight: 900, fontSize: '1.4rem' }}>🔗 Cross-Link File</h3>
+                <h3 style={{ fontWeight: 900, fontSize: '1.4rem' }}><Link size={24} /> Cross-Link File</h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
                   Make <strong>"{linkModal.title}"</strong> available in other courses without re-uploading.
                 </p>
@@ -881,7 +881,7 @@ const AdminPanel = ({ user }) => {
       {noteModal && (
         <div onClick={() => setNoteModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
-            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}>📌 Admin Note</h3>
+            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Pin size={24} /> Admin Note</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               File: <strong>{noteModal.title}</strong><br/>
               <span style={{ fontSize: '0.8rem' }}>This note will appear on the file card for all users.</span>
@@ -909,7 +909,7 @@ const AdminPanel = ({ user }) => {
         {/* Header */}
         <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'Outfit' }}>
+            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)' }}>
               Admin <span className="gradient-text">Panel</span>
             </h1>
             <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.9rem' }}>Command center for GIKI Hub.</p>
@@ -923,10 +923,10 @@ const AdminPanel = ({ user }) => {
         {stats && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '32px' }}>
             {[
-              { label: 'Pending',   value: stats.pending_files,  emoji: '⏳', accent: '#F59E0B', key: 'pending' },
-              { label: 'Flags',     value: reportCounts.pending ?? 0, emoji: '🚩', accent: '#DC2626', key: 'reports' },
-              { label: 'Issues',    value: issueCounts.open ?? 0, emoji: '🛠️', accent: '#6366F1', key: 'issues' },
-              { label: 'Admins',    value: stats.total_admins,   emoji: '🛡️', accent: '#8B5CF6', key: 'admins' },
+              { label: 'Pending',   value: stats.pending_files,  emoji: <Clock size={32} />, accent: '#F59E0B', key: 'pending' },
+              { label: 'Flags',     value: reportCounts.pending ?? 0, emoji: <Flag size={32} />, accent: '#DC2626', key: 'reports' },
+              { label: 'Issues',    value: issueCounts.open ?? 0, emoji: <Wrench size={32} />, accent: '#6366F1', key: 'issues' },
+              { label: 'Admins',    value: stats.total_admins,   emoji: <Shield size={32} />, accent: '#8B5CF6', key: 'admins' },
             ].map(s => (
               <div 
                 key={s.label} 
@@ -941,7 +941,7 @@ const AdminPanel = ({ user }) => {
                 onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
               >
                 <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{s.emoji}</div>
-                <div style={{ fontSize: '2.2rem', fontWeight: 950, color: 'var(--text)', fontFamily: 'Outfit' }}>{s.value}</div>
+                <div style={{ fontSize: '2.2rem', fontWeight: 950, color: 'var(--text)', fontFamily: 'var(--font-primary)' }}>{s.value}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
               </div>
             ))}
@@ -1018,7 +1018,7 @@ const AdminPanel = ({ user }) => {
             )}
             <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
               {loading ? <LoadingRow /> : pending.length === 0 ? (
-                <EmptyRow icon="🎉" msg="No files pending review — all caught up!" />
+                <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg="No files pending review — all caught up!" />
               ) : pending.map(f => (
                 <div key={f.file_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--border)', background: selectedPending.has(f.file_id) ? '#F9FAFB' : 'transparent' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -1045,9 +1045,9 @@ const AdminPanel = ({ user }) => {
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 Preview</a>
-                    <button onClick={() => openEditFile(f)} style={{ ...btnStyle('var(--text)'), flex: 1 }}>✏️ Edit</button>
-                    <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}>✅ Approve</button>
-                    <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>❌ Reject</button>
+                    <button onClick={() => openEditFile(f)} style={{ ...btnStyle('var(--text)'), flex: 1 }}><Edit3 size={14} /> Edit</button>
+                    <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><CheckCircle size={14} /> Approve</button>
+                    <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}><XCircle size={14} /> Reject</button>
                   </div>
                 </div>
               ))}
@@ -1059,7 +1059,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'reports' && (
           <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
             {loading ? <LoadingRow /> : reports.length === 0 ? (
-              <EmptyRow icon="🛡️" msg="No active reports. The platform is clean!" />
+              <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No active reports. The platform is clean!" />
             ) : reports.map(r => (
               <div key={r.report_id} style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
                 <div>
@@ -1073,16 +1073,16 @@ const AdminPanel = ({ user }) => {
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}>👁 View File</a>
-                  <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}>🏁 Resolve</button>
-                  <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}>💤 Dismiss</button>
+                  <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><Flag size={14} /> Resolve</button>
+                  <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}><Zzz size={14} /> Dismiss</button>
                 </div>
                 
                 <div style={{ marginTop: '4px', paddingTop: '16px', borderTop: '1px dashed var(--border)' }}>
                   <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quick File Actions</div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <button onClick={() => openLinkModal({ file_id: r.file_id, title: r.file_title, course_code: r.course_code })} style={btnStyle('#8B5CF6')}>🔗 Link</button>
-                    <button onClick={() => openEditFile({ file_id: r.file_id, title: r.file_title, course_code: r.course_code, category_id: r.category_id, instructor_id: r.instructor_id, status: r.file_status })} style={btnStyle('var(--text)')}>✏️ Edit</button>
-                    <button onClick={() => openNoteModal({ file_id: r.file_id, title: r.file_title, admin_note: r.file_admin_note })} style={{ ...btnStyle(r.file_admin_note ? '#D97706' : '#9CA3AF') }}>📌 {r.file_admin_note ? 'Edit Note' : 'Add Note'}</button>
+                    <button onClick={() => openLinkModal({ file_id: r.file_id, title: r.file_title, course_code: r.course_code })} style={btnStyle('#8B5CF6')}><Link size={14} /> Link</button>
+                    <button onClick={() => openEditFile({ file_id: r.file_id, title: r.file_title, course_code: r.course_code, category_id: r.category_id, instructor_id: r.instructor_id, status: r.file_status })} style={btnStyle('var(--text)')}><Edit3 size={14} /> Edit</button>
+                    <button onClick={() => openNoteModal({ file_id: r.file_id, title: r.file_title, admin_note: r.file_admin_note })} style={{ ...btnStyle(r.file_admin_note ? '#D97706' : '#9CA3AF') }}><Pin size={14} /> {r.file_admin_note ? 'Edit Note' : 'Add Note'}</button>
                     <button onClick={() => deleteFile(r.file_id, r.file_title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
                   </div>
                 </div>
@@ -1095,7 +1095,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'issues' && (
           <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
             {loading ? <LoadingRow /> : issues.length === 0 ? (
-              <EmptyRow icon="✨" msg="No open issues reported. Everything is running smoothly!" />
+              <EmptyRow icon={<Sparkles size={48} color="var(--primary)" />} msg="No open issues reported. Everything is running smoothly!" />
             ) : issues.map(i => (
               <div key={i.issue_id} style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
                 <div>
@@ -1114,7 +1114,7 @@ const AdminPanel = ({ user }) => {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  <button onClick={() => openIssueResolveModal(i)} style={{ ...btnStyle('#10B981'), flex: 1 }}>✅ Mark Resolved</button>
+                  <button onClick={() => openIssueResolveModal(i)} style={{ ...btnStyle('#10B981'), flex: 1 }}><CheckCircle size={16} /> Mark Resolved</button>
                   <button onClick={() => deleteIssue(i.issue_id, i.title)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>🗑 Delete</button>
                 </div>
               </div>
@@ -1127,8 +1127,8 @@ const AdminPanel = ({ user }) => {
           <div>
             {/* Course Form */}
             <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
-              <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'Outfit' }}>
-                {editingCourse ? '✏️ Edit Course' : '📚 Add New Course'}
+              <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'var(--font-primary)' }}>
+                {editingCourse ? '<Edit3 size={14} /> Edit Course' : '📚 Add New Course'}
                 {editingCourse && <button type="button" onClick={() => {
                   setEditingCourse(null);
                   setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });
@@ -1139,7 +1139,7 @@ const AdminPanel = ({ user }) => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 800, fontSize: '0.8rem', marginBottom: '6px', textTransform: 'uppercase' }}>
-                    Course Name * {isExistingCode && <span style={{ color: 'var(--primary)', textTransform: 'none', marginLeft: '5px', background: 'var(--bg-subtle)', padding: '2px 6px', borderRadius: '4px' }}>🔗 Shared</span>}
+                    Course Name * {isExistingCode && <span style={{ color: 'var(--primary)', textTransform: 'none', marginLeft: '5px', background: 'var(--bg-subtle)', padding: '2px 6px', borderRadius: '4px' }}><Link size={10} /> Shared</span>}
                   </label>
                   <input
                     value={courseForm.name}
@@ -1205,7 +1205,7 @@ const AdminPanel = ({ user }) => {
                   background: 'rgba(124,58,237,0.07)', border: '2px solid var(--primary)',
                   borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '10px',
                 }}>
-                  <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>ℹ️</span>
+                  <span style={{ fontSize: '1.1rem', flexShrink: 0 }}><Info size={16} /></span>
                   <div style={{ fontSize: '0.83rem', lineHeight: 1.5, color: 'var(--text)' }}>
                     <strong>{courseForm.code}</strong> already exists in <strong>{existingProgramIds.length} program{existingProgramIds.length !== 1 ? 's' : ''}</strong>.
                     {' '}Name is locked to keep resources synced across programs.
@@ -1223,7 +1223,7 @@ const AdminPanel = ({ user }) => {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                     <div>
                       <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>
-                        🏫 {bulkCourseMode ? 'Multi-Program Mode' : 'Single Program Mode'}
+                        <GraduationCap size={16} /> {bulkCourseMode ? 'Multi-Program Mode' : 'Single Program Mode'}
                       </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>
                         {bulkCourseMode
@@ -1335,8 +1335,8 @@ const AdminPanel = ({ user }) => {
                 {editingCourse
                   ? 'Update Course Details'
                   : bulkCourseMode
-                    ? `➕ Add to ${selectedPrograms.length || '…'} Program${selectedPrograms.length !== 1 ? 's' : ''}`
-                    : '➕ Create Course'}
+                    ? `<Plus size={16} /> Add to ${selectedPrograms.length || '…'} Program${selectedPrograms.length !== 1 ? 's' : ''}`
+                    : '<Plus size={16} /> Create Course'}
               </button>
             </form>
 
@@ -1356,10 +1356,10 @@ const AdminPanel = ({ user }) => {
             <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
               {loading ? <LoadingRow /> : courses.map(c => (
                 <div key={c.course_id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '1.5rem' }}>{c.icon || '📘'}</span>
+                  <span style={{ fontSize: '1.5rem' }}><IconMapper emoji={c.icon} size={28} /></span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 800 }}>{c.name} <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>({c.code})</span></div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.faculty_name} · {c.program_name} · Year {c.year} Sem {c.semester} {c.is_lab && '· 🔬 Lab'}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.faculty_name} · {c.program_name} · Year {c.year} Sem {c.semester} {c.is_lab && '· <FlaskConical size={12} /> Lab'}</div>
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button onClick={() => editCourse(c)} style={btnStyle('#6366F1')}>Edit</button>
@@ -1392,7 +1392,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'instructors' && (
           <div>
             <form onSubmit={saveInstructor} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
-              <h3 style={{ fontWeight: 900, marginBottom: '20px' }}>🧑‍🏫 Add New Instructor</h3>
+              <h3 style={{ fontWeight: 900, marginBottom: '20px' }}><GraduationCap size={24} /> Add New Instructor</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
                   <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Full Name *</label>
@@ -1433,7 +1433,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'stats_detailed' && detailedStats && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
             <div style={cardStyle}>
-              <h3 style={cardTitleStyle}>🔥 Most Downloaded</h3>
+              <h3 style={cardTitleStyle}><Flame size={20} color="var(--accent)" /> Most Downloaded</h3>
               {detailedStats.most_downloaded.map((f, i) => (
                 <div key={f.file_id} style={statRowStyle}>
                   <span style={statBadgeStyle}>{i+1}</span>
@@ -1446,7 +1446,7 @@ const AdminPanel = ({ user }) => {
               ))}
             </div>
             <div style={cardStyle}>
-              <h3 style={cardTitleStyle}>💎 Most Bookmarked</h3>
+              <h3 style={cardTitleStyle}><Gem size={20} color="var(--electric)" /> Most Bookmarked</h3>
               {detailedStats.most_bookmarked.map((f, i) => (
                 <div key={f.file_id} style={statRowStyle}>
                   <span style={statBadgeStyle}>{i+1}</span>
@@ -1454,12 +1454,12 @@ const AdminPanel = ({ user }) => {
                     <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{f.title}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{f.course_code}</div>
                   </div>
-                  <div style={{ fontWeight: 900, color: '#EC4899' }}>{f.count} 🔖</div>
+                  <div style={{ fontWeight: 900, color: '#EC4899' }}>{f.count} <Bookmark size={14} /></div>
                 </div>
               ))}
             </div>
             <div style={cardStyle}>
-              <h3 style={cardTitleStyle}>📂 Top Courses (by Files)</h3>
+              <h3 style={cardTitleStyle}><Folder size={20} /> Top Courses</h3>
               {detailedStats.per_course.map((c, i) => (
                 <div key={c.course_code} style={statRowStyle}>
                   <div style={{ flex: 1, fontWeight: 700 }}>{c.course_code}</div>
@@ -1468,7 +1468,7 @@ const AdminPanel = ({ user }) => {
               ))}
             </div>
             <div style={cardStyle}>
-              <h3 style={cardTitleStyle}>📊 Content Breakdown</h3>
+              <h3 style={cardTitleStyle}><PieChart size={20} /> Content Breakdown</h3>
               {detailedStats.per_category.map((c) => (
                 <div key={c.category} style={statRowStyle}>
                   <div style={{ flex: 1, fontWeight: 700 }}>{c.category}</div>
@@ -1496,9 +1496,9 @@ const AdminPanel = ({ user }) => {
                 style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
               >
                 <option value="">All Statuses</option>
-                <option value="approved">✅ Approved</option>
-                <option value="pending">⏳ Pending</option>
-                <option value="rejected">❌ Rejected</option>
+                <option value="approved"><CheckCircle size={14} /> Approved</option>
+                <option value="pending">Pending</option>
+                <option value="rejected"><XCircle size={14} /> Rejected</option>
               </select>
               <select
                 value={filesCategoryFilter}
@@ -1516,7 +1516,7 @@ const AdminPanel = ({ user }) => {
             </div>
 
             <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
-              {loading ? <LoadingRow /> : filteredAll.length === 0 ? <EmptyRow icon="📂" msg="No files found." /> : filteredAll.map(f => (
+              {loading ? <LoadingRow /> : filteredAll.length === 0 ? <EmptyRow icon={<Folder size={48} color="var(--primary)" />} msg="No files found." /> : filteredAll.map(f => (
                 <div key={f.file_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 700, color: 'var(--primary)' }}>{f.title}</div>
@@ -1529,9 +1529,9 @@ const AdminPanel = ({ user }) => {
                   </span>
                   <div className="admin-file-actions">
                     <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 View</a>
-                    <button onClick={() => openLinkModal(f)} style={btnStyle('#8B5CF6')}>🔗 Link</button>
-                    <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}>✏️ Edit</button>
-                    <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}>📌 Note</button>
+                    <button onClick={() => openLinkModal(f)} style={btnStyle('#8B5CF6')}><Link size={14} /> Link</button>
+                    <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}><Edit3 size={14} /> Edit</button>
+                    <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}><Pin size={14} /> Note</button>
                     <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
                   </div>
                 </div>
@@ -1560,13 +1560,13 @@ const AdminPanel = ({ user }) => {
         {/* ── Users tab ── */}
         {tab === 'users' && (
           <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
-            {loading ? <LoadingRow /> : users.length === 0 ? <EmptyRow icon="👥" msg="No users yet." /> : users.map(u => (
+            {loading ? <LoadingRow /> : users.length === 0 ? <EmptyRow icon={<Users size={48} color="var(--primary)" />} msg="No users yet." /> : users.map(u => (
               <div key={u.user_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>
                   {(u.username || u.email || '?')[0].toUpperCase()}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700 }}>{u.username} {u.is_admin && <span style={{ marginLeft: '6px', fontSize: '0.7rem', background: '#EDE9FE', color: '#5B21B6', padding: '2px 8px', borderRadius: '100px', fontWeight: 700 }}>🛡️ admin</span>}</div>
+                  <div style={{ fontWeight: 700 }}>{u.username} {u.is_admin && <span style={{ marginLeft: '6px', fontSize: '0.7rem', background: '#EDE9FE', color: '#5B21B6', padding: '2px 8px', borderRadius: '100px', fontWeight: 700 }}><Shield size={10} /> admin</span>}</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{u.email} · joined {fmtDate(u.created_at)}</div>
                 </div>
               </div>
@@ -1578,7 +1578,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'admins' && (
           <div>
             <form onSubmit={grantAdmin} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '24px', marginBottom: '20px' }}>
-              <h3 style={{ fontWeight: 800, marginBottom: '16px' }}>🛡️ Grant Admin Access</h3>
+              <h3 style={{ fontWeight: 800, marginBottom: '16px' }}><Shield size={24} /> Grant Admin Access</h3>
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <input value={newAdminEmail} onChange={e => setNewAdminEmail(e.target.value)} type="email" placeholder="user@example.com" required style={{ flex: 2, minWidth: '200px', padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '8px', fontSize: '0.9rem' }} />
                 <input value={newAdminNotes} onChange={e => setNewAdminNotes(e.target.value)} placeholder="Role / notes (optional)" style={{ flex: 3, minWidth: '160px', padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '8px', fontSize: '0.9rem' }} />
@@ -1586,7 +1586,7 @@ const AdminPanel = ({ user }) => {
               </div>
             </form>
             <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
-              {loading ? <LoadingRow /> : admins.length === 0 ? <EmptyRow icon="🛡️" msg="No admins configured yet." /> : admins.map(a => (
+              {loading ? <LoadingRow /> : admins.length === 0 ? <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No admins configured yet." /> : admins.map(a => (
                 <div key={a.email} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 700 }}>{a.email}</div>
@@ -1602,7 +1602,7 @@ const AdminPanel = ({ user }) => {
         {/* ── Activity Log tab ── */}
         {tab === 'logs' && (
           <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
-            {loading ? <LoadingRow /> : logs.length === 0 ? <EmptyRow icon="📋" msg="No admin activity yet." /> : logs.map(l => (
+            {loading ? <LoadingRow /> : logs.length === 0 ? <EmptyRow icon={<Activity size={48} color="var(--primary)" />} msg="No admin activity yet." /> : logs.map(l => (
               <div key={l.log_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>{ACTION_ICONS[l.action] || '•'}</span>
                 <div style={{ flex: 1 }}>

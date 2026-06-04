@@ -79,8 +79,8 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
         {/* Background Decorative Elements */}
         <div className="hero-glow" style={{ width: 600, height: 600, background: 'linear-gradient(135deg, rgba(59,130,246,0.1), transparent)', top: -200, left: -200, borderRadius: '50%', filter: 'blur(80px)' }} />
         <div className="hero-glow" style={{ width: 500, height: 500, background: 'linear-gradient(135deg, rgba(255,94,0,0.08), transparent)', bottom: -150, right: -150, borderRadius: '50%', filter: 'blur(80px)' }} />
-        <div style={{ position: 'absolute', top: '15%', right: '10%', fontSize: '4rem', opacity: 0.05, transform: 'rotate(15deg)', fontWeight: 900, fontFamily: 'Outfit' }}>GIKI</div>
-        <div style={{ position: 'absolute', bottom: '15%', left: '10%', fontSize: '4rem', opacity: 0.05, transform: 'rotate(-15deg)', fontWeight: 900, fontFamily: 'Outfit' }}>HUB</div>
+        <div style={{ position: 'absolute', top: '15%', right: '10%', fontSize: '4rem', opacity: 0.05, transform: 'rotate(15deg)', fontWeight: 900, fontFamily: 'var(--font-primary)' }}>GIKI</div>
+        <div style={{ position: 'absolute', bottom: '15%', left: '10%', fontSize: '4rem', opacity: 0.05, transform: 'rotate(-15deg)', fontWeight: 900, fontFamily: 'var(--font-primary)' }}>HUB</div>
 
         <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
           <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
@@ -104,7 +104,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
               letterSpacing: '-0.05em',
               lineHeight: 0.9,
               marginBottom: '32px',
-              fontFamily: 'Outfit, sans-serif',
+              fontFamily: 'var(--font-primary)',
               textShadow: '0 10px 30px rgba(0,0,0,0.05)'
             }}>
               GIKI<br /><span className="gradient-text">COURSE HUB</span>
@@ -283,7 +283,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                   >
                     <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', color: 'var(--primary)' }}>{s.icon}</div>
                     <div style={{
-                      fontSize: '2.4rem', fontWeight: 900, fontFamily: 'Outfit', letterSpacing: '-0.04em',
+                      fontSize: '2.4rem', fontWeight: 900, fontFamily: 'var(--font-primary)', letterSpacing: '-0.04em',
                       color: 'var(--text)',
                       marginBottom: '4px'
                     }}>{s.val}</div>
@@ -298,7 +298,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
 
       {/* ── Footer ───────────────────────────────────────── */}
       <footer style={{ padding: '60px 24px', background: 'var(--bg-white)', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
-        <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.4rem', marginBottom: '16px' }}>
+        <div style={{ fontFamily: 'var(--font-primary)', fontWeight: 900, fontSize: '1.4rem', marginBottom: '16px' }}>
           <span style={{ color: 'var(--text)' }}>GIKI </span>
           <span style={{ color: 'var(--primary)' }}>COURSE HUB</span>
         </div>

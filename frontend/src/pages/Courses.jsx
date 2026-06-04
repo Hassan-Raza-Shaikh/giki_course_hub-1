@@ -89,7 +89,7 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
             width: 32, height: 32, borderRadius: '8px',
             background: 'var(--accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'Outfit', fontWeight: 900, color: 'var(--text)', fontSize: '0.85rem',
+            fontFamily: 'var(--font-primary)', fontWeight: 900, color: 'var(--text)', fontSize: '0.85rem',
             border: '2px solid var(--text)'
           }}>
             Y{year}
@@ -162,7 +162,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
         onMouseOut={e => { if (!open) e.currentTarget.style.background = 'var(--bg-white)'; }}
       >
         <div>
-          <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem', fontFamily: 'Outfit' }}>
+          <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem', fontFamily: 'var(--font-primary)' }}>
             {program.name}
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '3px' }}>
@@ -249,7 +249,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
             <div style={{ display: 'flex', alignItems: 'center' }}><IconMapper emoji={faculty.icon} size={28} /></div>
           </div>
           <div>
-            <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.25rem', color: open ? 'white' : 'var(--primary)' }}>
+            <div style={{ fontFamily: 'var(--font-primary)', fontWeight: 900, fontSize: '1.25rem', color: open ? 'white' : 'var(--primary)' }}>
               {faculty.name}
             </div>
             <div style={{ fontSize: '0.85rem', marginTop: '4px', color: open ? 'rgba(255,255,255,0.65)' : 'var(--text-muted)' }}>
@@ -421,7 +421,7 @@ const Courses = () => {
       {searchResults && (
         <div className="page-container" style={{ padding: '40px 24px 0' }}>
           <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-            <div style={{ padding: '20px 28px', borderBottom: '2px solid var(--text)', fontWeight: 800, fontFamily: 'Outfit', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ padding: '20px 28px', borderBottom: '2px solid var(--text)', fontWeight: 800, fontFamily: 'var(--font-primary)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Search size={18} /> {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{search}"
             </div>
             {searchResults.length === 0 ? (

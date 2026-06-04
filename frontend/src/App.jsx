@@ -102,7 +102,7 @@ const App = () => {
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-subtle)', padding: '24px' }}>
         <div style={{ textAlign: 'center', maxWidth: '400px', animation: 'fadeIn 0.5s ease' }}>
           <div style={{ fontSize: '4.5rem', animation: 'float 2s ease-in-out infinite', marginBottom: '28px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.1))' }}>📚</div>
-          <h2 style={{ fontWeight: 900, color: 'var(--primary)', fontFamily: 'Outfit', fontSize: '1.6rem', marginBottom: '14px', letterSpacing: '-0.02em' }}>Initializing GIKI Hub...</h2>
+          <h2 style={{ fontWeight: 900, color: 'var(--primary)', fontFamily: 'var(--font-primary)', fontSize: '1.6rem', marginBottom: '14px', letterSpacing: '-0.02em' }}>Initializing GIKI Hub...</h2>
           <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, fontSize: '0.95rem' }}>
             Waking up the server. This may take up to 30 seconds if the site hasn't been visited in a while.
           </p>

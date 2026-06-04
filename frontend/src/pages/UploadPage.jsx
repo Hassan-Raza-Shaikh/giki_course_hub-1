@@ -41,7 +41,7 @@ const UploadPage = ({ user, onSignIn }) => {
   return (
     <div style={{ minHeight: '100vh', paddingTop: '70px', background: 'var(--bg-main)' }}>
       <div className="page-container" style={{ padding: '40px 24px', maxWidth: '1000px' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 900, fontFamily: 'Outfit', color: 'var(--text)', marginBottom: '8px' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 900, fontFamily: 'var(--font-primary)', color: 'var(--text)', marginBottom: '8px' }}>
           Global Upload Center
         </h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '32px' }}>

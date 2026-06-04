@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
+import { BookOpen } from 'lucide-react';
 import { auth, googleProvider } from '../services/firebase';
 import api from '../services/api';
 
@@ -74,9 +75,9 @@ const Login = () => {
         boxShadow: 'var(--shadow-lg)',
         border: '2px solid var(--border)'
       }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📚</div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>Welcome Back</h1>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}><BookOpen size={48} strokeWidth={1.5} color="var(--primary)" /></div>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-primary)' }}>Welcome Back</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginTop: '4px', fontWeight: 500 }}>Access your GIKI Student Hub</p>
         </div>
 

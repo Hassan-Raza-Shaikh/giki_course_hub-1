@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -9,6 +9,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   const [menuOpen, setMenuOpen]   = useState(false);
   const [stats, setStats]         = useState(null);
   const [isAdmin, setIsAdmin]     = useState(false);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const themeMenuRef = useRef(null);
   const navigate = useNavigate();
   const menuRef  = useRef(null);
 
@@ -23,6 +25,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false);
+      }
+      if (themeMenuRef.current && !themeMenuRef.current.contains(e.target)) {
+        setThemeMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -53,7 +58,22 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     }
   }, [user]);
 
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+
+  const themes = [
+    { id: 'light', name: 'Light', icon: <Sun size={14} /> },
+    { id: 'dark', name: 'Ember', icon: <Moon size={14} /> },
+    { id: 'nord', name: 'Nord', icon: <Cloud size={14} /> },
+    { id: 'solarized', name: 'Solarized', icon: <SunDim size={14} /> },
+    { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
+    { id: 'retro', name: 'Retro', icon: <Gamepad2 size={14} /> },
+    { id: 'pacman', name: 'Pac-Man', icon: <Ghost size={14} /> },
+    { id: 'minecraft', name: 'Minecraft', icon: <Box size={14} /> },
+    { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
+    { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> }
+  ];
+
+  const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -71,16 +91,50 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         {/* Creative Theme Toggle */}
-        <button
-          className="btn-nav"
-          onClick={toggleTheme}
-          style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)' }}
-        >
-          <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
-            {theme === 'light' ? 'Light' : theme === 'dark' ? 'Ember' : 'Dusk'}
-          </span>
-          {theme === 'dark' ? <Moon size={16} strokeWidth={2.5} /> : theme === 'dusk' ? <Cloud size={16} strokeWidth={2.5} /> : <Sun size={16} strokeWidth={2.5} />}
-        </button>
+        <div ref={themeMenuRef} style={{ position: 'relative' }}>
+          <button
+            className="btn-nav"
+            onClick={() => setThemeMenuOpen(o => !o)}
+            style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', display: 'flex', gap: '8px', alignItems: 'center' }}
+          >
+            <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
+              {currentThemeObj.name}
+            </span>
+            {currentThemeObj.icon}
+          </button>
+
+          {themeMenuOpen && (
+            <div style={{
+              position: 'absolute', top: 'calc(100% + 12px)', right: 0,
+              background: 'var(--bg-white)', border: '2px solid var(--text)',
+              borderRadius: '16px', boxShadow: '5px 5px 0px var(--text)',
+              width: '180px', maxHeight: '350px', overflowY: 'auto',
+              zIndex: 9999, display: 'flex', flexDirection: 'column',
+              padding: '8px'
+            }}>
+              {themes.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => { setTheme(t.id); setThemeMenuOpen(false); }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    width: '100%', padding: '10px 12px',
+                    background: theme === t.id ? 'var(--bg-subtle)' : 'transparent',
+                    border: 'none', borderRadius: '8px',
+                    textAlign: 'left', cursor: 'pointer',
+                    color: 'var(--text)', fontWeight: 700, fontSize: '0.85rem',
+                    transition: 'all 0.15s'
+                  }}
+                  onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+                  onMouseOut={e => e.currentTarget.style.background = theme === t.id ? 'var(--bg-subtle)' : 'transparent'}
+                >
+                  <span style={{ color: 'var(--primary)' }}>{t.icon}</span>
+                  {t.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <button
           className="hide-mobile btn-nav"
