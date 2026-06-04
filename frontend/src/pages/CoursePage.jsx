@@ -5,6 +5,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import FileViewer from '../components/FileViewer';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const CATEGORY_ICONS = {
   'Outline':         '📋',
@@ -197,10 +198,7 @@ const CoursePage = ({ user, onSignIn }) => {
 
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70 }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '3rem', animation: 'float 2s ease-in-out infinite', marginBottom: 16 }}>📚</div>
-        <p style={{ color: 'var(--text-muted)', fontWeight: 600 }}>Loading course materials…</p>
-      </div>
+      <LoadingSpinner message="Loading course materials..." />
     </div>
   );
 

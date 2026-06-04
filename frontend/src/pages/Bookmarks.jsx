@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const CATEGORY_ICONS = {
   'Outline':     '📋',
@@ -65,9 +66,7 @@ const Bookmarks = ({ user, onSignIn }) => {
             </div>
           </ScrollReveal>
         ) : loading ? (
-          <div style={{ textAlign: 'center', padding: '80px', color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-            Loading your library…
-          </div>
+          <LoadingSpinner message="Loading your library..." />
         ) : bookmarks.length === 0 ? (
           <ScrollReveal delay="reveal-delay-1">
             <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>

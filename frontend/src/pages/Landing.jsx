@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const QUOTES = [
   '"Education is the most powerful weapon which you can use to change the world."',
@@ -183,13 +184,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
           </ScrollReveal>
 
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '40px 24px' }}>
-              <div style={{ fontSize: '2rem', marginBottom: '16px', animation: 'spin 2s linear infinite' }}>⏳</div>
-              <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '8px', fontFamily: 'Outfit' }}>
-                Fetching Resources...
-              </div>
-              <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
-            </div>
+            <LoadingSpinner message="Fetching Resources..." />
           ) : randomCourses.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 24px', color: 'var(--text-muted)' }}>
               No featured courses available at the moment.

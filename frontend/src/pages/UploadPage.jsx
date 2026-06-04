@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import BulkUploader from '../components/BulkUploader';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const UploadPage = ({ user, onSignIn }) => {
   const [categories, setCategories] = useState([]);
@@ -32,7 +33,7 @@ const UploadPage = ({ user, onSignIn }) => {
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70 }}>
-        <div className="loader"></div>
+        <LoadingSpinner message="Waking up server..." />
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 const GlobalSearch = ({ user, onSignIn }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -175,12 +176,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
         )}
 
         {loading ? (
-          <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '16px', animation: 'spin 2s linear infinite' }}>⏳</div>
-            <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--primary)' }}>Searching GIKI Hub...</div>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '6px' }}>The server is waking up — just a moment!</p>
-            <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
-          </div>
+          <LoadingSpinner message="Searching GIKI Hub..." />
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px', paddingBottom: '80px' }}>
             
