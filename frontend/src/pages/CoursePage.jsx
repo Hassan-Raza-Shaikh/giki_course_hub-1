@@ -6,18 +6,24 @@ import FileViewer from '../components/FileViewer';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import {
+  FileText, FileEdit, Presentation, HelpCircle,
+  ClipboardList, Archive, FlaskConical, Terminal,
+  ClipboardCheck, Library, FolderOpen, AlertTriangle,
+  Inbox, UploadCloud, CheckCircle, Flag, Download, Edit3, BookmarkPlus, BookmarkCheck, User, AlertCircle
+} from 'lucide-react';
 
 const CATEGORY_ICONS = {
-  'Outline':         '📋',
-  'Notes':           '📝',
-  'Slides':          '📊',
-  'Quizzes':         '📝',
-  'Assignments':     '📄',
-  'Past Papers':     '🗂️',
-  'Lab Manuals':     '🧪',
-  'Lab Tasks':       '⚗️',
-  'Lab Reports':     '📋',
-  'Reference':       '📚',
+  'Outline':         <FileText size={18} strokeWidth={1.5} />,
+  'Notes':           <FileEdit size={18} strokeWidth={1.5} />,
+  'Slides':          <Presentation size={18} strokeWidth={1.5} />,
+  'Quizzes':         <HelpCircle size={18} strokeWidth={1.5} />,
+  'Assignments':     <ClipboardList size={18} strokeWidth={1.5} />,
+  'Past Papers':     <Archive size={18} strokeWidth={1.5} />,
+  'Lab Manuals':     <FlaskConical size={18} strokeWidth={1.5} />,
+  'Lab Tasks':       <Terminal size={18} strokeWidth={1.5} />,
+  'Lab Reports':     <ClipboardCheck size={18} strokeWidth={1.5} />,
+  'Reference':       <Library size={18} strokeWidth={1.5} />,
 };
 
 const CoursePage = ({ user, onSignIn }) => {
@@ -377,7 +383,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {CATEGORY_ICONS[tab] || '📁'} {tab}
+                        {CATEGORY_ICONS[tab] || <FolderOpen size={18} strokeWidth={1.5} />} {tab}
                       </span>
                       {count > 0 && (
                         <span style={{
@@ -416,7 +422,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 width: '100%', transition: 'all 0.2s'
               }}
             >
-              📤 Upload File
+              <UploadCloud size={18} /> Upload File
             </button>
           </div>
 
@@ -433,7 +439,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 fontWeight: 900, marginBottom: '24px', justifyContent: 'center', alignItems: 'center', gap: '12px'
               }}
             >
-              📤 Upload Resource
+              <UploadCloud size={18} /> Upload Resource
             </button>
             
             {/* File List */}
@@ -441,8 +447,8 @@ const CoursePage = ({ user, onSignIn }) => {
           <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
             <div style={{ padding: '20px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit' }}>
-                  {CATEGORY_ICONS[activeTab] || '📁'} {activeTab}
+                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'Outfit', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {CATEGORY_ICONS[activeTab] || <FolderOpen size={22} />} {activeTab}
                 </h2>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
                   {currentFiles.length} {currentFiles.length === 1 ? 'resource' : 'resources'} available
@@ -465,10 +471,10 @@ const CoursePage = ({ user, onSignIn }) => {
                   onChange={e => setSortBy(e.target.value)}
                   style={{ padding: '8px 12px', borderRadius: '8px', border: '2px solid var(--border)', fontSize: '0.85rem', fontWeight: 700, outline: 'none', background: 'var(--bg-subtle)', cursor: 'pointer' }}
                 >
-                  <option value="name-asc">🔤 Sort by Name (A-Z)</option>
-                  <option value="name-desc">🔤 Sort by Name (Z-A)</option>
-                  <option value="date-desc">📅 Sort by Date (Newest)</option>
-                  <option value="date-asc">📅 Sort by Date (Oldest)</option>
+                  <option value="name-asc">Sort by Name (A-Z)</option>
+                  <option value="name-desc">Sort by Name (Z-A)</option>
+                  <option value="date-desc">Sort by Date (Newest)</option>
+                  <option value="date-asc">Sort by Date (Oldest)</option>
                 </select>
               </div>
             </div>
@@ -487,7 +493,7 @@ const CoursePage = ({ user, onSignIn }) => {
                       display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0,
                       marginTop: '2px'
                     }}>
-                      {CATEGORY_ICONS[file.category] || '📁'}
+                      {CATEGORY_ICONS[file.category] || <FolderOpen size={20} strokeWidth={1.5} />}
                     </div>
                     <div style={{ minWidth: 0 }}>
                       <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.05rem', wordBreak: 'break-word', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -497,7 +503,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         Contributed by <strong>{file.uploader || 'Anonymous'}</strong> · {file.date ? new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                         <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                           {file.file_size && <span style={{ background: 'var(--bg-white)', padding: '1px 6px', borderRadius: '4px', border: '1px solid var(--border)' }}>{(file.file_size / (1024 * 1024)).toFixed(2)} MB</span>}
-                          {file.instructor_name && <span style={{ color: 'var(--primary)', fontWeight: 700 }}>🧑‍🏫 {file.instructor_name}</span>}
+                          {file.instructor_name && <span style={{ color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}><User size={14} /> {file.instructor_name}</span>}
                         </div>
                       </div>
                       {file.admin_note && (
@@ -508,7 +514,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           color: 'var(--text)', lineHeight: 1.5,
                           display: 'flex', gap: '6px', alignItems: 'flex-start'
                         }}>
-                          <span style={{ flexShrink: 0 }}>📌</span>
+                          <span style={{ flexShrink: 0, marginTop: '2px' }}><AlertCircle size={14} /></span>
                           <span><strong>Admin note:</strong> {file.admin_note}</span>
                         </div>
                       )}
@@ -535,7 +541,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         onMouseOver={e => { e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '3px 3px 0 var(--text)'; }}
                         onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}
                       >
-                        ✏️ Edit
+                        <Edit3 size={14} /> Edit
                       </button>
                     )}
                     {/* Bookmark button */}
@@ -556,7 +562,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
                     >
-                      {bookmarks.has(file.file_id ?? file.id) ? '✓ Saved' : '+ Save'}
+                      {bookmarks.has(file.file_id ?? file.id) ? <><BookmarkCheck size={14} style={{ marginRight: '6px' }} /> Saved</> : <><BookmarkPlus size={14} style={{ marginRight: '6px' }} /> Save</>}
                     </button>
                     {/* Copy Link */}
                     <CopyLinkButton
@@ -583,7 +589,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
                         }}
                       >
-                        ⬇ Download
+                        <Download size={14} /> Download
                       </a>
                     )}
                     {/* Flag button */}
@@ -612,14 +618,14 @@ const CoursePage = ({ user, onSignIn }) => {
                       onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
                       onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; }}
                     >
-                      🚩 Flag
+                      <Flag size={14} /> Flag
                     </button>
                   </div>
                 </div>
               ))
             ) : (
               <div style={{ padding: '80px 32px', textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📭</div>
+                <div style={{ color: 'var(--text-light)', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}><Inbox size={48} strokeWidth={1.5} /></div>
                 <p style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1.1rem', marginBottom: '8px' }}>No materials yet</p>
                 <p style={{ color: 'var(--text-muted)' }}>Be the first to contribute {activeTab} for this course!</p>
               </div>
@@ -631,9 +637,8 @@ const CoursePage = ({ user, onSignIn }) => {
         <ScrollReveal>
           <div ref={uploadRef} style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
             <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '8px',
-                color: 'var(--text)' }}>
-                📤 Contribute Materials
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'Outfit', marginBottom: '8px', color: 'var(--text)', display: 'flex', alignItems: 'center' }}>
+                <UploadCloud size={22} style={{ marginRight: '8px' }} /> Contribute Materials
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
                 Share your notes, past papers, or slides with the GIKI community. {isAdmin ? 'Admin bulk upload unlocked (up to 1,000 files).' : 'You can upload up to 10 files at once.'}
@@ -677,7 +682,7 @@ const CoursePage = ({ user, onSignIn }) => {
     {editFileModal && (
       <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
         <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
-          <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>✏️ Edit File Details</h3>
+          <h3 style={{ fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}><Edit3 size={20} /> Edit File Details</h3>
           
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>File Title</label>
@@ -751,14 +756,14 @@ const CoursePage = ({ user, onSignIn }) => {
         <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '460px', maxHeight: '90dvh', overflowY: 'auto' }}>
           {reportSent ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
-              <div style={{ fontSize: '3rem', marginBottom: '12px' }}>✅</div>
+              <div style={{ color: 'var(--primary)', marginBottom: '12px', display: 'flex', justifyContent: 'center' }}><CheckCircle size={48} strokeWidth={1.5} /></div>
               <h3 style={{ fontWeight: 800, marginBottom: '8px' }}>Report submitted</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Thank you for helping keep the platform safe. An admin will review it.</p>
               <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
             </div>
           ) : (
             <>
-              <h3 style={{ fontWeight: 800, marginBottom: '6px' }}>🚩 Report File</h3>
+              <h3 style={{ fontWeight: 800, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}><Flag size={20} /> Report File</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '18px' }}>
                 Reporting: <strong>{reportModal.title}</strong>
               </p>

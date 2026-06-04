@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { Library, GraduationCap, Building2, Unlock, FolderOpen, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
 
 const QUOTES = [
   '"Education is the most powerful weapon which you can use to change the world."',
@@ -11,10 +12,10 @@ const QUOTES = [
 ];
 
 const STATS = [
-  { val: '923',  label: 'Total Courses', icon: '📚' },
-  { val: '50+',  label: 'Programs',      icon: '🎓' },
-  { val: '7',    label: 'Faculties',     icon: '🏛️' },
-  { val: '100%', label: 'Free & Open',   icon: '🔓' },
+  { val: '923',  label: 'Total Courses', icon: <Library size={32} /> },
+  { val: '50+',  label: 'Programs',      icon: <GraduationCap size={32} /> },
+  { val: '7',    label: 'Faculties',     icon: <Building2 size={32} /> },
+  { val: '100%', label: 'Free & Open',   icon: <Unlock size={32} /> },
 ];
 
 const Landing = ({ user, onSignIn, onSignOut }) => {
@@ -62,10 +63,10 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
   }, []);
 
   const statItems = [
-    { val: stats.courses,   label: 'Courses',   icon: '📚' },
-    { val: stats.faculties, label: 'Faculties', icon: '🏛️' },
-    { val: stats.programs,  label: 'Programs',  icon: '🎓' },
-    { val: stats.materials, label: 'Materials', icon: '📂' },
+    { val: stats.courses,   label: 'Courses',   icon: <Library size={32} /> },
+    { val: stats.faculties, label: 'Faculties', icon: <Building2 size={32} /> },
+    { val: stats.programs,  label: 'Programs',  icon: <GraduationCap size={32} /> },
+    { val: stats.materials, label: 'Materials', icon: <FolderOpen size={32} /> },
   ];
 
   return (
@@ -90,7 +91,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
               boxShadow: '4px 4px 0px var(--secondary)',
               maxWidth: '100%', boxSizing: 'border-box',
             }}>
-              <span style={{ color: 'var(--accent)', fontSize: '1.1rem', flexShrink: 0 }}>✦</span>
+              <span style={{ color: 'var(--accent)', flexShrink: 0, display: 'flex', alignItems: 'center' }}><Sparkles size={16} /></span>
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>GIK Institute of Engineering</span>
             </div>
 
@@ -129,7 +130,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                     borderRadius: '14px',
                     flex: '1 1 200px'
                   }}>
-                  Explore Courses →
+                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Explore Courses <ArrowRight size={18} style={{ marginLeft: '6px' }} /></span>
                 </button>
                 {!user && (
                   <button className="btn-outline" onClick={onSignIn} 
@@ -198,7 +199,9 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                       position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
                       background: ['var(--primary)', 'var(--secondary)', 'var(--accent)'][i % 3],
                     }} />
-                    <div style={{ fontSize: '2.8rem', marginBottom: '20px' }}>{course.icon || '📘'}</div>
+                    <div style={{ marginBottom: '20px', color: 'var(--text)' }}>
+                      {course.icon ? <span style={{ fontSize: '2.8rem' }}>{course.icon}</span> : <BookOpen size={40} strokeWidth={1.5} />}
+                    </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                       <span style={{
                         padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700,
@@ -212,7 +215,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                     </p>
                     <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.9rem',
                       color: 'var(--electric)' }}>
-                      View Materials <span style={{ color: 'var(--text)' }}>→</span>
+                      View Materials <ArrowRight size={16} style={{ color: 'var(--text)' }} />
                     </div>
                   </div>
                 </ScrollReveal>
@@ -276,7 +279,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                   onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
                   onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                   >
-                    <div style={{ fontSize: '2rem', marginBottom: '12px' }}>{s.icon}</div>
+                    <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center', color: 'var(--primary)' }}>{s.icon}</div>
                     <div style={{
                       fontSize: '2.4rem', fontWeight: 900, fontFamily: 'Outfit', letterSpacing: '-0.04em',
                       color: 'var(--text)',

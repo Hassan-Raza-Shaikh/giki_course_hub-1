@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UploadCloud } from 'lucide-react';
 import api from '../services/api';
-
-const CATEGORY_ICONS = {
-  'Outline':         '📋',
-  'Notes':           '📝',
-  'Slides':          '📊',
-  'Quizzes':         '📝',
-  'Assignments':     '📄',
-  'Past Papers':     '🗂️',
-  'Lab Manuals':     '🧪',
-  'Lab Tasks':       '⚗️',
-  'Lab Reports':     '📋',
-  'Reference':       '📚',
-};
 
 const BulkUploader = ({ 
   user, 
@@ -333,7 +321,7 @@ const BulkUploader = ({
           onMouseOut={e => e.currentTarget.style.borderColor = 'var(--border)'}
         >
           <div>
-            <div style={{ fontSize: '2rem', marginBottom: '12px' }}>☁️</div>
+            <div style={{ marginBottom: '12px' }}><UploadCloud size={48} strokeWidth={1.5} color="var(--primary)" /></div>
             <div style={{ fontWeight: 700, color: 'var(--primary)' }}>Drop files here or click to browse</div>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '4px' }}>
               PDF, DOCX, PPTX, TXT, IPYNB, Code, ZIP, images · {isAdmin ? 'No size limits for Admin' : 'Max 10MB per file (50MB for Reference)'}
@@ -381,7 +369,7 @@ const BulkUploader = ({
             >
               <option value="">Select category…</option>
               {categories.map(c => (
-                <option key={c.id} value={c.id}>{CATEGORY_ICONS[c.name] || '📁'} {c.name}</option>
+                <option key={c.id} value={c.id}>{c.name}</option>
               ))}
             </select>
           </div>

@@ -4,16 +4,23 @@ import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import {
+  FileText, FileEdit, Presentation, HelpCircle,
+  ClipboardList, Archive, FlaskConical, Terminal,
+  ClipboardCheck, Library, Bookmark, Lock
+} from 'lucide-react';
 
 const CATEGORY_ICONS = {
-  'Outline':     '📋',
-  'Notes':       '📓',
-  'Slides':      '🖥️',
-  'Quizzes':     '📝',
-  'Assignments': '📌',
-  'Lab Manuals': '🔬',
-  'Lab Tasks':   '🧪',
-  'Reference':   '📚',
+  'Outline':         <FileText size={24} strokeWidth={1.5} />,
+  'Notes':           <FileEdit size={24} strokeWidth={1.5} />,
+  'Slides':          <Presentation size={24} strokeWidth={1.5} />,
+  'Quizzes':         <HelpCircle size={24} strokeWidth={1.5} />,
+  'Assignments':     <ClipboardList size={24} strokeWidth={1.5} />,
+  'Past Papers':     <Archive size={24} strokeWidth={1.5} />,
+  'Lab Manuals':     <FlaskConical size={24} strokeWidth={1.5} />,
+  'Lab Tasks':       <Terminal size={24} strokeWidth={1.5} />,
+  'Lab Reports':     <ClipboardCheck size={24} strokeWidth={1.5} />,
+  'Reference':       <Library size={24} strokeWidth={1.5} />,
 };
 
 const Bookmarks = ({ user, onSignIn }) => {
@@ -47,8 +54,8 @@ const Bookmarks = ({ user, onSignIn }) => {
       <div className="page-container">
         <ScrollReveal>
           <div style={{ marginBottom: '48px' }}>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              My <span className="gradient-text">Bookmarks</span> 🔖
+            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              My <span className="gradient-text">Bookmarks</span> <Bookmark size={40} color="var(--primary)" />
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px' }}>
               Your personally curated collection of saved resources.
@@ -59,7 +66,7 @@ const Bookmarks = ({ user, onSignIn }) => {
         {!user ? (
           <ScrollReveal delay="reveal-delay-1">
             <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '24px' }}>🔒</div>
+              <div style={{ marginBottom: '24px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><Lock size={64} strokeWidth={1.5} /></div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Account Required</h2>
               <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Please sign in to view and manage your saved resources.</p>
               <button className="btn-primary" onClick={onSignIn}>Sign In Now</button>
@@ -70,7 +77,7 @@ const Bookmarks = ({ user, onSignIn }) => {
         ) : bookmarks.length === 0 ? (
           <ScrollReveal delay="reveal-delay-1">
             <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '24px' }}>📚</div>
+              <div style={{ marginBottom: '24px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><Library size={64} strokeWidth={1.5} /></div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Your bookmarks are empty</h2>
               <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Bookmark useful files while browsing courses to see them here.</p>
               <button className="btn-primary" onClick={() => navigate('/courses')}>Browse Courses</button>
@@ -93,7 +100,7 @@ const Bookmarks = ({ user, onSignIn }) => {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{ width: 48, height: 48, background: 'var(--bg-subtle)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}>
-                      {CATEGORY_ICONS[file.category] || '📄'}
+                      {CATEGORY_ICONS[file.category] || <FileText size={24} strokeWidth={1.5} />}
                     </div>
                     <div style={{ minWidth: 0 }}>
                       <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

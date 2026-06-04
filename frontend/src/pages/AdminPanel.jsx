@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play } from 'lucide-react';
+
 
 /* ── tiny helpers ──────────────────────────────────────────────────── */
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
@@ -15,10 +17,10 @@ const STATUS_COLORS = {
 };
 
 const ACTION_ICONS = {
-  approve_file:  '✅', reject_file: '❌', delete_file: '🗑️',
-  grant_admin:   '🛡️', revoke_admin: '🚫',
-  create_course: '📚', update_course: '✏️', delete_course: '🗑️',
-  resolve_report: '🏁', dismiss_report: '💤'
+  approve_file:  <CheckCircle size={18} strokeWidth={1.5} />, reject_file: <XCircle size={18} strokeWidth={1.5} />, delete_file: <Trash2 size={18} strokeWidth={1.5} />,
+  grant_admin:   <Shield size={18} strokeWidth={1.5} />, revoke_admin: <Ban size={18} strokeWidth={1.5} />,
+  create_course: <BookOpen size={18} strokeWidth={1.5} />, update_course: <Edit3 size={18} strokeWidth={1.5} />, delete_course: <Trash2 size={18} strokeWidth={1.5} />,
+  resolve_report: <Flag size={18} strokeWidth={1.5} />, dismiss_report: <Play size={18} strokeWidth={1.5} />
 };
 
 /* ── main component ─────────────────────────────────────────────────── */
@@ -61,7 +63,7 @@ const AdminPanel = ({ user }) => {
   // Course Form
   const [courseForm, setCourseForm] = useState({
     name: '', code: '', year: '', semester: '', 
-    is_lab: false, icon: '📘', faculty_id: '', program_id: ''
+    is_lab: false, icon: '', faculty_id: '', program_id: ''
   });
   const [editingCourse, setEditingCourse] = useState(null);
   const [isExistingCode, setIsExistingCode] = useState(false);
@@ -257,7 +259,7 @@ const AdminPanel = ({ user }) => {
   /* ── actions: Files ── */
   const approve = async (id) => {
     await api.post(`/admin/files/${id}/approve`);
-    showToast('File approved ✅');
+    showToast('File approved');
     setPending(p => p.filter(f => f.file_id !== id));
     loadStats();
   };
@@ -266,7 +268,7 @@ const AdminPanel = ({ user }) => {
     const ids = Array.from(selectedPending);
     if (!ids.length) return;
     await api.post('/admin/files/bulk-approve', { file_ids: ids });
-    showToast(`${ids.length} files approved ✅`);
+    showToast(`${ids.length} files approved`);
     setPending(p => p.filter(f => !selectedPending.has(f.file_id)));
     setSelectedPending(new Set());
     loadStats();
@@ -281,12 +283,12 @@ const AdminPanel = ({ user }) => {
     if (!rejectTarget) return;
     if (rejectTarget.file_id === '__bulk__') {
       await api.post('/admin/files/bulk-reject', { file_ids: Array.from(selectedPending), reason: rejectReason || 'No reason provided.' });
-      showToast('Files rejected ❌');
+      showToast('Files rejected');
       setPending(p => p.filter(f => !selectedPending.has(f.file_id)));
       setSelectedPending(new Set());
     } else {
       await api.post(`/admin/files/${rejectTarget.file_id}/reject`, { reason: rejectReason || 'No reason provided.' });
-      showToast('File rejected ❌');
+      showToast('File rejected');
       setPending(p => p.filter(f => f.file_id !== rejectTarget.file_id));
     }
     setRejectTarget(null);
@@ -300,7 +302,7 @@ const AdminPanel = ({ user }) => {
       danger: true,
       onConfirm: async () => {
         await api.delete(`/admin/files/${id}`);
-        showToast('File deleted 🗑️');
+        showToast('File deleted');
         // Refresh current page with current filters
         api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter } })
           .then(r => {
@@ -332,7 +334,7 @@ const AdminPanel = ({ user }) => {
     if (!editFileModal) return;
     try {
       await api.put(`/admin/files/${editFileModal.file_id}`, editFileForm);
-      showToast('File details updated ✨');
+      showToast('File details updated');
       setEditFileModal(null);
       // Refresh current tab data
       if (tab === 'pending') {
@@ -373,7 +375,7 @@ const AdminPanel = ({ user }) => {
     }
     try {
       const res = await api.post(`/files/${linkModal.file_id}/links`, linkForm);
-      showToast(res.data.message || 'File linked successfully! ✨');
+      showToast(res.data.message || 'File linked successfully!');
       // refresh existing links
       const linksRes = await api.get(`/files/${linkModal.file_id}/links`);
       setExistingLinks(linksRes.data.links || []);
@@ -412,9 +414,9 @@ const AdminPanel = ({ user }) => {
       await api.post(`/admin/files/${resolveModal.file_id}/note`, { note: resolveLeaveNote });
     }
     const msg = [
-      'Report resolved 🏁',
-      resolveDeleteFile && 'file deleted 🗑️',
-      resolveLeaveNote.trim() && 'note left 📌',
+      'Report resolved',
+      resolveDeleteFile && 'file deleted',
+      resolveLeaveNote.trim() && 'note left',
     ].filter(Boolean).join(' · ');
     showToast(msg);
     setReports(r => r.filter(x => x.report_id !== resolveModal.report_id));
@@ -423,7 +425,7 @@ const AdminPanel = ({ user }) => {
 
   const dismissReport = async (id) => {
     await api.post(`/admin/reports/${id}/dismiss`);
-    showToast('Report dismissed 💤');
+    showToast('Report dismissed');
     setReports(r => r.filter(x => x.report_id !== id));
   };
 
@@ -436,7 +438,7 @@ const AdminPanel = ({ user }) => {
   const saveNote = async () => {
     if (!noteModal || !noteText.trim()) return;
     await api.post(`/admin/files/${noteModal.file_id ?? noteModal.id}/note`, { note: noteText });
-    showToast('Note saved 📝');
+    showToast('Note saved');
     setAllFiles(fs => fs.map(f =>
       (f.file_id === (noteModal.file_id ?? noteModal.id))
         ? { ...f, admin_note: noteText } : f
@@ -447,7 +449,7 @@ const AdminPanel = ({ user }) => {
   const deleteNote = async () => {
     if (!noteModal) return;
     await api.delete(`/admin/files/${noteModal.file_id ?? noteModal.id}/note`);
-    showToast('Note removed 🗑️');
+    showToast('Note removed');
     setAllFiles(fs => fs.map(f =>
       (f.file_id === (noteModal.file_id ?? noteModal.id))
         ? { ...f, admin_note: null } : f
@@ -464,7 +466,7 @@ const AdminPanel = ({ user }) => {
   const confirmResolveIssue = async () => {
     if (!issueResolveModal) return;
     await api.post(`/admin/issues/${issueResolveModal.issue_id}/resolve`, { notes: issueResolveNotes });
-    showToast('Issue resolved ✅');
+    showToast('Issue resolved');
     setIssues(i => i.filter(x => x.issue_id !== issueResolveModal.issue_id));
     setIssueResolveModal(null);
     setIssueResolveNotes('');
@@ -477,7 +479,7 @@ const AdminPanel = ({ user }) => {
       danger: true,
       onConfirm: async () => {
         await api.delete(`/admin/issues/${id}`);
-        showToast('Issue deleted 🗑️');
+        showToast('Issue deleted');
         setIssues(i => i.filter(x => x.issue_id !== id));
         setConfirmModal(null);
       }
@@ -490,17 +492,17 @@ const AdminPanel = ({ user }) => {
     try {
       if (editingCourse) {
         await api.put(`/admin/courses/${editingCourse.course_id}`, courseForm);
-        showToast('Course updated ✏️');
+        showToast('Course updated');
       } else if (bulkCourseMode) {
         if (selectedPrograms.length === 0) { showToast('Select at least one program.', 'error'); return; }
         const r = await api.post('/admin/courses/bulk', { ...courseForm, program_ids: selectedPrograms });
-        showToast(r.data.message || `Created for ${selectedPrograms.length} program(s) 📚`);
+        showToast(r.data.message || `Created for ${selectedPrograms.length} program(s)`);
         setSelectedPrograms([]);
       } else {
         await api.post('/admin/courses', courseForm);
-        showToast('Course created 📚');
+        showToast('Course created');
       }
-      setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
+      setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });
       setEditingCourse(null);
       setIsExistingCode(false);
       setExistingProgramIds([]);
@@ -523,7 +525,7 @@ const AdminPanel = ({ user }) => {
       danger: true,
       onConfirm: async () => {
         await api.delete(`/admin/courses/${id}`);
-        showToast('Course deleted 🗑️');
+        showToast('Course deleted');
         // Refresh current page
         api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } }).then(r => {
           setCourses(r.data.courses || []);
@@ -549,7 +551,7 @@ const AdminPanel = ({ user }) => {
     e.preventDefault();
     try {
       await api.post('/instructors', instructorForm);
-      showToast('Instructor added 🧑‍🏫');
+      showToast('Instructor added');
       setInstructorForm({ name: '', faculty_name: '' });
       api.get('/instructors').then(r => setInstructors(r.data.instructors || []));
     } catch (err) {
@@ -562,7 +564,7 @@ const AdminPanel = ({ user }) => {
     if (!newAdminEmail) return;
     const res = await api.post('/admin/admins', { email: newAdminEmail, notes: newAdminNotes });
     if (res.data.success) {
-      showToast(`Admin granted to ${newAdminEmail} 🛡️`);
+      showToast(`Admin granted to ${newAdminEmail}`);
       setNewAdminEmail(''); setNewAdminNotes('');
       api.get('/admin/admins').then(r => setAdmins(r.data.admins || []));
       loadStats();
@@ -576,7 +578,7 @@ const AdminPanel = ({ user }) => {
       danger: true,
       onConfirm: async () => {
         await api.delete(`/admin/admins/${email}`);
-        showToast(`Admin revoked from ${email} 🚫`);
+        showToast(`Admin revoked from ${email}`);
         setAdmins(a => a.filter(x => x.email !== email));
         loadStats();
         setConfirmModal(null);
@@ -908,7 +910,7 @@ const AdminPanel = ({ user }) => {
         <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'Outfit' }}>
-              🛡️ Admin <span className="gradient-text">Panel</span>
+              Admin <span className="gradient-text">Panel</span>
             </h1>
             <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.9rem' }}>Command center for GIKI Hub.</p>
           </div>
@@ -999,7 +1001,7 @@ const AdminPanel = ({ user }) => {
                     onClick={bulkApprove}
                     style={{ ...btnStyle('#10B981'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
                   >
-                    ✅ Bulk Approve
+                    Bulk Approve
                   </button>
                   <button
                     disabled={!selectedPending.size}
@@ -1009,7 +1011,7 @@ const AdminPanel = ({ user }) => {
                     }}
                     style={{ ...btnStyle('#EF4444'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
                   >
-                    ❌ Bulk Reject
+                    Bulk Reject
                   </button>
                 </div>
               </div>
@@ -1129,7 +1131,7 @@ const AdminPanel = ({ user }) => {
                 {editingCourse ? '✏️ Edit Course' : '📚 Add New Course'}
                 {editingCourse && <button type="button" onClick={() => {
                   setEditingCourse(null);
-                  setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '📘', faculty_id: '', program_id: '' });
+                  setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });
                   setIsExistingCode(false);
                   setExistingProgramIds([]);
                 }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}

@@ -3,16 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import {
+  FileText, FileEdit, Presentation, HelpCircle,
+  ClipboardList, FlaskConical, Terminal, Library, Search
+} from 'lucide-react';
 
 const RESOURCE_TYPES = [
-  { icon: '📋', label: 'Outline',         desc: 'Course outlines and curriculum details.' },
-  { icon: '📓', label: 'Notes',           desc: 'Lecture notes and student-made summaries.' },
-  { icon: '🖥️', label: 'Slides',          desc: 'Official lecture presentations and slides.' },
-  { icon: '📝', label: 'Quizzes',         desc: 'Past quizzes and practice questions.' },
-  { icon: '📌', label: 'Assignments',     desc: 'Assignment tasks and reference solutions.' },
-  { icon: '🔬', label: 'Lab Manuals',     desc: 'Lab instructions and manual documents.' },
-  { icon: '🧪', label: 'Lab Tasks',       desc: 'Specific lab exercises and task sheets.' },
-  { icon: '📚', label: 'Reference',       desc: 'Recommended textbooks and study guides.' },
+  { icon: <FileText size={16} strokeWidth={1.5} />, label: 'Outline',         desc: 'Course outlines and curriculum details.' },
+  { icon: <FileEdit size={16} strokeWidth={1.5} />, label: 'Notes',           desc: 'Lecture notes and student-made summaries.' },
+  { icon: <Presentation size={16} strokeWidth={1.5} />, label: 'Slides',          desc: 'Official lecture presentations and slides.' },
+  { icon: <HelpCircle size={16} strokeWidth={1.5} />, label: 'Quizzes',         desc: 'Past quizzes and practice questions.' },
+  { icon: <ClipboardList size={16} strokeWidth={1.5} />, label: 'Assignments',     desc: 'Assignment tasks and reference solutions.' },
+  { icon: <FlaskConical size={16} strokeWidth={1.5} />, label: 'Lab Manuals',     desc: 'Lab instructions and manual documents.' },
+  { icon: <Terminal size={16} strokeWidth={1.5} />, label: 'Lab Tasks',       desc: 'Specific lab exercises and task sheets.' },
+  { icon: <Library size={16} strokeWidth={1.5} />, label: 'Reference',       desc: 'Recommended textbooks and study guides.' },
 ];
 
 const YEAR_LABELS = { 1: 'Year 1', 2: 'Year 2', 3: 'Year 3', 4: 'Year 4' };
@@ -378,7 +382,7 @@ const Courses = () => {
 
             {/* Search */}
             <div style={{ position: 'relative', maxWidth: '480px' }}>
-              <span style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.1rem' }}>🔍</span>
+              <span style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}><Search size={18} /></span>
               <input
                 type="text"
                 placeholder="Search by course name or code…"
@@ -416,8 +420,8 @@ const Courses = () => {
       {searchResults && (
         <div className="page-container" style={{ padding: '40px 24px 0' }}>
           <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-            <div style={{ padding: '20px 28px', borderBottom: '2px solid var(--text)', fontWeight: 800, fontFamily: 'Outfit', color: 'var(--primary)' }}>
-              🔍 {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{search}"
+            <div style={{ padding: '20px 28px', borderBottom: '2px solid var(--text)', fontWeight: 800, fontFamily: 'Outfit', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Search size={18} /> {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{search}"
             </div>
             {searchResults.length === 0 ? (
               <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>No courses found.</div>
