@@ -215,6 +215,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
           <Route path="/courses"    element={<Courses />} />
           <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
+          <Route path="/upload"     element={<UploadPage user={user} onSignIn={handleSignIn} />} />
           <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
           <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
           <Route path="/admin"      element={user && (user.email === 'ammarbatman9@gmail.com' || user.email === 'hassan.raza.shaikh.hrs@gmail.com') ? <AdminPanel user={user} /> : <Navigate to="/" replace />} />

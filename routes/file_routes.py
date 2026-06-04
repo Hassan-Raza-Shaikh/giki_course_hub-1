@@ -216,6 +216,23 @@ def list_courses():
         conn.close()
 
 
+@file_bp.route('/api/courses/list', methods=['GET'])
+def list_courses_flat():
+    """Return a flat list of all courses (id, code, name) for dropdowns."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT course_id, code, name, icon FROM courses ORDER BY code;")
+        rows = cur.fetchall()
+        cur.close()
+        courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘'} for r in rows]
+        return jsonify({"success": True, "courses": courses})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
 @file_bp.route('/api/courses/random', methods=['GET'])
 def random_courses():
     """Return n random courses for the landing page hero."""

@@ -97,6 +97,23 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
         <button
           className="hide-mobile"
+          onClick={() => navigate('/upload')}
+          style={{
+            background: 'transparent',
+            color: 'var(--text-muted)',
+            fontSize: '0.95rem',
+            fontWeight: 800,
+            transition: 'color 0.2s',
+            padding: '8px 4px',
+          }}
+          onMouseOver={e => e.target.style.color = 'var(--primary)'}
+          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
+        >
+          Upload
+        </button>
+
+        <button
+          className="hide-mobile"
           onClick={() => navigate('/courses')}
           style={{
             background: 'transparent',
@@ -273,6 +290,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
                 {/* Quick links */}
                 {[
+                  { icon: '☁️', label: 'Global Upload',   action: () => { setMenuOpen(false); navigate('/upload'); } },
                   { icon: '🔖', label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
                   { icon: '🔍', label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
                   { icon: '📚', label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
