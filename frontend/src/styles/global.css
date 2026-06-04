@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
 
 /* ── Reset ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,6 +39,107 @@ body { overflow-x: hidden; }
   --radius-xl:  24px;
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --nav-btn-text: #FFFFFF;
+}
+
+
+/* ── Mario ── */
+[data-theme='mario'] {
+  --font-primary: 'VT323', monospace;
+  --primary:      #E52521;
+  --primary-dark: #B51C18;
+  --primary-mid:  #FF423E;
+  --secondary:    #43B047;
+  --accent:       #FBD000;
+  --tertiary:     #0057B7;
+  --electric:     #43B047;
+  --bg-hero:      #5C94FC;
+  --bg-dark:      #000000;
+  --bg-subtle:    #92C0FF;
+  --bg-white:     #FFFFFF;
+  --bg-body:      #5C94FC;
+  --text:         #FFFFFF;
+  --text-muted:   #FBD000;
+  --text-light:   #E0E0E0;
+  --border:       #000000;
+  --shadow-sm:    4px 4px 0px #000000;
+  --shadow-md:    8px 8px 0px #E52521;
+  --shadow-lg:    12px 12px 0px #FBD000;
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Zelda ── */
+[data-theme='zelda'] {
+  --font-primary: 'Cinzel', serif;
+  --primary:      #d4af37;
+  --primary-dark: #aa8c2c;
+  --primary-mid:  #ebd87e;
+  --secondary:    #034b03;
+  --accent:       #6a0dad;
+  --tertiary:     #8b4513;
+  --electric:     #228b22;
+  --bg-hero:      #fdfbf3;
+  --bg-dark:      #1c211c;
+  --bg-subtle:    #e8dcc4;
+  --bg-white:     #f5deb3;
+  --bg-body:      #e8dcc4;
+  --text:         #3e2a14;
+  --text-muted:   #034b03;
+  --text-light:   #8b4513;
+  --border:       #8b4513;
+  --shadow-sm:    4px 4px 0px #8b4513;
+  --shadow-md:    8px 8px 0px #d4af37;
+  --shadow-lg:    12px 12px 0px #034b03;
+  --nav-btn-text: #ffffff;
+}
+
+/* ── GitHub Dark ── */
+[data-theme='gh-dark'] {
+  --font-primary: 'Inter', sans-serif;
+  --primary:      #58a6ff;
+  --primary-dark: #1f6feb;
+  --primary-mid:  #79c0ff;
+  --secondary:    #238636;
+  --accent:       #f85149;
+  --tertiary:     #d2a8ff;
+  --electric:     #3fb950;
+  --bg-hero:      #0d1117;
+  --bg-dark:      #010409;
+  --bg-subtle:    #161b22;
+  --bg-white:     #21262d;
+  --bg-body:      #0d1117;
+  --text:         #c9d1d9;
+  --text-muted:   #8b949e;
+  --text-light:   #484f58;
+  --border:       #30363d;
+  --shadow-sm:    4px 4px 0px #010409;
+  --shadow-md:    8px 8px 0px #21262d;
+  --shadow-lg:    12px 12px 0px #58a6ff;
+  --nav-btn-text: #ffffff;
+}
+
+/* ── Minimal ── */
+[data-theme='minimal'] {
+  --font-primary: 'Playfair Display', serif;
+  --primary:      #000000;
+  --primary-dark: #333333;
+  --primary-mid:  #111111;
+  --secondary:    #666666;
+  --accent:       #444444;
+  --tertiary:     #999999;
+  --electric:     #cccccc;
+  --bg-hero:      #ffffff;
+  --bg-dark:      #000000;
+  --bg-subtle:    #f5f5f5;
+  --bg-white:     #ffffff;
+  --bg-body:      #ffffff;
+  --text:         #000000;
+  --text-muted:   #555555;
+  --text-light:   #999999;
+  --border:       #000000;
+  --shadow-sm:    4px 4px 0px #000000;
+  --shadow-md:    8px 8px 0px #555555;
+  --shadow-lg:    12px 12px 0px #dddddd;
+  --nav-btn-text: #ffffff;
 }
 
 /* ── Electric Ember Dark Mode ── */
@@ -260,12 +361,12 @@ body { overflow-x: hidden; }
   --text:         #fce205;
   --text-muted:   #00f0ff;
   --text-light:   #888888;
-  --tertiary:     #ff003c;
-  --electric:     #00f0ff;
+  --tertiary:     #b026ff;
+  --electric:     #39ff14;
   --border:       #00f0ff;
   --shadow-sm:    4px 4px 0px #00f0ff;
   --shadow-md:    8px 8px 0px #ff003c;
-  --shadow-lg:    12px 12px 0px #fce205;
+  --shadow-lg:    12px 12px 0px #b026ff;
   --nav-btn-text: #000000;
 }
 
@@ -885,6 +986,8 @@ input::placeholder, textarea::placeholder {
   html[data-theme='minecraft'] { font-size: 13px; }
   html[data-theme='matrix'] { font-size: 14px; }
   html[data-theme='cyberpunk'] { font-size: 14px; }
+  html[data-theme='mario'] { font-size: 14px; }
+  html[data-theme='zelda'] { font-size: 15px; }
 
   /* Ensure text breaks gracefully rather than overflowing horizontal bounds on small screens */
   html[data-theme='pacman'] body,

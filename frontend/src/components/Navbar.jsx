@@ -70,7 +70,11 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'pacman', name: 'Pac-Man', icon: <Ghost size={14} /> },
     { id: 'minecraft', name: 'Minecraft', icon: <Box size={14} /> },
     { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
-    { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> }
+    { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> },
+    { id: 'mario', name: 'Mario', icon: <Gamepad2 size={14} /> },
+    { id: 'zelda', name: 'Zelda', icon: <Droplet size={14} /> },
+    { id: 'gh-dark', name: 'Dev Dark', icon: <Terminal size={14} /> },
+    { id: 'minimal', name: 'Minimal', icon: <Box size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
@@ -108,7 +112,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
               position: 'absolute', top: 'calc(100% + 12px)', right: 0,
               background: 'var(--bg-white)', border: '2px solid var(--text)',
               borderRadius: '16px', boxShadow: '5px 5px 0px var(--text)',
-              width: '180px', maxHeight: '350px', overflowY: 'auto',
+              width: '180px', maxHeight: '75vh', overflowY: 'auto',
               zIndex: 9999, display: 'flex', flexDirection: 'column',
               padding: '8px'
             }}>
