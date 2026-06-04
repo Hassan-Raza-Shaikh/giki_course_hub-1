@@ -24,6 +24,7 @@ const CoursePage = ({ user, onSignIn }) => {
   const navigate = useNavigate();
   const { copiedId, msg, copyLink } = useCopyLink();
   const uploadRef = useRef(null);
+  const isAdmin = user?.role === 'admin';
 
   const [course, setCourse]           = useState(null);
   const [filesByCategory, setFiles]   = useState({});
