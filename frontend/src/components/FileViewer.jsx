@@ -13,6 +13,7 @@ const EXT_GROUPS = {
   code: ['cpp', 'c', 'h', 'hpp', 'py', 'js', 'jsx', 'ts', 'tsx', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'],
   ipynb:['ipynb'],
   docx: ['docx', 'doc'],
+  xlsx: ['xlsx', 'xls'],
   pptx: ['pptx', 'ppt'],
 };
 
@@ -80,8 +81,8 @@ const FileViewer = ({ file, onClose }) => {
       return <DocxPreview url={url} />;
     }
 
-    if (fileType === 'pptx') {
-      return <PptxPreview url={url} title={title} />;
+    if (fileType === 'pptx' || fileType === 'xlsx') {
+      return <GoogleDocPreview url={url} title={title} type={fileType} />;
     }
 
     if (fileType === 'text') {
@@ -153,7 +154,7 @@ const FileViewer = ({ file, onClose }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1 }}>
             <span style={{ fontSize: '1rem', flexShrink: 0 }}>
-              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : fileType === 'code' ? '💻' : fileType === 'ipynb' ? '📓' : '📎'}
+              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : fileType === 'xlsx' ? '📈' : fileType === 'code' ? '💻' : fileType === 'ipynb' ? '📓' : '📎'}
             </span>
             <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {title}
@@ -294,8 +295,8 @@ const TextPreview = ({ url }) => {
   );
 };
 
-// PPTX/PPT viewer using Google Docs Viewer
-const PptxPreview = ({ url, title }) => {
+// PPTX/PPT/XLSX viewer using Google Docs Viewer
+const GoogleDocPreview = ({ url, title, type }) => {
   const [key, setKey] = useState(0); // used to force-reload the iframe
   const [loaded, setLoaded] = useState(false);
   const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
@@ -309,8 +310,8 @@ const PptxPreview = ({ url, title }) => {
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
           gap: '16px', background: 'var(--bg-subtle)',
         }}>
-          <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>📊</span>
-          <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>Loading presentation…</p>
+          <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>{type === 'xlsx' ? '📈' : '📊'}</span>
+          <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>Loading document…</p>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', maxWidth: '340px', lineHeight: 1.5 }}>
             Powered by Google Docs Viewer. Large files may take a few seconds to render.
           </p>
@@ -380,11 +381,11 @@ const CodePreview = ({ url, extension }) => {
   const language = langMap[extension] || 'text';
 
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#1d1f21', padding: '16px', boxSizing: 'border-box' }}>
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#1d1f21', padding: 'clamp(8px, 2vw, 16px)', boxSizing: 'border-box' }}>
       {error ? (
         <div style={{ color: '#f87171', fontWeight: 'bold' }}>{code}</div>
       ) : (
-        <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, padding: 0, background: 'transparent' }} showLineNumbers={true}>
+        <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, padding: 0, background: 'transparent', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }} showLineNumbers={true}>
           {code}
         </SyntaxHighlighter>
       )}
@@ -408,7 +409,7 @@ const IpynbPreview = ({ url }) => {
   if (!notebook) return <div style={{ padding: '24px', color: 'var(--text-muted)' }}>Loading notebook…</div>;
 
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: 'var(--bg-subtle)', padding: '24px', boxSizing: 'border-box' }}>
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: 'var(--bg-subtle)', padding: 'clamp(12px, 3vw, 24px)', boxSizing: 'border-box' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', background: 'var(--bg-white)', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
         {notebook.cells && notebook.cells.map((cell, idx) => {
           const source = Array.isArray(cell.source) ? cell.source.join('') : cell.source || '';
@@ -423,9 +424,9 @@ const IpynbPreview = ({ url }) => {
           
           if (cell.cell_type === 'code') {
             return (
-              <div key={idx} style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
+              <div key={idx} style={{ padding: 'clamp(12px, 3vw, 24px)', borderBottom: '1px solid var(--border)' }}>
                 <div style={{ background: '#f6f8fa', borderRadius: '8px', border: '1px solid #d0d7de', overflow: 'hidden', marginBottom: cell.outputs?.length ? '12px' : 0 }}>
-                  <SyntaxHighlighter language="python" style={atomDark} customStyle={{ margin: 0, padding: '16px', fontSize: '0.9rem' }}>
+                  <SyntaxHighlighter language="python" style={atomDark} customStyle={{ margin: 0, padding: 'clamp(10px, 3vw, 16px)', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }}>
                     {source}
                   </SyntaxHighlighter>
                 </div>
