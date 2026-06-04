@@ -439,8 +439,8 @@ input::placeholder, textarea::placeholder {
   border-radius: 100px;
   font-size: 0.85rem;
   font-weight: 700;
-  border: 2px solid var(--text);
-  box-shadow: 3px 3px 0px var(--text);
+  border: 1.5px solid var(--text);
+  box-shadow: 2px 2px 0px var(--text);
   cursor: pointer;
   transition: all 0.15s ease;
   display: inline-flex;
@@ -449,8 +449,8 @@ input::placeholder, textarea::placeholder {
   gap: 6px;
 }
 .btn-nav:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0px var(--text);
+  transform: translate(-1.5px, -1.5px);
+  box-shadow: 3.5px 3.5px 0px var(--text);
 }
 
 /* ── Utility ─────────────────────────────────────────── */

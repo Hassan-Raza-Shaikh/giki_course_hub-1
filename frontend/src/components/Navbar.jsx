@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Upload, BookOpen, Search, Bookmark, Sun, Flame, LogIn } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -53,6 +54,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   }, [user]);
 
   const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -73,32 +75,36 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="btn-nav"
           onClick={toggleTheme}
+          style={{ background: 'var(--accent)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
         >
-          <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text)' }}>
+          <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
             {theme === 'light' ? 'Light' : 'Ember'}
           </span>
-          <span style={{ fontSize: '1.1rem' }}>{theme === 'light' ? '☀️' : '🔥'}</span>
+          {isDark ? <Flame size={16} strokeWidth={2.5} /> : <Sun size={16} strokeWidth={2.5} />}
         </button>
 
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/upload')}
+          style={{ background: 'var(--primary)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
         >
-          <span>⬆️</span> Upload
+          <Upload size={16} strokeWidth={2.5} /> Upload
         </button>
 
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/courses')}
+          style={{ background: 'var(--secondary)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
         >
-          <span>📚</span> Courses
+          <BookOpen size={16} strokeWidth={2.5} /> Courses
         </button>
 
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/search')}
+          style={{ background: 'var(--electric)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
         >
-          <span>🔍</span> Search
+          <Search size={16} strokeWidth={2.5} /> Search
           <kbd style={{
             background: 'var(--bg-subtle)',
             border: '1.5px solid var(--border)',
@@ -117,8 +123,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/bookmarks')}
+          style={{ background: 'var(--tertiary)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
         >
-          <span>🔖</span> Bookmarks
+          <Bookmark size={16} strokeWidth={2.5} /> Bookmarks
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -284,8 +291,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           <button
             className="btn-nav"
             onClick={onSignIn}
+            style={{ background: 'var(--bg-white)', color: 'var(--text)' }}
           >
-            Sign In
+            <LogIn size={16} strokeWidth={2.5} /> Sign In
           </button>
         )}
       </div>
