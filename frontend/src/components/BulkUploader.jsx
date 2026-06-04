@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const CATEGORY_ICONS = {
@@ -33,6 +34,7 @@ const BulkUploader = ({
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [uploadSummary, setUploadSummary] = useState(null);
+  const navigate = useNavigate();
 
   const ALLOWED_EXTS = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg', 'ipynb', 'py', 'js', 'jsx', 'ts', 'tsx', 'cpp', 'c', 'h', 'hpp', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'];
   const isAdmin = user?.role === 'admin';
@@ -308,6 +310,11 @@ const BulkUploader = ({
       {uploadError && (
         <div style={{ padding: '14px', background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', fontWeight: 600, border: '1px solid rgba(185,28,28,0.3)' }}>
           {uploadError}
+          {uploadError.includes('Report button below') && (
+            <button onClick={() => navigate('/report-issue')} style={{ marginTop: '8px', padding: '4px 10px', borderRadius: '4px', background: 'var(--accent)', color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 'bold', display: 'block' }}>
+              Report Issue
+            </button>
+          )}
         </div>
       )}
 
@@ -516,6 +523,11 @@ const BulkUploader = ({
                 {item.error && (
                   <div style={{ marginTop: '6px', fontSize: '0.8rem', color: item.status === 'skipped' ? '#92400E' : '#DC2626', fontWeight: 500 }}>
                     {item.error}
+                    {item.error.includes('Report button below') && (
+                      <button type="button" onClick={() => navigate('/report-issue')} style={{ marginLeft: '8px', padding: '2px 6px', borderRadius: '4px', background: '#DC2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                        Report
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
