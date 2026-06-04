@@ -74,7 +74,10 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'mario', name: 'Mario', icon: <Gamepad2 size={14} /> },
     { id: 'zelda', name: 'Zelda', icon: <Droplet size={14} /> },
     { id: 'gh-dark', name: 'Dev Dark', icon: <Terminal size={14} /> },
-    { id: 'minimal', name: 'Minimal', icon: <Box size={14} /> }
+    { id: 'minimal', name: 'Minimal', icon: <Box size={14} /> },
+    { id: 'discord', name: 'Midnight', icon: <Ghost size={14} /> },
+    { id: 'vaporwave', name: 'Vaporwave', icon: <Sun size={14} /> },
+    { id: 'gruvbox', name: 'Gruvbox', icon: <Terminal size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];

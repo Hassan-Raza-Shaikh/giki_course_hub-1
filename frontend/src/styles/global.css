@@ -54,17 +54,92 @@ body { overflow-x: hidden; }
   --electric:     #43B047;
   --bg-hero:      #5C94FC;
   --bg-dark:      #000000;
-  --bg-subtle:    #92C0FF;
-  --bg-white:     #FFFFFF;
+  --bg-subtle:    #2C2C2C;
+  --bg-white:     #1E1E1E;
   --bg-body:      #5C94FC;
   --text:         #FFFFFF;
-  --text-muted:   #FBD000;
-  --text-light:   #E0E0E0;
+  --text-muted:   #E0E0E0;
+  --text-light:   #B0B0B0;
   --border:       #000000;
   --shadow-sm:    4px 4px 0px #000000;
-  --shadow-md:    8px 8px 0px #E52521;
-  --shadow-lg:    12px 12px 0px #FBD000;
+  --shadow-md:    8px 8px 0px #000000;
+  --shadow-lg:    12px 12px 0px #000000;
   --nav-btn-text: #FFFFFF;
+}
+
+/* ── Discord / Midnight ── */
+[data-theme='discord'] {
+  --font-primary: 'Inter', sans-serif;
+  --primary:      #5865F2;
+  --primary-dark: #4752C4;
+  --primary-mid:  #7289DA;
+  --secondary:    #57F287;
+  --accent:       #FEE75C;
+  --tertiary:     #EB459E;
+  --electric:     #ED4245;
+  --bg-hero:      #36393F;
+  --bg-dark:      #202225;
+  --bg-subtle:    #2F3136;
+  --bg-white:     #36393F;
+  --bg-body:      #2F3136;
+  --text:         #FFFFFF;
+  --text-muted:   #B9BBBE;
+  --text-light:   #8E9297;
+  --border:       #202225;
+  --shadow-sm:    4px 4px 0px #202225;
+  --shadow-md:    8px 8px 0px #5865F2;
+  --shadow-lg:    12px 12px 0px #57F287;
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Vaporwave ── */
+[data-theme='vaporwave'] {
+  --font-primary: 'Outfit', sans-serif;
+  --primary:      #FF71CE;
+  --primary-dark: #B9428F;
+  --primary-mid:  #FF99DE;
+  --secondary:    #01CDFE;
+  --accent:       #05FFA1;
+  --tertiary:     #B967FF;
+  --electric:     #FFF563;
+  --bg-hero:      #110022;
+  --bg-dark:      #090011;
+  --bg-subtle:    #1F0044;
+  --bg-white:     #2D0066;
+  --bg-body:      #110022;
+  --text:         #FFF563;
+  --text-muted:   #01CDFE;
+  --text-light:   #B967FF;
+  --border:       #01CDFE;
+  --shadow-sm:    4px 4px 0px #01CDFE;
+  --shadow-md:    8px 8px 0px #FF71CE;
+  --shadow-lg:    12px 12px 0px #05FFA1;
+  --nav-btn-text: #110022;
+}
+
+/* ── Gruvbox ── */
+[data-theme='gruvbox'] {
+  --font-primary: 'Inter', monospace;
+  --primary:      #fe8019;
+  --primary-dark: #d65d0e;
+  --primary-mid:  #fabd2f;
+  --secondary:    #b8bb26;
+  --accent:       #fb4934;
+  --tertiary:     #d3869b;
+  --electric:     #8ec07c;
+  --bg-hero:      #282828;
+  --bg-dark:      #1d2021;
+  --bg-subtle:    #3c3836;
+  --bg-white:     #32302f;
+  --bg-body:      #282828;
+  --text:         #ebdbb2;
+  --text-muted:   #a89984;
+  --text-light:   #928374;
+  --border:       #504945;
+  --shadow-sm:    4px 4px 0px #1d2021;
+  --shadow-md:    8px 8px 0px #fe8019;
+  --shadow-lg:    12px 12px 0px #b8bb26;
+  --nav-btn-text: #282828;
 }
 
 /* ── Zelda ── */
