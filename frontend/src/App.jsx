@@ -15,6 +15,7 @@ const Bookmarks    = lazy(() => import('./pages/Bookmarks'));
 const GlobalSearch = lazy(() => import('./pages/GlobalSearch'));
 const AdminPanel   = lazy(() => import('./pages/AdminPanel'));
 const ReportIssue  = lazy(() => import('./pages/ReportIssue'));
+const UploadPage   = lazy(() => import('./pages/UploadPage'));
 
 
 const App = () => {
