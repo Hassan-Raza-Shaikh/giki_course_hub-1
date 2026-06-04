@@ -7,7 +7,7 @@ import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
-import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud } from 'lucide-react';
+import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud, AlertCircle, Edit3, BookmarkCheck, BookmarkPlus, Flag, Inbox, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const CATEGORY_ICONS = {
   'Outline':         <FileText size={18} strokeWidth={1.5} />,
@@ -264,7 +264,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 <div style={{ marginTop: '12px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
                   {fileInstructors.map(inst => (
-                    <span key={inst.instructor_id} style={{
+                    <span key={inst.id} style={{
                     background: 'var(--bg-white)', border: '1.5px solid var(--border)',
                     padding: '6px 12px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700,
                     color: 'var(--text)', boxShadow: '2px 2px 0 var(--border)', display: 'flex', alignItems: 'center', gap: '6px'
