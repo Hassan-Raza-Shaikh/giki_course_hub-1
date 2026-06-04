@@ -473,6 +473,23 @@ input::placeholder, textarea::placeholder {
 .scroll-x::-webkit-scrollbar { display: none; }
 .scroll-x > * { flex-shrink: 0; }
 
+/* Fade edge hint on scroll-x containers */
+.scroll-x-wrap {
+  position: relative;
+}
+.scroll-x-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 48px;
+  background: linear-gradient(to left, var(--bg-subtle), transparent);
+  pointer-events: none;
+  border-radius: 0 8px 8px 0;
+}
+@media (min-width: 900px) {
+  .scroll-x-wrap::after { display: none; }
+}
+
 .hide-mobile { display: block; }
 @media (max-width: 768px) {
   .hide-mobile { display: none !important; }
@@ -540,4 +557,70 @@ input::placeholder, textarea::placeholder {
     font-size: 0.75rem !important;
     padding: 6px 8px !important;
   }
+}
+
+/* ── Admin modals: responsive padding + safe scroll ─── */
+@media (max-width: 640px) {
+  /* All admin overlay modal boxes */
+  [style*="maxWidth: '480px'"],
+  [style*="maxWidth: '500px'"],
+  [style*="maxWidth: '540px'"],
+  [style*="maxWidth: '440px'"] {
+    padding: 20px !important;
+  }
+}
+
+/* ── Toast: safe-area on mobile (above home bar) ─────── */
+.admin-toast {
+  position: fixed;
+  bottom: max(28px, env(safe-area-inset-bottom, 28px));
+  right: 20px;
+  z-index: 9999;
+  max-width: calc(100vw - 40px);
+  word-break: break-word;
+}
+
+/* ── Bookmarks grid: prevent overflow on narrow screens ─ */
+.bookmarks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 24px;
+  padding-bottom: 80px;
+}
+
+/* ── Search page filter bar ──────────────────────────── */
+.search-filters {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-filters select {
+  min-width: 140px;
+  flex: 1 1 140px;
+}
+@media (max-width: 640px) {
+  .search-filters { gap: 10px; }
+  .search-filters select { min-width: 0; flex: 1 1 calc(50% - 5px); }
+}
+
+/* ── Signup form: stack 2-col grids on mobile ─────────── */
+.signup-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .signup-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Landing hero: reduce top padding on mobile ───────── */
+@media (max-width: 640px) {
+  .hero { padding-top: 80px !important; padding-bottom: 48px !important; min-height: unset !important; }
+}
+
+/* ── ReportIssue card: reduce padding on mobile ───────── */
+@media (max-width: 640px) {
+  .report-issue-card { padding: 24px !important; }
+  .report-issue-card h1 { font-size: 2rem !important; }
 }

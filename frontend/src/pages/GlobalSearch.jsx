@@ -106,13 +106,12 @@ const GlobalSearch = ({ user, onSignIn }) => {
               Search <span className="gradient-text">Everything</span> 🔍
             </h1>
 
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
-              <div style={{ position: 'relative', flex: 1, minWidth: '300px' }}>
+            <div className="search-filters">
+              <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
                 <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.2rem' }}>🔍</span>
                 <input 
                   id="global-search-input"
                   ref={searchInputRef}
-                  autoFocus
                   type="text" 
                   placeholder="Search for courses, file titles, or codes..."
                   value={query}
@@ -140,7 +139,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 value={facultyId}
                 onChange={(e) => updateFilters('faculty_id', e.target.value)}
                 style={{
-                  padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
+                  padding: '14px 12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
                   background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
                   boxShadow: '4px 4px 0px var(--text)', outline: 'none'
                 }}
@@ -153,7 +152,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 value={categoryId}
                 onChange={(e) => updateFilters('category_id', e.target.value)}
                 style={{
-                  padding: '16px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
+                  padding: '14px 12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
                   background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
                   boxShadow: '4px 4px 0px var(--text)', outline: 'none'
                 }}

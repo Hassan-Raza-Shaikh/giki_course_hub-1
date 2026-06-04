@@ -43,7 +43,7 @@ const ReportIssue = ({ user }) => {
           </p>
         </div>
 
-        <div style={{ 
+        <div className="report-issue-card" style={{ 
           background: 'var(--bg-white)', borderRadius: '24px', border: '3px solid var(--text)',
           boxShadow: '10px 10px 0 var(--text)', padding: '40px'
         }}>

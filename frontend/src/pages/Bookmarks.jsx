@@ -78,7 +78,7 @@ const Bookmarks = ({ user, onSignIn }) => {
             </div>
           </ScrollReveal>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '24px', paddingBottom: '80px' }}>
+          <div className="bookmarks-grid">
             {bookmarks.map((file, i) => (
               <ScrollReveal key={file.file_id} delay={`reveal-delay-${(i % 3) + 1}`}>
                 <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', boxShadow: '4px 4px 0px var(--text)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>

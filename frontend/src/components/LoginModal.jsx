@@ -327,7 +327,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
           {/* ── SIGNUP FORM ── */}
           {tab === 'signup' && (
             <form onSubmit={handleEmailSignup} style={{ display: 'flex', flexDirection: 'column', gap: '11px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div className="signup-grid-2">
                 <InputField label="Full Name" required value={signupName} onChange={e => setSignupName(e.target.value)} placeholder="Ali Hassan" />
                 <div>
                   <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Reg No</label>
@@ -349,11 +349,11 @@ const LoginModal = ({ onClose, onSuccess }) => {
                 </div>
               </div>
               <InputField label="Email" type="email" required value={signupEmail} onChange={e => setSignupEmail(e.target.value)} placeholder="you@giki.edu.pk" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div className="signup-grid-2">
                 <InputField label="Password" type="password" required value={signupPassword} onChange={e => setSignupPassword(e.target.value)} placeholder="Min 6 chars" />
                 <InputField label="Confirm Password" type="password" required value={signupConfirm} onChange={e => setSignupConfirm(e.target.value)} placeholder="Repeat password" />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div className="signup-grid-2">
                 <InputField label="Batch Year" type="number" value={signupBatch} onChange={e => setSignupBatch(e.target.value)} placeholder="2021" />
                 <div>
                   <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: 'var(--text)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>Program</label>

@@ -616,8 +616,7 @@ const AdminPanel = ({ user }) => {
 
       {/* Toast */}
       {toast && (
-        <div style={{
-          position: 'fixed', bottom: '28px', right: '28px', zIndex: 9999,
+        <div className="admin-toast" style={{
           background: toast.type === 'error' ? '#FEE2E2' : '#D1FAE5',
           color: toast.type === 'error' ? '#991B1B' : '#065F46',
           padding: '14px 22px', borderRadius: '12px',
@@ -631,8 +630,8 @@ const AdminPanel = ({ user }) => {
 
       {/* Reject modal */}
       {rejectTarget && (
-        <div onClick={() => setRejectTarget(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', color: 'var(--text)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '480px' }}>
+        <div onClick={() => setRejectTarget(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', color: 'var(--text)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '480px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 800, marginBottom: '8px', color: 'var(--text)' }}>Reject File</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Rejecting: <strong>{rejectTarget.title}</strong>
@@ -654,8 +653,8 @@ const AdminPanel = ({ user }) => {
 
       {/* Resolve Content Flag modal */}
       {resolveModal && (
-        <div onClick={() => setResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '540px' }}>
+        <div onClick={() => setResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}>🏁 Resolve Content Flag</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Flagged file: <strong>{resolveModal.file_title}</strong>
@@ -687,8 +686,8 @@ const AdminPanel = ({ user }) => {
 
       {/* Platform Issue Resolve modal */}
       {issueResolveModal && (
-        <div onClick={() => setIssueResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '500px' }}>
+        <div onClick={() => setIssueResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}>✅ Resolve Platform Issue</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.9rem' }}>
               <strong>{issueResolveModal.title}</strong>
@@ -711,8 +710,8 @@ const AdminPanel = ({ user }) => {
 
       {/* Generic Confirm modal */}
       {confirmModal && (
-        <div onClick={() => setConfirmModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: `2px solid ${confirmModal.danger ? '#DC2626' : 'var(--text)'}`, boxShadow: `6px 6px 0 ${confirmModal.danger ? '#DC2626' : 'var(--text)'}`, padding: '32px', width: '100%', maxWidth: '440px' }}>
+        <div onClick={() => setConfirmModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: `2px solid ${confirmModal.danger ? '#DC2626' : 'var(--text)'}`, boxShadow: `6px 6px 0 ${confirmModal.danger ? '#DC2626' : 'var(--text)'}`, padding: '28px', width: '100%', maxWidth: '440px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>{confirmModal.title}</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>{confirmModal.body}</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
@@ -724,8 +723,8 @@ const AdminPanel = ({ user }) => {
       )}
       {/* Edit File Modal */}
       {editFileModal && (
-        <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '500px' }}>
+        <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>✏️ Edit File Details</h3>
             
             <div style={{ marginBottom: '16px' }}>
@@ -878,8 +877,8 @@ const AdminPanel = ({ user }) => {
 
       {/* File Note modal */}
       {noteModal && (
-        <div onClick={() => setNoteModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '500px' }}>
+        <div onClick={() => setNoteModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}>📌 Admin Note</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               File: <strong>{noteModal.title}</strong><br/>
@@ -948,7 +947,8 @@ const AdminPanel = ({ user }) => {
         )}
 
         {/* Tab bar */}
-        <div className="scroll-x" style={{ marginBottom: '24px', paddingBottom: '12px' }}>
+        <div className="scroll-x-wrap" style={{ marginBottom: '24px' }}>
+          <div className="scroll-x" style={{ paddingBottom: '12px' }}>
           {TABS.map(t => (
             <button
               key={t.key}
@@ -967,6 +967,7 @@ const AdminPanel = ({ user }) => {
               {t.label}
             </button>
           ))}
+          </div>
         </div>
 
         {/* ── Pending tab (with Bulk Actions) ── */}
