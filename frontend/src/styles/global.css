@@ -431,6 +431,28 @@ input::placeholder, textarea::placeholder {
   box-shadow: 6px 6px 0px var(--secondary);
 }
 
+/* ── Navbar Button ───────────────────────────────────── */
+.btn-nav {
+  background: var(--bg-white);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 2px solid var(--text);
+  box-shadow: 3px 3px 0px var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-nav:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--text);
+}
+
 /* ── Utility ─────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);

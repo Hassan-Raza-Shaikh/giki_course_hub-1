@@ -71,23 +71,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         {/* Creative Theme Toggle */}
         <button
+          className="btn-nav"
           onClick={toggleTheme}
-          title={`Switch to ${theme === 'light' ? 'Electric Ember' : 'Vibrant Light'} Mode`}
-          style={{
-            background: 'var(--bg-white)',
-            border: '2px solid var(--border)',
-            borderRadius: '50px',
-            padding: '4px 8px',
-            fontSize: '1rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            boxShadow: 'var(--shadow-sm)',
-            transition: 'var(--transition)',
-            transform: 'scale(1)',
-          }}
-          onMouseDown={e => e.currentTarget.style.transform = 'scale(0.9)'}
-          onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
         >
           <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text)' }}>
             {theme === 'light' ? 'Light' : 'Ember'}
@@ -96,55 +81,22 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         </button>
 
         <button
-          className="hide-mobile"
+          className="hide-mobile btn-nav"
           onClick={() => navigate('/upload')}
-          style={{
-            background: 'transparent',
-            color: 'var(--text-muted)',
-            fontSize: '0.95rem',
-            fontWeight: 800,
-            transition: 'color 0.2s',
-            padding: '8px 4px',
-          }}
-          onMouseOver={e => e.target.style.color = 'var(--primary)'}
-          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
         >
-          Upload
+          <span>⬆️</span> Upload
         </button>
 
         <button
-          className="hide-mobile"
+          className="hide-mobile btn-nav"
           onClick={() => navigate('/courses')}
-          style={{
-            background: 'transparent',
-            color: 'var(--text-muted)',
-            fontSize: '0.95rem',
-            fontWeight: 800,
-            transition: 'color 0.2s',
-            padding: '8px 4px',
-          }}
-          onMouseOver={e => e.target.style.color = 'var(--primary)'}
-          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
         >
-          Courses
+          <span>📚</span> Courses
         </button>
 
         <button
-          className="hide-mobile"
+          className="hide-mobile btn-nav"
           onClick={() => navigate('/search')}
-          style={{
-            background: 'transparent',
-            color: 'var(--text-muted)',
-            fontSize: '0.95rem',
-            fontWeight: 800,
-            transition: 'color 0.2s',
-            padding: '8px 4px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-          onMouseOver={e => e.target.style.color = 'var(--primary)'}
-          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
         >
           <span>🔍</span> Search
           <kbd style={{
@@ -163,21 +115,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         </button>
 
         <button
-          className="hide-mobile"
+          className="hide-mobile btn-nav"
           onClick={() => navigate('/bookmarks')}
-          style={{
-            background: 'transparent',
-            color: 'var(--text-muted)',
-            fontSize: '0.95rem',
-            fontWeight: 800,
-            transition: 'color 0.2s',
-            padding: '8px 4px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}
-          onMouseOver={e => e.target.style.color = 'var(--primary)'}
-          onMouseOut={e => e.target.style.color = 'var(--text-muted)'}
         >
           <span>🔖</span> Bookmarks
         </button>
@@ -343,20 +282,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           </div>
         ) : (
           <button
+            className="btn-nav"
             onClick={onSignIn}
-            style={{
-              background: 'var(--primary)',
-              color: 'white',
-              padding: '10px 24px',
-              borderRadius: '100px',
-              fontSize: '0.9rem',
-              fontWeight: 800,
-              boxShadow: '4px 4px 0px var(--text)',
-              border: '2px solid var(--text)',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px) translateX(-2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px var(--text)'; }}
-            onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px var(--text)'; }}
           >
             Sign In
           </button>
