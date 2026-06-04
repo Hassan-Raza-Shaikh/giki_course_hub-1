@@ -37,7 +37,7 @@ const BulkUploader = ({
   const ALLOWED_EXTS = ['pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt', 'zip', 'png', 'jpg', 'jpeg', 'ipynb', 'py', 'js', 'jsx', 'ts', 'tsx', 'cpp', 'c', 'h', 'hpp', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'];
   const isAdmin = user?.role === 'admin';
   const MAX_FILES = isAdmin ? 1000 : 10;
-  const DEFAULT_MAX_MB = isAdmin ? 10000 : 10;
+  const DEFAULT_MAX_MB = isAdmin ? 10000 : 15;
   const REFERENCE_MAX_MB = isAdmin ? 10000 : 50;
 
   const getCatNameById = (catId) => {
@@ -161,7 +161,8 @@ const BulkUploader = ({
               overallSuccess = false;
             }
           } catch (err) {
-            const msg = err.response?.data?.message || 'Upload failed';
+            let msg = err.response?.data?.message || 'Upload failed';
+            if (err.response?.status >= 500) msg += ' (If this persists, please use the Report button below)';
             updateQueueItem(qIdx, { status: 'error', error: msg });
             overallSuccess = false;
           }
@@ -224,7 +225,8 @@ const BulkUploader = ({
               if (!fileRes.data.skipped) overallSuccess = false;
             }
           } catch (err) {
-            const msg = err.response?.data?.message || 'Upload failed';
+            let msg = err.response?.data?.message || 'Upload failed';
+            if (err.response?.status >= 500) msg += ' (If this persists, please use the Report button below)';
             updateQueueItem(globalIdx, { status: err.response?.data?.skipped ? 'skipped' : 'error', error: msg });
             if (!err.response?.data?.skipped) overallSuccess = false;
           }
@@ -249,7 +251,9 @@ const BulkUploader = ({
       onUploadComplete();
     } catch (err) {
       console.error('Bulk upload error:', err);
-      setUploadError(err.response?.data?.message || 'Bulk upload failed. Please try again.');
+      let msg = err.response?.data?.message || 'Bulk upload failed. Please try again.';
+      if (err.response?.status >= 500) msg += ' (If this persists, please use the Report button below)';
+      setUploadError(msg);
     } finally {
       setUploading(false);
     }

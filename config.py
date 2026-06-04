@@ -32,7 +32,7 @@ ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'txt', 'zip',
 MAX_CONTENT_LENGTH = 10 * 1024 * 1024 * 1024  # 10 GB (Flask HTTP cap — per-file logic enforced in routes)
 
 # Per-file size limits (enforced by application logic)
-DEFAULT_MAX_FILE_SIZE  = 10 * 1024 * 1024   # 10 MB for most categories
+DEFAULT_MAX_FILE_SIZE  = 15 * 1024 * 1024   # 15 MB for most categories
 REFERENCE_MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB for Reference (books are heavy)
 REFERENCE_CATEGORY_NAME = 'Reference'       # Must match the category name in the DB
 
