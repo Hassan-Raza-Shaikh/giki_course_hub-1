@@ -1,3 +1,4 @@
+import { BookOpen, PartyPopper } from 'lucide-react';
 import React, { useState } from 'react';
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, googleProvider } from '../services/firebase';
@@ -236,9 +237,9 @@ const LoginModal = ({ onClose, onSuccess }) => {
               background: 'var(--accent)', border: '2px solid var(--text)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '1.4rem', boxShadow: '3px 3px 0px var(--text)',
-            }}>📚</div>
+            }}><BookOpen size={48} color="var(--primary)" /></div>
             <h2 style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'var(--font-primary)', marginBottom: '3px', color: 'var(--text)' }}>
-              {tab === 'login' ? 'Welcome Back' : tab === 'signup-success' ? '🎉 Account Created!' : 'Create Account'}
+              {tab === 'login' ? 'Welcome Back' : tab === 'signup-success' ? 'Account Created!' : 'Create Account'}
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.83rem' }}>
               {tab === 'login' ? 'Sign in to access your GIKI Hub.' : tab === 'signup-success' ? 'You can now sign in with your new account.' : 'Join the GIKI academic community.'}
@@ -293,7 +294,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
           {/* ── SIGNUP SUCCESS SCREEN ── */}
           {tab === 'signup-success' && (
             <div style={{ textAlign: 'center', padding: '12px 0 8px' }}>
-              <div style={{ fontSize: '3.5rem', marginBottom: '16px', animation: 'scaleIn 0.4s ease' }}>🎉</div>
+              <div style={{ fontSize: '3.5rem', marginBottom: '16px', animation: 'scaleIn 0.4s ease' }}><PartyPopper size={56} color="var(--primary)" /></div>
               <h3 style={{ fontWeight: 900, fontSize: '1.2rem', marginBottom: '10px', color: 'var(--text)' }}>
                 Welcome to GIKI Hub, {signupName.split(' ')[0] || 'scholar'}!
               </h3>
@@ -305,7 +306,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
                 style={{ width: '100%', marginBottom: '12px' }}
                 onClick={() => { setTab('login'); setError(''); }}
               >
-                ✅ Sign In Now
+                Sign In Now
               </button>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                 Your email is pre-filled — just enter your password.

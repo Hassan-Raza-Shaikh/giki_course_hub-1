@@ -1,3 +1,4 @@
+import { BookOpen, Home, Folder, UploadCloud, Bookmark, User, Settings, Clock, Flag } from 'lucide-react';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -58,20 +59,20 @@ const Sidebar = ({ user, isOpen, onClose }) => {
         <nav style={{ flex: 1, overflowY: 'auto' }} className="hide-scrollbar">
           <p style={{ fontSize: '0.7rem', opacity: 0.5, letterSpacing: '0.1em', marginBottom: '20px', fontWeight: 700, textTransform: 'uppercase' }}>General</p>
           <ul style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <li><SidebarLink to="/dashboard" icon="🏠" label="Dashboard" onClick={onClose} /></li>
-            <li><SidebarLink to="/files" icon="📁" label="Browse Files" onClick={onClose} /></li>
-            <li><SidebarLink to="/upload" icon="⬆️" label="Upload Content" onClick={onClose} /></li>
-            <li><SidebarLink to="/bookmarks" icon="🔖" label="My Library" onClick={onClose} /></li>
-            <li><SidebarLink to="/profile" icon="👤" label="Account" onClick={onClose} /></li>
+            <li><SidebarLink to="/dashboard" icon={<Home size={18}/>} label="Dashboard" onClick={onClose} /></li>
+            <li><SidebarLink to="/files" icon={<Folder size={18}/>} label="Browse Files" onClick={onClose} /></li>
+            <li><SidebarLink to="/upload" icon={<UploadCloud size={18}/>} label="Upload Content" onClick={onClose} /></li>
+            <li><SidebarLink to="/bookmarks" icon={<Bookmark size={18}/>} label="My Library" onClick={onClose} /></li>
+            <li><SidebarLink to="/profile" icon={<User size={18}/>} label="Account" onClick={onClose} /></li>
           </ul>
 
           {(isAdmin || !user) && (
             <>
               <p style={{ fontSize: '0.7rem', opacity: 0.5, letterSpacing: '0.1em', margin: '32px 0 20px', fontWeight: 700, textTransform: 'uppercase' }}>Admin Console</p>
               <ul style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <li><SidebarLink to="/admin" icon="⚙️" label="Overview" onClick={onClose} /></li>
-                <li><SidebarLink to="/admin/pending" icon="⏳" label="Approvals" onClick={onClose} /></li>
-                <li><SidebarLink to="/admin/reports" icon="🚩" label="Disputes" onClick={onClose} /></li>
+                <li><SidebarLink to="/admin" icon={<Settings size={18}/>} label="Overview" onClick={onClose} /></li>
+                <li><SidebarLink to="/admin/pending" icon={<Clock size={18}/>} label="Approvals" onClick={onClose} /></li>
+                <li><SidebarLink to="/admin/reports" icon={<Flag size={18}/>} label="Disputes" onClick={onClose} /></li>
               </ul>
             </>
           )}

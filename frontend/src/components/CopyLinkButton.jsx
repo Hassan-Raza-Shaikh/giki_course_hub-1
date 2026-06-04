@@ -1,14 +1,15 @@
+import { Link, ClipboardCheck, Scissors, Rocket, Target, Zap, Wand2 } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
 
 // Fun messages that rotate on each copy
 const COPY_MESSAGES = [
-  { emoji: '🔗', text: 'Link snatched!' },
-  { emoji: '📋', text: 'Copied to clipboard!' },
-  { emoji: '✂️',  text: 'Clipped & ready!' },
-  { emoji: '🚀', text: 'Link launched!' },
-  { emoji: '🎯', text: 'Got it!' },
-  { emoji: '⚡', text: 'Zapped to clipboard!' },
-  { emoji: '🪄', text: 'Poof! Link copied!' },
+  { icon: <Link size={14} />, text: 'Link snatched!' },
+  { icon: <ClipboardCheck size={14} />, text: 'Copied to clipboard!' },
+  { icon: <Scissors size={14} />,  text: 'Clipped & ready!' },
+  { icon: <Rocket size={14} />, text: 'Link launched!' },
+  { icon: <Target size={14} />, text: 'Got it!' },
+  { icon: <Zap size={14} />, text: 'Zapped to clipboard!' },
+  { icon: <Wand2 size={14} />, text: 'Poof! Link copied!' },
 ];
 
 /**
@@ -87,12 +88,12 @@ const CopyLinkButton = ({ id, url, copyLink, copiedId, msg, style = {} }) => {
         {isCopied ? (
           <>
             <span style={{ animation: 'popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
-              {msg.emoji}
+              {msg.icon}
             </span>
             <span style={{ animation: 'slideIn 0.25s ease' }}>{msg.text}</span>
           </>
         ) : (
-          <>🔗 Copy Link</>
+          <><Link size={14} /> Copy Link</>
         )}
       </span>
 

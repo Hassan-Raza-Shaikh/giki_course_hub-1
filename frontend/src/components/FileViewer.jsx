@@ -1,3 +1,4 @@
+import { Paperclip, FileText, Image, Film, Presentation, LineChart, Code, Book, ExternalLink, Loader, AlertTriangle, RefreshCw } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { renderAsync } from 'docx-preview';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -101,7 +102,7 @@ const FileViewer = ({ file, onClose }) => {
     const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     return (
       <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px', padding: '40px', borderRadius: '0 0 12px 12px', background: 'var(--bg-subtle)' }}>
-        <div style={{ fontSize: '4rem' }}>📎</div>
+        <div style={{ fontSize: '4rem' }}><Paperclip size={64} color="var(--text-muted)" /></div>
         <p style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text)', textAlign: 'center' }}>
           This file format cannot be previewed directly.
         </p>
@@ -154,7 +155,7 @@ const FileViewer = ({ file, onClose }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1 }}>
             <span style={{ fontSize: '1rem', flexShrink: 0 }}>
-              {fileType === 'pdf' ? '📄' : fileType === 'image' ? '🖼️' : fileType === 'video' ? '🎬' : fileType === 'docx' ? '📝' : fileType === 'pptx' ? '📊' : fileType === 'xlsx' ? '📈' : fileType === 'code' ? '💻' : fileType === 'ipynb' ? '📓' : '📎'}
+              {fileType === 'pdf' ? <FileText size={48}/> : fileType === 'image' ? <Image size={48}/> : fileType === 'video' ? <Film size={48}/> : fileType === 'docx' ? <FileText size={48}/> : fileType === 'pptx' ? <Presentation size={48}/> : fileType === 'xlsx' ? <LineChart size={48}/> : fileType === 'code' ? <Code size={48}/> : fileType === 'ipynb' ? <Book size={48}/> : <Paperclip size={48}/>}
             </span>
             <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {title}
@@ -186,7 +187,7 @@ const FileViewer = ({ file, onClose }) => {
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px',
                 }}
               >
-                📄 Open Full
+                <ExternalLink size={16}/> Open Full
               </button>
             )}
             <button
@@ -250,13 +251,13 @@ const DocxPreview = ({ url }) => {
     <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#4a4a4a', position: 'relative', colorScheme: 'light' }}>
       {status === 'loading' && (
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', background: '#4a4a4a', color: '#e5e7eb', fontSize: '0.95rem', fontWeight: 600 }}>
-          <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⏳</span>
+          <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}><Loader size={24} /></span>
           Rendering document…
         </div>
       )}
       {status === 'error' && (
         <div style={{ padding: '60px', textAlign: 'center', background: '#4a4a4a' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚠️</div>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}><AlertTriangle size={48} color="var(--accent)" /></div>
           <p style={{ fontWeight: 700, color: '#f87171' }}>Could not render this document.</p>
           <p style={{ fontSize: '0.85rem', color: '#9ca3af' }}>The file may be corrupted or in an unsupported format. Try downloading it instead.</p>
         </div>
@@ -310,7 +311,7 @@ const GoogleDocPreview = ({ url, title, type }) => {
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
           gap: '16px', background: 'var(--bg-subtle)',
         }}>
-          <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>{type === 'xlsx' ? '📈' : '📊'}</span>
+          <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>{type === 'xlsx' ? <LineChart size={56} color="var(--primary)"/> : <Presentation size={56} color="var(--primary)"/>}</span>
           <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>Loading document…</p>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', maxWidth: '340px', lineHeight: 1.5 }}>
             Powered by Google Docs Viewer. Large files may take a few seconds to render.
@@ -341,7 +342,7 @@ const GoogleDocPreview = ({ url, title, type }) => {
               fontSize: '0.78rem', cursor: 'pointer', boxShadow: '2px 2px 0 var(--border)',
             }}
           >
-            🔄 Retry
+            <RefreshCw size={16}/> Retry
           </button>
           <a
             href={url}

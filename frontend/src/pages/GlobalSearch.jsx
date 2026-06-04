@@ -264,7 +264,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
 
             {!loading && query && results.files.length === 0 && results.courses.length === 0 && (
               <div style={{ padding: '80px 20px', textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🏜️</div>
+                <div style={{ fontSize: '3rem', marginBottom: '20px' }}><Sunset size={64} color="var(--text-muted)" /></div>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>No results found for "{query}"</h3>
                 <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Try a different search term or adjust your filters.</p>
               </div>

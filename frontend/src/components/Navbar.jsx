@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -276,8 +276,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 {/* Stats row */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
                   {[
-                    { icon: '📤', label: 'Uploads',   val: stats?.uploads   ?? '—' },
-                    { icon: '🔖', label: 'Bookmarks', val: stats?.bookmarks ?? '—' },
+                    { icon: <Upload size={16}/>, label: 'Uploads',   val: stats?.uploads   ?? '—' },
+                    { icon: <Bookmark size={16}/>, label: 'Bookmarks', val: stats?.bookmarks ?? '—' },
                   ].map(s => (
                     <div key={s.label} style={{ padding: '12px 16px', textAlign: 'center', borderRight: s.label === 'Uploads' ? '1px solid var(--border)' : 'none' }}>
                       <div style={{ fontSize: '1.1rem' }}>{s.icon}</div>
@@ -289,11 +289,11 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
                 {/* Quick links */}
                 {[
-                  { icon: '☁️', label: 'Global Upload',   action: () => { setMenuOpen(false); navigate('/upload'); } },
-                  { icon: '🔖', label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
-                  { icon: '🔍', label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
-                  { icon: '📚', label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
-                  { icon: '🚩', label: 'Report an Issue', action: () => { setMenuOpen(false); navigate('/report-issue'); } },
+                  { icon: <Cloud size={16}/>, label: 'Global Upload',   action: () => { setMenuOpen(false); navigate('/upload'); } },
+                  { icon: <Bookmark size={16}/>, label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
+                  { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
+                  { icon: <BookOpen size={16}/>, label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
+                  { icon: <Flag size={16}/>, label: 'Report an Issue', action: () => { setMenuOpen(false); navigate('/report-issue'); } },
                 ].map(link => (
                   <button key={link.label} onClick={link.action}
                     style={{ width: '100%', padding: '11px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: 'var(--text)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s', borderBottom: '1px solid var(--border)' }}
@@ -323,7 +323,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                     onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                     onMouseOut={e => e.currentTarget.style.background = 'none'}
                   >
-                    <span>🛡️</span> Admin Panel
+                    <span><Shield size={16}/></span> Admin Panel
                     <span style={{ marginLeft: 'auto', color: 'var(--text-muted)', fontSize: '0.75rem' }}>→</span>
                   </button>
                 )}
@@ -335,7 +335,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                   onMouseOut={e => e.currentTarget.style.background = 'none'}
                 >
-                  <span>🚪</span> Sign Out
+                  <span><LogOut size={16}/></span> Sign Out
                 </button>
               </div>
             )}

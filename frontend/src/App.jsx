@@ -1,3 +1,4 @@
+import { BookOpen, RefreshCw } from 'lucide-react';
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
@@ -101,7 +102,7 @@ const App = () => {
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-subtle)', padding: '24px' }}>
         <div style={{ textAlign: 'center', maxWidth: '400px', animation: 'fadeIn 0.5s ease' }}>
-          <div style={{ fontSize: '4.5rem', animation: 'float 2s ease-in-out infinite', marginBottom: '28px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.1))' }}>📚</div>
+          <div style={{ fontSize: '4.5rem', animation: 'float 2s ease-in-out infinite', marginBottom: '28px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.1))' }}><BookOpen size={64} color="var(--primary)" /></div>
           <h2 style={{ fontWeight: 900, color: 'var(--primary)', fontFamily: 'var(--font-primary)', fontSize: '1.6rem', marginBottom: '14px', letterSpacing: '-0.02em' }}>Initializing GIKI Hub...</h2>
           <p style={{ color: 'var(--text-muted)', lineHeight: 1.6, fontSize: '0.95rem' }}>
             Waking up the server. This may take up to 30 seconds if the site hasn't been visited in a while.
@@ -132,7 +133,7 @@ const App = () => {
               onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px var(--text)'; }}
               onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px var(--text)'; }}
             >
-              <span>🔄</span> Refresh Page
+              <span><RefreshCw size={16} /></span> Refresh Page
             </button>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '16px', fontWeight: 600 }}>
               Stuck? Click refresh to try again.

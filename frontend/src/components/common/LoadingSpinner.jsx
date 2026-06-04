@@ -1,3 +1,4 @@
+import { Loader } from 'lucide-react';
 import React from 'react';
 
 const LoadingSpinner = ({ 
@@ -6,7 +7,7 @@ const LoadingSpinner = ({
 }) => {
   return (
     <div style={{ textAlign: 'center', padding: '80px 24px' }}>
-      <div style={{ fontSize: '2.5rem', marginBottom: '20px' }}>⏳</div>
+      <div style={{ fontSize: '2.5rem', marginBottom: '20px' }}><Loader size={40} color="var(--primary)" /></div>
       <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--primary)', marginBottom: '10px', fontFamily: 'var(--font-primary)' }}>
         {message}
       </div>

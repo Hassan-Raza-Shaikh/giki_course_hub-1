@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw } from 'lucide-react';
 
 
 /* ── tiny helpers ──────────────────────────────────────────────────── */
@@ -573,7 +573,7 @@ const AdminPanel = ({ user }) => {
 
   const revokeAdmin = async (email) => {
     setConfirmModal({
-      title: '🚫 Revoke Admin',
+      title: 'Revoke Admin',
       body: `Remove admin privileges from ${email}? They will lose access to this panel immediately.`,
       danger: true,
       onConfirm: async () => {
@@ -594,9 +594,9 @@ const AdminPanel = ({ user }) => {
   );
 
   const TABS = [
-    { key: 'pending', label: `⏳ Pending (${stats?.pending_files ?? '…'})` },
-    { key: 'reports', label: `🚩 Content Flags (${reportCounts.pending ?? 0})` },
-    { key: 'issues',  label: `🛠️ Platform Issues (${issueCounts.open ?? 0})` },
+    { key: 'pending', label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Clock size={16} /> Pending ({stats?.pending_files ?? '…'})</div> },
+    { key: 'reports', label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Flag size={16} /> Content Flags ({reportCounts.pending ?? 0})</div> },
+    { key: 'issues',  label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Wrench size={16} /> Platform Issues ({issueCounts.open ?? 0})</div> },
     { key: 'courses', label: <><BookOpen size={16} /> Courses</> },
     { key: 'instructors', label: <><GraduationCap size={16} /> Instructors</> },
     { key: 'stats_detailed', label: <><BarChart3 size={16} /> Stats</> },
@@ -1128,7 +1128,7 @@ const AdminPanel = ({ user }) => {
             {/* Course Form */}
             <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
               <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'var(--font-primary)' }}>
-                {editingCourse ? '<Edit3 size={14} /> Edit Course' : '📚 Add New Course'}
+                {editingCourse ? '<Edit3 size={14} /> Edit Course' : <><BookOpen size={16} /> Add New Course</>}
                 {editingCourse && <button type="button" onClick={() => {
                   setEditingCourse(null);
                   setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });

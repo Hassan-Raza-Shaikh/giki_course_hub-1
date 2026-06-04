@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, Lock, CheckCircle, AlertTriangle, Clock, XCircle } from 'lucide-react';
 import api from '../services/api';
 
 const BulkUploader = ({ 
@@ -268,7 +268,7 @@ const BulkUploader = ({
   if (!user) {
     return (
       <div style={{ textAlign: 'center', padding: '32px 0' }}>
-        <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🔐</div>
+        <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}><Lock size={48} color="var(--text-muted)" /></div>
         <p style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1.1rem', marginBottom: '16px' }}>Sign in to upload materials</p>
         <button className="btn-primary" onClick={onSignIn}>Sign In with Google</button>
       </div>
@@ -278,7 +278,7 @@ const BulkUploader = ({
   if (uploadSuccess) {
     return (
       <div style={{ textAlign: 'center', padding: '32px 0', animation: 'scaleIn 0.3s ease' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✅</div>
+        <div style={{ fontSize: '3rem', marginBottom: '16px' }}><CheckCircle size={56} color="#10B981" /></div>
         <p style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '8px' }}>
           {uploadSummary && uploadSummary.total_uploaded > 1 ? `${uploadSummary.total_uploaded} files submitted!` : 'Material submitted!'}
         </p>
@@ -286,7 +286,7 @@ const BulkUploader = ({
           {isAdmin ? 'Your files have been directly uploaded and are now live.' : 'Your contribution is pending admin review and will go live once approved.'}
         </p>
         {uploadSummary && uploadSummary.total_skipped > 0 && (
-          <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '16px' }}>⚠️ {uploadSummary.total_skipped} file(s) were skipped (duplicates or errors).</p>
+          <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '16px' }}><AlertTriangle size={14} style={{display: 'inline', verticalAlign: 'text-bottom'}} /> {uploadSummary.total_skipped} file(s) were skipped (duplicates or errors).</p>
         )}
         <button className="btn-primary" onClick={() => { setUploadSuccess(false); setUploadQueue([]); setUploadSummary(null); }}>Upload More</button>
       </div>
@@ -405,7 +405,7 @@ const BulkUploader = ({
             Upload Queue ({uploadQueue.length}/{MAX_FILES})
           </label>
           {uploadQueue.map((item, idx) => {
-            const statusIcon = { queued: '⏳', uploading: '⬆️', done: '✅', error: '❌', skipped: '⚠️' }[item.status] || '⏳';
+            const statusIcon = { queued: <Clock size={16}/>, uploading: <UploadCloud size={16}/>, done: <CheckCircle size={16} color="#10B981"/>, error: <XCircle size={16} color="#EF4444"/>, skipped: <AlertTriangle size={16} color="#F59E0B"/> }[item.status] || <Clock size={16}/>;
             const isEditable = item.status === 'queued';
             const sizeMB = (item.file.size / 1024 / 1024).toFixed(1);
             const maxMB = getMaxSizeMB(item.category_id);
