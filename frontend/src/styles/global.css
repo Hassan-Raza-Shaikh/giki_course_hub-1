@@ -877,3 +877,21 @@ input::placeholder, textarea::placeholder {
   table-layout: auto !important;
   word-break: break-word !important;
 }
+
+/* ── Mobile Font Sizing & Overflow Protection for Wide Custom Fonts ── */
+@media (max-width: 768px) {
+  /* Scale down the base root font size (rem) for exceptionally wide pixel/retro fonts */
+  html[data-theme='pacman'] { font-size: 11px; }
+  html[data-theme='minecraft'] { font-size: 13px; }
+  html[data-theme='matrix'] { font-size: 14px; }
+  html[data-theme='cyberpunk'] { font-size: 14px; }
+
+  /* Ensure text breaks gracefully rather than overflowing horizontal bounds on small screens */
+  html[data-theme='pacman'] body,
+  html[data-theme='minecraft'] body,
+  html[data-theme='matrix'] body,
+  html[data-theme='cyberpunk'] body {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
