@@ -222,7 +222,11 @@ def list_courses_flat():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT course_id, code, name, icon FROM courses ORDER BY code;")
+        cur.execute("""
+            SELECT DISTINCT ON (code) course_id, code, name, icon 
+            FROM courses 
+            ORDER BY code, year DESC, semester DESC;
+        """)
         rows = cur.fetchall()
         cur.close()
         courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘'} for r in rows]
@@ -930,12 +934,20 @@ def bulk_upload_file(course_id, batch_id):
             limit_mb = max_size // (1024 * 1024)
             return jsonify({"success": False, "message": f"File exceeds {limit_mb}MB limit for {category_name}."}), 400
 
-        cur.execute("SELECT code, name FROM courses WHERE course_id = %s;", (course_id,))
+        cur.execute("SELECT code, name, is_lab FROM courses WHERE course_id = %s;", (course_id,))
         course_row = cur.fetchone()
         if not course_row:
             cur.close()
             return jsonify({"success": False, "message": "Course not found."}), 404
         course_code = course_row[0] or course_row[1]
+        is_lab = course_row[2]
+
+        # Validate: lab-only categories cannot be uploaded to non-lab courses
+        cur.execute("SELECT is_lab_category FROM categories WHERE category_id = %s;", (category_id,))
+        cat_res = cur.fetchone()
+        if cat_res and cat_res[0] and not is_lab:
+            cur.close()
+            return jsonify({"success": False, "message": "Lab materials can only be uploaded to lab courses."}), 400
 
         # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)
