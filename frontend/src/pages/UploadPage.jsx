@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import BulkUploader from '../components/BulkUploader';
-import { useTheme } from '../context/ThemeContext';
 
 const UploadPage = ({ user, onSignIn }) => {
   const [categories, setCategories] = useState([]);
