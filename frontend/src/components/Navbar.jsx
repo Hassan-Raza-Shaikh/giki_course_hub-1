@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Flame, LogIn } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -54,7 +54,6 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   }, [user]);
 
   const { theme, toggleTheme } = useTheme();
-  const isDark = theme === 'dark';
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -75,18 +74,18 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="btn-nav"
           onClick={toggleTheme}
-          style={{ background: 'var(--accent)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
+          style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)' }}
         >
           <span className="hide-mobile" style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px' }}>
-            {theme === 'light' ? 'Light' : 'Ember'}
+            {theme === 'light' ? 'Light' : theme === 'dark' ? 'Ember' : 'Dusk'}
           </span>
-          {isDark ? <Flame size={16} strokeWidth={2.5} /> : <Sun size={16} strokeWidth={2.5} />}
+          {theme === 'dark' ? <Moon size={16} strokeWidth={2.5} /> : theme === 'dusk' ? <Cloud size={16} strokeWidth={2.5} /> : <Sun size={16} strokeWidth={2.5} />}
         </button>
 
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/upload')}
-          style={{ background: 'var(--primary)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
+          style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)' }}
         >
           <Upload size={16} strokeWidth={2.5} /> Upload
         </button>
@@ -94,7 +93,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/courses')}
-          style={{ background: 'var(--secondary)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
+          style={{ background: 'var(--secondary)', color: 'var(--nav-btn-text)' }}
         >
           <BookOpen size={16} strokeWidth={2.5} /> Courses
         </button>
@@ -102,7 +101,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/search')}
-          style={{ background: 'var(--electric)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
+          style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)' }}
         >
           <Search size={16} strokeWidth={2.5} /> Search
           <kbd style={{
@@ -123,7 +122,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/bookmarks')}
-          style={{ background: 'var(--tertiary)', color: isDark ? 'var(--bg-dark)' : 'var(--bg-hero)' }}
+          style={{ background: 'var(--tertiary)', color: 'var(--nav-btn-text)' }}
         >
           <Bookmark size={16} strokeWidth={2.5} /> Bookmarks
         </button>

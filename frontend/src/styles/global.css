@@ -35,6 +35,7 @@ body { overflow-x: hidden; }
   --radius-lg:  16px;
   --radius-xl:  24px;
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-btn-text: #FFFFFF;
 }
 
 /* ── Electric Ember Dark Mode ── */
@@ -62,6 +63,35 @@ body { overflow-x: hidden; }
   --shadow-sm:  4px 4px 0px #F59E0B;
   --shadow-md:  8px 8px 0px #A3E635;
   --shadow-lg:  12px 12px 0px #F472B6;
+  --nav-btn-text: #000000;
+}
+
+/* ── Dusk Mode (Nord + Solarized Mix) ── */
+[data-theme='dusk'] {
+  --primary:      #5FB3B3;   /* Frosty Teal */
+  --primary-dark: #4F9B9B;
+  --primary-mid:  #66C2C2;
+  --secondary:    #F99157;   /* Warm Peach */
+  --accent:       #99C794;   /* Muted Green */
+
+  --bg-hero:    #21333D;
+  --bg-dark:    #152027;
+  --bg-subtle:  #263B46;
+  --bg-white:   #343D46;
+  --bg-body:    #1B2B34;     /* Oceanic Slate */
+
+  --text:       #D8DEE9;     /* Nord Snow */
+  --text-muted: #A6B2C0;
+  --text-light: #65737E;
+  
+  --tertiary:   #C594C5;     /* Soft Lavender */
+  --electric:   #FAC863;     /* Muted Yellow */
+
+  --border:     #4F5B66;
+  --shadow-sm:  4px 4px 0px #4F5B66;
+  --shadow-md:  8px 8px 0px #5FB3B3;
+  --shadow-lg:  12px 12px 0px #F99157;
+  --nav-btn-text: #1B2B34;
 }
 
 body {
