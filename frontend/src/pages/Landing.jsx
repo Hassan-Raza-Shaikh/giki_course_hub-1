@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Search, ChevronDown, CheckCircle2, Zap, ArrowRight, UserPlus, UploadCloud, BookOpen } from 'lucide-react';
+import IconMapper from '../components/IconMapper';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import { Library, GraduationCap, Building2, Unlock, FolderOpen, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
+import { Library, GraduationCap, Building2, Unlock, FolderOpen, Sparkles } from 'lucide-react';
 
 const QUOTES = [
   '"Education is the most powerful weapon which you can use to change the world."',
@@ -200,7 +202,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                       background: ['var(--primary)', 'var(--secondary)', 'var(--accent)'][i % 3],
                     }} />
                     <div style={{ marginBottom: '20px', color: 'var(--text)' }}>
-                      {course.icon ? <span style={{ fontSize: '2.8rem' }}>{course.icon}</span> : <BookOpen size={40} strokeWidth={1.5} />}
+                      {course.icon ? <IconMapper emoji={course.icon} size={44} /> : <BookOpen size={40} strokeWidth={1.5} />}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                       <span style={{

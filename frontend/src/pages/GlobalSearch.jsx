@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
+import IconMapper from '../components/IconMapper';
 import ScrollReveal from '../components/ScrollReveal';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -200,7 +201,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                       onMouseOut={e => e.currentTarget.style.transform = 'none'}
                     >
                       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                        <div style={{ fontSize: '1.8rem' }}>{course.icon}</div>
+                        <div style={{ fontSize: '1.8rem', display: 'flex', alignItems: 'center' }}><IconMapper emoji={course.icon} size={28} /></div>
                         <div>
                           <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem' }}>{course.name}</div>
                           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{course.code} · {course.faculty}</div>

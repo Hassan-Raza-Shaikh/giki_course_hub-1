@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import IconMapper from '../components/IconMapper';
 import {
   FileText, FileEdit, Presentation, HelpCircle,
   ClipboardList, FlaskConical, Terminal, Library, Search
@@ -245,7 +246,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
             border: '2px solid var(--text)',
             boxShadow: open ? '4px 4px 0px var(--text)' : '2px 2px 0px var(--text)',
           }}>
-            {faculty.icon}
+            <div style={{ display: 'flex', alignItems: 'center' }}><IconMapper emoji={faculty.icon} size={28} /></div>
           </div>
           <div>
             <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '1.25rem', color: open ? 'white' : 'var(--primary)' }}>

@@ -6,6 +6,7 @@ import FileViewer from '../components/FileViewer';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import IconMapper from '../components/IconMapper';
 import {
   FileText, FileEdit, Presentation, HelpCircle,
   ClipboardList, Archive, FlaskConical, Terminal,
@@ -246,7 +247,7 @@ const CoursePage = ({ user, onSignIn }) => {
           </button>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
-            <div style={{ fontSize: '3.5rem', filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.1))', lineHeight: 1 }}>{course.icon || '📘'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.1))', lineHeight: 1 }}><IconMapper emoji={course.icon} size={56} /></div>
             <div style={{ flex: 1, minWidth: '220px' }}>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap' }}>
                 <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
