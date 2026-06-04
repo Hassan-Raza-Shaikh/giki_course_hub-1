@@ -211,8 +211,6 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 maxHeight: 'min(520px, calc(100vh - 100px))',
                 overflowY: 'auto',
                 zIndex: 9999,
-                // On very small screens push it away from the right edge
-                ...(window.innerWidth < 400 ? { right: 'auto', left: '50%', transform: 'translateX(-50%)' } : {}),
               }}>
                 {/* Top accent */}
                 <div style={{ height: '5px', background: 'var(--primary)' }} />
