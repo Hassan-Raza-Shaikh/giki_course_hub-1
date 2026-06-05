@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Iceberg&family=Syne+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Iceberg&family=Syne+Mono&family=MedievalSharp&display=swap');
 
 /* ── Reset ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1102,6 +1102,31 @@ input::placeholder, textarea::placeholder {
   --shadow-md:    8px 8px 0px #370617;
   --shadow-lg:    12px 12px 0px #03071E;
   --nav-btn-text: #6A040F;
+}
+
+/* ── LOTR ── */
+[data-theme='lotr'] {
+  --font-primary: 'MedievalSharp', serif;
+  --primary:      #D4AF37;
+  --primary-dark: #AA8C2C;
+  --primary-mid:  #E5C158;
+  --secondary:    #8B4513;
+  --accent:       #DAA520;
+  --tertiary:     #CD853F;
+  --electric:     #FFDF00;
+  --bg-hero:      #1A2421;
+  --bg-dark:      #131B19;
+  --bg-subtle:    #222F2A;
+  --bg-white:     #1E2A25;
+  --bg-body:      #131B19;
+  --text:         #FDE2B5;
+  --text-muted:   #C1A982;
+  --text-light:   #A39171;
+  --border:       #D4AF37;
+  --shadow-sm:    4px 4px 0px #0D1311;
+  --shadow-md:    8px 8px 0px #1A2421;
+  --shadow-lg:    12px 12px 0px #D4AF37;
+  --nav-btn-text: #131B19;
 }
 
 /* ── Mobile Font Sizing & Overflow Protection for Wide Custom Fonts ── */
