@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -77,7 +77,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'minimal', name: 'Minimal', icon: <Box size={14} /> },
     { id: 'discord', name: 'Midnight', icon: <Ghost size={14} /> },
     { id: 'vaporwave', name: 'Vaporwave', icon: <Sun size={14} /> },
-    { id: 'gruvbox', name: 'Gruvbox', icon: <Terminal size={14} /> }
+    { id: 'gruvbox', name: 'Gruvbox', icon: <Terminal size={14} /> },
+    { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
+    { id: 'fire', name: 'Fire', icon: <Flame size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];

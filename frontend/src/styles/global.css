@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Share+Tech+Mono&family=Cinzel:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Iceberg&family=Syne+Mono&display=swap');
 
 /* ── Reset ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1052,6 +1052,56 @@ input::placeholder, textarea::placeholder {
   width: 100% !important;
   table-layout: auto !important;
   word-break: break-word !important;
+}
+
+/* ── Frozen ── */
+[data-theme='frozen'] {
+  --font-primary: 'Iceberg', cursive;
+  --primary:      #00BFFF;
+  --primary-dark: #1E90FF;
+  --primary-mid:  #87CEFA;
+  --secondary:    #E0FFFF;
+  --accent:       #40E0D0;
+  --tertiary:     #AFEEEE;
+  --electric:     #00FFFF;
+  --bg-hero:      #F0F8FF;
+  --bg-dark:      #B0E0E6;
+  --bg-subtle:    #E6F2F5;
+  --bg-white:     #FFFFFF;
+  --bg-body:      #F0F8FF;
+  --text:         #00008B;
+  --text-muted:   #4682B4;
+  --text-light:   #5F9EA0;
+  --border:       #87CEEB;
+  --shadow-sm:    4px 4px 0px #87CEEB;
+  --shadow-md:    8px 8px 0px #00BFFF;
+  --shadow-lg:    12px 12px 0px #1E90FF;
+  --nav-btn-text: #00008B;
+}
+
+/* ── Fire ── */
+[data-theme='fire'] {
+  --font-primary: 'Syne Mono', monospace;
+  --primary:      #FF4500;
+  --primary-dark: #8B0000;
+  --primary-mid:  #FF8C00;
+  --secondary:    #FFD700;
+  --accent:       #FF0000;
+  --tertiary:     #FFA500;
+  --electric:     #FFFF00;
+  --bg-hero:      #050000;
+  --bg-dark:      #000000;
+  --bg-subtle:    #1A0500;
+  --bg-white:     #0A0000;
+  --bg-body:      #050000;
+  --text:         #FF8C00;
+  --text-muted:   #B22222;
+  --text-light:   #8B0000;
+  --border:       #FF4500;
+  --shadow-sm:    4px 4px 0px #8B0000;
+  --shadow-md:    8px 8px 0px #FF4500;
+  --shadow-lg:    12px 12px 0px #FFD700;
+  --nav-btn-text: #000000;
 }
 
 /* ── Mobile Font Sizing & Overflow Protection for Wide Custom Fonts ── */
