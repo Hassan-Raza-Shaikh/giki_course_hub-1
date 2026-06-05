@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw, Sparkles, Activity, Flame, Info, Users, Bookmark, Gem, Folder, Pin, Plus, PieChart, GraduationCap, Link, FlaskConical, Archive, PartyPopper, BarChart3 } from 'lucide-react';
+import IconMapper from '../components/IconMapper';
 
 
 /* ── tiny helpers ──────────────────────────────────────────────────── */
@@ -1074,7 +1075,7 @@ const AdminPanel = ({ user }) => {
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}>👁 View File</a>
                   <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><Flag size={14} /> Resolve</button>
-                  <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}><Zzz size={14} /> Dismiss</button>
+                  <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}><Archive size={14} /> Dismiss</button>
                 </div>
                 
                 <div style={{ marginTop: '4px', paddingTop: '16px', borderTop: '1px dashed var(--border)' }}>
