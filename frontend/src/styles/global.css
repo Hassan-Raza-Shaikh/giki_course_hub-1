@@ -1057,51 +1057,51 @@ input::placeholder, textarea::placeholder {
 /* ── Frozen ── */
 [data-theme='frozen'] {
   --font-primary: 'Iceberg', cursive;
-  --primary:      #00BFFF;
-  --primary-dark: #1E90FF;
-  --primary-mid:  #87CEFA;
-  --secondary:    #E0FFFF;
-  --accent:       #40E0D0;
-  --tertiary:     #AFEEEE;
+  --primary:      #00A8FF;
+  --primary-dark: #0077B6;
+  --primary-mid:  #48CAE4;
+  --secondary:    #90E0EF;
+  --accent:       #00F5FF;
+  --tertiary:     #CAF0F8;
   --electric:     #00FFFF;
-  --bg-hero:      #F0F8FF;
-  --bg-dark:      #B0E0E6;
-  --bg-subtle:    #E6F2F5;
-  --bg-white:     #FFFFFF;
-  --bg-body:      #F0F8FF;
-  --text:         #00008B;
-  --text-muted:   #4682B4;
-  --text-light:   #5F9EA0;
-  --border:       #87CEEB;
-  --shadow-sm:    4px 4px 0px #87CEEB;
+  --bg-hero:      #C6E5F3;
+  --bg-dark:      #A3D5ED;
+  --bg-subtle:    #DDF0F9;
+  --bg-white:     #E8F6FA;
+  --bg-body:      #C6E5F3;
+  --text:         #023E8A;
+  --text-muted:   #0077B6;
+  --text-light:   #0096C7;
+  --border:       #90E0EF;
+  --shadow-sm:    4px 4px 0px #90E0EF;
   --shadow-md:    8px 8px 0px #00BFFF;
-  --shadow-lg:    12px 12px 0px #1E90FF;
-  --nav-btn-text: #00008B;
+  --shadow-lg:    12px 12px 0px #0077B6;
+  --nav-btn-text: #023E8A;
 }
 
 /* ── Fire ── */
 [data-theme='fire'] {
   --font-primary: 'Syne Mono', monospace;
-  --primary:      #FF4500;
-  --primary-dark: #8B0000;
-  --primary-mid:  #FF8C00;
-  --secondary:    #FFD700;
-  --accent:       #FF0000;
-  --tertiary:     #FFA500;
+  --primary:      #FFB703;
+  --primary-dark: #FB8500;
+  --primary-mid:  #FFD166;
+  --secondary:    #FF9E00;
+  --accent:       #FFEA00;
+  --tertiary:     #E85D04;
   --electric:     #FFFF00;
-  --bg-hero:      #050000;
-  --bg-dark:      #000000;
-  --bg-subtle:    #1A0500;
-  --bg-white:     #0A0000;
-  --bg-body:      #050000;
-  --text:         #FF8C00;
-  --text-muted:   #B22222;
-  --text-light:   #8B0000;
-  --border:       #FF4500;
-  --shadow-sm:    4px 4px 0px #8B0000;
-  --shadow-md:    8px 8px 0px #FF4500;
-  --shadow-lg:    12px 12px 0px #FFD700;
-  --nav-btn-text: #000000;
+  --bg-hero:      #9D0208;
+  --bg-dark:      #6A040F;
+  --bg-subtle:    #D00000;
+  --bg-white:     #BA1826;
+  --bg-body:      #9D0208;
+  --text:         #FFFFFF;
+  --text-muted:   #FFEA00;
+  --text-light:   #FFD166;
+  --border:       #FFB703;
+  --shadow-sm:    4px 4px 0px #6A040F;
+  --shadow-md:    8px 8px 0px #370617;
+  --shadow-lg:    12px 12px 0px #03071E;
+  --nav-btn-text: #6A040F;
 }
 
 /* ── Mobile Font Sizing & Overflow Protection for Wide Custom Fonts ── */
