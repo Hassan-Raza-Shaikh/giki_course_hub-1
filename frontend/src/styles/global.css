@@ -49,17 +49,17 @@ body { overflow-x: hidden; }
   --primary-dark: #B51C18;
   --primary-mid:  #FF423E;
   --secondary:    #43B047;
-  --accent:       #FBD000;
+  --accent:       #C84C0C; /* Brick Brown */
   --tertiary:     #0057B7;
   --electric:     #43B047;
   --bg-hero:      #5C94FC;
-  --bg-dark:      #000000;
-  --bg-subtle:    #2C2C2C;
-  --bg-white:     #1E1E1E;
+  --bg-dark:      #2C2C2C;
+  --bg-subtle:    #B4D0FF;
+  --bg-white:     #FFFFFF; /* White cards */
   --bg-body:      #5C94FC;
-  --text:         #FFFFFF;
-  --text-muted:   #E0E0E0;
-  --text-light:   #B0B0B0;
+  --text:         #000000;
+  --text-muted:   #003B8E; /* Deep Blue for subtext */
+  --text-light:   #555555;
   --border:       #000000;
   --shadow-sm:    4px 4px 0px #000000;
   --shadow-md:    8px 8px 0px #000000;
