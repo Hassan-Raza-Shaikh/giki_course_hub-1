@@ -265,11 +265,6 @@
                                     "ch": 2
                                 },
                                 {
-                                    "code": "CX3xx",
-                                    "name": "Area Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "HM112",
                                     "name": "Ideology and Constitution of Pakistan",
                                     "ch": 2
@@ -279,11 +274,6 @@
                         {
                             "semester": 7,
                             "courses": [
-                                {
-                                    "code": "AI4xx",
-                                    "name": "Technical Elective",
-                                    "ch": 3
-                                },
                                 {
                                     "code": "CS478",
                                     "name": "Design & Analysis of Algorithms",
@@ -297,11 +287,6 @@
                                 {
                                     "code": "CS493",
                                     "name": "Scientific Communication",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective II",
                                     "ch": 3
                                 }
                             ]
@@ -333,11 +318,6 @@
                                     "code": "HM323",
                                     "name": "Civics and Community Engagement",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective III",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -595,11 +575,6 @@
                                     "ch": 2
                                 },
                                 {
-                                    "code": "CX3xx",
-                                    "name": "Area Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "HM112",
                                     "name": "Ideology and Constitution of Pakistan",
                                     "ch": 2
@@ -622,16 +597,6 @@
                                 {
                                     "code": "CS493",
                                     "name": "Scientific Communication",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CS4xx",
-                                    "name": "Technical Elective",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective II",
                                     "ch": 3
                                 }
                             ]
@@ -663,11 +628,6 @@
                                     "code": "HM323",
                                     "name": "Civics and Community Engagement",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective III",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -831,12 +791,12 @@
                                 },
                                 {
                                     "code": "CE231",
-                                    "name": "Electronics – I",
+                                    "name": "Electronics \u2013 I",
                                     "ch": 3
                                 },
                                 {
                                     "code": "CE231L",
-                                    "name": "Electronics – I Lab",
+                                    "name": "Electronics \u2013 I Lab",
                                     "ch": 1
                                 },
                                 {
@@ -973,22 +933,12 @@
                                     "code": "CS481",
                                     "name": "Senior Design Project (Part-I)",
                                     "ch": 3
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective I",
-                                    "ch": 3
                                 }
                             ]
                         },
                         {
                             "semester": 8,
                             "courses": [
-                                {
-                                    "code": "CE4xx",
-                                    "name": "Technical Elective",
-                                    "ch": 3
-                                },
                                 {
                                     "code": "CS465",
                                     "name": "Data and Network Security",
@@ -1008,11 +958,6 @@
                                     "code": "HM323",
                                     "name": "Civics and Community Engagement",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective II",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -1295,16 +1240,6 @@
                                     "ch": 3
                                 },
                                 {
-                                    "code": "CS4xx",
-                                    "name": "Technical Elective",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "CY412",
                                     "name": "Cryptography",
                                     "ch": 3
@@ -1338,11 +1273,6 @@
                                     "code": "HM323",
                                     "name": "Civics and Community Engagement",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective II",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -1640,16 +1570,6 @@
                                     "ch": 3
                                 },
                                 {
-                                    "code": "CS4xx",
-                                    "name": "Technical Elective",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "DS471",
                                     "name": "Data Engineering",
                                     "ch": 2
@@ -1683,11 +1603,6 @@
                                     "code": "HM323",
                                     "name": "Civics and Community Engagement",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective II",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -1983,16 +1898,6 @@
                                     "code": "CS493",
                                     "name": "Scientific Communication",
                                     "ch": 3
-                                },
-                                {
-                                    "code": "CS4xx",
-                                    "name": "Technical Elective",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective I",
-                                    "ch": 3
                                 }
                             ]
                         },
@@ -2023,11 +1928,6 @@
                                     "code": "HM323",
                                     "name": "Civics and Community Engagement",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "CX4xx",
-                                    "name": "Area Elective III",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -2350,11 +2250,6 @@
                                     "ch": 3
                                 },
                                 {
-                                    "code": "ES4xx",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "EE441L",
                                     "name": "Digital Signal Processing Lab",
                                     "ch": 1
@@ -2387,21 +2282,6 @@
                                 {
                                     "code": "EE492",
                                     "name": "Senior Design Project (Part-II)",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective II",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective III",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS49x",
-                                    "name": "Management Elective I",
                                     "ch": 3
                                 },
                                 {
@@ -2725,11 +2605,6 @@
                                     "ch": 3
                                 },
                                 {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "EE441L",
                                     "name": "Digital Signal Processing Lab",
                                     "ch": 1
@@ -2762,21 +2637,6 @@
                                 {
                                     "code": "EE492",
                                     "name": "Senior Design Project (Part-II)",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective II",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective III",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS49x",
-                                    "name": "Management Elective I",
                                     "ch": 3
                                 },
                                 {
@@ -3100,11 +2960,6 @@
                                     "ch": 3
                                 },
                                 {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "EE441L",
                                     "name": "Digital Signal Processing Lab",
                                     "ch": 1
@@ -3132,21 +2987,6 @@
                                 {
                                     "code": "EE492",
                                     "name": "Senior Design Project (Part-II)",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective II",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective III",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS49x",
-                                    "name": "Management Elective I",
                                     "ch": 3
                                 },
                                 {
@@ -3470,11 +3310,6 @@
                                     "ch": 2
                                 },
                                 {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "EE491",
                                     "name": "Senior Design Project (Part-I)",
                                     "ch": 3
@@ -3512,16 +3347,6 @@
                                 {
                                     "code": "EE492",
                                     "name": "Senior Design Project (Part-II)",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "EE/CS/ES4xx",
-                                    "name": "Technical Elective II",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS49x",
-                                    "name": "Management Elective I",
                                     "ch": 3
                                 },
                                 {
@@ -3733,16 +3558,6 @@
                                     "code": "MS361",
                                     "name": "Operations and Supply Chain Management",
                                     "ch": 3
-                                },
-                                {
-                                    "code": "MS3XX",
-                                    "name": "Management Elective 1",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS3XX",
-                                    "name": "Management Elective 2",
-                                    "ch": 3
                                 }
                             ]
                         },
@@ -3768,16 +3583,6 @@
                                     "code": "MS362",
                                     "name": "Decision Analysis",
                                     "ch": 3
-                                },
-                                {
-                                    "code": "MS3XX",
-                                    "name": "Management Elective 3",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS3XX",
-                                    "name": "Management Elective 4",
-                                    "ch": 3
                                 }
                             ]
                         },
@@ -3787,21 +3592,6 @@
                                 {
                                     "code": "MS463",
                                     "name": "Project Management",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "MS4XX",
-                                    "name": "Management Elective 5",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "AF/EM/SC 4XX",
-                                    "name": "Specialization I",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "AF/EM/SC 4XX",
-                                    "name": "Specialization II",
                                     "ch": 3
                                 },
                                 {
@@ -3822,16 +3612,6 @@
                                 {
                                     "code": "MS445",
                                     "name": "Contemporary Issues in Global Economics",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "AF/EM/SC 4XX",
-                                    "name": "Specialization III",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "AF/EM/SC 4XX",
-                                    "name": "Specialization IV",
                                     "ch": 3
                                 },
                                 {
@@ -4143,16 +3923,6 @@
                                     "code": "CH481",
                                     "name": "Chemical Engg. Project Design-I",
                                     "ch": 3
-                                },
-                                {
-                                    "code": "XXXXX",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "XXXXX",
-                                    "name": "Management Elective I",
-                                    "ch": 3
                                 }
                             ]
                         },
@@ -4183,16 +3953,6 @@
                                     "code": "HM212",
                                     "name": "Ideology and Constitution of Pakistan",
                                     "ch": 2
-                                },
-                                {
-                                    "code": "XXXXX",
-                                    "name": "Technical Elective II",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "XXXXX",
-                                    "name": "Management Elective II",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -4508,11 +4268,6 @@
                                     "code": "CH474L",
                                     "name": "Petroleum Processes Simulation Lab",
                                     "ch": 1
-                                },
-                                {
-                                    "code": "XXXXX",
-                                    "name": "Management Elective I",
-                                    "ch": 3
                                 }
                             ]
                         },
@@ -4548,11 +4303,6 @@
                                     "code": "HM212",
                                     "name": "Ideology and Constitution of Pakistan",
                                     "ch": 2
-                                },
-                                {
-                                    "code": "XXXXX",
-                                    "name": "Management Elective II",
-                                    "ch": 3
                                 }
                             ]
                         }
@@ -4850,16 +4600,6 @@
                             "semester": 7,
                             "courses": [
                                 {
-                                    "code": "MS49x",
-                                    "name": "Management Electives I",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "ME4xx",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "ME464",
                                     "name": "System Dynamics and Control",
                                     "ch": 3
@@ -4890,23 +4630,8 @@
                             "semester": 8,
                             "courses": [
                                 {
-                                    "code": "MS49x",
-                                    "name": "Management Elective II",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "ME467",
                                     "name": "Finite Element Analysis",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "ME4xx",
-                                    "name": "Technical Electives II",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "ME4xx",
-                                    "name": "Technical Elective III",
                                     "ch": 3
                                 },
                                 {
@@ -5270,11 +4995,6 @@
                                     "ch": 1
                                 },
                                 {
-                                    "code": "CVxxx",
-                                    "name": "Technical Elective I",
-                                    "ch": 3
-                                },
-                                {
                                     "code": "CV481",
                                     "name": "Senior Design Project I",
                                     "ch": 3
@@ -5297,11 +5017,6 @@
                                 {
                                     "code": "CV452",
                                     "name": "Construction Management",
-                                    "ch": 3
-                                },
-                                {
-                                    "code": "CVxxx",
-                                    "name": "Technical Elective II",
                                     "ch": 3
                                 },
                                 {
