@@ -1037,7 +1037,7 @@ const AdminPanel = ({ user }) => {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1rem' }}>{f.title}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                        {f.course_code} · {f.category}
+                        {f.course_code} · {f.category} · {fmtSize(f.file_size)}
                       </div>
                     </div>
                   </div>
