@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw, Sparkles, Activity, Flame, Info, Users, Bookmark, Gem, Folder, Pin, Plus, PieChart, GraduationCap, Link, FlaskConical, Archive, PartyPopper, BarChart3 } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw, Sparkles, Activity, Flame, Info, Users, Bookmark, Gem, Folder, Pin, Plus, PieChart, GraduationCap, Link, FlaskConical, Archive, PartyPopper, BarChart3, Eye, Download } from 'lucide-react';
 import IconMapper from '../components/IconMapper';
 
 
@@ -298,7 +298,7 @@ const AdminPanel = ({ user }) => {
 
   const deleteFile = async (id, title) => {
     setConfirmModal({
-      title: '🗑 Delete File',
+      title: <><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete File</>,
       body: `Permanently delete "${title}"? This cannot be undone.`,
       danger: true,
       onConfirm: async () => {
@@ -475,7 +475,7 @@ const AdminPanel = ({ user }) => {
 
   const deleteIssue = async (id, title) => {
     setConfirmModal({
-      title: '🗑 Delete Issue Report',
+      title: <><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete Issue Report</>,
       body: `Permanently delete the report "${title}"?`,
       danger: true,
       onConfirm: async () => {
@@ -521,7 +521,7 @@ const AdminPanel = ({ user }) => {
 
   const deleteCourse = async (id, name) => {
     setConfirmModal({
-      title: '🗑 Delete Course',
+      title: <><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete Course</>,
       body: `Permanently delete "${name}" and ALL its uploaded files (PDFs, slides, etc.) from storage? This cannot be undone.`,
       danger: true,
       onConfirm: async () => {
@@ -894,7 +894,7 @@ const AdminPanel = ({ user }) => {
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'space-between' }}>
               <div>
                 {noteModal.admin_note && (
-                  <button onClick={deleteNote} style={{ padding: '10px 16px', border: '2px solid #EF4444', borderRadius: '8px', background: 'var(--bg-white)', color: '#EF4444', cursor: 'pointer', fontWeight: 700 }}>🗑 Remove Note</button>
+                  <button onClick={deleteNote} style={{ padding: '10px 16px', border: '2px solid #EF4444', borderRadius: '8px', background: 'var(--bg-white)', color: '#EF4444', cursor: 'pointer', fontWeight: 700 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Remove Note</button>
                 )}
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
@@ -916,7 +916,7 @@ const AdminPanel = ({ user }) => {
             <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.9rem' }}>Command center for GIKI Hub.</p>
           </div>
           <button onClick={loadStats} style={{ background: 'var(--bg-white)', border: '2px solid var(--text)', padding: '8px 12px', borderRadius: '10px', boxShadow: '3px 3px 0 var(--text)', cursor: 'pointer' }}>
-            🔄
+            <RefreshCw size={20} />
           </button>
         </div>
 
@@ -1045,7 +1045,7 @@ const AdminPanel = ({ user }) => {
                     by <strong>{f.uploader || f.uploader_email}</strong> · {fmtDate(f.upload_date)}
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}>👁 Preview</a>
+                    <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}><Eye size={16} style={{ marginRight: '4px' }} /> Preview</a>
                     <button onClick={() => openEditFile(f)} style={{ ...btnStyle('var(--text)'), flex: 1 }}><Edit3 size={14} /> Edit</button>
                     <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><CheckCircle size={14} /> Approve</button>
                     <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}><XCircle size={14} /> Reject</button>
@@ -1073,7 +1073,7 @@ const AdminPanel = ({ user }) => {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}>👁 View File</a>
+                  <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}><Eye size={16} style={{ marginRight: '4px' }} /> View File</a>
                   <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><Flag size={14} /> Resolve</button>
                   <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}><Archive size={14} /> Dismiss</button>
                 </div>
@@ -1084,7 +1084,7 @@ const AdminPanel = ({ user }) => {
                     <button onClick={() => openLinkModal({ file_id: r.file_id, title: r.file_title, course_code: r.course_code })} style={btnStyle('#8B5CF6')}><Link size={14} /> Link</button>
                     <button onClick={() => openEditFile({ file_id: r.file_id, title: r.file_title, course_code: r.course_code, category_id: r.category_id, instructor_id: r.instructor_id, status: r.file_status })} style={btnStyle('var(--text)')}><Edit3 size={14} /> Edit</button>
                     <button onClick={() => openNoteModal({ file_id: r.file_id, title: r.file_title, admin_note: r.file_admin_note })} style={{ ...btnStyle(r.file_admin_note ? '#D97706' : '#9CA3AF') }}><Pin size={14} /> {r.file_admin_note ? 'Edit Note' : 'Add Note'}</button>
-                    <button onClick={() => deleteFile(r.file_id, r.file_title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
+                    <button onClick={() => deleteFile(r.file_id, r.file_title)} style={btnStyle('#EF4444')}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
                   </div>
                 </div>
               </div>
@@ -1116,7 +1116,7 @@ const AdminPanel = ({ user }) => {
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <button onClick={() => openIssueResolveModal(i)} style={{ ...btnStyle('#10B981'), flex: 1 }}><CheckCircle size={16} /> Mark Resolved</button>
-                  <button onClick={() => deleteIssue(i.issue_id, i.title)} style={{ ...btnStyle('#EF4444'), flex: 1 }}>🗑 Delete</button>
+                  <button onClick={() => deleteIssue(i.issue_id, i.title)} style={{ ...btnStyle('#EF4444'), flex: 1 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
                 </div>
               </div>
             ))}
@@ -1442,7 +1442,7 @@ const AdminPanel = ({ user }) => {
                     <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{f.title}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{f.course_code}</div>
                   </div>
-                  <div style={{ fontWeight: 900, color: 'var(--primary)' }}>{f.count} ⬇</div>
+                  <div style={{ fontWeight: 900, color: 'var(--primary)' }}>{f.count} <Download size={14} style={{ marginLeft: '4px' }} /></div>
                 </div>
               ))}
             </div>
@@ -1529,11 +1529,11 @@ const AdminPanel = ({ user }) => {
                     {f.status}
                   </span>
                   <div className="admin-file-actions">
-                    <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}>👁 View</a>
+                    <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}><Eye size={16} style={{ marginRight: '4px' }} /> View</a>
                     <button onClick={() => openLinkModal(f)} style={btnStyle('#8B5CF6')}><Link size={14} /> Link</button>
                     <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}><Edit3 size={14} /> Edit</button>
                     <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}><Pin size={14} /> Note</button>
-                    <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}>🗑 Delete</button>
+                    <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
                   </div>
                 </div>
               ))}

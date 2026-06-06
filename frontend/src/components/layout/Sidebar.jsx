@@ -43,7 +43,7 @@ const Sidebar = ({ user, isOpen, onClose }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
           <div style={{ fontSize: '1.4rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '12px', fontFamily: 'var(--font-primary)' }}>
             <div style={{ width: '36px', height: '36px', backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              📚
+              <BookOpen size={22} color="white" />
             </div>
             <span style={{ letterSpacing: '-0.02em' }}>COURSE HUB</span>
           </div>

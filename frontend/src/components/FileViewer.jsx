@@ -1,4 +1,4 @@
-import { Paperclip, FileText, Image, Film, Presentation, LineChart, Code, Book, ExternalLink, Loader, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Paperclip, FileText, Image, Film, Presentation, LineChart, Code, Book, ExternalLink, Loader, AlertTriangle, RefreshCw, Download } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { renderAsync } from 'docx-preview';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -120,7 +120,7 @@ const FileViewer = ({ file, onClose }) => {
             textDecoration: 'none',
           }}
         >
-          ⬇ Download File
+          <Download size={18} style={{ marginRight: '6px' }} /> Download File
         </a>
       </div>
     );
@@ -174,7 +174,7 @@ const FileViewer = ({ file, onClose }) => {
               }}
               onClick={e => e.stopPropagation()}
             >
-              ⬇ <span className="hide-mobile">Download</span>
+              <Download size={16} /> <span className="hide-mobile">Download</span>
             </a>
             {fileType === 'pdf' && (
               <button
@@ -355,7 +355,7 @@ const GoogleDocPreview = ({ url, title, type }) => {
               textDecoration: 'none',
             }}
           >
-            ↗ Open in Google
+            <ExternalLink size={16} style={{ marginRight: '4px' }} /> Open in Google
           </a>
         </div>
       )}
