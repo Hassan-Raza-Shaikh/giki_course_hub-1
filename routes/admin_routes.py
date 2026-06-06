@@ -143,10 +143,11 @@ def admin_pending_files():
             SELECT f.file_id, f.title, f.file_url, f.course_code,
                    f.upload_date, cat.name AS category,
                    u.email AS uploader_email, u.username AS uploader,
-                   f.category_id, f.instructor_id
+                   f.category_id, f.instructor_id, m.file_size
             FROM files f
             JOIN categories cat ON cat.category_id = f.category_id
             LEFT JOIN users u   ON u.user_id = f.uploaded_by
+            LEFT JOIN file_metadata m ON m.file_id = f.file_id
             WHERE f.status = 'pending'
             ORDER BY f.upload_date ASC;
         """)
