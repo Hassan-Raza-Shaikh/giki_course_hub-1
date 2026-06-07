@@ -461,6 +461,10 @@ def admin_list_users():
     admin_email, err = _require_admin()
     if err: return err
 
+    page = request.args.get('page', 1, type=int)
+    per_page = 50
+    offset = (page - 1) * per_page
+
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -468,12 +472,23 @@ def admin_list_users():
             SELECT u.user_id, u.username, u.email, u.role, u.created_at,
                    EXISTS(SELECT 1 FROM admins a WHERE a.email = u.email) AS is_admin
             FROM users u
-            ORDER BY u.created_at DESC;
-        """)
+            ORDER BY u.created_at DESC
+            LIMIT %s OFFSET %s;
+        """, (per_page, offset))
         rows = cur.fetchall()
         cols = [d[0] for d in cur.description]
+        
+        cur.execute("SELECT COUNT(*) FROM users;")
+        total = cur.fetchone()[0]
         cur.close()
-        return jsonify({"success": True, "users": [dict(zip(cols, r)) for r in rows]})
+        
+        return jsonify({
+            "success": True, 
+            "users": [dict(zip(cols, r)) for r in rows],
+            "total": total,
+            "page": page,
+            "pages": (total + per_page - 1) // per_page
+        })
     finally:
         conn.close()
 
@@ -1168,6 +1183,10 @@ def admin_list_issues():
     admin_email, err = _require_admin()
     if err: return err
     status_filter = request.args.get('status', 'open')
+    page = request.args.get('page', 1, type=int)
+    per_page = 50
+    offset = (page - 1) * per_page
+    
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -1176,14 +1195,27 @@ def admin_list_issues():
                    u.email AS reporter_email, u.username AS reporter
             FROM issues i
             LEFT JOIN users u ON u.user_id = i.user_id
-            WHERE i.status = %s ORDER BY i.created_at DESC;
-        """, (status_filter,))
+            WHERE i.status = %s ORDER BY i.created_at DESC
+            LIMIT %s OFFSET %s;
+        """, (status_filter, per_page, offset))
         rows = cur.fetchall()
         cols = [d[0] for d in cur.description]
+        
+        cur.execute("SELECT COUNT(*) FROM issues WHERE status = %s;", (status_filter,))
+        total = cur.fetchone()[0]
+        
         cur.execute("SELECT status, COUNT(*) FROM issues GROUP BY status;")
         counts = {row[0]: row[1] for row in cur.fetchall()}
         cur.close()
-        return jsonify({"success": True, "issues": [dict(zip(cols, r)) for r in rows], "counts": counts})
+        
+        return jsonify({
+            "success": True, 
+            "issues": [dict(zip(cols, r)) for r in rows], 
+            "counts": counts,
+            "total": total,
+            "page": page,
+            "pages": (total + per_page - 1) // per_page
+        })
     finally:
         conn.close()
 

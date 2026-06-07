@@ -53,6 +53,12 @@ def create_app():
     app.register_blueprint(issue_bp)
     app.register_blueprint(instructor_bp)
 
+    # Apply strict rate limits to sensitive endpoints
+    limiter.limit("5 per minute")(app.view_functions['auth.login'])
+    limiter.limit("5 per minute")(app.view_functions['auth.signup'])
+    limiter.limit("10 per minute")(app.view_functions['files.upload_to_course'])
+    limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_init'])
+
     @app.before_request
     def handle_mobile_auth():
         """

@@ -55,6 +55,11 @@ const AdminPanel = ({ user }) => {
   
   const [allFiles, setAllFiles] = useState([]);
   const [users,    setUsers]    = useState([]);
+  const [usersPage, setUsersPage] = useState(1);
+  const [usersTotalPages, setUsersTotalPages] = useState(1);
+  
+  const [issuesPage, setIssuesPage] = useState(1);
+  const [issuesTotalPages, setIssuesTotalPages] = useState(1);
   const [admins,   setAdmins]   = useState([]);
   const [logs,     setLogs]     = useState([]);
   
@@ -149,7 +154,7 @@ const AdminPanel = ({ user }) => {
     const loaders = {
       pending: () => api.get('/admin/files/pending').then(r => setPending(r.data.files || [])),
       reports: () => api.get('/admin/reports').then(r => { setReports(r.data.reports || []); setReportCounts(r.data.counts || {}); }),
-      issues:  () => api.get('/admin/issues').then(r => { setIssues(r.data.issues || []); setIssueCounts(r.data.counts || {}); }),
+      issues:  () => api.get('/admin/issues', { params: { page: issuesPage } }).then(r => { setIssues(r.data.issues || []); setIssueCounts(r.data.counts || {}); setIssuesTotalPages(r.data.pages || 1); }),
       courses: () => api.get('/admin/courses', { params: { page: coursesPage, q: courseSearch } }).then(r => {
         setCourses(r.data.courses || []);
         setCoursesTotalPages(r.data.pages || 1);
@@ -162,7 +167,7 @@ const AdminPanel = ({ user }) => {
         setFilesTotalPages(r.data.pages || 1);
         setFilesTotalCount(r.data.total || 0);
       }),
-      users:   () => api.get('/admin/users').then(r => setUsers(r.data.users || [])),
+      users:   () => api.get('/admin/users', { params: { page: usersPage } }).then(r => { setUsers(r.data.users || []); setUsersTotalPages(r.data.pages || 1); }),
       admins:  () => api.get('/admin/admins').then(r => setAdmins(r.data.admins || [])),
       logs:    () => api.get('/admin/logs').then(r => setLogs(r.data.logs || [])),
     };
@@ -170,6 +175,33 @@ const AdminPanel = ({ user }) => {
     if (loader) loader().catch(() => {}).finally(() => setLoading(false));
     else setLoading(false);
   }, [tab, isAdmin, loadStats]);
+
+  // Re-fetch users when page changes
+  useEffect(() => {
+    if (tab !== 'users' || !isAdmin) return;
+    setLoading(true);
+    api.get('/admin/users', { params: { page: usersPage } })
+      .then(r => {
+        setUsers(r.data.users || []);
+        setUsersTotalPages(r.data.pages || 1);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [usersPage, tab, isAdmin]);
+
+  // Re-fetch issues when page changes
+  useEffect(() => {
+    if (tab !== 'issues' || !isAdmin) return;
+    setLoading(true);
+    api.get('/admin/issues', { params: { page: issuesPage } })
+      .then(r => {
+        setIssues(r.data.issues || []);
+        setIssueCounts(r.data.counts || {});
+        setIssuesTotalPages(r.data.pages || 1);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [issuesPage, tab, isAdmin]);
 
   // Re-fetch files when page or status filter changes
   useEffect(() => {

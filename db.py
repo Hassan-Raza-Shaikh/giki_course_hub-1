@@ -34,11 +34,13 @@ def init_pool():
     db_url = os.environ.get('DATABASE_URL')
     
     try:
+        # Note: If using Supabase Free Tier (limit 50 conns), 
+        # ensure DATABASE_URL uses the connection pooler port (6543) instead of 5432.
         if db_url:
-            _db_pool = pool.ThreadedConnectionPool(1, 20, db_url)
+            _db_pool = pool.ThreadedConnectionPool(1, 10, db_url)
         else:
             _db_pool = pool.ThreadedConnectionPool(
-                1, 20,
+                1, 10,
                 host=os.environ.get('DB_HOST', 'localhost'),
                 database=os.environ.get('DB_NAME', 'giki_course_hub'),
                 user=os.environ.get('DB_USER', 'postgres'),
@@ -48,7 +50,7 @@ def init_pool():
     except Exception as e:
         if db_url and "could not translate host name" in str(e):
             # DNS Resolution failed. Fallback to direct IP for Supabase Pooler
-            _db_pool = pool.ThreadedConnectionPool(1, 20, db_url, hostaddr='13.213.241.248')
+            _db_pool = pool.ThreadedConnectionPool(1, 10, db_url, hostaddr='13.213.241.248')
         else:
             raise e
 
