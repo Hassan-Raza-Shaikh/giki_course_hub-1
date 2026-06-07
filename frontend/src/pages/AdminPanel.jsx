@@ -1592,6 +1592,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Users tab ── */}
         {tab === 'users' && (
+          <>
           <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
             {loading ? <LoadingRow /> : users.length === 0 ? <EmptyRow icon={<Users size={48} color="var(--primary)" />} msg="No users yet." /> : users.map(u => (
               <div key={u.user_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
@@ -1605,6 +1606,32 @@ const AdminPanel = ({ user }) => {
               </div>
             ))}
           </div>
+          {usersTotalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '20px' }}>
+              <button
+                disabled={usersPage <= 1}
+                onClick={() => setUsersPage(p => p - 1)}
+                style={{
+                  padding: '6px 12px', borderRadius: '8px', background: 'var(--card-bg)', border: '1px solid var(--border)',
+                  cursor: usersPage <= 1 ? 'not-allowed' : 'pointer', opacity: usersPage <= 1 ? 0.5 : 1
+                }}
+              >
+                Prev
+              </button>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Page {usersPage} of {usersTotalPages}</span>
+              <button
+                disabled={usersPage >= usersTotalPages}
+                onClick={() => setUsersPage(p => p + 1)}
+                style={{
+                  padding: '6px 12px', borderRadius: '8px', background: 'var(--card-bg)', border: '1px solid var(--border)',
+                  cursor: usersPage >= usersTotalPages ? 'not-allowed' : 'pointer', opacity: usersPage >= usersTotalPages ? 0.5 : 1
+                }}
+              >
+                Next
+              </button>
+            </div>
+          )}
+          </>
         )}
 
         {/* ── Admins tab ── */}
