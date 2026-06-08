@@ -13,11 +13,11 @@ const currentYear = new Date().getFullYear();
 // Batch years: 2000 → current year + 1 (for incoming batch)
 const BATCH_YEARS = Array.from({ length: currentYear - 1999 + 1 }, (_, i) => currentYear + 1 - i);
 
-const ProfileCompleteModal = ({ user, onComplete }) => {
+const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) => {
   const [faculties, setFaculties] = useState([]);
-  const [userType, setUserType]   = useState('student');
-  const [program,  setProgram]    = useState('');
-  const [batchYear, setBatchYear] = useState('');
+  const [userType, setUserType]   = useState(user?.userType || 'student');
+  const [program,  setProgram]    = useState(user?.program || '');
+  const [batchYear, setBatchYear] = useState(user?.batchYear || '');
   const [saving, setSaving]       = useState(false);
   const [error, setError]         = useState('');
 
@@ -110,7 +110,21 @@ const ProfileCompleteModal = ({ user, onComplete }) => {
 
   return (
     <div style={overlay}>
-      <div style={card}>
+      <div style={{ ...card, position: 'relative' }}>
+        {/* Close Button if onClose is provided */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            style={{
+              position: 'absolute', top: '16px', right: '16px',
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}
+          >
+            <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>&times;</span>
+          </button>
+        )}
+
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{
@@ -123,10 +137,12 @@ const ProfileCompleteModal = ({ user, onComplete }) => {
             <User size={24} />
           </div>
           <h2 style={{ margin: '0 0 6px', fontWeight: 800, fontSize: 'clamp(1.2rem,4vw,1.5rem)', color: 'var(--text)', letterSpacing: '-0.02em' }}>
-            Complete Your Profile
+            {mode === 'edit' ? 'Edit Profile' : 'Complete Your Profile'}
           </h2>
           <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.5 }}>
-            Help us personalise your experience and keep the leaderboard meaningful.
+            {mode === 'edit' 
+              ? 'Update your faculty, program, and batch year details.' 
+              : 'Help us personalise your experience and keep the leaderboard meaningful.'}
           </p>
         </div>
 
@@ -208,7 +224,6 @@ const ProfileCompleteModal = ({ user, onComplete }) => {
             </div>
           )}
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={saving}
@@ -224,7 +239,7 @@ const ProfileCompleteModal = ({ user, onComplete }) => {
               borderRadius: '100px',
             }}
           >
-            {saving ? 'Saving…' : 'Save & Continue'}
+            {saving ? 'Saving…' : (mode === 'edit' ? 'Save Changes' : 'Save & Continue')}
           </button>
         </form>
       </div>

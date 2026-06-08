@@ -234,7 +234,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
           <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/u/:username" element={<UserProfile />} />
+          <Route path="/u/:username" element={<UserProfile user={user} setUser={setUser} />} />
           <Route path="/admin"      element={<AdminPanel user={user} />} />
           <Route path="/report-issue" element={<ReportIssue user={user} />} />
           <Route path="*"           element={<Navigate to="/" replace />} />

@@ -142,6 +142,22 @@ def firebase_auth():
                 (user_id, display_name or user[1], student_id, batch_year, program)
             )
 
+        # Fetch latest profile data to return complete state
+        cur.execute("SELECT student_id, batch_year, program, user_type FROM user_profiles WHERE user_id = %s;", (user_id,))
+        p_row = cur.fetchone()
+        student_id_db = p_row[0] if p_row else student_id
+        batch_year_db = p_row[1] if p_row else batch_year
+        program_db    = p_row[2] if p_row else program
+        user_type_db  = p_row[3] if p_row else None
+
+        if program_db and user_type_db:
+            if user_type_db in ('faculty', 'external'):
+                profile_complete = True
+            else:
+                profile_complete = bool(batch_year_db)
+        else:
+            profile_complete = False
+
         conn.commit()
         cur.close()
 
@@ -154,7 +170,12 @@ def firebase_auth():
             "message": f"Welcome, {user[1]}!",
             "user": {
                 "id": user_id, "username": user[1], "role": role,
-                "displayName": display_name, "photoURL": photo_url, "email": email
+                "displayName": display_name, "photoURL": photo_url, "email": email,
+                "studentId": student_id_db,
+                "batchYear": batch_year_db,
+                "program": program_db,
+                "userType": user_type_db,
+                "profileComplete": profile_complete
             }
         })
 

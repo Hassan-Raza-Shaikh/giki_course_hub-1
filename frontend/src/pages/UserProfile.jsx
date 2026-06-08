@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { User, Calendar, BookOpen, FileText, Download, Clock, ArrowLeft } from 'lucide-react';
+import { User, Calendar, BookOpen, FileText, Download, Clock, ArrowLeft, Edit3 } from 'lucide-react';
 import api from '../services/api';
+import ProfileCompleteModal from '../components/ProfileCompleteModal';
 
 const fmtSize = (b) => b ? `${(b / (1024 * 1024)).toFixed(2)} MB` : '—';
 const fmtDate = (ds) => new Date(ds).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-const UserProfile = () => {
+const UserProfile = ({ user, setUser }) => {
   const { username } = useParams();
   const [profile, setProfile] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [files, setFiles] = useState([]);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingFiles, setLoadingFiles] = useState(true);
@@ -147,6 +149,25 @@ const UserProfile = () => {
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginTop: '8px' }}>
               Contributions
             </div>
+            
+            {/* Edit Profile Button (only if viewing own profile) */}
+            {user && user.username === profile.username && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="btn-nav"
+                style={{
+                  marginTop: '16px',
+                  width: '100%',
+                  background: 'var(--primary)',
+                  color: 'var(--nav-btn-text)',
+                  padding: '8px',
+                  fontSize: '0.85rem',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+                }}
+              >
+                <Edit3 size={14} /> Edit Profile
+              </button>
+            )}
           </div>
         </div>
 
@@ -240,6 +261,22 @@ const UserProfile = () => {
           to { transform: rotate(360deg); }
         }
       `}</style>
+      
+      {/* Edit Profile Modal */}
+      {isEditing && (
+        <ProfileCompleteModal
+          mode="edit"
+          user={user}
+          onClose={() => setIsEditing(false)}
+          onComplete={(updatedFields) => {
+            // Update global user state
+            setUser(u => ({ ...u, ...updatedFields }));
+            // Update local profile view
+            setProfile(p => ({ ...p, batch_year: updatedFields.batchYear, program: updatedFields.program, user_type: updatedFields.userType }));
+            setIsEditing(false);
+          }}
+        />
+      )}
     </div>
   );
 };
