@@ -100,6 +100,46 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+
+        {/* Mobile-only icon buttons — icon only, no text */}
+        <div className="show-mobile-flex" style={{ alignItems: 'center', gap: '6px' }}>
+          <button
+            title="Upload"
+            onClick={() => navigate('/upload')}
+            style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+          >
+            <Upload size={15} strokeWidth={2.5} />
+          </button>
+          <button
+            title="Courses"
+            onClick={() => navigate('/courses')}
+            style={{ background: 'var(--secondary)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+          >
+            <BookOpen size={15} strokeWidth={2.5} />
+          </button>
+          <button
+            title="Search"
+            onClick={() => navigate('/search')}
+            style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+          >
+            <Search size={15} strokeWidth={2.5} />
+          </button>
+          <button
+            title="Bookmarks"
+            onClick={() => navigate('/bookmarks')}
+            style={{ background: 'var(--tertiary)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+          >
+            <Bookmark size={15} strokeWidth={2.5} />
+          </button>
+          <button
+            title="Leaderboard"
+            onClick={() => navigate('/leaderboard')}
+            style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+          >
+            <Trophy size={15} strokeWidth={2.5} />
+          </button>
+        </div>
+
         {/* Creative Theme Toggle */}
         <div ref={themeMenuRef} style={{ position: 'relative' }}>
           <button
