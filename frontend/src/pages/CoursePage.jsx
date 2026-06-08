@@ -502,7 +502,13 @@ const CoursePage = ({ user, onSignIn }) => {
                         {file.title}
                       </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px', lineHeight: 1.4 }}>
-                        Contributed by <strong>{file.uploader || 'Anonymous'}</strong> · {file.date ? new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+                        Contributed by {file.uploader ? (
+                          <Link to={`/u/${file.uploader}`} style={{ color: 'var(--text)', textDecoration: 'underline', textDecorationColor: 'var(--border)', textUnderlineOffset: '2px', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'var(--electric)'} onMouseOut={e => e.currentTarget.style.color = 'var(--text)'}>
+                            <strong>{file.uploader}</strong>
+                          </Link>
+                        ) : (
+                          <strong>Anonymous</strong>
+                        )} · {file.date ? new Date(file.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                         <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                           {file.file_size && <span style={{ background: 'var(--bg-white)', padding: '1px 6px', borderRadius: '4px', border: '1px solid var(--border)' }}>{(file.file_size / (1024 * 1024)).toFixed(2)} MB</span>}
                           {file.downloads > 0 && <span style={{ background: 'var(--bg-white)', padding: '1px 6px', borderRadius: '4px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={12} /> {file.downloads}</span>}

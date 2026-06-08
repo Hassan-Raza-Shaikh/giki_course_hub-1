@@ -9,6 +9,7 @@ from firebase_admin_init import init_firebase_admin
 from routes.auth_routes  import auth_bp
 from routes.file_routes  import file_bp
 from routes.admin_routes import admin_bp
+from routes.user_routes import user_bp
 from routes.issue_routes import issue_bp
 from routes.instructor_routes import instructor_bp
 
@@ -50,6 +51,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(file_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(user_bp)
     app.register_blueprint(issue_bp)
     app.register_blueprint(instructor_bp)
 

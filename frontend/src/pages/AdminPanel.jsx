@@ -344,6 +344,7 @@ const AdminPanel = ({ user }) => {
             setFilesTotalCount(r.data.total || 0);
           });
         loadStats();
+        setReports(rs => rs.filter(r => r.file_id !== id));
         setConfirmModal(null);
       }
     });
@@ -380,6 +381,7 @@ const AdminPanel = ({ user }) => {
             setFilesTotalCount(r.data.total || 0);
           });
       }
+      setReports(rs => rs.map(r => r.file_id === editFileModal.file_id ? { ...r, file_title: editFileForm.title, course_code: editFileForm.course_code } : r));
       loadStats();
     } catch (err) {
       showToast(err.response?.data?.message || 'Update failed.', 'error');
@@ -476,6 +478,9 @@ const AdminPanel = ({ user }) => {
       (f.file_id === (noteModal.file_id ?? noteModal.id))
         ? { ...f, admin_note: noteText } : f
     ));
+    setReports(rs => rs.map(r => 
+      r.file_id === (noteModal.file_id ?? noteModal.id) ? { ...r, file_admin_note: noteText } : r
+    ));
     setNoteModal(null);
   };
 
@@ -486,6 +491,9 @@ const AdminPanel = ({ user }) => {
     setAllFiles(fs => fs.map(f =>
       (f.file_id === (noteModal.file_id ?? noteModal.id))
         ? { ...f, admin_note: null } : f
+    ));
+    setReports(rs => rs.map(r => 
+      r.file_id === (noteModal.file_id ?? noteModal.id) ? { ...r, file_admin_note: null } : r
     ));
     setNoteModal(null);
   };

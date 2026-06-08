@@ -16,6 +16,8 @@ const Bookmarks    = lazy(() => import('./pages/Bookmarks'));
 const GlobalSearch = lazy(() => import('./pages/GlobalSearch'));
 const AdminPanel   = lazy(() => import('./pages/AdminPanel'));
 const ReportIssue  = lazy(() => import('./pages/ReportIssue'));
+const Leaderboard  = lazy(() => import('./pages/Leaderboard'));
+const UserProfile  = lazy(() => import('./pages/UserProfile'));
 const UploadPage   = lazy(() => import('./pages/UploadPage'));
 const MyUploads    = lazy(() => import('./pages/MyUploads'));
 
@@ -222,7 +224,9 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/my-uploads" element={<MyUploads user={user} />} />
           <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
           <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
-          <Route path="/admin"      element={user && (user.email === 'ammarbatman9@gmail.com' || user.email === 'hassan.raza.shaikh.hrs@gmail.com') ? <AdminPanel user={user} /> : <Navigate to="/" replace />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/u/:username" element={<UserProfile />} />
+          <Route path="/admin"      element={<AdminPanel user={user} />} />
           <Route path="/report-issue" element={<ReportIssue user={user} />} />
           <Route path="*"           element={<Navigate to="/" replace />} />
         </Routes>
