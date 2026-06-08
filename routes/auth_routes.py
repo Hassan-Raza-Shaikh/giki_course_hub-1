@@ -322,7 +322,7 @@ def get_me():
             # Join users with user_profiles (LEFT JOIN — Google users won't have a profile row)
             cur.execute(
                 """SELECT u.email, u.photo_url, u.display_name,
-                          up.display_name, up.student_id, up.batch_year, up.program
+                          up.display_name, up.student_id, up.batch_year, up.program, up.user_type
                    FROM users u
                    LEFT JOIN user_profiles up ON u.user_id = up.user_id
                    WHERE u.user_id = %s;""",
@@ -334,23 +334,39 @@ def get_me():
             # Prefer profile display_name for native users, fall back to users.display_name or username
             display_name = (row[3] or row[2] or session['username']) if row else session['username']
 
+            batch_year  = row[5] if row else None
+            program     = row[6] if row else None
+            user_type   = row[7] if row else None
+
+            # profileComplete = user has set program AND
+            # (batch_year is set if they're a student/graduate, or user_type is faculty/external)
+            if program and user_type:
+                if user_type in ('faculty', 'external'):
+                    profile_complete = True
+                else:
+                    profile_complete = bool(batch_year)
+            else:
+                profile_complete = False
+
             return jsonify({
                 "is_logged_in": True,
                 "user": {
-                    "id":          session['user_id'],
-                    "username":    session['username'],
-                    "role":        session['role'],
-                    "email":       row[0] if row else None,
-                    "photoURL":    row[1] if row else None,
-                    "displayName": display_name,
+                    "id":              session['user_id'],
+                    "username":        session['username'],
+                    "role":            session['role'],
+                    "email":           row[0] if row else None,
+                    "photoURL":        row[1] if row else None,
+                    "displayName":     display_name,
                     # These are only set for native (email/password) users
-                    "studentId":   row[4] if row else None,
-                    "batchYear":   row[5] if row else None,
-                    "program":     row[6] if row else None,
+                    "studentId":       row[4] if row else None,
+                    "batchYear":       batch_year,
+                    "program":         program,
+                    "userType":        user_type,
+                    "profileComplete": profile_complete,
                 }
             })
         except Exception as e:
-            return jsonify({"is_logged_in": True, "user": {"id": session['user_id'], "username": session['username'], "role": session['role']}})
+            return jsonify({"is_logged_in": True, "user": {"id": session['user_id'], "username": session['username'], "role": session['role'], "profileComplete": False}})
         finally:
             conn.close()
     return jsonify({"is_logged_in": False}), 200

@@ -128,3 +128,101 @@ def get_user_uploads(username):
         return jsonify({"success": False, "message": str(e)}), 500
     finally:
         conn.close()
+
+@user_bp.route('/api/me/profile', methods=['PATCH'])
+def update_my_profile():
+    """Update the logged-in user's profile (program, batch_year, user_type).
+    Works for ALL users — Google OAuth and native email/password alike.
+    Upserts into user_profiles so it works even if the row doesn't exist yet.
+    """
+    from flask import session
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+
+    data = request.get_json(force=True) or {}
+
+    user_type  = (data.get('userType')  or '').strip() or None
+    program    = (data.get('program')   or '').strip() or None
+    batch_year = data.get('batchYear')
+
+    # Validate user_type
+    allowed_types = ('student', 'faculty', 'graduate', 'external')
+    if user_type and user_type not in allowed_types:
+        return jsonify({"success": False, "message": f"user_type must be one of {allowed_types}"}), 400
+
+    # Validate batch_year: only required for student/graduate
+    if user_type in ('student', 'graduate') and not batch_year:
+        return jsonify({"success": False, "message": "batch_year is required for students and graduates"}), 400
+
+    try:
+        batch_year = int(batch_year) if batch_year else None
+        if batch_year and not (2000 <= batch_year <= 2100):
+            return jsonify({"success": False, "message": "Invalid batch year"}), 400
+    except (ValueError, TypeError):
+        return jsonify({"success": False, "message": "batch_year must be a valid integer"}), 400
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+
+        # Get current display_name for the upsert (required column)
+        cur.execute(
+            """SELECT COALESCE(up.display_name, u.display_name, u.username)
+               FROM users u
+               LEFT JOIN user_profiles up ON up.user_id = u.user_id
+               WHERE u.user_id = %s;""",
+            (session['user_id'],)
+        )
+        row = cur.fetchone()
+        display_name = row[0] if row else session.get('username', 'User')
+
+        # Upsert user_profiles
+        cur.execute(
+            """
+            INSERT INTO user_profiles (user_id, display_name, batch_year, program, user_type)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (user_id) DO UPDATE
+                SET batch_year = COALESCE(EXCLUDED.batch_year, user_profiles.batch_year),
+                    program    = COALESCE(EXCLUDED.program,    user_profiles.program),
+                    user_type  = COALESCE(EXCLUDED.user_type,  user_profiles.user_type),
+                    updated_at = CURRENT_TIMESTAMP;
+            """,
+            (session['user_id'], display_name, batch_year, program, user_type)
+        )
+        conn.commit()
+        return jsonify({"success": True, "message": "Profile updated"})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
+@user_bp.route('/api/faculties-programs', methods=['GET'])
+def get_faculties_programs():
+    """Public endpoint: returns all faculties and their programs for dropdown population."""
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT f.faculty_id, f.name AS faculty_abbr, f.full_name,
+                   p.program_id, p.name AS program_name
+            FROM faculties f
+            LEFT JOIN programs p ON p.faculty_id = f.faculty_id
+            ORDER BY f.faculty_id, p.name;
+        """)
+        rows = cur.fetchall()
+
+        # Group programs under their faculty
+        faculties = {}
+        for fid, fabbr, ffull, pid, pname in rows:
+            if fid not in faculties:
+                faculties[fid] = {"id": fid, "abbr": fabbr, "full_name": ffull, "programs": []}
+            if pid and pname:
+                faculties[fid]["programs"].append({"id": pid, "name": pname})
+
+        return jsonify({"success": True, "faculties": list(faculties.values())})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()

@@ -7,6 +7,7 @@ import api from './services/api';
 
 import Navbar      from './components/Navbar';
 import LoginModal  from './components/LoginModal';
+import ProfileCompleteModal from './components/ProfileCompleteModal';
 
 // Lazy loaded heavy routes to reduce initial bundle size
 const Landing      = lazy(() => import('./pages/Landing'));
@@ -200,6 +201,14 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
   return (
     <>
       <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
+
+      {/* Profile completion gate — shown to ALL users until program/batch is set */}
+      {user && user.profileComplete === false && (
+        <ProfileCompleteModal
+          user={user}
+          onComplete={(fields) => setUser(u => ({ ...u, ...fields, profileComplete: true }))}
+        />
+      )}
 
       {showLogin && (
         <LoginModal
