@@ -99,44 +99,49 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <span style={{ color: 'var(--text)', fontWeight: 900, fontSize: '1rem' }}>HUB</span>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
 
-        {/* Mobile-only icon buttons — icon only, no text */}
-        <div className="show-mobile-flex" style={{ alignItems: 'center', gap: '6px' }}>
+        {/* Mobile-only icon buttons — same pill style as btn-nav, icon only */}
+        <div className="show-mobile-flex" style={{ alignItems: 'center', gap: '5px' }}>
           <button
             title="Upload"
             onClick={() => navigate('/upload')}
-            style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+            className="btn-nav"
+            style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
           >
-            <Upload size={15} strokeWidth={2.5} />
+            <Upload size={14} strokeWidth={2.5} />
           </button>
           <button
             title="Courses"
             onClick={() => navigate('/courses')}
-            style={{ background: 'var(--secondary)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+            className="btn-nav"
+            style={{ background: 'var(--secondary)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
           >
-            <BookOpen size={15} strokeWidth={2.5} />
+            <BookOpen size={14} strokeWidth={2.5} />
           </button>
           <button
             title="Search"
             onClick={() => navigate('/search')}
-            style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+            className="btn-nav"
+            style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
           >
-            <Search size={15} strokeWidth={2.5} />
+            <Search size={14} strokeWidth={2.5} />
           </button>
           <button
             title="Bookmarks"
             onClick={() => navigate('/bookmarks')}
-            style={{ background: 'var(--tertiary)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+            className="btn-nav"
+            style={{ background: 'var(--tertiary)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
           >
-            <Bookmark size={15} strokeWidth={2.5} />
+            <Bookmark size={14} strokeWidth={2.5} />
           </button>
           <button
             title="Leaderboard"
             onClick={() => navigate('/leaderboard')}
-            style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', border: '2px solid var(--text)', borderRadius: '8px', padding: '6px 8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px var(--text)' }}
+            className="btn-nav"
+            style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
           >
-            <Trophy size={15} strokeWidth={2.5} />
+            <Trophy size={14} strokeWidth={2.5} />
           </button>
         </div>
 
