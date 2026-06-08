@@ -402,17 +402,31 @@ const Courses = () => {
 
           {/* Resource type chips */}
           <div style={{ display: 'flex', gap: '12px', marginTop: '36px', flexWrap: 'wrap' }}>
-            {RESOURCE_TYPES.map(rt => (
-              <div key={rt.label} style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                background: 'var(--bg-white)', border: '1px solid var(--text)',
-                padding: '8px 16px', borderRadius: '100px',
-                fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)',
-                boxShadow: '2px 2px 0px var(--text)'
-              }}>
-                {rt.icon} {rt.label}
-              </div>
-            ))}
+            {RESOURCE_TYPES.map(rt => {
+              const slug = rt.label.toLowerCase().replace(' ', '-');
+              return (
+                <Link to={`/category/${slug}`} key={rt.label} style={{
+                  display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none',
+                  background: 'var(--bg-white)', border: '1px solid var(--text)',
+                  padding: '8px 16px', borderRadius: '100px',
+                  fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)',
+                  boxShadow: '2px 2px 0px var(--text)', transition: 'transform 0.15s, box-shadow 0.15s'
+                }}
+                onMouseOver={e => {
+                  e.currentTarget.style.transform = 'translate(-2px, -2px)';
+                  e.currentTarget.style.boxShadow = '4px 4px 0px var(--text)';
+                  e.currentTarget.style.color = 'var(--electric)';
+                }}
+                onMouseOut={e => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.boxShadow = '2px 2px 0px var(--text)';
+                  e.currentTarget.style.color = 'var(--text)';
+                }}
+                >
+                  {rt.icon} {rt.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

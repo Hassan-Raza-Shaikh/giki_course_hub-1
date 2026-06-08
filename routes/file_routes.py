@@ -245,6 +245,68 @@ def list_categories():
         conn.close()
 
 
+@file_bp.route('/api/categories/<slug>/files', methods=['GET'])
+def get_category_files(slug):
+    """Return paginated files for a specific category globally."""
+    conn = get_connection()
+    try:
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 12))
+        offset = (page - 1) * limit
+        
+        cur = conn.cursor()
+        
+        # Determine the category name from the slug. 
+        # In SQL, replace spaces with dashes and lower the string.
+        # Alternatively, we can just do ILIKE replacing dashes with spaces.
+        category_name_approx = slug.replace('-', ' ')
+        
+        # First, find the exact category ID and name
+        cur.execute("SELECT category_id, name FROM categories WHERE REPLACE(LOWER(name), ' ', '-') = LOWER(%s);", (slug,))
+        cat_row = cur.fetchone()
+        if not cat_row:
+            cur.close()
+            return jsonify({"success": False, "message": "Category not found"}), 404
+            
+        category_id, category_name = cat_row[0], cat_row[1]
+
+        # Get total count
+        cur.execute("SELECT COUNT(*) FROM files WHERE category_id = %s AND status = 'approved'", (category_id,))
+        total_count = cur.fetchone()[0]
+        total_pages = max(1, (total_count + limit - 1) // limit)
+
+        # Fetch files with course info
+        cur.execute("""
+            SELECT f.file_id, f.title, f.file_url, f.upload_date, m.file_size,
+                   COALESCE(c.name, f.course_code) AS course_name, f.course_code, c.course_id
+            FROM files f
+            LEFT JOIN file_metadata m ON f.file_id = m.file_id
+            LEFT JOIN (SELECT DISTINCT ON (code) name, code, course_id FROM courses ORDER BY code, course_id) c
+                   ON f.course_code = COALESCE(c.code, c.name)
+            WHERE f.category_id = %s AND f.status = 'approved'
+            ORDER BY f.upload_date DESC
+            LIMIT %s OFFSET %s;
+        """, (category_id, limit, offset))
+        
+        files = [{
+            "id": r[0], "title": r[1], "file_url": r[2], "date": r[3], "file_size": r[4],
+            "course_name": r[5], "course_code": r[6], "course_id": r[7], "category": category_name
+        } for r in cur.fetchall()]
+        
+        cur.close()
+        return jsonify({
+            "success": True,
+            "category": category_name,
+            "files": files,
+            "pages": total_pages,
+            "total": total_count
+        })
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
 # ── Courses ────────────────────────────────────────────────────────────────
 
 @file_bp.route('/api/courses', methods=['GET'])

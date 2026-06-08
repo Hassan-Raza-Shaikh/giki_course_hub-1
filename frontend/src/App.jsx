@@ -21,7 +21,7 @@ const Leaderboard  = lazy(() => import('./pages/Leaderboard'));
 const UserProfile  = lazy(() => import('./pages/UserProfile'));
 const UploadPage   = lazy(() => import('./pages/UploadPage'));
 const MyUploads    = lazy(() => import('./pages/MyUploads'));
-
+const CategoryView = lazy(() => import('./pages/CategoryView'));
 
 const App = () => {
   const [user, setUser]           = useState(null);
@@ -235,6 +235,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/u/:username" element={<UserProfile user={user} setUser={setUser} />} />
+          <Route path="/category/:categorySlug" element={<CategoryView />} />
           <Route path="/admin"      element={<AdminPanel user={user} />} />
           <Route path="/report-issue" element={<ReportIssue user={user} />} />
           <Route path="*"           element={<Navigate to="/" replace />} />

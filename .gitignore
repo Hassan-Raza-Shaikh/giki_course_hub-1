@@ -5,3 +5,7 @@ __pycache__/
 venv/
 .venv
 env/
+.DS_Store
+.tmp_env/
+firebase/
+frontend/dist/
