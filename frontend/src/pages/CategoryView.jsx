@@ -22,14 +22,14 @@ const CATEGORY_ICONS = {
 };
 
 const CATEGORY_COLORS = {
-  'outline':     'var(--primary-dark)',
+  'outline':     'var(--tertiary)',
   'notes':       'var(--secondary)',
-  'slides':      'var(--primary-mid)',
+  'slides':      'color-mix(in srgb, var(--primary) 50%, var(--tertiary) 50%)',
   'quizzes':     'var(--accent)',
   'assignments': 'var(--primary)',
   'lab-manuals': 'var(--electric)',
-  'lab-tasks':   'var(--tertiary)',
-  'reference':   'var(--text)'
+  'lab-tasks':   'color-mix(in srgb, var(--secondary) 50%, var(--electric) 50%)',
+  'reference':   'color-mix(in srgb, var(--accent) 50%, var(--tertiary) 50%)'
 };
 
 const CategoryView = () => {
