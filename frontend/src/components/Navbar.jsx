@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
@@ -100,50 +100,6 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-
-        {/* Mobile-only icon buttons — same pill style as btn-nav, icon only */}
-        <div className="show-mobile-flex" style={{ alignItems: 'center', gap: '5px' }}>
-          <button
-            title="Upload"
-            onClick={() => navigate('/upload')}
-            className="btn-nav"
-            style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
-          >
-            <Upload size={14} strokeWidth={2.5} />
-          </button>
-          <button
-            title="Courses"
-            onClick={() => navigate('/courses')}
-            className="btn-nav"
-            style={{ background: 'var(--secondary)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
-          >
-            <BookOpen size={14} strokeWidth={2.5} />
-          </button>
-          <button
-            title="Search"
-            onClick={() => navigate('/search')}
-            className="btn-nav"
-            style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
-          >
-            <Search size={14} strokeWidth={2.5} />
-          </button>
-          <button
-            title="Bookmarks"
-            onClick={() => navigate('/bookmarks')}
-            className="btn-nav"
-            style={{ background: 'var(--tertiary)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
-          >
-            <Bookmark size={14} strokeWidth={2.5} />
-          </button>
-          <button
-            title="Leaderboard"
-            onClick={() => navigate('/leaderboard')}
-            className="btn-nav"
-            style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', padding: '6px 9px' }}
-          >
-            <Trophy size={14} strokeWidth={2.5} />
-          </button>
-        </div>
 
         {/* Creative Theme Toggle */}
         <div ref={themeMenuRef} style={{ position: 'relative' }}>
@@ -421,6 +377,52 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   );
 };
 
-export default Navbar;
+/* ─── Mobile Bottom Tab Bar ──────────────────────────────── */
+const MobileTabBar = ({ user, onSignIn }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const p = location.pathname;
+
+  const tabs = [
+    { label: 'Upload',      icon: <Upload size={20} strokeWidth={2} />,    path: '/upload',      color: 'var(--primary)'   },
+    { label: 'Courses',     icon: <BookOpen size={20} strokeWidth={2} />,  path: '/courses',     color: 'var(--secondary)' },
+    { label: 'Search',      icon: <Search size={20} strokeWidth={2} />,    path: '/search',      color: 'var(--electric)'  },
+    { label: 'Bookmarks',   icon: <Bookmark size={20} strokeWidth={2} />,  path: '/bookmarks',   color: 'var(--tertiary)'  },
+    { label: 'Leaderboard', icon: <Trophy size={20} strokeWidth={2} />,    path: '/leaderboard', color: 'var(--accent)'    },
+  ];
+
+  return (
+    <div className="mobile-tab-bar">
+      {tabs.map(tab => {
+        const active = p === tab.path || p.startsWith(tab.path + '/');
+        return (
+          <button
+            key={tab.path}
+            onClick={() => navigate(tab.path)}
+            className="mob-tab-btn"
+            style={{
+              color: active ? 'var(--nav-btn-text)' : 'var(--text-muted)',
+              background: active ? tab.color : 'transparent',
+              border: active ? '1.5px solid var(--text)' : '1.5px solid transparent',
+              boxShadow: active ? '2px 2px 0px var(--text)' : 'none',
+            }}
+          >
+            {tab.icon}
+            <span className="mob-tab-label">{tab.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+const NavbarWithTabBar = (props) => (
+  <>
+    <Navbar {...props} />
+    <MobileTabBar user={props.user} onSignIn={props.onSignIn} />
+  </>
+);
+
+export default NavbarWithTabBar;
 
 
