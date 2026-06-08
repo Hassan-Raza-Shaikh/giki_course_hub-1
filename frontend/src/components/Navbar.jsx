@@ -410,7 +410,6 @@ const MobileTabBar = ({ user, onSignIn }) => {
             }}
           >
             {tab.icon}
-            <span className="mob-tab-label">{tab.label}</span>
           </button>
         );
       })}
