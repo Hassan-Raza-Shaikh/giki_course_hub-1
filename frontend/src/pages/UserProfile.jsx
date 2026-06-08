@@ -74,7 +74,11 @@ const UserProfile = () => {
           <div style={{ padding: '60px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)' }}>
             <h2 style={{ margin: '0 0 16px', color: 'var(--text)' }}>User Not Found</h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>The user @{username} does not exist or has been removed.</p>
-            <Link to="/leaderboard" style={{ display: 'inline-block', padding: '10px 20px', background: 'var(--electric)', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 600 }}>
+            <Link
+              to="/leaderboard"
+              className="btn-nav"
+              style={{ textDecoration: 'none', background: 'var(--electric)', color: 'var(--nav-btn-text)' }}
+            >
               Go to Leaderboard
             </Link>
           </div>
@@ -88,8 +92,12 @@ const UserProfile = () => {
       <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 24px' }}>
         
         {/* Back Link */}
-        <Link to="/leaderboard" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '24px', fontSize: '0.9rem', fontWeight: 500 }} className="hover-electric">
-          <ArrowLeft size={16} /> Back to Leaderboard
+        <Link
+          to="/leaderboard"
+          className="btn-nav"
+          style={{ textDecoration: 'none', background: 'var(--bg-white)', color: 'var(--text)', marginBottom: '24px', display: 'inline-flex' }}
+        >
+          <ArrowLeft size={16} strokeWidth={2.5} /> Back to Leaderboard
         </Link>
 
         {/* Profile Header */}
@@ -183,10 +191,10 @@ const UserProfile = () => {
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Clock size={14}/> {fmtDate(f.upload_date)}</span>
                     </div>
                     
-                    <button 
+                    <button
                       onClick={() => handleDownload(f)}
-                      style={{ padding: '6px 12px', background: 'var(--electric-muted)', color: 'var(--electric)', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-                      className="hover-opacity"
+                      className="btn-nav"
+                      style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)', padding: '6px 14px', fontSize: '0.85rem' }}
                     >
                       <Download size={14} /> Open
                     </button>
@@ -197,21 +205,23 @@ const UserProfile = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '40px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '40px', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  style={{ padding: '8px 16px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', color: page === 1 ? 'var(--text-muted)' : 'var(--text)', cursor: page === 1 ? 'not-allowed' : 'pointer' }}
+                  className="btn-nav"
+                  style={{ background: 'var(--bg-white)', color: 'var(--text)', opacity: page === 1 ? 0.4 : 1, cursor: page === 1 ? 'not-allowed' : 'pointer' }}
                 >
-                  Previous
+                  ← Previous
                 </button>
-                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Page {page} of {totalPages}</span>
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 600 }}>Page {page} of {totalPages}</span>
                 <button
                   onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  style={{ padding: '8px 16px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '8px', color: page === totalPages ? 'var(--text-muted)' : 'var(--text)', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
+                  className="btn-nav"
+                  style={{ background: 'var(--bg-white)', color: 'var(--text)', opacity: page === totalPages ? 0.4 : 1, cursor: page === totalPages ? 'not-allowed' : 'pointer' }}
                 >
-                  Next
+                  Next →
                 </button>
               </div>
             )}
