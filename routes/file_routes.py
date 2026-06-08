@@ -270,23 +270,39 @@ def get_category_files(slug):
             
         category_id, category_name = cat_row[0], cat_row[1]
 
+        search_query = request.args.get('q', '').strip()
+
+        # Build query
+        base_where = "WHERE f.category_id = %s AND f.status = 'approved'"
+        params = [category_id]
+
+        if search_query:
+            base_where += " AND (f.title ILIKE %s OR f.course_code ILIKE %s OR c.name ILIKE %s)"
+            params.extend([f'%{search_query}%', f'%{search_query}%', f'%{search_query}%'])
+
         # Get total count
-        cur.execute("SELECT COUNT(*) FROM files WHERE category_id = %s AND status = 'approved'", (category_id,))
+        count_sql = f"""
+            SELECT COUNT(*) FROM files f
+            LEFT JOIN courses c ON f.course_code = COALESCE(c.code, c.name)
+            {base_where}
+        """
+        cur.execute(count_sql, params)
         total_count = cur.fetchone()[0]
         total_pages = max(1, (total_count + limit - 1) // limit)
 
         # Fetch files with course info
-        cur.execute("""
+        data_sql = f"""
             SELECT f.file_id, f.title, f.file_url, f.upload_date, m.file_size,
                    COALESCE(c.name, f.course_code) AS course_name, f.course_code, c.course_id
             FROM files f
             LEFT JOIN file_metadata m ON f.file_id = m.file_id
             LEFT JOIN (SELECT DISTINCT ON (code) name, code, course_id FROM courses ORDER BY code, course_id) c
                    ON f.course_code = COALESCE(c.code, c.name)
-            WHERE f.category_id = %s AND f.status = 'approved'
+            {base_where}
             ORDER BY f.upload_date DESC
             LIMIT %s OFFSET %s;
-        """, (category_id, limit, offset))
+        """
+        cur.execute(data_sql, params + [limit, offset])
         
         files = [{
             "id": r[0], "title": r[1], "file_url": r[2], "date": r[3], "file_size": r[4],
