@@ -89,7 +89,7 @@ const CategoryView = () => {
 
   return (
     <div style={{ 
-      minHeight: '100vh', background: 'var(--bg-subtle)', paddingBottom: '80px', paddingTop: '70px', overflowX: 'hidden',
+      minHeight: '100vh', background: 'var(--bg-subtle)', paddingBottom: '120px', paddingTop: '70px', overflowX: 'hidden',
       '--primary': themeColor,
       '--accent': themeColor
     }}>
@@ -119,7 +119,7 @@ const CategoryView = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
             {/* Massive Icon Box */}
             <div style={{
-              width: '100px', height: '100px', borderRadius: '24px',
+              width: 'clamp(70px, 15vw, 100px)', height: 'clamp(70px, 15vw, 100px)', borderRadius: '24px',
               background: 'var(--bg-white)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'var(--primary)',
@@ -153,7 +153,7 @@ const CategoryView = () => {
                 borderRadius: 'var(--radius-md)', border: '2px solid var(--text)', outline: 'none',
                 fontSize: '0.95rem', background: 'var(--bg-white)',
                 color: 'var(--text)', boxShadow: '4px 4px 0px var(--text)',
-                fontFamily: 'inherit'
+                fontFamily: 'inherit', boxSizing: 'border-box', WebkitAppearance: 'none'
               }}
             />
           </div>
