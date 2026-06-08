@@ -21,6 +21,17 @@ const CATEGORY_ICONS = {
   'reference':   <Library size={48} />
 };
 
+const CATEGORY_STYLES = {
+  'outline':     { color: '#8b5cf6', bg: '#f5f3ff', border: '#ddd6fe' },
+  'notes':       { color: '#f59e0b', bg: '#fffbeb', border: '#fde68a' },
+  'slides':      { color: '#ec4899', bg: '#fdf2f8', border: '#fbcfe8' },
+  'quizzes':     { color: '#ef4444', bg: '#fef2f2', border: '#fecaca' },
+  'assignments': { color: '#3b82f6', bg: '#eff6ff', border: '#bfdbfe' },
+  'lab-manuals': { color: '#10b981', bg: '#ecfdf5', border: '#a7f3d0' },
+  'lab-tasks':   { color: '#14b8a6', bg: '#f0fdfa', border: '#99f6e4' },
+  'reference':   { color: '#6366f1', bg: '#eef2ff', border: '#c7d2fe' }
+};
+
 const CategoryView = () => {
   const { categorySlug } = useParams();
   const navigate = useNavigate();
@@ -38,6 +49,7 @@ const CategoryView = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   const icon = CATEGORY_ICONS[categorySlug] || <Layers size={48} />;
+  const style = CATEGORY_STYLES[categorySlug] || { color: 'var(--primary)', bg: 'var(--bg-hero)', border: 'var(--border)' };
 
   // Debounce search
   useEffect(() => {
@@ -80,15 +92,15 @@ const CategoryView = () => {
       
       {/* ── Standard Hero Header ───────────────────────────────── */}
       <div style={{
-        background: 'var(--bg-hero)',
+        background: style.bg,
         padding: 'clamp(40px, 6vw, 60px) 0 clamp(40px, 6vw, 60px)', 
-        borderBottom: '2px solid var(--border)',
+        borderBottom: `2px solid ${style.border}`,
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Dynamic Glow Orbs using primary standard colors */}
-        <div style={{ position: 'absolute', width: '600px', height: '600px', background: 'var(--primary)', opacity: 0.05, top: '-200px', left: '-200px', borderRadius: '50%', filter: 'blur(80px)' }} />
-        <div style={{ position: 'absolute', width: '400px', height: '400px', background: 'var(--accent)', opacity: 0.05, bottom: '-100px', right: '-100px', borderRadius: '50%', filter: 'blur(60px)' }} />
+        {/* Dynamic Glow Orbs using category colors */}
+        <div style={{ position: 'absolute', width: '600px', height: '600px', background: style.color, opacity: 0.08, top: '-200px', left: '-200px', borderRadius: '50%', filter: 'blur(80px)' }} />
+        <div style={{ position: 'absolute', width: '400px', height: '400px', background: style.border, opacity: 0.15, bottom: '-100px', right: '-100px', borderRadius: '50%', filter: 'blur(60px)' }} />
 
         <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 2 }}>
           <button
@@ -110,8 +122,8 @@ const CategoryView = () => {
               width: '100px', height: '100px', borderRadius: '24px',
               background: 'var(--bg-white)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--primary)',
-              boxShadow: `0 20px 40px rgba(0,0,0,0.1), 0 0 0 2px var(--border)`,
+              color: style.color,
+              boxShadow: `0 20px 40px rgba(0,0,0,0.1), 0 0 0 2px ${style.border}`,
               transform: 'rotate(-5deg)',
               animation: 'float 3s ease-in-out infinite'
             }}>
@@ -119,9 +131,6 @@ const CategoryView = () => {
             </div>
 
             <div style={{ flex: 1, minWidth: '280px' }}>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent)', fontWeight: 800, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px', padding: '4px 12px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '100px' }}>
-                <Layers size={14} /> CATEGORY
-              </div>
               <h1 style={{ margin: '0 0 12px', fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.04em', lineHeight: 1.1, fontFamily: 'var(--font-primary)' }}>
                 {categoryName || categorySlug.replace('-', ' ')}
               </h1>
