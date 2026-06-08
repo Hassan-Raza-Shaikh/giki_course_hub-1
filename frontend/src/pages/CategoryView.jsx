@@ -22,14 +22,14 @@ const CATEGORY_ICONS = {
 };
 
 const CATEGORY_COLORS = {
-  'outline':     '#8b5cf6',
-  'notes':       '#f59e0b',
-  'slides':      '#ec4899',
-  'quizzes':     '#ef4444',
-  'assignments': '#3b82f6',
-  'lab-manuals': '#10b981',
-  'lab-tasks':   '#14b8a6',
-  'reference':   '#6366f1'
+  'outline':     'var(--tertiary)',
+  'notes':       'var(--secondary)',
+  'slides':      'var(--tertiary)',
+  'quizzes':     'var(--accent)',
+  'assignments': 'var(--primary)',
+  'lab-manuals': 'var(--electric)',
+  'lab-tasks':   'var(--electric)',
+  'reference':   'var(--secondary)'
 };
 
 const CategoryView = () => {
