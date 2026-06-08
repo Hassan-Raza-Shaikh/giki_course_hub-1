@@ -191,6 +191,14 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           <Bookmark size={16} strokeWidth={2.5} /> Bookmarks
         </button>
 
+        <button
+          className="hide-mobile btn-nav"
+          onClick={() => navigate('/leaderboard')}
+          style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)' }}
+        >
+          <Trophy size={16} strokeWidth={2.5} /> Leaderboard
+        </button>
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
 
           {user ? (
