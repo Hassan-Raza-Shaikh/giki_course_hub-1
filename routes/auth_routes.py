@@ -294,8 +294,11 @@ def login():
         cur = conn.cursor()
         # Try email first, then username (case-insensitive)
         cur.execute(
-            """SELECT user_id, username, password, role, display_name, photo_url, email
-               FROM users WHERE LOWER(email) = %s OR LOWER(username) = %s;""",
+            """SELECT u.user_id, u.username, u.password, u.role, u.display_name, u.photo_url, u.email,
+                      up.batch_year, up.program, up.user_type
+               FROM users u
+               LEFT JOIN user_profiles up ON u.user_id = up.user_id
+               WHERE LOWER(u.email) = %s OR LOWER(u.username) = %s;""",
             (login_id, login_id)
         )
         user = cur.fetchone()
@@ -305,6 +308,15 @@ def login():
         if not user or not user[2] or not check_password_hash(user[2], password):
             return jsonify({"success": False, "message": "Invalid email or password."}), 401
 
+        batch_year, program, user_type = user[7], user[8], user[9]
+        if program and user_type:
+            if user_type in ('faculty', 'external'):
+                profile_complete = True
+            else:
+                profile_complete = bool(batch_year)
+        else:
+            profile_complete = False
+
         session['user_id']  = user[0]
         session['username'] = user[1]
         session['role']     = user[3]
@@ -313,7 +325,8 @@ def login():
             "message": f"Welcome back, {user[4] or user[1]}!",
             "user": {
                 "id": user[0], "username": user[1], "role": user[3],
-                "displayName": user[4] or user[1], "photoURL": user[5], "email": user[6]
+                "displayName": user[4] or user[1], "photoURL": user[5], "email": user[6],
+                "profileComplete": profile_complete
             }
         })
     except Exception as e:

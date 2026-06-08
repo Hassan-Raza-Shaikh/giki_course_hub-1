@@ -85,8 +85,16 @@ const App = () => {
           setLoading(false);
         }
       } else {
-        setUser(null);
-        setLoading(false);
+        api.get('/me')
+          .then(res => {
+            if (res.data.is_logged_in) {
+              setUser(res.data.user);
+            } else {
+              setUser(null);
+            }
+          })
+          .catch(() => setUser(null))
+          .finally(() => setLoading(false));
       }
     });
 
