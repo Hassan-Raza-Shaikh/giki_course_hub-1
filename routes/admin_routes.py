@@ -1136,20 +1136,20 @@ def admin_detailed_stats():
             SELECT f.file_id, f.title, f.course_code, COUNT(b.bookmark_id) AS cnt
             FROM files f JOIN bookmarks b ON b.file_id = f.file_id
             WHERE f.status = 'approved'
-            GROUP BY f.file_id, f.title, f.course_code ORDER BY cnt DESC LIMIT 10;
+            GROUP BY f.file_id, f.title, f.course_code ORDER BY cnt DESC;
         """)
         most_bookmarked = [{"file_id": r[0], "title": r[1], "course_code": r[2], "count": r[3]} for r in cur.fetchall()]
 
         cur.execute("""
             SELECT f.file_id, f.title, f.course_code, COUNT(d.download_id) AS cnt
             FROM files f JOIN file_downloads d ON d.file_id = f.file_id
-            GROUP BY f.file_id, f.title, f.course_code ORDER BY cnt DESC LIMIT 10;
+            GROUP BY f.file_id, f.title, f.course_code ORDER BY cnt DESC;
         """)
         most_downloaded = [{"file_id": r[0], "title": r[1], "course_code": r[2], "count": r[3]} for r in cur.fetchall()]
 
         cur.execute("""
             SELECT f.course_code, COUNT(*) AS cnt FROM files f
-            WHERE f.status = 'approved' GROUP BY f.course_code ORDER BY cnt DESC LIMIT 10;
+            WHERE f.status = 'approved' GROUP BY f.course_code ORDER BY cnt DESC;
         """)
         per_course = [{"course_code": r[0], "count": r[1]} for r in cur.fetchall()]
 

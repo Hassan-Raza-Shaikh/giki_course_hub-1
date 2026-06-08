@@ -32,6 +32,11 @@ const AdminPanel = ({ user }) => {
   const [stats,    setStats]    = useState(null);
   const [detailedStats, setDetailedStats] = useState(null);
   
+  // Pagination limits for detailed stats
+  const [limitDL, setLimitDL] = useState(10);
+  const [limitBM, setLimitBM] = useState(10);
+  const [limitC,  setLimitC]  = useState(10);
+  
   const [pending,  setPending]  = useState([]);
   const [selectedPending, setSelectedPending] = useState(new Set());
   
@@ -1475,7 +1480,7 @@ const AdminPanel = ({ user }) => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
             <div style={cardStyle}>
               <h3 style={cardTitleStyle}><Flame size={20} color="var(--accent)" /> Most Downloaded</h3>
-              {detailedStats.most_downloaded.map((f, i) => (
+              {detailedStats.most_downloaded.slice(0, limitDL).map((f, i) => (
                 <div key={f.file_id} style={statRowStyle}>
                   <span style={statBadgeStyle}>{i+1}</span>
                   <div style={{ flex: 1 }}>
@@ -1485,10 +1490,15 @@ const AdminPanel = ({ user }) => {
                   <div style={{ fontWeight: 900, color: 'var(--primary)' }}>{f.count} <Download size={14} style={{ marginLeft: '4px' }} /></div>
                 </div>
               ))}
+              {detailedStats.most_downloaded.length > limitDL && (
+                <button onClick={() => setLimitDL(l => l + 20)} style={{ width: '100%', padding: '10px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '10px', marginTop: '10px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer' }}>
+                  Show More
+                </button>
+              )}
             </div>
             <div style={cardStyle}>
               <h3 style={cardTitleStyle}><Gem size={20} color="var(--electric)" /> Most Bookmarked</h3>
-              {detailedStats.most_bookmarked.map((f, i) => (
+              {detailedStats.most_bookmarked.slice(0, limitBM).map((f, i) => (
                 <div key={f.file_id} style={statRowStyle}>
                   <span style={statBadgeStyle}>{i+1}</span>
                   <div style={{ flex: 1 }}>
@@ -1498,15 +1508,25 @@ const AdminPanel = ({ user }) => {
                   <div style={{ fontWeight: 900, color: '#EC4899' }}>{f.count} <Bookmark size={14} /></div>
                 </div>
               ))}
+              {detailedStats.most_bookmarked.length > limitBM && (
+                <button onClick={() => setLimitBM(l => l + 20)} style={{ width: '100%', padding: '10px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '10px', marginTop: '10px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer' }}>
+                  Show More
+                </button>
+              )}
             </div>
             <div style={cardStyle}>
               <h3 style={cardTitleStyle}><Folder size={20} /> Top Courses</h3>
-              {detailedStats.per_course.map((c, i) => (
+              {detailedStats.per_course.slice(0, limitC).map((c, i) => (
                 <div key={c.course_code} style={statRowStyle}>
                   <div style={{ flex: 1, fontWeight: 700 }}>{c.course_code}</div>
                   <div style={{ fontWeight: 900 }}>{c.count} files</div>
                 </div>
               ))}
+              {detailedStats.per_course.length > limitC && (
+                <button onClick={() => setLimitC(l => l + 20)} style={{ width: '100%', padding: '10px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '10px', marginTop: '10px', fontWeight: 600, color: 'var(--text-muted)', cursor: 'pointer' }}>
+                  Show More
+                </button>
+              )}
             </div>
             <div style={cardStyle}>
               <h3 style={cardTitleStyle}><PieChart size={20} /> Content Breakdown</h3>
