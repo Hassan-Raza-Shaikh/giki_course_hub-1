@@ -151,6 +151,35 @@ def search_all():
         conn.close()
 
 
+@file_bp.route('/api/files/my-uploads', methods=['GET'])
+def my_uploads():
+    """Return all files uploaded by the current user."""
+    if 'user_id' not in session:
+        return jsonify({"success": False, "message": "Not authenticated"}), 401
+    
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT f.file_id, f.title, f.course_code, f.status, f.upload_date, f.file_url,
+                   c.name AS category_name, fn.note_text AS admin_note
+            FROM files f
+            LEFT JOIN categories c ON f.category_id = c.category_id
+            LEFT JOIN file_notes fn ON f.file_id = fn.file_id
+            WHERE f.uploaded_by = %s
+            ORDER BY f.upload_date DESC;
+        """, (session['user_id'],))
+        rows = cur.fetchall()
+        cols = [d[0] for d in cur.description]
+        files = [dict(zip(cols, r)) for r in rows]
+        cur.close()
+        return jsonify({"success": True, "files": files})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+
 @file_bp.route('/api/stats', methods=['GET'])
 def get_public_stats():
     """Return public statistics for the landing page."""

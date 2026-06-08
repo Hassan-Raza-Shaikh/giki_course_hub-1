@@ -123,7 +123,8 @@ BEGIN
                     'instructor_name', i.name,
                     'instructor_id', f.instructor_id,
                     'is_shared', false,
-                    'shared_from', null::text
+                    'shared_from', null::text,
+                    'downloads', COALESCE(fd.download_count, 0)
                 ) ORDER BY f.title ASC
             ) AS files
         FROM files f
@@ -132,6 +133,11 @@ BEGIN
         LEFT JOIN file_metadata m ON f.file_id = m.file_id
         LEFT JOIN file_notes fn ON fn.file_id = f.file_id
         LEFT JOIN instructors i ON f.instructor_id = i.instructor_id
+        LEFT JOIN (
+            SELECT file_id, COUNT(*) AS download_count
+            FROM file_downloads
+            GROUP BY file_id
+        ) fd ON f.file_id = fd.file_id
         WHERE (f.course_code = v_code OR f.course_code = v_name)
           AND f.status = 'approved'
         GROUP BY COALESCE(cat.name, 'General')
@@ -157,7 +163,8 @@ BEGIN
                     'instructor_name', i.name,
                     'instructor_id', f.instructor_id,
                     'is_shared', true,
-                    'shared_from', origin_c.code
+                    'shared_from', origin_c.code,
+                    'downloads', COALESCE(fd.download_count, 0)
                 ) ORDER BY COALESCE(fcl.custom_title, f.title) ASC
             ) AS files
         FROM file_course_links fcl
@@ -169,6 +176,11 @@ BEGIN
         LEFT JOIN file_metadata m     ON f.file_id = m.file_id
         LEFT JOIN file_notes fn       ON fn.file_id = f.file_id
         LEFT JOIN instructors i       ON f.instructor_id = i.instructor_id
+        LEFT JOIN (
+            SELECT file_id, COUNT(*) AS download_count
+            FROM file_downloads
+            GROUP BY file_id
+        ) fd ON f.file_id = fd.file_id
         WHERE fcl.course_id = p_course_id
           AND f.status = 'approved'
         GROUP BY COALESCE(link_cat.name, 'General')

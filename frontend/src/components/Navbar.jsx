@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -300,6 +300,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 {/* Quick links */}
                 {[
                   { icon: <Cloud size={16}/>, label: 'Global Upload',   action: () => { setMenuOpen(false); navigate('/upload'); } },
+                  { icon: <UploadCloud size={16}/>, label: 'My Uploads', action: () => { setMenuOpen(false); navigate('/my-uploads'); } },
                   { icon: <Bookmark size={16}/>, label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
                   { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
                   { icon: <BookOpen size={16}/>, label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
