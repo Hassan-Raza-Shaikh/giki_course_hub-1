@@ -200,14 +200,14 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
             )}
           </div>
 
-          {/* Batch Year — only for students/graduates */}
+          {/* Entrance Year — only for students/graduates */}
           {needsBatch && (
             <div>
-              <label style={label}>Batch Year</label>
+              <label style={label}>Entrance Year</label>
               <select value={batchYear} onChange={e => setBatchYear(e.target.value)} style={selectStyle} required>
-                <option value="">— Select year —</option>
+                <option value="">— Select entrance year —</option>
                 {BATCH_YEARS.map(y => (
-                  <option key={y} value={y}>{y}</option>
+                  <option key={y} value={y}>{y} (Batch {y - 1990})</option>
                 ))}
               </select>
             </div>

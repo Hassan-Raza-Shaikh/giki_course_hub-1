@@ -130,7 +130,7 @@ const UserProfile = ({ user, setUser }) => {
               )}
               {profile.batch_year && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Calendar size={18} /> Batch of {profile.batch_year}
+                  <Calendar size={18} /> Batch {profile.batch_year - 1990}
                 </div>
               )}
               {profile.role === 'admin' && (
