@@ -282,7 +282,7 @@ def get_category_files(slug):
 
         # Get total count
         count_sql = f"""
-            SELECT COUNT(*) FROM files f
+            SELECT COUNT(DISTINCT f.file_id) FROM files f
             LEFT JOIN courses c ON f.course_code = COALESCE(c.code, c.name)
             {base_where}
         """
