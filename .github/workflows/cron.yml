@@ -2,9 +2,9 @@ name: Backend Cron Job
 
 on:
   schedule:
-    # Runs every hour at minute 0. 
+    # Runs every 14 minutes to prevent the backend from sleeping. 
     # Use https://crontab.guru/ to customize this.
-    - cron: '0 * * * *'
+    - cron: '*/14 * * * *'
   workflow_dispatch: # Allows manual triggering from the GitHub UI
 
 jobs:
