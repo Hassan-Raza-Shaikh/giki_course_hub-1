@@ -8,13 +8,19 @@ import '../styles/global.css';
 const MyUploads = ({ user }) => {
   const [uploads, setUploads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     if (user) {
-      api.get('/files/my-uploads')
+      setLoading(true);
+      api.get('/files/my-uploads', { params: { page, limit: 50 } })
         .then(res => {
           if (res.data.success) {
             setUploads(res.data.files || []);
+            setTotalPages(res.data.pages || 1);
+            setTotalCount(res.data.total || 0);
           }
         })
         .catch(err => console.error("Error fetching my uploads:", err))
@@ -22,7 +28,7 @@ const MyUploads = ({ user }) => {
     } else {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, page]);
 
   const fmtDate = (d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -45,14 +51,20 @@ const MyUploads = ({ user }) => {
       <div className="blob blob-2"></div>
       <div className="blob blob-3"></div>
       
-      <div className="page-container" style={{ padding: '40px 24px', maxWidth: '1000px' }}>
+      <div className="page-container" style={{ padding: '120px 24px 60px', maxWidth: '1000px', margin: '0 auto' }}>
         <h1 className="hero-title" style={{ fontSize: '2.5rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
           <UploadCloud size={36} color="var(--primary)" />
           My Uploads
         </h1>
-        <p className="hero-subtitle" style={{ fontSize: '1rem', marginBottom: '32px' }}>
+        <p className="hero-subtitle" style={{ fontSize: '1rem', marginBottom: '12px' }}>
           Track the status of the materials you've contributed to GIKI Course Hub.
         </p>
+        
+        {user && totalCount > 0 && (
+          <div style={{ marginBottom: '24px', fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+            {totalCount} total upload{totalCount !== 1 ? 's' : ''} · Page {page} of {totalPages}
+          </div>
+        )}
 
         {!user ? (
           <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--border)', padding: '80px 32px', textAlign: 'center' }}>
@@ -72,8 +84,8 @@ const MyUploads = ({ user }) => {
           <div style={{ background: 'var(--card-bg)', borderRadius: '16px', border: '2px solid var(--border)', overflow: 'hidden' }}>
             {uploads.map(file => (
               <div key={file.file_id} style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '20px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap', gap: '16px' }}>
-                <div style={{ flex: 1, minWidth: '300px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '6px' }}>
+                <div style={{ flex: 1, minWidth: '280px', wordBreak: 'break-word' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '6px' }}>
                     <h3 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0 }}>{file.title}</h3>
                     {getStatusBadge(file.status)}
                   </div>
@@ -100,6 +112,23 @@ const MyUploads = ({ user }) => {
                 )}
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '32px' }}>
+            <button
+              disabled={page <= 1}
+              onClick={() => { setPage(p => p - 1); window.scrollTo(0, 0); }}
+              style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: page <= 1 ? 'not-allowed' : 'pointer', opacity: page <= 1 ? 0.4 : 1 }}
+            >← Prev</button>
+            <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {page} / {totalPages}</span>
+            <button
+              disabled={page >= totalPages}
+              onClick={() => { setPage(p => p + 1); window.scrollTo(0, 0); }}
+              style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: page >= totalPages ? 'not-allowed' : 'pointer', opacity: page >= totalPages ? 0.4 : 1 }}
+            >Next →</button>
           </div>
         )}
       </div>

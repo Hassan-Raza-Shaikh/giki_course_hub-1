@@ -159,7 +159,18 @@ def my_uploads():
     
     conn = get_connection()
     try:
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 50))
+        offset = (page - 1) * limit
+
         cur = conn.cursor()
+        
+        # Get total count for pagination
+        cur.execute("SELECT COUNT(*) FROM files WHERE uploaded_by = %s", (session['user_id'],))
+        total_count = cur.fetchone()[0]
+        total_pages = (total_count + limit - 1) // limit
+
+        # Fetch paginated files
         cur.execute("""
             SELECT f.file_id, f.title, f.course_code, f.status, f.upload_date, f.file_url,
                    c.name AS category_name, fn.note_text AS admin_note
@@ -167,13 +178,21 @@ def my_uploads():
             LEFT JOIN categories c ON f.category_id = c.category_id
             LEFT JOIN file_notes fn ON f.file_id = fn.file_id
             WHERE f.uploaded_by = %s
-            ORDER BY f.upload_date DESC;
-        """, (session['user_id'],))
+            ORDER BY f.upload_date DESC
+            LIMIT %s OFFSET %s;
+        """, (session['user_id'], limit, offset))
+        
         rows = cur.fetchall()
         cols = [d[0] for d in cur.description]
         files = [dict(zip(cols, r)) for r in rows]
         cur.close()
-        return jsonify({"success": True, "files": files})
+        
+        return jsonify({
+            "success": True, 
+            "files": files, 
+            "pages": total_pages, 
+            "total": total_count
+        })
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
     finally:
