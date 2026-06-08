@@ -1,0 +1,20 @@
+name: Backend Cron Job
+
+on:
+  schedule:
+    # Runs every hour at minute 0. 
+    # Use https://crontab.guru/ to customize this.
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allows manual triggering from the GitHub UI
+
+jobs:
+  run-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend Endpoint
+        run: |
+          # Use curl to ping the backend. 
+          # --max-time 120 gives the sleeping backend 2 full minutes to wake up and respond!
+          # -f makes the action fail if the backend returns a 4xx or 5xx error.
+          curl -f -X GET "${{ secrets.CRON_URL }}" \
+               --max-time 120
