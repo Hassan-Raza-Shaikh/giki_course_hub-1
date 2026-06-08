@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -71,13 +71,13 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'minecraft', name: 'Minecraft', icon: <Box size={14} /> },
     { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
     { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> },
-    { id: 'mario', name: 'Mario', icon: <Gamepad2 size={14} /> },
-    { id: 'zelda', name: 'Zelda', icon: <Droplet size={14} /> },
-    { id: 'gh-dark', name: 'Dev Dark', icon: <Terminal size={14} /> },
-    { id: 'minimal', name: 'Minimal', icon: <Box size={14} /> },
-    { id: 'discord', name: 'Midnight', icon: <Ghost size={14} /> },
-    { id: 'vaporwave', name: 'Vaporwave', icon: <Sun size={14} /> },
-    { id: 'gruvbox', name: 'Gruvbox', icon: <Terminal size={14} /> },
+    { id: 'mario', name: 'Mario', icon: <Star size={14} /> },
+    { id: 'zelda', name: 'Zelda', icon: <Swords size={14} /> },
+    { id: 'gh-dark', name: 'Dev Dark', icon: <Github size={14} /> },
+    { id: 'minimal', name: 'Minimal', icon: <Square size={14} /> },
+    { id: 'discord', name: 'Midnight', icon: <MessageSquare size={14} /> },
+    { id: 'vaporwave', name: 'Vaporwave', icon: <Sunset size={14} /> },
+    { id: 'gruvbox', name: 'Gruvbox', icon: <Coffee size={14} /> },
     { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
     { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
     { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> }
