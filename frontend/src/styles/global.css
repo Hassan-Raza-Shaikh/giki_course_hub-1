@@ -117,6 +117,32 @@ body { overflow-x: hidden; }
   --nav-btn-text: #110022;
 }
 
+/* ── Snake ── */
+[data-theme='snake'] {
+  --font-primary: 'Silkscreen', cursive;
+  --font-secondary: 'Silkscreen', cursive;
+  --primary:      #39ff14;
+  --primary-dark: #008000;
+  --primary-mid:  #00ff00;
+  --secondary:    #ff0000;
+  --accent:       #ffff00;
+  --tertiary:     #39ff14;
+  --electric:     #ff0000;
+  --bg-hero:      #050505;
+  --bg-dark:      #000000;
+  --bg-subtle:    #111111;
+  --bg-white:     #1a1a1a;
+  --bg-body:      #050505;
+  --text:         #39ff14;
+  --text-muted:   #00cc00;
+  --text-light:   #008000;
+  --border:       #39ff14;
+  --shadow-sm:    4px 4px 0px #008000;
+  --shadow-md:    8px 8px 0px #ff0000;
+  --shadow-lg:    12px 12px 0px #39ff14;
+  --nav-btn-text: #000000;
+}
+
 /* ── Gruvbox ── */
 [data-theme='gruvbox'] {
   --font-primary: 'Inter', monospace;

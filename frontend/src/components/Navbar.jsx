@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -80,7 +80,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'gruvbox', name: 'Gruvbox', icon: <Coffee size={14} /> },
     { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
     { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
-    { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> }
+    { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> },
+    { id: 'snake', name: 'Snake', icon: <Activity size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
