@@ -90,8 +90,7 @@ const CategoryView = () => {
   return (
     <div style={{ 
       minHeight: '100vh', background: 'var(--bg-subtle)', paddingBottom: '120px', paddingTop: '70px', overflowX: 'hidden',
-      '--primary': themeColor,
-      '--accent': themeColor
+      '--category-primary': themeColor
     }}>
       
       {/* ── Standard Hero Header ───────────────────────────────── */}
@@ -122,7 +121,7 @@ const CategoryView = () => {
               width: 'clamp(70px, 15vw, 100px)', height: 'clamp(70px, 15vw, 100px)', borderRadius: '24px',
               background: 'var(--bg-white)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--primary)',
+              color: 'var(--category-primary)',
               boxShadow: `0 20px 40px rgba(0,0,0,0.1), 0 0 0 2px var(--border)`,
               transform: 'rotate(-5deg)',
               animation: 'float 3s ease-in-out infinite'
@@ -165,7 +164,7 @@ const CategoryView = () => {
         
         {loading ? (
           <div style={{ padding: '80px 0', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '2px solid var(--border)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: `3px solid var(--primary)`, borderTopColor: 'transparent', animation: 'spin 1s linear infinite', margin: '0 auto' }} />
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: `3px solid var(--category-primary)`, borderTopColor: 'transparent', animation: 'spin 1s linear infinite', margin: '0 auto' }} />
           </div>
         ) : error ? (
           <div style={{ padding: '80px 24px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '2px solid var(--border)' }}>
@@ -195,8 +194,8 @@ const CategoryView = () => {
                   }}
                   onMouseOver={e => {
                     e.currentTarget.style.transform = 'translate(-4px, -4px)';
-                    e.currentTarget.style.boxShadow = `8px 8px 0px var(--primary)`;
-                    e.currentTarget.style.borderColor = 'var(--primary)';
+                    e.currentTarget.style.boxShadow = `8px 8px 0px var(--category-primary)`;
+                    e.currentTarget.style.borderColor = 'var(--category-primary)';
                   }}
                   onMouseOut={e => {
                     e.currentTarget.style.transform = 'none';
@@ -205,7 +204,7 @@ const CategoryView = () => {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '20px' }}>
-                    <div style={{ padding: '12px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '14px', color: 'var(--primary)', flexShrink: 0 }}>
+                    <div style={{ padding: '12px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: '14px', color: 'var(--category-primary)', flexShrink: 0 }}>
                       <FileText size={20} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -220,7 +219,7 @@ const CategoryView = () => {
                           background: 'var(--bg-white)', padding: '4px 10px', borderRadius: '100px', fontWeight: 700,
                           border: '1px solid var(--border)', transition: 'color 0.2s, border-color 0.2s'
                         }}
-                        onMouseOver={e => { e.currentTarget.style.color = 'var(--primary)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+                        onMouseOver={e => { e.currentTarget.style.color = 'var(--category-primary)'; e.currentTarget.style.borderColor = 'var(--category-primary)'; }}
                         onMouseOut={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                       >
                         {f.course_code}
@@ -237,7 +236,7 @@ const CategoryView = () => {
                     <button
                       onClick={() => handleDownload(f)}
                       className="btn-nav hover-opacity"
-                      style={{ background: 'var(--primary)', color: '#fff', padding: '8px 16px', fontSize: '0.85rem', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '2px 2px 0px var(--text)' }}
+                      style={{ background: 'var(--category-primary)', color: '#fff', padding: '8px 16px', fontSize: '0.85rem', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '2px 2px 0px var(--text)' }}
                     >
                       <Download size={14} strokeWidth={2.5} /> Open
                     </button>
