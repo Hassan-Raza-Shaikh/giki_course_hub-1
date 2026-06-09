@@ -447,15 +447,18 @@ def course_detail(course_id):
 
         # Instructors who actually have approved files in this course
         # (used for the header chips and filter dropdown)
-        # files table stores course_code (string), not course_id
+        from utils.aliases import get_course_aliases
+        aliases = get_course_aliases(c[2] or c[1])
+
         cur.execute("""
             SELECT DISTINCT i.instructor_id, i.name, i.faculty_name
             FROM instructors i
             JOIN files f ON f.instructor_id = i.instructor_id
-            WHERE f.course_code = (SELECT COALESCE(code, name) FROM courses WHERE course_id = %s)
+            LEFT JOIN file_course_links fcl ON fcl.file_id = f.file_id
+            WHERE (f.course_code = ANY(%s) OR fcl.course_id = %s)
               AND f.status = 'approved'
             ORDER BY i.name;
-        """, (course_id,))
+        """, (list(aliases), course_id))
         file_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
 
         # All instructors (for the upload dropdown autocomplete)
