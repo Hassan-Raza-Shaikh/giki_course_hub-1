@@ -162,10 +162,10 @@ const CoursePage = ({ user, onSignIn }) => {
 
     return [...rawFiles].sort((a, b) => {
       if (sortBy === 'name-asc') {
-        return (a.title || '').localeCompare(b.title || '', undefined, { numeric: true, sensitivity: 'base' });
+        return String(a.title || '').localeCompare(String(b.title || ''), undefined, { numeric: true, sensitivity: 'base' });
       }
       if (sortBy === 'name-desc') {
-        return (b.title || '').localeCompare(a.title || '', undefined, { numeric: true, sensitivity: 'base' });
+        return String(b.title || '').localeCompare(String(a.title || ''), undefined, { numeric: true, sensitivity: 'base' });
       }
       if (sortBy === 'date-desc') {
         return new Date(b.date || 0) - new Date(a.date || 0);
