@@ -19,7 +19,6 @@ COPY . /app/
 EXPOSE 8080
 
 # Run gunicorn
-# -w 4: 4 worker processes
-# -b 0.0.0.0:8080: Bind to all interfaces on port 8080
-# app:app: module app, object app
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "app:app"]
+# Uses the PORT environment variable injected by Render/DigitalOcean
+# Removes hardcoded -w 4 so Render's WEB_CONCURRENCY is automatically respected (prevents OOM crashes on free tier)
+CMD gunicorn -b 0.0.0.0:${PORT:-8080} app:app
