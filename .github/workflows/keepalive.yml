@@ -1,0 +1,17 @@
+name: Keep Render Server Awake
+
+on:
+  schedule:
+    # Runs every 10 minutes to prevent the Render free tier server from sleeping (sleeps after 15m)
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend Server
+        # Replace the URL with the actual production Render URL if different.
+        run: |
+          curl -sS https://giki-course-hub.onrender.com/api/courses/list > /dev/null
+          echo "Successfully pinged the server to keep it awake."
