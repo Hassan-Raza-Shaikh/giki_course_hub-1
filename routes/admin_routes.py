@@ -1304,3 +1304,73 @@ def admin_delete_note(file_id):
         conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
     finally:
         conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MANUAL COURSE LINKS
+# ─────────────────────────────────────────────────────────────────────────────
+@admin_bp.route('/api/admin/course-links', methods=['GET'])
+def get_manual_course_links():
+    admin_email, err = _require_admin()
+    if err: return err
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT link_id, course_code_1, course_code_2, created_at
+            FROM manual_course_links
+            ORDER BY created_at DESC
+        """)
+        links = [{"link_id": r[0], "course_code_1": r[1], "course_code_2": r[2], "created_at": r[3]} for r in cur.fetchall()]
+        return jsonify({"success": True, "links": links})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+@admin_bp.route('/api/admin/course-links', methods=['POST'])
+def add_manual_course_link():
+    import psycopg2
+    admin_email, err = _require_admin()
+    if err: return err
+    data = request.json
+    c1 = data.get('course_code_1', '').strip().upper()
+    c2 = data.get('course_code_2', '').strip().upper()
+    
+    if not c1 or not c2 or c1 == c2:
+        return jsonify({"success": False, "message": "Invalid course codes."}), 400
+        
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT INTO manual_course_links (course_code_1, course_code_2)
+            VALUES (LEAST(%s::text, %s::text), GREATEST(%s::text, %s::text))
+            RETURNING link_id
+        """, (c1, c2, c1, c2))
+        conn.commit()
+        return jsonify({"success": True, "message": "Link added successfully."})
+    except psycopg2.errors.UniqueViolation:
+        conn.rollback()
+        return jsonify({"success": False, "message": "This link already exists."}), 400
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()
+
+@admin_bp.route('/api/admin/course-links/<int:link_id>', methods=['DELETE'])
+def delete_manual_course_link(link_id):
+    admin_email, err = _require_admin()
+    if err: return err
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("DELETE FROM manual_course_links WHERE link_id = %s", (link_id,))
+        conn.commit()
+        return jsonify({"success": True, "message": "Link removed."})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        conn.close()

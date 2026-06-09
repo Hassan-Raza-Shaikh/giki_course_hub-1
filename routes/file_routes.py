@@ -84,6 +84,8 @@ def search_all():
     if not query and not category_id and not faculty_id:
         return jsonify({"success": True, "files": [], "courses": []})
 
+    from utils.aliases import get_course_aliases
+
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -104,8 +106,9 @@ def search_all():
         """
         params = []
         if query:
-            file_sql += " AND (f.title ILIKE %s OR c.name ILIKE %s OR f.course_code ILIKE %s OR i.name ILIKE %s)"
-            params.extend([f'%{query}%', f'%{query}%', f'%{query}%', f'%{query}%'])
+            aliases = get_course_aliases(query)
+            file_sql += " AND (f.title ILIKE %s OR c.name ILIKE %s OR f.course_code ILIKE %s OR f.course_code = ANY(%s) OR i.name ILIKE %s)"
+            params.extend([f'%{query}%', f'%{query}%', f'%{query}%', list(aliases), f'%{query}%'])
         if category_id:
             file_sql += " AND f.category_id = %s"
             params.append(category_id)
@@ -277,8 +280,10 @@ def get_category_files(slug):
         params = [category_id]
 
         if search_query:
-            base_where += " AND (f.title ILIKE %s OR f.course_code ILIKE %s OR c.name ILIKE %s)"
-            params.extend([f'%{search_query}%', f'%{search_query}%', f'%{search_query}%'])
+            from utils.aliases import get_course_aliases
+            aliases = get_course_aliases(search_query)
+            base_where += " AND (f.title ILIKE %s OR f.course_code ILIKE %s OR f.course_code = ANY(%s) OR c.name ILIKE %s)"
+            params.extend([f'%{search_query}%', f'%{search_query}%', list(aliases), f'%{search_query}%'])
 
         # Get total count
         count_sql = f"""

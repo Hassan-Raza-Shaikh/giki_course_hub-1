@@ -173,3 +173,13 @@ CREATE TABLE file_course_links (
 
 CREATE INDEX idx_fcl_course ON file_course_links(course_id);
 CREATE INDEX idx_fcl_file   ON file_course_links(file_id);
+-- =====================================
+-- 11. MANUAL COURSE LINKS
+-- =====================================
+CREATE TABLE manual_course_links (
+    link_id SERIAL PRIMARY KEY,
+    course_code_1 TEXT NOT NULL,
+    course_code_2 TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(course_code_1, course_code_2)
+);
