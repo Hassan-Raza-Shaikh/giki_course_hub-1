@@ -68,6 +68,8 @@ const AdminPanel = ({ user }) => {
   const [issuesTotalPages, setIssuesTotalPages] = useState(1);
   const [admins,   setAdmins]   = useState([]);
   const [logs,     setLogs]     = useState([]);
+  const [logsPage, setLogsPage] = useState(1);
+  const [logsTotalPages, setLogsTotalPages] = useState(1);
   
 
   const [courseLinks, setCourseLinks] = useState([]);
@@ -189,7 +191,7 @@ const AdminPanel = ({ user }) => {
       }),
       users:   () => api.get('/admin/users', { params: { page: usersPage } }).then(r => { setUsers(r.data.users || []); setUsersTotalPages(r.data.pages || 1); }),
       admins:  () => api.get('/admin/admins').then(r => setAdmins(r.data.admins || [])),
-      logs:    () => api.get('/admin/logs').then(r => setLogs(r.data.logs || [])),
+      logs:    () => api.get('/admin/logs', { params: { page: logsPage } }).then(r => { setLogs(r.data.logs || []); setLogsTotalPages(r.data.pages || 1); }),
     };
     const loader = loaders[tab];
     if (loader) loader().catch(() => {}).finally(() => setLoading(false));
@@ -208,6 +210,19 @@ const AdminPanel = ({ user }) => {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [usersPage, tab, isAdmin]);
+
+  // Re-fetch logs when page changes
+  useEffect(() => {
+    if (tab !== 'logs' || !isAdmin) return;
+    setLoading(true);
+    api.get('/admin/logs', { params: { page: logsPage } })
+      .then(r => {
+        setLogs(r.data.logs || []);
+        setLogsTotalPages(r.data.pages || 1);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [logsPage, tab, isAdmin]);
 
   // Re-fetch issues when page changes
   useEffect(() => {
@@ -1792,6 +1807,25 @@ const AdminPanel = ({ user }) => {
                 <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', flexShrink: 0 }}>{fmtDate(l.performed_at)}</div>
               </div>
             ))}
+            {!loading && logs.length > 0 && logsTotalPages > 1 && (
+              <div style={{ padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-subtle)' }}>
+                <button 
+                  onClick={() => setLogsPage(p => Math.max(1, p - 1))}
+                  disabled={logsPage <= 1}
+                  style={{
+                    padding: '8px 16px', background: 'var(--bg-white)', border: '2px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+                    cursor: logsPage <= 1 ? 'not-allowed' : 'pointer', opacity: logsPage <= 1 ? 0.5 : 1
+                  }}>Previous</button>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Page {logsPage} of {logsTotalPages}</span>
+                <button 
+                  onClick={() => setLogsPage(p => Math.min(logsTotalPages, p + 1))}
+                  disabled={logsPage >= logsTotalPages}
+                  style={{
+                    padding: '8px 16px', background: 'var(--bg-white)', border: '2px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+                    cursor: logsPage >= logsTotalPages ? 'not-allowed' : 'pointer', opacity: logsPage >= logsTotalPages ? 0.5 : 1
+                  }}>Next</button>
+              </div>
+            )}
           </div>
         )}
 

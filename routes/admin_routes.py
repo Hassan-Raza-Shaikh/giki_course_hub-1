@@ -575,6 +575,10 @@ def admin_activity_logs():
     admin_email, err = _require_admin()
     if err: return err
 
+    page = request.args.get('page', 1, type=int)
+    per_page = 50
+    offset = (page - 1) * per_page
+
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -582,12 +586,22 @@ def admin_activity_logs():
             SELECT log_id, admin_email, action, target_id, target_desc, performed_at
             FROM admin_logs
             ORDER BY performed_at DESC
-            LIMIT 500;
-        """)
+            LIMIT %s OFFSET %s;
+        """, (per_page, offset))
         rows = cur.fetchall()
         cols = [d[0] for d in cur.description]
+        
+        cur.execute("SELECT COUNT(*) FROM admin_logs;")
+        total = cur.fetchone()[0]
         cur.close()
-        return jsonify({"success": True, "logs": [dict(zip(cols, r)) for r in rows]})
+        
+        return jsonify({
+            "success": True, 
+            "logs": [dict(zip(cols, r)) for r in rows],
+            "total": total,
+            "page": page,
+            "pages": (total + per_page - 1) // per_page
+        })
     finally:
         conn.close()
 
