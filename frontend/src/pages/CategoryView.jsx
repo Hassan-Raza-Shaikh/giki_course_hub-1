@@ -141,14 +141,16 @@ const CategoryView = () => {
           
           {/* Search Bar */}
           <div style={{ marginTop: '40px', position: 'relative', maxWidth: '480px' }}>
-            <span style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}><Search size={18} /></span>
+            <div style={{ position: 'absolute', left: '16px', top: '0', bottom: '0', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-muted)' }}>
+              <Search size={18} />
+            </div>
             <input
               type="text"
               placeholder={`Search in ${categoryName || 'this category'}...`}
               value={search}
               onChange={e => setSearch(e.target.value)}
               style={{
-                width: '100%', padding: '16px 16px 16px 48px',
+                width: '100%', padding: '16px 16px 16px 48px', margin: 0,
                 borderRadius: 'var(--radius-md)', border: '2px solid var(--text)', outline: 'none',
                 fontSize: '0.95rem', background: 'var(--bg-white)',
                 color: 'var(--text)', boxShadow: '4px 4px 0px var(--text)',

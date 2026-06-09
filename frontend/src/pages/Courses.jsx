@@ -61,15 +61,18 @@ const CourseRow = ({ course, onClick }) => (
 // ── Year sub-section inside a program ─────────────────────────────────────────
 const YearSection = ({ year, semesters, onCourseClick, programId }) => {
   const storageKey = `courses_year_${programId}_${year}`;
-  const [open, setOpen] = useState(() => sessionStorage.getItem(storageKey) === 'true');
+  const [open, setOpen] = useState(() => {
+    try { return sessionStorage.getItem(storageKey) === 'true'; }
+    catch { return false; }
+  });
 
   const toggle = () => setOpen(o => {
     const next = !o;
-    sessionStorage.setItem(storageKey, next);
+    try { sessionStorage.setItem(storageKey, next); } catch {}
     return next;
   });
-  const allCourses = semesters.flatMap(s => s.courses);
-  const bySem = semesters.reduce((acc, s) => { acc[s.semester] = s.courses; return acc; }, {});
+  const allCourses = semesters.flatMap(s => s.courses || []);
+  const bySem = semesters.reduce((acc, s) => { acc[s.semester] = s.courses || []; return acc; }, {});
 
   return (
     <div style={{ borderTop: '1px solid var(--border)' }}>
@@ -134,14 +137,17 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
 // ── Program accordion inside a faculty ────────────────────────────────────────
 const ProgramAccordion = ({ program, onCourseClick }) => {
   const storageKey = `courses_prog_${program.id}`;
-  const [open, setOpen] = useState(() => sessionStorage.getItem(storageKey) === 'true');
+  const [open, setOpen] = useState(() => {
+    try { return sessionStorage.getItem(storageKey) === 'true'; }
+    catch { return false; }
+  });
 
   const toggle = () => setOpen(o => {
     const next = !o;
-    sessionStorage.setItem(storageKey, next);
+    try { sessionStorage.setItem(storageKey, next); } catch {}
     return next;
   });
-  const totalCourses = program.years.reduce((acc, y) => acc + y.semesters.reduce((a, s) => a + s.courses.length, 0), 0);
+  const totalCourses = program.years.reduce((acc, y) => acc + y.semesters.reduce((a, s) => a + (s.courses ? s.courses.length : 0), 0), 0);
 
   return (
     <div style={{
@@ -203,17 +209,19 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
 const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
   const storageKey = `courses_fac_${faculty.id}`;
   const [open, setOpen] = useState(() => {
-    const saved = sessionStorage.getItem(storageKey);
-    return saved !== null ? saved === 'true' : (defaultOpen || false);
+    try {
+      const saved = sessionStorage.getItem(storageKey);
+      return saved !== null ? saved === 'true' : (defaultOpen || false);
+    } catch { return defaultOpen || false; }
   });
 
   const toggle = () => setOpen(o => {
     const next = !o;
-    sessionStorage.setItem(storageKey, next);
+    try { sessionStorage.setItem(storageKey, next); } catch {}
     return next;
   });
   const totalCourses = faculty.programs.reduce(
-    (acc, p) => acc + p.years.reduce((a, y) => a + y.semesters.reduce((x, s) => x + s.courses.length, 0), 0), 0
+    (acc, p) => acc + p.years.reduce((a, y) => a + y.semesters.reduce((x, s) => x + (s.courses ? s.courses.length : 0), 0), 0), 0
   );
 
   return (
