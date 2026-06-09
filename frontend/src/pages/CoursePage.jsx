@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import FileViewer from '../components/FileViewer';
