@@ -63,6 +63,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   const themes = [
     { id: 'light', name: 'Light', icon: <Sun size={14} /> },
     { id: 'dark', name: 'Ember', icon: <Moon size={14} /> },
+    { id: 'batman', name: 'Batman', icon: <Shield size={14} /> },
     { id: 'nord', name: 'Nord', icon: <Cloud size={14} /> },
     { id: 'solarized', name: 'Solarized', icon: <SunDim size={14} /> },
     { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
