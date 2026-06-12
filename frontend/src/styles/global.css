@@ -271,6 +271,34 @@ body { overflow-x: hidden; }
   --nav-btn-text: #000000;
 }
 
+/* ── Batman ── */
+[data-theme='batman'] {
+  --primary:      #FBBF24;   /* Classic Bat Yellow */
+  --primary-dark: #D97706;
+  --primary-mid:  #FDE68A;
+  --secondary:    #9CA3AF;   /* Bat Suit Gray */
+  --accent:       #4B5563;   /* Darker Gray */
+
+  --bg-hero:    #111827;     /* Gotham Night */
+  --bg-dark:    #000000;     /* Pure Black */
+  --bg-subtle:  #1F2937;     /* Dark Charcoal */
+  --bg-white:   #111827;     /* Very Dark Gray for cards */
+  --bg-body:    #030712;     /* Midnight */
+
+  --text:       #F3F4F6;     /* Whiteish text */
+  --text-muted: #9CA3AF;     /* Grayish subtext */
+  --text-light: #6B7280;     /* Dim Gray */
+  
+  --tertiary:   #9CA3AF;     /* Gray */
+  --electric:   #FBBF24;     /* Yellow Accent */
+
+  --border:     #374151;     /* Dark Border */
+  --shadow-sm:  4px 4px 0px #000000;
+  --shadow-md:  8px 8px 0px #FBBF24; /* Yellow shadow */
+  --shadow-lg:  12px 12px 0px #374151; /* Gray shadow */
+  --nav-btn-text: #000000;
+}
+
 /* ── Nord Mode ── */
 [data-theme='nord'] {
   --primary:      #5FB3B3;   /* Frosty Teal */
