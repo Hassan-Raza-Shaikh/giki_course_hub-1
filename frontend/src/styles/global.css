@@ -1249,3 +1249,106 @@ input::placeholder, textarea::placeholder {
     overflow-wrap: break-word;
   }
 }
+
+/* ── Simpsons ── */
+[data-theme='simpsons'] {
+  --font-primary: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
+  --primary:      #EF2F1B;   /* Bart Red */
+  --primary-dark: #CC2615;
+  --primary-mid:  #FF523E;
+  --secondary:    #0052C4;   /* Marge Blue */
+  --accent:       #4BAE73;   /* Living Room Green */
+  --tertiary:     #9A7BCA;   /* TV Purple */
+  --electric:     #EF2F1B;
+  
+  --bg-hero:      #62C1FB;   /* Intro Sky Blue */
+  --bg-dark:      #42A1DB;   
+  --bg-subtle:    #FF81C6;   /* Donut Pink (Sidebars/Inputs) */
+  --bg-white:     #FFD90F;   /* Homer Yellow (Cards) */
+  --bg-body:      #62C1FB;   /* Intro Sky Blue */
+  
+  --text:         #000000;   /* Cartoon outline black */
+  --text-muted:   #222222;
+  --text-light:   #444444;
+  
+  --border:       #000000;   /* Cartoon outlines */
+  --shadow-sm:    4px 4px 0px #000000;
+  --shadow-md:    8px 8px 0px #0052C4; /* Blue shadow */
+  --shadow-lg:    12px 12px 0px #EF2F1B; /* Red shadow */
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Barbie ── */
+[data-theme='barbie'] {
+  --primary:      #FF1493;
+  --primary-dark: #C71585;
+  --primary-mid:  #FF69B4;
+  --secondary:    #FFB6C1;
+  --accent:       #00FFFF;
+  --tertiary:     #FF00FF;
+  --electric:     #FF1493;
+  --bg-hero:      #FFF0F5;
+  --bg-dark:      #FFE4E1;
+  --bg-subtle:    #FFF0F5;
+  --bg-white:     #FFFFFF;
+  --bg-body:      #FFF0F5;
+  --text:         #000000;
+  --text-muted:   #666666;
+  --text-light:   #999999;
+  --border:       #FF1493;
+  --shadow-sm:    4px 4px 0px #FF1493;
+  --shadow-md:    8px 8px 0px #00FFFF;
+  --shadow-lg:    12px 12px 0px #FF1493;
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Forest ── */
+[data-theme='forest'] {
+  --primary:      #22C55E;   /* Bright leaf green */
+  --primary-dark: #16A34A;
+  --primary-mid:  #4ADE80;
+  --secondary:    #8B5A2B;   /* Tree bark brown */
+  --accent:       #FBBF24;   /* Firefly yellow/gold */
+  --tertiary:     #D97706;   /* Amber */
+  --electric:     #A3E635;   /* Moss green */
+  
+  --bg-hero:      #064E3B;   /* Very dark emerald/pine */
+  --bg-dark:      #022C22;   /* Pure dark green */
+  --bg-subtle:    #065F46;   
+  --bg-white:     #0F3F31;   /* Card background */
+  --bg-body:      #022C22;   /* Deep forest */
+  
+  --text:         #ECFDF5;   /* Off white/green tint */
+  --text-muted:   #A7F3D0;   
+  --text-light:   #6EE7B7;
+  
+  --border:       #065F46;   
+  --shadow-sm:    4px 4px 0px #022C22;
+  --shadow-md:    8px 8px 0px #8B5A2B;
+  --shadow-lg:    12px 12px 0px #22C55E;
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Ocean ── */
+[data-theme='ocean'] {
+  --primary:      #06B6D4;
+  --primary-dark: #0891B2;
+  --primary-mid:  #22D3EE;
+  --secondary:    #3B82F6;
+  --accent:       #10B981;
+  --tertiary:     #6366F1;
+  --electric:     #06B6D4;
+  --bg-hero:      #083344;
+  --bg-dark:      #042F2E;
+  --bg-subtle:    #164E63;
+  --bg-white:     #0B3A4F;
+  --bg-body:      #083344;
+  --text:         #ECFEFF;
+  --text-muted:   #A5F3FC;
+  --text-light:   #67E8F9;
+  --border:       #22D3EE;
+  --shadow-sm:    4px 4px 0px #0891B2;
+  --shadow-md:    8px 8px 0px #3B82F6;
+  --shadow-lg:    12px 12px 0px #10B981;
+  --nav-btn-text: #083344;
+}

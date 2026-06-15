@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves } from 'lucide-react';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -82,7 +82,11 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
     { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
     { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> },
-    { id: 'snake', name: 'Snake', icon: <Activity size={14} /> }
+    { id: 'snake', name: 'Snake', icon: <Activity size={14} /> },
+    { id: 'simpsons', name: 'Simpsons', icon: <Tv size={14} /> },
+    { id: 'barbie', name: 'Barbie', icon: <Heart size={14} /> },
+    { id: 'forest', name: 'Forest', icon: <TreePine size={14} /> },
+    { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
@@ -245,7 +249,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 background: 'var(--bg-white)', border: '2px solid var(--text)',
                 borderRadius: '16px', boxShadow: '5px 5px 0px var(--text)',
                 width: 'min(280px, calc(100vw - 24px))',
-                maxHeight: 'calc(100vh - 80px)',
+                maxHeight: 'calc(100dvh - 160px)',
                 overflowY: 'auto',
                 zIndex: 9999,
               }}>
