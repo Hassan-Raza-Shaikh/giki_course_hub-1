@@ -249,7 +249,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 background: 'var(--bg-white)', border: '2px solid var(--text)',
                 borderRadius: '16px', boxShadow: '5px 5px 0px var(--text)',
                 width: 'min(280px, calc(100vw - 24px))',
-                maxHeight: 'calc(100vh - 80px)',
+                maxHeight: 'calc(100dvh - 160px)',
                 overflowY: 'auto',
                 zIndex: 9999,
               }}>
