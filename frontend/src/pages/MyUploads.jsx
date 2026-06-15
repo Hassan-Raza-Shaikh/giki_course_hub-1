@@ -74,10 +74,22 @@ const MyUploads = ({ user }) => {
         ) : loading ? (
           <LoadingSpinner />
         ) : uploads.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '64px 20px', background: 'var(--card-bg)', borderRadius: '16px', border: '2px solid var(--border)' }}>
-            <FileText size={48} color="var(--primary)" style={{ margin: '0 auto 16px', opacity: 0.8 }} />
+          <div style={{ textAlign: 'center', padding: '52px 20px', background: 'var(--card-bg)', borderRadius: '16px', border: '2px solid var(--border)' }}>
+            {/* Cloud upload SVG illustration */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+              <svg width="110" height="90" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Cloud */}
+                <path d="M30 58 Q10 58 10 44 Q10 30 26 28 Q30 14 48 14 Q64 14 68 28 Q86 26 88 42 Q90 58 72 58" stroke="var(--border)" strokeWidth="2.5" fill="var(--bg-subtle)" strokeLinecap="round"/>
+                {/* Arrow shaft */}
+                <line x1="50" y1="42" x2="50" y2="72" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round"/>
+                {/* Arrow head */}
+                <polyline points="40,50 50,40 60,50" stroke="var(--primary)" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                {/* Base line */}
+                <line x1="34" y1="78" x2="66" y2="78" stroke="var(--border)" strokeWidth="2.5" strokeLinecap="round" opacity="0.5"/>
+              </svg>
+            </div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px' }}>No uploads yet</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>You haven't contributed any materials to the platform yet.</p>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '24px', maxWidth: '320px', margin: '0 auto 24px' }}>You haven't contributed any materials to the platform yet.</p>
             <Link to="/upload" className="btn-primary" style={{ display: 'inline-flex' }}>Upload Material</Link>
           </div>
         ) : (

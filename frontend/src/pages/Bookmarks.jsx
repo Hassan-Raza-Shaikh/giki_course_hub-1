@@ -76,10 +76,26 @@ const Bookmarks = ({ user, onSignIn }) => {
           <LoadingSpinner message="Loading your library..." />
         ) : bookmarks.length === 0 ? (
           <ScrollReveal delay="reveal-delay-1">
-            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
-              <div style={{ marginBottom: '24px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><Library size={64} strokeWidth={1.5} /></div>
+            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '60px 32px', textAlign: 'center' }}>
+              {/* Open book with bookmark ribbon SVG */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+                <svg width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Left page */}
+                  <path d="M60 20 L60 85 Q40 78 15 80 L15 20 Q40 18 60 20Z" fill="var(--bg-subtle)" stroke="var(--border)" strokeWidth="2.5"/>
+                  {/* Right page */}
+                  <path d="M60 20 L60 85 Q80 78 105 80 L105 20 Q80 18 60 20Z" fill="var(--bg-subtle)" stroke="var(--border)" strokeWidth="2.5"/>
+                  {/* Text lines left */}
+                  <line x1="25" y1="35" x2="50" y2="35" stroke="var(--text-light)" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+                  <line x1="25" y1="45" x2="48" y2="45" stroke="var(--text-light)" strokeWidth="2" strokeLinecap="round" opacity="0.4"/>
+                  <line x1="25" y1="55" x2="45" y2="55" stroke="var(--text-light)" strokeWidth="2" strokeLinecap="round" opacity="0.3"/>
+                  {/* Bookmark ribbon */}
+                  <path d="M78 12 L78 45 L85 38 L92 45 L92 12Z" fill="var(--primary)" stroke="var(--border)" strokeWidth="2" opacity="0.85"/>
+                  {/* Spine */}
+                  <line x1="60" y1="20" x2="60" y2="85" stroke="var(--border)" strokeWidth="2.5"/>
+                </svg>
+              </div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Your bookmarks are empty</h2>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Bookmark useful files while browsing courses to see them here.</p>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '32px', maxWidth: '360px', margin: '0 auto 32px' }}>Bookmark useful files while browsing courses to see them here.</p>
               <button className="btn-primary" onClick={() => navigate('/courses')}>Browse Courses</button>
             </div>
           </ScrollReveal>
