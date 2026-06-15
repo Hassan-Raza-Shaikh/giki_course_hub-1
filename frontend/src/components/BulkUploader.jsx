@@ -147,11 +147,11 @@ const BulkUploader = ({
               updateQueueItem(qIdx, { status: 'done', progress: 100, file_id: res.data.file_id });
               totalUploaded += 1;
             } else {
-              updateQueueItem(qIdx, { status: 'error', error: res.data.message });
+              updateQueueItem(qIdx, { status: 'error', error: res.data.message || 'Upload failed without specific message.' });
               overallSuccess = false;
             }
           } catch (err) {
-            let msg = err.response?.data?.message || 'Upload failed';
+            let msg = err.response?.data?.message || (err.response ? `Server Error (${err.response.status})` : err.message) || 'Upload failed';
             if (err.response?.status >= 500) msg += ' (If this persists, please use the Report button below)';
             updateQueueItem(qIdx, { status: 'error', error: msg });
             overallSuccess = false;
@@ -211,11 +211,11 @@ const BulkUploader = ({
             if (fileRes.data.success) {
               updateQueueItem(globalIdx, { status: 'done', progress: 100, file_id: fileRes.data.file_id });
             } else {
-              updateQueueItem(globalIdx, { status: fileRes.data.skipped ? 'skipped' : 'error', error: fileRes.data.message });
+              updateQueueItem(globalIdx, { status: fileRes.data.skipped ? 'skipped' : 'error', error: fileRes.data.message || 'Upload failed without specific message.' });
               if (!fileRes.data.skipped) overallSuccess = false;
             }
           } catch (err) {
-            let msg = err.response?.data?.message || 'Upload failed';
+            let msg = err.response?.data?.message || (err.response ? `Server Error (${err.response.status})` : err.message) || 'Upload failed';
             if (err.response?.status >= 500) msg += ' (If this persists, please use the Report button below)';
             updateQueueItem(globalIdx, { status: err.response?.data?.skipped ? 'skipped' : 'error', error: msg });
             if (!err.response?.data?.skipped) overallSuccess = false;
