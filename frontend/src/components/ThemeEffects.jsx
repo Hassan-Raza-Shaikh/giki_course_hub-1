@@ -9,108 +9,108 @@ const BatSignal = () => (
   </div>
 );
 
-const Snowflakes = () => {
-  return Array.from({ length: 30 }).map((_, i) => (
-    <div key={i} className="snow-flake" style={{
-      left: `${Math.random() * 100}vw`,
-      animationDuration: `${5 + Math.random() * 10}s`,
-      animationDelay: `-${Math.random() * 10}s`,
-      fontSize: `${10 + Math.random() * 20}px`
-    }}>
-      ❄
-    </div>
-  ));
-};
+const Snowflakes = () => Array.from({ length: 30 }).map((_, i) => (
+  <div key={i} className="snow-flake" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, fontSize: `${10 + Math.random() * 20}px` }}>❄</div>
+));
 
-const SimpsonsDonuts = () => {
-  return Array.from({ length: 15 }).map((_, i) => (
-    <div key={i} className="donut" style={{
-      left: `${Math.random() * 100}vw`,
-      animationDuration: `${10 + Math.random() * 10}s`,
-      animationDelay: `-${Math.random() * 15}s`,
-      fontSize: `${30 + Math.random() * 40}px`
-    }}>
-      🍩
-    </div>
-  ));
-};
+const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
+  <div key={i} className="donut" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${30 + Math.random() * 40}px` }}>🍩</div>
+));
 
-const SnakeEffect = () => {
-  // A snake made of 10 segments following each other
-  return Array.from({ length: 15 }).map((_, i) => (
-    <div key={i} className="snake-segment" style={{
-      animationDelay: `-${(15 - i) * 0.15}s`
-    }} />
-  ));
-};
+const SnakeEffect = () => Array.from({ length: 15 }).map((_, i) => (
+  <div key={i} className="snake-segment" style={{ animationDelay: `-${(15 - i) * 0.15}s` }} />
+));
 
-const MarioClouds = () => {
-  return Array.from({ length: 8 }).map((_, i) => (
-    <div key={i} className="mario-cloud" style={{
-      top: `${Math.random() * 60}vh`,
-      animationDuration: `${20 + Math.random() * 40}s`,
-      animationDelay: `-${Math.random() * 40}s`,
-      fontSize: `${50 + Math.random() * 50}px`
-    }}>
-      ☁️
-    </div>
-  ));
-};
+const MarioClouds = () => Array.from({ length: 8 }).map((_, i) => (
+  <div key={i} className="mario-cloud" style={{ top: `${Math.random() * 60}vh`, animationDuration: `${20 + Math.random() * 40}s`, animationDelay: `-${Math.random() * 40}s`, fontSize: `${50 + Math.random() * 50}px` }}>☁️</div>
+));
 
-const LotrEmbers = () => {
-  return Array.from({ length: 40 }).map((_, i) => (
-    <div key={i} className="ember" style={{
-      left: `${Math.random() * 100}vw`,
-      bottom: `${-10 - Math.random() * 20}px`,
-      animationDuration: `${3 + Math.random() * 5}s`,
-      animationDelay: `-${Math.random() * 5}s`
-    }} />
-  ));
-};
+const LotrEmbers = () => Array.from({ length: 40 }).map((_, i) => (
+  <div key={i} className="ember" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s` }} />
+));
 
 const HackerRain = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
   return Array.from({ length: 40 }).map((_, i) => (
-    <div key={i} className="matrix-char" style={{
-      left: `${(i / 40) * 100}vw`,
-      animationDuration: `${2 + Math.random() * 4}s`,
-      animationDelay: `-${Math.random() * 4}s`
-    }}>
+    <div key={i} className="matrix-char" style={{ left: `${(i / 40) * 100}vw`, animationDuration: `${2 + Math.random() * 4}s`, animationDelay: `-${Math.random() * 4}s` }}>
       {chars[Math.floor(Math.random() * chars.length)]}
     </div>
   ));
 };
 
-const OceanBubbles = () => {
-  return Array.from({ length: 30 }).map((_, i) => {
-    const size = 10 + Math.random() * 30;
-    return (
-      <div key={i} className="bubble" style={{
-        left: `${Math.random() * 100}vw`,
-        width: `${size}px`,
-        height: `${size}px`,
-        animationDuration: `${4 + Math.random() * 8}s`,
-        animationDelay: `-${Math.random() * 8}s`
-      }} />
-    );
-  });
-};
+const OceanBubbles = () => Array.from({ length: 30 }).map((_, i) => {
+  const size = 10 + Math.random() * 30;
+  return <div key={i} className="bubble" style={{ left: `${Math.random() * 100}vw`, width: `${size}px`, height: `${size}px`, animationDuration: `${4 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s` }} />;
+});
 
-const SpaceStars = () => {
-  return Array.from({ length: 100 }).map((_, i) => {
-    const size = 1 + Math.random() * 3;
-    return (
-      <div key={i} className="star" style={{
-        left: `${Math.random() * 100}vw`,
-        top: `${Math.random() * 100}vh`,
-        width: `${size}px`,
-        height: `${size}px`,
-        animationDuration: `${1 + Math.random() * 3}s`,
-        animationDelay: `-${Math.random() * 3}s`
-      }} />
-    );
-  });
-};
+const SpaceStars = () => Array.from({ length: 100 }).map((_, i) => {
+  const size = 1 + Math.random() * 3;
+  return <div key={i} className="star" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: `${size}px`, height: `${size}px`, animationDuration: `${1 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }} />;
+});
+
+// === NEW EFFECTS ===
+
+const DiscordControllers = () => Array.from({ length: 15 }).map((_, i) => (
+  <div key={i} className="float-up" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${20 + Math.random() * 20}px`, opacity: 0.5 }}>🎮</div>
+));
+
+const VaporwaveGrid = () => Array.from({ length: 6 }).map((_, i) => (
+  <div key={i} className={i % 2 === 0 ? "mario-cloud" : "drift-left"} style={{ top: `${Math.random() * 80}vh`, animationDuration: `${20 + Math.random() * 30}s`, animationDelay: `-${Math.random() * 30}s`, fontSize: `${40 + Math.random() * 40}px`, opacity: 0.6 }}>
+    {i % 2 === 0 ? '🌴' : '🐬'}
+  </div>
+));
+
+const GruvboxBrackets = () => Array.from({ length: 20 }).map((_, i) => {
+  const brackets = ['{ }', '< >', '[ ]', '( )', '=>'];
+  return <div key={i} className="float-up" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${15 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 20}s`, fontSize: `${15 + Math.random() * 20}px`, color: '#ebdbb2', opacity: 0.3, fontFamily: 'monospace' }}>
+    {brackets[Math.floor(Math.random() * brackets.length)]}
+  </div>;
+});
+
+const ZeldaFairy = () => Array.from({ length: 3 }).map((_, i) => (
+  <div key={i} className="navi-fairy" style={{ left: `${20 + Math.random() * 60}vw`, top: `${20 + Math.random() * 60}vh`, animationDuration: `${4 + Math.random() * 4}s`, animationDelay: `-${Math.random() * 4}s` }}>🧚</div>
+));
+
+const DraculaBats = () => Array.from({ length: 10 }).map((_, i) => (
+  <div key={i} className="bat" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${8 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, fontSize: `${20 + Math.random() * 30}px` }}>🦇</div>
+));
+
+const PacmanChase = () => (
+  <div className="pacman-chase">
+    <span>🟡</span>
+    <span style={{color: 'red'}}>👻</span>
+    <span style={{color: 'cyan'}}>👻</span>
+    <span style={{color: 'pink'}}>👻</span>
+    <span style={{color: 'orange'}}>👻</span>
+  </div>
+);
+
+const MinecraftBlocks = () => Array.from({ length: 25 }).map((_, i) => (
+  <div key={i} className="snow-flake" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${8 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, fontSize: `${20 + Math.random() * 20}px`, opacity: 0.9 }}>🟫</div>
+));
+
+const CyberpunkScanlines = () => Array.from({ length: 5 }).map((_, i) => (
+  <div key={i} className="scanline" style={{ animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s` }} />
+));
+
+const FireSparks = () => Array.from({ length: 50 }).map((_, i) => (
+  <div key={i} className="ember" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s`, background: '#ffeb3b', boxShadow: '0 0 10px #ffeb3b, 0 0 20px #ff9800' }} />
+));
+
+const BarbieSparkles = () => Array.from({ length: 30 }).map((_, i) => {
+  const chars = ['💖', '✨', '🎀'];
+  return <div key={i} className="float-up" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${6 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, fontSize: `${15 + Math.random() * 25}px`, opacity: 0.8 }}>
+    {chars[Math.floor(Math.random() * chars.length)]}
+  </div>;
+});
+
+const ForestLeaves = () => Array.from({ length: 25 }).map((_, i) => {
+  const chars = ['🍃', '🍂', '🍁'];
+  return <div key={i} className="leaf" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${20 + Math.random() * 20}px` }}>
+    {chars[Math.floor(Math.random() * chars.length)]}
+  </div>;
+});
+
 
 export default function ThemeEffects() {
   const [theme, setTheme] = useState(document.documentElement.getAttribute('data-theme') || 'light');
@@ -135,13 +135,21 @@ export default function ThemeEffects() {
       case 'snake': return <SnakeEffect />;
       case 'mario': return <MarioClouds />;
       case 'lotr': return <LotrEmbers />;
+      case 'matrix': // also handled as 'hacker' via global.css mapping, wait 'matrix' is the data-theme
       case 'hacker': return <HackerRain />;
       case 'ocean': return <OceanBubbles />;
       case 'space': return <SpaceStars />;
-      case 'retro': 
-      case 'synthwave':
-        // Perhaps some grid lines or something, but let's leave simple for now
-        return null;
+      case 'discord': return <DiscordControllers />;
+      case 'vaporwave': return <VaporwaveGrid />;
+      case 'gruvbox': return <GruvboxBrackets />;
+      case 'zelda': return <ZeldaFairy />;
+      case 'dracula': return <DraculaBats />;
+      case 'pacman': return <PacmanChase />;
+      case 'minecraft': return <MinecraftBlocks />;
+      case 'cyberpunk': return <CyberpunkScanlines />;
+      case 'fire': return <FireSparks />;
+      case 'barbie': return <BarbieSparkles />;
+      case 'forest': return <ForestLeaves />;
       default: return null;
     }
   };

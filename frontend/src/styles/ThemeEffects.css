@@ -167,3 +167,108 @@
   0% { opacity: 0.2; transform: scale(0.8); }
   100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px white; }
 }
+
+/* =====================
+   ZELDA (Fairy)
+===================== */
+.navi-fairy {
+  position: absolute;
+  font-size: 30px;
+  filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 30px #0ff);
+  animation: floatNavi linear infinite alternate;
+}
+@keyframes floatNavi {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -30px) scale(1.1); }
+  50% { transform: translate(100px, 20px) scale(0.9); }
+  75% { transform: translate(150px, -10px) scale(1.2); }
+  100% { transform: translate(200px, 0) scale(1); }
+}
+
+/* =====================
+   DRACULA (Bats)
+===================== */
+.bat {
+  position: absolute;
+  font-size: 24px;
+  animation: flyDiagonal linear infinite;
+  opacity: 0.6;
+}
+@keyframes flyDiagonal {
+  0% { transform: translate(-100px, 100vh) scale(0.8); }
+  100% { transform: translate(110vw, -100px) scale(1.5); }
+}
+
+/* =====================
+   PACMAN
+===================== */
+.pacman-chase {
+  position: absolute;
+  bottom: 20px;
+  font-size: 35px;
+  display: flex;
+  gap: 20px;
+  animation: pacmanRun 15s linear infinite;
+  white-space: nowrap;
+}
+@keyframes pacmanRun {
+  0% { transform: translateX(-200px); }
+  49.9% { transform: translateX(110vw); }
+  50% { transform: translateX(110vw) scaleX(-1); }
+  99.9% { transform: translateX(-200px) scaleX(-1); }
+  100% { transform: translateX(-200px); }
+}
+
+/* =====================
+   CYBERPUNK (Scanlines)
+===================== */
+.scanline {
+  position: absolute;
+  width: 100vw;
+  height: 2px;
+  background: rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+  animation: scanlineFall linear infinite;
+}
+@keyframes scanlineFall {
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* =====================
+   FOREST (Leaves)
+===================== */
+.leaf {
+  position: absolute;
+  font-size: 25px;
+  opacity: 0.7;
+  animation: leafFall linear infinite;
+}
+@keyframes leafFall {
+  0% { transform: translate(0, -100px) rotate(0deg); }
+  25% { transform: translate(50px, 25vh) rotate(90deg); }
+  50% { transform: translate(-50px, 50vh) rotate(180deg); }
+  75% { transform: translate(50px, 75vh) rotate(270deg); }
+  100% { transform: translate(0, 110vh) rotate(360deg); }
+}
+
+/* =====================
+   GENERIC CLASSES
+===================== */
+.float-up {
+  position: absolute;
+  bottom: -50px;
+  animation: genericFloatUp linear infinite;
+}
+@keyframes genericFloatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+.drift-left {
+  position: absolute;
+  animation: genericDriftLeft linear infinite;
+}
+@keyframes genericDriftLeft {
+  0% { transform: translateX(110vw); }
+  100% { transform: translateX(-100px); }
+}
