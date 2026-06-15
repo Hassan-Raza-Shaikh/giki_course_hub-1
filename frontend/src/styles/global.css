@@ -1252,27 +1252,28 @@ input::placeholder, textarea::placeholder {
 
 /* ── Simpsons ── */
 [data-theme='simpsons'] {
-  --primary:      #FFD90F;   /* Homer Yellow */
-  --primary-dark: #D4B30B;
-  --primary-mid:  #FFE34D;
+  --font-primary: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
+  --primary:      #FF81C6;   /* Donut Pink */
+  --primary-dark: #E060A6;
+  --primary-mid:  #FF99D1;
   --secondary:    #0052C4;   /* Homer Pants Blue */
-  --accent:       #FF81C6;   /* Donut Pink */
+  --accent:       #62C1FB;   /* Sky Blue */
   --tertiary:     #EF2F1B;   /* Bart Red */
-  --electric:     #FF81C6;
+  --electric:     #FFFFFF;
   
-  --bg-hero:      #62C1FB;   /* Simpsons Sky Blue */
-  --bg-dark:      #0052C4;   
-  --bg-subtle:    #B2E2FF;   /* Light cloud blue */
-  --bg-white:     #FFFFFF;   /* Clouds / Cards */
-  --bg-body:      #62C1FB;   /* Sky Blue */
+  --bg-hero:      #FFD90F;   /* Homer Yellow */
+  --bg-dark:      #D4B30B;   
+  --bg-subtle:    #FFE34D;   
+  --bg-white:     #FFFFFF;   /* White Cards */
+  --bg-body:      #FFD90F;   /* Homer Yellow */
   
   --text:         #000000;   /* Cartoon outline black */
-  --text-muted:   #4B5563;
-  --text-light:   #6B7280;
+  --text-muted:   #333333;
+  --text-light:   #555555;
   
   --border:       #000000;   /* Cartoon outlines */
   --shadow-sm:    4px 4px 0px #000000;
-  --shadow-md:    8px 8px 0px #FFD90F; /* Yellow shadow */
+  --shadow-md:    8px 8px 0px #0052C4; /* Blue shadow */
   --shadow-lg:    12px 12px 0px #FF81C6; /* Pink shadow */
   --nav-btn-text: #000000;
 }
