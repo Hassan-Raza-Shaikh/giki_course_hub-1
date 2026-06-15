@@ -10,6 +10,17 @@ const BatIcon = ({ size = 14 }) => (
   </svg>
 );
 
+const DonutIcon = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+    <path fill="#f4a460" d="M50 10 A40 40 0 1 0 90 50 A40 40 0 0 0 50 10 Z M50 35 A15 15 0 1 1 35 50 A15 15 0 0 1 50 35 Z" fillRule="evenodd" />
+    <path fill="#ff69b4" d="M50 15 A35 35 0 1 0 85 50 Q85 40 75 40 Q65 40 65 30 Q65 20 50 15 Z M50 35 A15 15 0 1 1 35 50 A15 15 0 0 1 50 35 Z" fillRule="evenodd" />
+    <circle cx="35" cy="30" r="3" fill="#00bcd4" />
+    <circle cx="65" cy="65" r="3" fill="#ffeb3b" />
+    <circle cx="30" cy="60" r="3" fill="#8bc34a" />
+    <circle cx="70" cy="35" r="3" fill="#ffffff" />
+  </svg>
+);
+
 const Navbar = ({ onSignIn, onSignOut, user }) => {
   const [scrolled, setScrolled]   = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
@@ -89,7 +100,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
     { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> },
     { id: 'snake', name: 'Snake', icon: <Activity size={14} /> },
-    { id: 'simpsons', name: 'Simpsons', icon: <Tv size={14} /> },
+    { id: 'simpsons', name: 'Simpsons', icon: <DonutIcon size={14} /> },
     { id: 'barbie', name: 'Barbie', icon: <Heart size={14} /> },
     { id: 'forest', name: 'Forest', icon: <TreePine size={14} /> },
     { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> }
