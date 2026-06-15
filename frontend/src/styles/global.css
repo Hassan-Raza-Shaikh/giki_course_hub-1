@@ -1249,3 +1249,99 @@ input::placeholder, textarea::placeholder {
     overflow-wrap: break-word;
   }
 }
+
+/* ── Simpsons ── */
+[data-theme='simpsons'] {
+  --primary:      #FFD90F;
+  --primary-dark: #E5C30D;
+  --primary-mid:  #FFE14D;
+  --secondary:    #72B5F1;
+  --accent:       #F884B6;
+  --tertiary:     #F884B6;
+  --electric:     #FFD90F;
+  --bg-hero:      #FFFFFF;
+  --bg-dark:      #F3F4F6;
+  --bg-subtle:    #F9FAFB;
+  --bg-white:     #FFFFFF;
+  --bg-body:      #FFFFFF;
+  --text:         #111827;
+  --text-muted:   #4B5563;
+  --text-light:   #6B7280;
+  --border:       #111827;
+  --shadow-sm:    4px 4px 0px #111827;
+  --shadow-md:    8px 8px 0px #72B5F1;
+  --shadow-lg:    12px 12px 0px #F884B6;
+  --nav-btn-text: #000000;
+}
+
+/* ── Barbie ── */
+[data-theme='barbie'] {
+  --primary:      #FF1493;
+  --primary-dark: #C71585;
+  --primary-mid:  #FF69B4;
+  --secondary:    #FFB6C1;
+  --accent:       #00FFFF;
+  --tertiary:     #FF00FF;
+  --electric:     #FF1493;
+  --bg-hero:      #FFF0F5;
+  --bg-dark:      #FFE4E1;
+  --bg-subtle:    #FFF0F5;
+  --bg-white:     #FFFFFF;
+  --bg-body:      #FFF0F5;
+  --text:         #000000;
+  --text-muted:   #666666;
+  --text-light:   #999999;
+  --border:       #FF1493;
+  --shadow-sm:    4px 4px 0px #FF1493;
+  --shadow-md:    8px 8px 0px #00FFFF;
+  --shadow-lg:    12px 12px 0px #FF1493;
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Forest ── */
+[data-theme='forest'] {
+  --primary:      #15803D;
+  --primary-dark: #166534;
+  --primary-mid:  #22C55E;
+  --secondary:    #A16207;
+  --accent:       #84CC16;
+  --tertiary:     #FACC15;
+  --electric:     #15803D;
+  --bg-hero:      #F0FDF4;
+  --bg-dark:      #DCFCE7;
+  --bg-subtle:    #F0FDF4;
+  --bg-white:     #FFFFFF;
+  --bg-body:      #F0FDF4;
+  --text:         #052E16;
+  --text-muted:   #166534;
+  --text-light:   #14532D;
+  --border:       #15803D;
+  --shadow-sm:    4px 4px 0px #166534;
+  --shadow-md:    8px 8px 0px #A16207;
+  --shadow-lg:    12px 12px 0px #15803D;
+  --nav-btn-text: #FFFFFF;
+}
+
+/* ── Ocean ── */
+[data-theme='ocean'] {
+  --primary:      #06B6D4;
+  --primary-dark: #0891B2;
+  --primary-mid:  #22D3EE;
+  --secondary:    #3B82F6;
+  --accent:       #10B981;
+  --tertiary:     #6366F1;
+  --electric:     #06B6D4;
+  --bg-hero:      #083344;
+  --bg-dark:      #042F2E;
+  --bg-subtle:    #164E63;
+  --bg-white:     #0B3A4F;
+  --bg-body:      #083344;
+  --text:         #ECFEFF;
+  --text-muted:   #A5F3FC;
+  --text-light:   #67E8F9;
+  --border:       #22D3EE;
+  --shadow-sm:    4px 4px 0px #0891B2;
+  --shadow-md:    8px 8px 0px #3B82F6;
+  --shadow-lg:    12px 12px 0px #10B981;
+  --nav-btn-text: #083344;
+}
