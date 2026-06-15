@@ -1,0 +1,169 @@
+.theme-effects-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10000;
+  overflow: hidden;
+}
+
+/* =====================
+   FROZEN (Snowflakes)
+===================== */
+.snow-flake {
+  position: absolute;
+  color: white;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* =====================
+   SIMPSONS (Donuts)
+===================== */
+.donut {
+  position: absolute;
+  bottom: -50px;
+  font-size: 30px;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* =====================
+   BATMAN (Bat Signal)
+===================== */
+.bat-signal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 100%, rgba(255, 235, 59, 0.15) 0%, transparent 60%);
+  animation: spotlightSweep 10s ease-in-out infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bat-logo {
+  width: 200px;
+  opacity: 0.2;
+  filter: drop-shadow(0 0 20px yellow);
+  animation: pulseLogo 3s infinite alternate;
+}
+@keyframes spotlightSweep {
+  0% { transform: rotate(-15deg) translateX(-10%); }
+  100% { transform: rotate(15deg) translateX(10%); }
+}
+@keyframes pulseLogo {
+  0% { opacity: 0.1; transform: scale(1); }
+  100% { opacity: 0.4; transform: scale(1.05); }
+}
+
+/* =====================
+   SNAKE
+===================== */
+.snake-segment {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #39ff14;
+  border: 1px solid #000;
+  animation: slither 15s linear infinite;
+  opacity: 0.8;
+}
+@keyframes slither {
+  0% { left: -100px; top: 90vh; }
+  25% { left: 100vw; top: 90vh; }
+  25.01% { left: 100vw; top: 10vh; }
+  50% { left: -100px; top: 10vh; }
+  50.01% { left: 50vw; top: -100px; }
+  75% { left: 50vw; top: 100vh; }
+  75.01% { left: 10vw; top: 100vh; }
+  100% { left: 10vw; top: -100px; }
+}
+
+/* =====================
+   MARIO (Clouds/Coins)
+===================== */
+.mario-cloud {
+  position: absolute;
+  font-size: 40px;
+  opacity: 0.7;
+  animation: driftRight linear infinite;
+}
+@keyframes driftRight {
+  0% { transform: translateX(-100px); }
+  100% { transform: translateX(110vw); }
+}
+
+/* =====================
+   LOTR (Embers)
+===================== */
+.ember {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #ff4500;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff4500, 0 0 20px #ffa500;
+  animation: emberRise linear infinite;
+  opacity: 0;
+}
+@keyframes emberRise {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+}
+
+/* =====================
+   HACKER (Matrix Rain)
+===================== */
+.matrix-char {
+  position: absolute;
+  color: #0f0;
+  font-family: monospace;
+  font-size: 20px;
+  text-shadow: 0 0 5px #0f0;
+  animation: matrixFall linear infinite;
+}
+@keyframes matrixFall {
+  0% { transform: translateY(-100px); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* =====================
+   OCEAN (Bubbles)
+===================== */
+.bubble {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  animation: bubbleRise linear infinite;
+}
+@keyframes bubbleRise {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+}
+
+/* =====================
+   SPACE (Stars)
+===================== */
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle linear infinite alternate;
+}
+@keyframes twinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px white; }
+}

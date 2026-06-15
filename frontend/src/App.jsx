@@ -10,6 +10,7 @@ import LoginModal  from './components/LoginModal';
 import ProfileCompleteModal from './components/ProfileCompleteModal';
 import { ToastProvider } from './components/Toast';
 import BackToTop from './components/BackToTop';
+import ThemeEffects from './components/ThemeEffects';
 
 // Lazy loaded heavy routes to reduce initial bundle size
 const Landing      = lazy(() => import('./pages/Landing'));
@@ -212,6 +213,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
 
   return (
     <>
+      <ThemeEffects />
       <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
       <BackToTop />
 
