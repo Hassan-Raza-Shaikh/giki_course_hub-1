@@ -4,6 +4,12 @@ import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Ga
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
+const BatIcon = ({ size = 14 }) => (
+  <svg width={size} height={size} viewBox="0 0 122.13 69.89" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+    <path fill="currentColor" d="M121.06,35c0,18.71-26.86,33.88-60,33.88S1.06,53.66,1.06,35s26.87-33.89,60-33.89,60,15.17,60,33.89ZM51.72,24.46c-14.49,5.37-21.86-8-14.49-15.74-11.75,3-30.86,11.49-30.86,25.63,0,12.83,12.49,20.09,21.49,23.22-8.68-10.74,3.25-19.16,13.7-7.41C49.69,35.73,59.28,56.44,61,59.58h0c1.71-3.14,11.31-23.85,19.44-9.42,10.45-11.75,22.38-3.33,13.7,7.41,9-3.13,21.49-10.39,21.49-23.22,0-14.14-19.11-22.63-30.86-25.63,7.37,7.74,0,21.11-14.49,15.74-1.67-2-2.75-6.11-2.75-18.24-1.94,1.26-3.33,5.71-3.45,6a12,12,0,0,0-6.15,0c-.12-.32-1.51-4.77-3.45-6,0,12.13-1.08,16.25-2.75,18.24Z"/>
+  </svg>
+);
+
 const Navbar = ({ onSignIn, onSignOut, user }) => {
   const [scrolled, setScrolled]   = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
@@ -63,7 +69,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   const themes = [
     { id: 'light', name: 'Light', icon: <Sun size={14} /> },
     { id: 'dark', name: 'Ember', icon: <Moon size={14} /> },
-    { id: 'batman', name: 'Batman', icon: <Shield size={14} /> },
+    { id: 'batman', name: 'Batman', icon: <BatIcon size={14} /> },
     { id: 'nord', name: 'Nord', icon: <Cloud size={14} /> },
     { id: 'solarized', name: 'Solarized', icon: <SunDim size={14} /> },
     { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
