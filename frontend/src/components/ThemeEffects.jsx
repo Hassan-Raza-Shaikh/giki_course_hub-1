@@ -19,19 +19,17 @@ const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
   <img key={i} src="/simpsons-donut.png" className="donut" alt="donut" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 15}s`, width: `${40 + Math.random() * 60}px` }} />
 ));
 
-const SnakeEffect = () => Array.from({ length: 15 }).map((_, i) => (
-  <div key={i} className="snake-segment" style={{ animationDelay: `-${(15 - i) * 0.15}s` }} />
-));
-
-const SvgMarioCloud = () => (
-  <svg viewBox="0 0 120 60" width="1em" height="0.5em" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#ffffff" d="M30,40 h-10 v-10 h10 v-10 h20 v-10 h30 v10 h20 v10 h10 v20 h-80 z" />
-    <path fill="#cfcfcf" d="M20,40 h10 v10 h70 v-10 h10 v10 h-90 z" />
-  </svg>
+const SnakeEffect = () => (
+  <>
+    <img src="/snake-head.png" className="snake-segment" alt="snake-head" style={{ width: '20px', height: '20px' }} />
+    {Array.from({ length: 15 }).map((_, i) => (
+      <img key={i} src="/snake-body.png" className="snake-segment" alt="snake-body" style={{ width: '20px', height: '20px', animationDelay: `-${(i + 1) * 0.15}s` }} />
+    ))}
+  </>
 );
 
-const MarioClouds = () => Array.from({ length: 8 }).map((_, i) => (
-  <div key={i} className="mario-cloud" style={{ top: `${Math.random() * 60}vh`, animationDuration: `${20 + Math.random() * 40}s`, animationDelay: `-${Math.random() * 40}s`, fontSize: `${80 + Math.random() * 80}px` }}><SvgMarioCloud /></div>
+const MarioSprites = () => Array.from({ length: 6 }).map((_, i) => (
+  <img key={i} src={i % 3 === 0 ? "/mario.png" : "/goomba.png"} className="mario-sprite" alt="mario-sprite" style={{ bottom: '20px', animationDuration: `${15 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 20}s`, width: `${40 + Math.random() * 20}px` }} />
 ));
 
 const LotrEmbers = () => Array.from({ length: 40 }).map((_, i) => (
@@ -91,19 +89,8 @@ const GruvboxBrackets = () => Array.from({ length: 20 }).map((_, i) => {
   </div>;
 });
 
-const SvgNavi = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="15" fill="#e0f7fa" filter="blur(2px)" />
-    <circle cx="50" cy="50" r="10" fill="#ffffff" />
-    <path className="navi-wing-r" fill="rgba(255,255,255,0.6)" d="M50 40 Q70 10 90 30 Q70 40 50 45 Z" />
-    <path className="navi-wing-l" fill="rgba(255,255,255,0.6)" d="M50 40 Q30 10 10 30 Q30 40 50 45 Z" />
-    <path className="navi-wing-r" fill="rgba(255,255,255,0.4)" d="M50 50 Q75 60 85 80 Q65 70 50 60 Z" />
-    <path className="navi-wing-l" fill="rgba(255,255,255,0.4)" d="M50 50 Q25 60 15 80 Q35 70 50 60 Z" />
-  </svg>
-);
-
-const ZeldaFairy = () => Array.from({ length: 3 }).map((_, i) => (
-  <div key={i} className="navi-fairy" style={{ left: `${20 + Math.random() * 60}vw`, top: `${20 + Math.random() * 60}vh`, animationDuration: `${4 + Math.random() * 4}s`, animationDelay: `-${Math.random() * 4}s`, fontSize: `${40 + Math.random() * 20}px` }}><SvgNavi /></div>
+const ZeldaFairy = () => Array.from({ length: 5 }).map((_, i) => (
+  <img key={i} src="/navi.png" className="navi-fairy" alt="navi" style={{ left: `${20 + Math.random() * 60}vw`, top: `${20 + Math.random() * 60}vh`, animationDuration: `${4 + Math.random() * 4}s`, animationDelay: `-${Math.random() * 4}s`, width: `${30 + Math.random() * 20}px`, filter: 'drop-shadow(0 0 10px #64c8ff)' }} />
 ));
 
 const SvgBat = () => (
@@ -119,30 +106,13 @@ const DraculaBats = () => Array.from({ length: 10 }).map((_, i) => (
   <div key={i} className="bat" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${8 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, fontSize: `${40 + Math.random() * 40}px` }}><SvgBat /></div>
 ));
 
-const SvgPacman = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" style={{ overflow: 'visible' }} xmlns="http://www.w3.org/2000/svg">
-    <path className="pacman-top" fill="#ffeb3b" d="M50,50 L100,50 A50,50 0 0,0 0,50 Z" />
-    <path className="pacman-bottom" fill="#ffeb3b" d="M50,50 L0,50 A50,50 0 0,0 100,50 Z" />
-  </svg>
-);
-
-const SvgGhost = ({ color }) => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path fill={color} d="M10 50 A40 40 0 0 1 90 50 V100 L76 90 L63 100 L50 90 L37 100 L24 90 L10 100 Z" />
-    <circle cx="30" cy="40" r="10" fill="#fff" />
-    <circle cx="70" cy="40" r="10" fill="#fff" />
-    <circle cx="35" cy="40" r="4" fill="#00f" />
-    <circle cx="75" cy="40" r="4" fill="#00f" />
-  </svg>
-);
-
 const PacmanChase = () => (
   <div className="pacman-chase">
-    <SvgPacman />
-    <SvgGhost color="#f44336" />
-    <SvgGhost color="#00bcd4" />
-    <SvgGhost color="#ff9800" />
-    <SvgGhost color="#e91e63" />
+    <img src="/pacman.png" style={{ width: '40px', transform: 'rotateY(180deg)' }} alt="pacman" />
+    <img src="/ghost.png" style={{ width: '40px' }} alt="ghost" />
+    <img src="/ghost.png" style={{ width: '40px', filter: 'hue-rotate(90deg)' }} alt="ghost" />
+    <img src="/ghost.png" style={{ width: '40px', filter: 'hue-rotate(180deg)' }} alt="ghost" />
+    <img src="/ghost.png" style={{ width: '40px', filter: 'hue-rotate(270deg)' }} alt="ghost" />
   </div>
 );
 
@@ -226,7 +196,7 @@ export default function ThemeEffects() {
       case 'simpsons': return <SimpsonsDonuts />;
       case 'batman': return <BatSignal />;
       case 'snake': return <SnakeEffect />;
-      case 'mario': return <MarioClouds />;
+      case 'mario': return <MarioSprites />;
       case 'lotr': return <LotrEmbers />;
       case 'matrix': // also handled as 'hacker' via global.css mapping, wait 'matrix' is the data-theme
       case 'hacker': return <HackerRain />;

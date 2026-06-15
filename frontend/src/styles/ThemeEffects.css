@@ -76,12 +76,6 @@
   z-index: 1;
 }
 
-@keyframes batSweep {
-  0% { transform: translateX(-50%) rotate(-30deg); }
-  50% { transform: translateX(-50%) rotate(10deg); }
-  100% { transform: translateX(-50%) rotate(30deg); }
-}
-
 @keyframes batFlicker {
   0%, 100% { opacity: 0.8; }
   10%, 12% { opacity: 0.2; }
@@ -93,31 +87,44 @@
 /* =====================
    SNAKE
 ===================== */
+.snake-container {
+  position: absolute;
+  top: 50vh;
+  left: -300px;
+  display: flex;
+  align-items: center;
+  animation: snakeSlither 15s linear infinite;
+}
 .snake-segment {
   position: absolute;
   width: 20px;
   height: 20px;
   background-color: #39ff14;
   border: 1px solid #000;
-  animation: slither 10s steps(40) infinite;
+  image-rendering: pixelated;
   opacity: 0.8;
 }
-@keyframes slither {
-  0% { left: 0vw; top: 90vh; }
-  20% { left: 80vw; top: 90vh; }
-  20.01% { left: 80vw; top: 90vh; }
-  40% { left: 80vw; top: 20vh; }
-  40.01% { left: 80vw; top: 20vh; }
-  60% { left: 20vw; top: 20vh; }
-  60.01% { left: 20vw; top: 20vh; }
-  80% { left: 20vw; top: 60vh; }
-  80.01% { left: 20vw; top: 60vh; }
-  100% { left: 100vw; top: 60vh; }
+@keyframes snakeSlither {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(120vw); }
 }
 
 /* =====================
    MARIO (Clouds/Coins)
 ===================== */
+.mario-sprite {
+  position: absolute;
+  animation: marioRun linear infinite;
+  image-rendering: pixelated;
+}
+@keyframes marioRun {
+  0% { left: -10vw; transform: scaleX(1); }
+  49% { left: 110vw; transform: scaleX(1); }
+  50% { left: 110vw; transform: scaleX(-1); }
+  99% { left: -10vw; transform: scaleX(-1); }
+  100% { left: -10vw; transform: scaleX(1); }
+}
+
 .mario-cloud {
   position: absolute;
   font-size: 40px;
@@ -233,27 +240,25 @@
 ===================== */
 .pacman-chase {
   position: absolute;
-  font-size: 35px;
+  top: 80vh;
   display: flex;
-  gap: 20px;
-  animation: pacmanRun 30s linear infinite;
+  gap: 15px;
+  animation: pacmanRun 15s linear infinite;
   white-space: nowrap;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+.pacman-chase img {
+  image-rendering: pixelated;
 }
 .pacman-top { transform-origin: 50% 50%; animation: chompTop 0.3s alternate infinite; }
 .pacman-bottom { transform-origin: 50% 50%; animation: chompBottom 0.3s alternate infinite; }
 @keyframes chompTop { 0% { transform: rotate(-30deg); } 100% { transform: rotate(0deg); } }
 @keyframes chompBottom { 0% { transform: rotate(30deg); } 100% { transform: rotate(0deg); } }
 @keyframes pacmanRun {
-  0% { transform: translateX(-200px); top: 80vh; }
-  24.9% { transform: translateX(110vw); top: 80vh; }
-  25% { transform: translateX(110vw) scaleX(-1); top: 20vh; }
-  49.9% { transform: translateX(-200px) scaleX(-1); top: 20vh; }
-  50% { transform: translateX(-200px); top: 50vh; }
-  74.9% { transform: translateX(110vw); top: 50vh; }
-  75% { transform: translateX(110vw) scaleX(-1); top: 90vh; }
-  99.9% { transform: translateX(-200px) scaleX(-1); top: 90vh; }
-  100% { transform: translateX(-200px); top: 80vh; }
+  0% { left: 110vw; transform: scaleX(1); top: 80vh; }
+  49% { left: -20vw; transform: scaleX(1); top: 80vh; }
+  50% { left: -20vw; transform: scaleX(-1); top: 20vh; }
+  99% { left: 110vw; transform: scaleX(-1); top: 20vh; }
+  100% { left: 110vw; transform: scaleX(1); top: 80vh; }
 }
 
 /* =====================
