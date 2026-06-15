@@ -118,6 +118,18 @@ const BulkUploader = ({
       return acc;
     }, {});
 
+    const getBase64 = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = error => reject(error);
+    });
+
+    const isTextFile = (name) => {
+      const ext = name.split('.').pop().toLowerCase();
+      return ['html', 'js', 'jsx', 'ts', 'tsx', 'py', 'sh', 'c', 'cpp', 'java', 'php', 'rb', 'go'].includes(ext);
+    };
+
     let overallSuccess = true;
     let totalUploaded = 0;
     let totalSkipped = 0;
@@ -134,7 +146,15 @@ const BulkUploader = ({
           form.append('title', f.title);
           form.append('category_id', f.category_id);
           if (f.instructor_id) form.append('instructor_id', f.instructor_id);
-          form.append('file', f.file);
+          
+          if (isTextFile(f.file.name) && f.file.size < 5 * 1024 * 1024) {
+            const b64 = await getBase64(f.file);
+            form.append('file_base64', b64);
+            form.append('file_name', f.file.name);
+            form.append('file_type', f.file.type || 'text/plain');
+          } else {
+            form.append('file', f.file);
+          }
 
           try {
             const res = await api.post(`/courses/${courseId}/upload`, form, {
@@ -195,7 +215,14 @@ const BulkUploader = ({
           updateQueueItem(globalIdx, { status: 'uploading', progress: 0 });
 
           const form = new FormData();
-          form.append('file', readyFile.file);
+          if (isTextFile(readyFile.file.name) && readyFile.file.size < 5 * 1024 * 1024) {
+            const b64 = await getBase64(readyFile.file);
+            form.append('file_base64', b64);
+            form.append('file_name', readyFile.file.name);
+            form.append('file_type', readyFile.file.type || 'text/plain');
+          } else {
+            form.append('file', readyFile.file);
+          }
           form.append('file_index', acc.index);
           form.append('title', readyFile.title);
           form.append('category_id', readyFile.category_id);

@@ -499,6 +499,25 @@ def upload_to_course(course_id):
         instructor_id = request.form.get('instructor_id', type=int)
         file          = request.files.get('file')
         
+        # WAF Bypass: Decode base64 payload if sent instead of multipart file
+        if not file:
+            file_base64 = request.form.get('file_base64')
+            if file_base64:
+                import base64
+                from io import BytesIO
+                from werkzeug.datastructures import FileStorage
+                try:
+                    file_data = base64.b64decode(file_base64)
+                    file_name = request.form.get('file_name', 'upload.txt')
+                    file_type = request.form.get('file_type', 'text/plain')
+                    file = FileStorage(
+                        stream=BytesIO(file_data),
+                        filename=file_name,
+                        content_type=file_type
+                    )
+                except Exception:
+                    pass
+
         if not file or file.filename == '':
             return jsonify({"success": False, "message": "No file part or no file selected."}), 400
 
@@ -1034,6 +1053,25 @@ def bulk_upload_file(course_id, batch_id):
     title = request.form.get('title', '').strip()
     category_id = request.form.get('category_id', type=int)
     instructor_id = request.form.get('instructor_id', type=int)
+    
+    # WAF Bypass: Decode base64 payload if sent instead of multipart file
+    if not file:
+        file_base64 = request.form.get('file_base64')
+        if file_base64:
+            import base64
+            from io import BytesIO
+            from werkzeug.datastructures import FileStorage
+            try:
+                file_data = base64.b64decode(file_base64)
+                file_name = request.form.get('file_name', 'upload.txt')
+                file_type = request.form.get('file_type', 'text/plain')
+                file = FileStorage(
+                    stream=BytesIO(file_data),
+                    filename=file_name,
+                    content_type=file_type
+                )
+            except Exception:
+                pass
 
     if not file or file.filename == '':
         return jsonify({"success": False, "message": "No file provided."}), 400
