@@ -15,20 +15,8 @@ const Snowflakes = () => Array.from({ length: 30 }).map((_, i) => (
   <div key={i} className="snow-flake" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, fontSize: `${10 + Math.random() * 20}px` }}>❄</div>
 ));
 
-const SvgDonut = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#e8a87c" d="M50 10 A40 40 0 1 0 90 50 A40 40 0 0 0 50 10 Z M50 30 A20 20 0 1 1 30 50 A20 20 0 0 1 50 30 Z" />
-    <path fill="#f48fb1" d="M50 10 C 70 10 90 20 90 40 C 90 55 80 60 70 55 C 60 50 50 65 40 55 C 30 45 10 50 10 40 C 10 20 30 10 50 10 Z" />
-    <rect x="30" y="25" width="4" height="8" fill="#fff" transform="rotate(45 32 29)" />
-    <rect x="65" y="30" width="4" height="8" fill="#42a5f5" transform="rotate(-30 67 34)" />
-    <rect x="45" y="45" width="4" height="8" fill="#ffca28" transform="rotate(70 47 49)" />
-    <rect x="25" y="40" width="4" height="8" fill="#66bb6a" transform="rotate(-15 27 44)" />
-    <rect x="75" y="45" width="4" height="8" fill="#fff" transform="rotate(15 77 49)" />
-  </svg>
-);
-
 const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
-  <div key={i} className="donut" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${30 + Math.random() * 40}px` }}><SvgDonut /></div>
+  <img key={i} src="/simpsons-donut.png" className="donut" alt="donut" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 15}s`, width: `${40 + Math.random() * 60}px` }} />
 ));
 
 const SnakeEffect = () => Array.from({ length: 15 }).map((_, i) => (
