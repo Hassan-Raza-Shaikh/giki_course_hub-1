@@ -50,9 +50,9 @@ const ICON_MAP = {
 };
 
 const COLOR_MAP = {
-  success: { bg: '#22c55e', border: '#15803d', text: '#ffffff' },
-  error:   { bg: '#ef4444', border: '#b91c1c', text: '#ffffff' },
-  info:    { bg: 'var(--primary)', border: 'var(--text)', text: '#ffffff' },
+  success: { bg: 'var(--bg-white)', border: 'var(--text)', text: 'var(--text)', shadow: 'var(--secondary)', iconColor: 'var(--secondary)' },
+  error:   { bg: 'var(--bg-white)', border: 'var(--text)', text: 'var(--text)', shadow: 'var(--accent)', iconColor: 'var(--accent)' },
+  info:    { bg: 'var(--bg-white)', border: 'var(--text)', text: 'var(--text)', shadow: 'var(--primary)', iconColor: 'var(--primary)' },
 };
 
 const ToastContainer = ({ toasts, removeToast }) => {
@@ -94,10 +94,10 @@ const ToastItem = ({ toast, onClose }) => {
         color: colors.text,
         border: `2px solid ${colors.border}`,
         borderRadius: '12px',
-        boxShadow: '3px 3px 0 var(--text, #0F172A)',
+        boxShadow: `4px 4px 0 ${colors.shadow}`,
         fontWeight: 700,
         fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)',
-        fontFamily: 'Inter, sans-serif',
+        fontFamily: 'var(--font-primary, "Inter", sans-serif)',
         pointerEvents: 'auto',
         animation: toast.removing
           ? 'toastSlideOut 0.3s ease-in forwards'
@@ -105,17 +105,19 @@ const ToastItem = ({ toast, onClose }) => {
         willChange: 'transform, opacity',
       }}
     >
-      <span style={{ flexShrink: 0, display: 'flex' }}>{ICON_MAP[toast.type]}</span>
+      <span style={{ flexShrink: 0, display: 'flex', color: colors.iconColor }}>{ICON_MAP[toast.type]}</span>
       <span style={{ flex: 1, lineHeight: 1.4, wordBreak: 'break-word' }}>{toast.message}</span>
       <button
         onClick={onClose}
         style={{
-          background: 'none', border: 'none', color: 'inherit',
+          background: 'none', border: 'none', color: 'var(--text-light)',
           cursor: 'pointer', padding: '2px', flexShrink: 0,
-          opacity: 0.7, display: 'flex',
+          display: 'flex', transition: 'color 0.2s',
         }}
+        onMouseOver={e => e.currentTarget.style.color = 'var(--text)'}
+        onMouseOut={e => e.currentTarget.style.color = 'var(--text-light)'}
       >
-        <X size={16} />
+        <X size={16} strokeWidth={2.5} />
       </button>
 
       <style>{`
