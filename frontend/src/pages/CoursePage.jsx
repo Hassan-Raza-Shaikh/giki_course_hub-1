@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import FileViewer from '../components/FileViewer';
@@ -7,6 +7,7 @@ import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
+import { useToast } from '../components/Toast';
 import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud, AlertCircle, Edit3, BookmarkCheck, BookmarkPlus, Flag, Inbox, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const CATEGORY_ICONS = {
@@ -25,9 +26,13 @@ const CATEGORY_ICONS = {
 const CoursePage = ({ user, onSignIn }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const toast = useToast();
   const { copiedId, msg, copyLink } = useCopyLink();
   const uploadRef = useRef(null);
+  const fileListRef = useRef(null);
   const isAdmin = user?.role === 'admin';
+  const [focusedFileIndex, setFocusedFileIndex] = useState(-1);
 
   const [course, setCourse]           = useState(null);
   const [filesByCategory, setFiles]   = useState({});
@@ -98,22 +103,26 @@ const CoursePage = ({ user, onSignIn }) => {
           setInstructors(res.data.all_instructors || []);
           setCourseInstructors(res.data.course_instructors || []);
           setFileInstructors(res.data.file_instructors || []);
-          // Default to Outline for non-lab, Lab Manuals for lab — fall back to first populated tab
-          const courseData = res.data.course;
-          const preferred = courseData.is_lab ? 'Lab Manuals' : 'Outline';
+          // Deep-link: check URL hash for a category tab
           const allCatNames = res.data.categories.map(c => c.name);
-          const populated = Object.keys(res.data.files_by_category);
-          const defaultTab =
-            allCatNames.includes(preferred) ? preferred :
-            (populated.length > 0 ? populated[0] : (allCatNames[0] || ''));
-
-          setActiveTab(defaultTab);
+          const hashTab = decodeURIComponent((window.location.hash || '').replace('#', ''));
+          const hashMatch = allCatNames.find(c => c.toLowerCase() === hashTab.toLowerCase());
+          if (hashMatch) {
+            setActiveTab(hashMatch);
+          } else {
+            // Default to Outline for non-lab, Lab Manuals for lab — fall back to first populated tab
+            const courseData = res.data.course;
+            const preferred = courseData.is_lab ? 'Lab Manuals' : 'Outline';
+            const populated = Object.keys(res.data.files_by_category);
+            const defaultTab =
+              allCatNames.includes(preferred) ? preferred :
+              (populated.length > 0 ? populated[0] : (allCatNames[0] || ''));
+            setActiveTab(defaultTab);
+          }
         }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-
-    // Note: all_instructors and course_instructors are now provided by the main course detail call above.
   }, [id]);
 
   const openEditFile = (file) => {
@@ -145,13 +154,58 @@ const CoursePage = ({ user, onSignIn }) => {
           setFileInstructors(res.data.file_instructors || []);
         }
       });
-      alert('File updated successfully!');
+      toast.success('File updated successfully!');
     } catch (err) {
-      alert(err.response?.data?.message || 'Update failed.');
+      toast.error(err.response?.data?.message || 'Update failed.');
     }
   };
 
 
+
+  // Reset focused index when tab or filter changes
+  useEffect(() => { setFocusedFileIndex(-1); }, [activeTab, instructorFilter]);
+
+  // ── Keyboard Navigation ──────────────────────────────
+  useEffect(() => {
+    const handler = (e) => {
+      // Skip if user is typing in an input/select/textarea
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'select' || tag === 'textarea') return;
+      // Skip if a modal is open
+      if (viewerFile || editFileModal || reportModal) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'j') {
+        e.preventDefault();
+        setFocusedFileIndex(prev => {
+          const max = (filesByCategory[activeTab] || []).filter(
+            f => !instructorFilter || (instructorFilter === 'general' ? !f.instructor_name : f.instructor_name === instructorFilter)
+          ).length - 1;
+          return Math.min(prev + 1, max);
+        });
+      } else if (e.key === 'ArrowUp' || e.key === 'k') {
+        e.preventDefault();
+        setFocusedFileIndex(prev => Math.max(prev - 1, 0));
+      } else if (e.key === 'Enter' && focusedFileIndex >= 0) {
+        e.preventDefault();
+        // currentFiles is computed below, but we can derive inline
+        const files = (filesByCategory[activeTab] || []).filter(
+          f => !instructorFilter || (instructorFilter === 'general' ? !f.instructor_name : f.instructor_name === instructorFilter)
+        );
+        if (files[focusedFileIndex]) setViewerFile(files[focusedFileIndex]);
+      } else if (e.key === 'Escape' && focusedFileIndex >= 0) {
+        setFocusedFileIndex(-1);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [activeTab, instructorFilter, focusedFileIndex, filesByCategory, viewerFile, editFileModal, reportModal]);
+
+  // Scroll focused file into view
+  useEffect(() => {
+    if (focusedFileIndex < 0) return;
+    const el = fileListRef.current?.querySelector(`[data-file-index="${focusedFileIndex}"]`);
+    el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [focusedFileIndex]);
 
   // ── Derived data — MUST be above any early returns (Rules of Hooks) ──────
   const allTabs = categories.map(c => c.name);
@@ -381,7 +435,7 @@ const CoursePage = ({ user, onSignIn }) => {
                     <button
                       key={tab}
                       className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                      onClick={() => { setActiveTab(tab); setInstructorFilter(''); }}
+                      onClick={() => { setActiveTab(tab); setInstructorFilter(''); window.location.hash = encodeURIComponent(tab); }}
                       style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -482,12 +536,20 @@ const CoursePage = ({ user, onSignIn }) => {
             </div>
 
             {currentFiles.length > 0 ? (
-              currentFiles.map((file, i) => (
+              <div ref={fileListRef}>
+              {currentFiles.map((file, i) => (
                 <div
                   key={file.id ?? file.file_id}
+                  data-file-index={i}
                   className="file-item responsive-flex"
                   onClick={() => setViewerFile(file)}
-                  style={{ cursor: 'pointer', alignItems: 'flex-start' }}
+                  style={{
+                    cursor: 'pointer',
+                    alignItems: 'flex-start',
+                    borderLeft: focusedFileIndex === i ? '3px solid var(--primary)' : '3px solid transparent',
+                    background: focusedFileIndex === i ? 'var(--bg-subtle)' : 'transparent',
+                    transition: 'border-left-color 0.15s, background 0.15s',
+                  }}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', flex: 1, minWidth: 0 }}>
                     <div style={{
@@ -631,12 +693,22 @@ const CoursePage = ({ user, onSignIn }) => {
                     </button>
                   </div>
                 </div>
-              ))
+              ))}
+              </div>
             ) : (
-              <div style={{ padding: '80px 32px', textAlign: 'center' }}>
-                <div style={{ color: 'var(--text-light)', marginBottom: '16px', display: 'flex', justifyContent: 'center' }}><Inbox size={48} strokeWidth={1.5} /></div>
+              <div style={{ padding: '60px 32px', textAlign: 'center' }}>
+                {/* Empty folder SVG illustration */}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                  <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="14" y="30" width="68" height="50" rx="6" stroke="var(--border)" strokeWidth="3" fill="var(--bg-subtle)" />
+                    <path d="M14 36 C14 32 16 30 20 30 L36 30 L42 20 L60 20 L66 30 L76 30 C80 30 82 32 82 36" stroke="var(--border)" strokeWidth="3" fill="var(--bg-white)" />
+                    <circle cx="48" cy="58" r="10" stroke="var(--primary)" strokeWidth="2.5" fill="none" opacity="0.5" />
+                    <line x1="48" y1="53" x2="48" y2="63" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+                    <line x1="43" y1="58" x2="53" y2="58" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" opacity="0.5" />
+                  </svg>
+                </div>
                 <p style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1.1rem', marginBottom: '8px' }}>No materials yet</p>
-                <p style={{ color: 'var(--text-muted)' }}>Be the first to contribute {activeTab} for this course!</p>
+                <p style={{ color: 'var(--text-muted)', maxWidth: '320px', margin: '0 auto' }}>Be the first to contribute {activeTab} for this course!</p>
               </div>
             )}
           </div>

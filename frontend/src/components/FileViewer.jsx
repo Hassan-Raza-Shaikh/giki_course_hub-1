@@ -1,4 +1,4 @@
-import { Paperclip, FileText, Image, Film, Presentation, LineChart, Code, Book, ExternalLink, Loader, AlertTriangle, RefreshCw, Download } from 'lucide-react';
+import { Paperclip, FileText, Image, Film, Presentation, LineChart, Code, Book, ExternalLink, Loader, AlertTriangle, RefreshCw, Download, Copy, Check, Table2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { renderAsync } from 'docx-preview';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -10,8 +10,11 @@ const EXT_GROUPS = {
   pdf:  ['pdf'],
   image:['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'],
   video:['mp4', 'webm', 'ogg'],
-  text: ['txt', 'csv'],
-  code: ['cpp', 'c', 'h', 'hpp', 'py', 'js', 'jsx', 'ts', 'tsx', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'],
+  text: ['txt'],
+  csv:  ['csv'],
+  code: ['cpp', 'c', 'h', 'hpp', 'py', 'js', 'jsx', 'ts', 'tsx', 'java', 'rs', 'go', 'rb', 'php', 'css', 'json', 'yaml', 'yml', 'sh'],
+  markdown: ['md'],
+  html: ['html', 'htm'],
   ipynb:['ipynb'],
   docx: ['docx', 'doc'],
   xlsx: ['xlsx', 'xls'],
@@ -90,6 +93,18 @@ const FileViewer = ({ file, onClose }) => {
       return <TextPreview url={url} />;
     }
 
+    if (fileType === 'csv') {
+      return <CsvPreview url={url} />;
+    }
+
+    if (fileType === 'markdown') {
+      return <MarkdownPreview url={url} />;
+    }
+
+    if (fileType === 'html') {
+      return <HtmlPreview url={url} />;
+    }
+
     if (fileType === 'code') {
       return <CodePreview url={url} extension={url.split('?')[0].split('.').pop().toLowerCase()} />;
     }
@@ -155,7 +170,7 @@ const FileViewer = ({ file, onClose }) => {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1 }}>
             <span style={{ fontSize: '1rem', flexShrink: 0 }}>
-              {fileType === 'pdf' ? <FileText size={48}/> : fileType === 'image' ? <Image size={48}/> : fileType === 'video' ? <Film size={48}/> : fileType === 'docx' ? <FileText size={48}/> : fileType === 'pptx' ? <Presentation size={48}/> : fileType === 'xlsx' ? <LineChart size={48}/> : fileType === 'code' ? <Code size={48}/> : fileType === 'ipynb' ? <Book size={48}/> : <Paperclip size={48}/>}
+              {fileType === 'pdf' ? <FileText size={48}/> : fileType === 'image' ? <Image size={48}/> : fileType === 'video' ? <Film size={48}/> : fileType === 'docx' ? <FileText size={48}/> : fileType === 'pptx' ? <Presentation size={48}/> : fileType === 'xlsx' ? <LineChart size={48}/> : fileType === 'csv' ? <Table2 size={48}/> : fileType === 'markdown' ? <Book size={48}/> : fileType === 'html' ? <Code size={48}/> : fileType === 'code' ? <Code size={48}/> : fileType === 'ipynb' ? <Book size={48}/> : <Paperclip size={48}/>}
             </span>
             <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {title}
@@ -363,14 +378,22 @@ const GoogleDocPreview = ({ url, title, type }) => {
   );
 };
 
-// Code Preview using react-syntax-highlighter
+// Code Preview using react-syntax-highlighter + copy button
 const CodePreview = ({ url, extension }) => {
   const [code, setCode] = useState('Loading…');
   const [error, setError] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetch(url).then(r => r.text()).then(text => { setCode(text); setError(false); }).catch(() => { setCode('Could not load file.'); setError(true); });
   }, [url]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   // Map common extensions to prism languages
   const langMap = {
@@ -382,14 +405,289 @@ const CodePreview = ({ url, extension }) => {
   const language = langMap[extension] || 'text';
 
   return (
-    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#1d1f21', padding: 'clamp(8px, 2vw, 16px)', boxSizing: 'border-box' }}>
-      {error ? (
-        <div style={{ color: '#f87171', fontWeight: 'bold' }}>{code}</div>
-      ) : (
-        <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, padding: 0, background: 'transparent', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }} showLineNumbers={true}>
-          {code}
-        </SyntaxHighlighter>
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: '#1d1f21', position: 'relative', boxSizing: 'border-box' }}>
+      {/* Copy button */}
+      {!error && code !== 'Loading…' && (
+        <button
+          onClick={handleCopy}
+          style={{
+            position: 'sticky', top: '10px', float: 'right', marginRight: '10px', zIndex: 2,
+            padding: '5px 12px', borderRadius: '8px',
+            border: '2px solid rgba(255,255,255,0.2)',
+            background: copied ? '#22c55e' : 'rgba(255,255,255,0.1)',
+            color: copied ? 'white' : '#e5e7eb',
+            fontWeight: 700, fontSize: '0.75rem', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '5px',
+            transition: 'all 0.2s',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy</>}
+        </button>
       )}
+      <div style={{ padding: 'clamp(8px, 2vw, 16px)' }}>
+        {error ? (
+          <div style={{ color: '#f87171', fontWeight: 'bold' }}>{code}</div>
+        ) : (
+          <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, padding: 0, background: 'transparent', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }} showLineNumbers={true}>
+            {code}
+          </SyntaxHighlighter>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// CSV Preview — renders CSV as a styled table
+const CsvPreview = ({ url }) => {
+  const [rows, setRows] = useState(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch(url)
+      .then(r => r.text())
+      .then(text => {
+        // Simple CSV parser: handles quoted fields with commas inside
+        const parseCSV = (str) => {
+          const result = [];
+          let row = [];
+          let field = '';
+          let inQuotes = false;
+          for (let i = 0; i < str.length; i++) {
+            const ch = str[i];
+            if (inQuotes) {
+              if (ch === '"' && str[i + 1] === '"') {
+                field += '"'; i++;
+              } else if (ch === '"') {
+                inQuotes = false;
+              } else {
+                field += ch;
+              }
+            } else {
+              if (ch === '"') {
+                inQuotes = true;
+              } else if (ch === ',') {
+                row.push(field.trim()); field = '';
+              } else if (ch === '\n' || (ch === '\r' && str[i + 1] === '\n')) {
+                row.push(field.trim()); field = '';
+                if (row.some(c => c !== '')) result.push(row);
+                row = [];
+                if (ch === '\r') i++;
+              } else {
+                field += ch;
+              }
+            }
+          }
+          row.push(field.trim());
+          if (row.some(c => c !== '')) result.push(row);
+          return result;
+        };
+        const parsed = parseCSV(text);
+        setRows(parsed);
+      })
+      .catch(() => setError(true));
+  }, [url]);
+
+  if (error) return <div style={{ padding: '24px', color: '#f87171', fontWeight: 700 }}>Could not load CSV file.</div>;
+  if (!rows) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '12px', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>
+      <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}><Loader size={24} /></span>
+      Loading spreadsheet…
+    </div>
+  );
+
+  const header = rows[0] || [];
+  const body = rows.slice(1);
+
+  return (
+    <div style={{ width: '100%', height: '100%', overflow: 'auto', background: 'var(--bg-subtle)', padding: 'clamp(8px, 2vw, 16px)', boxSizing: 'border-box' }}>
+      <div style={{ overflowX: 'auto', borderRadius: '10px', border: '2px solid var(--border)', boxShadow: '3px 3px 0 var(--border)' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'clamp(0.72rem, 2.2vw, 0.85rem)', fontFamily: 'inherit', background: 'var(--bg-white)' }}>
+          <thead>
+            <tr>
+              <th style={{
+                padding: '10px 14px', background: 'var(--primary)', color: 'white',
+                fontWeight: 800, fontSize: '0.78rem', textAlign: 'left',
+                borderBottom: '2px solid var(--text)', position: 'sticky', top: 0, zIndex: 1,
+                whiteSpace: 'nowrap',
+              }}>#</th>
+              {header.map((h, i) => (
+                <th key={i} style={{
+                  padding: '10px 14px', background: 'var(--primary)', color: 'white',
+                  fontWeight: 800, fontSize: '0.78rem', textAlign: 'left',
+                  borderBottom: '2px solid var(--text)', position: 'sticky', top: 0, zIndex: 1,
+                  whiteSpace: 'nowrap',
+                }}>{h || `Col ${i + 1}`}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {body.map((row, rIdx) => (
+              <tr key={rIdx} style={{ background: rIdx % 2 === 0 ? 'var(--bg-white)' : 'var(--bg-subtle)', transition: 'background 0.1s' }}
+                onMouseOver={e => e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 8%, var(--bg-white))'}
+                onMouseOut={e => e.currentTarget.style.background = rIdx % 2 === 0 ? 'var(--bg-white)' : 'var(--bg-subtle)'}
+              >
+                <td style={{ padding: '8px 14px', borderBottom: '1px solid var(--border)', color: 'var(--text-muted)', fontWeight: 700, fontSize: '0.75rem' }}>{rIdx + 1}</td>
+                {header.map((_, cIdx) => (
+                  <td key={cIdx} style={{
+                    padding: '8px 14px', borderBottom: '1px solid var(--border)',
+                    color: 'var(--text)', maxWidth: '300px', overflow: 'hidden',
+                    textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  }}>{row[cIdx] ?? ''}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ padding: '8px 4px', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+        {body.length} row{body.length !== 1 ? 's' : ''} × {header.length} column{header.length !== 1 ? 's' : ''}
+      </div>
+    </div>
+  );
+};
+
+// Markdown Preview — rendered with toggle for raw source
+const MarkdownPreview = ({ url }) => {
+  const [mode, setMode] = useState('rendered'); // 'rendered' | 'raw'
+  const [md, setMd] = useState(null);
+
+  useEffect(() => {
+    fetch(url).then(r => r.text()).then(setMd).catch(() => setMd(null));
+  }, [url]);
+
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      {/* Toggle bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '8px 14px', background: 'var(--bg-subtle)',
+        borderBottom: '2px solid var(--border)', flexShrink: 0, gap: '4px',
+      }}>
+        <button
+          onClick={() => setMode('rendered')}
+          style={{
+            padding: '5px 16px', borderRadius: '8px 0 0 8px',
+            border: '2px solid var(--text)',
+            background: mode === 'rendered' ? 'var(--primary)' : 'var(--bg-white)',
+            color: mode === 'rendered' ? 'white' : 'var(--text)',
+            fontWeight: 800, fontSize: '0.78rem', cursor: 'pointer',
+            transition: 'all 0.15s',
+            boxShadow: mode === 'rendered' ? '2px 2px 0 var(--text)' : 'none',
+          }}
+        >
+          Rendered
+        </button>
+        <button
+          onClick={() => setMode('raw')}
+          style={{
+            padding: '5px 16px', borderRadius: '0 8px 8px 0',
+            border: '2px solid var(--text)', borderLeft: 'none',
+            background: mode === 'raw' ? 'var(--primary)' : 'var(--bg-white)',
+            color: mode === 'raw' ? 'white' : 'var(--text)',
+            fontWeight: 800, fontSize: '0.78rem', cursor: 'pointer',
+            transition: 'all 0.15s',
+            boxShadow: mode === 'raw' ? '2px 2px 0 var(--text)' : 'none',
+          }}
+        >
+          Raw Markdown
+        </button>
+      </div>
+
+      {/* Content area */}
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        {mode === 'rendered' ? (
+          md !== null ? (
+            <div style={{
+              width: '100%', height: '100%', overflow: 'auto',
+              padding: 'clamp(16px, 4vw, 40px)', boxSizing: 'border-box',
+              color: 'var(--text)', lineHeight: 1.7, fontSize: '0.95rem',
+            }}>
+              <div style={{ maxWidth: '760px', margin: '0 auto' }}>
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{md}</ReactMarkdown>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '12px', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>
+              <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}><Loader size={24} /></span>
+              Loading document…
+            </div>
+          )
+        ) : (
+          <CodePreview url={url} extension="md" />
+        )}
+      </div>
+    </div>
+  );
+};
+
+// HTML Preview — rendered iframe with toggle for raw source
+const HtmlPreview = ({ url }) => {
+  const [mode, setMode] = useState('rendered'); // 'rendered' | 'raw'
+  const [html, setHtml] = useState(null);
+
+  useEffect(() => {
+    fetch(url).then(r => r.text()).then(setHtml).catch(() => setHtml(null));
+  }, [url]);
+
+  return (
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      {/* Toggle bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '8px 14px', background: 'var(--bg-subtle)',
+        borderBottom: '2px solid var(--border)', flexShrink: 0, gap: '4px',
+      }}>
+        <button
+          onClick={() => setMode('rendered')}
+          style={{
+            padding: '5px 16px', borderRadius: '8px 0 0 8px',
+            border: '2px solid var(--text)',
+            background: mode === 'rendered' ? 'var(--primary)' : 'var(--bg-white)',
+            color: mode === 'rendered' ? 'white' : 'var(--text)',
+            fontWeight: 800, fontSize: '0.78rem', cursor: 'pointer',
+            transition: 'all 0.15s',
+            boxShadow: mode === 'rendered' ? '2px 2px 0 var(--text)' : 'none',
+          }}
+        >
+          Rendered
+        </button>
+        <button
+          onClick={() => setMode('raw')}
+          style={{
+            padding: '5px 16px', borderRadius: '0 8px 8px 0',
+            border: '2px solid var(--text)', borderLeft: 'none',
+            background: mode === 'raw' ? 'var(--primary)' : 'var(--bg-white)',
+            color: mode === 'raw' ? 'white' : 'var(--text)',
+            fontWeight: 800, fontSize: '0.78rem', cursor: 'pointer',
+            transition: 'all 0.15s',
+            boxShadow: mode === 'raw' ? '2px 2px 0 var(--text)' : 'none',
+          }}
+        >
+          Raw HTML
+        </button>
+      </div>
+
+      {/* Content area */}
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        {mode === 'rendered' ? (
+          html !== null ? (
+            <iframe
+              srcDoc={html}
+              title="HTML Preview"
+              sandbox="allow-scripts allow-same-origin"
+              style={{ width: '100%', height: '100%', border: 'none', background: 'white' }}
+            />
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '12px', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>
+              <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}><Loader size={24} /></span>
+              Loading page…
+            </div>
+          )
+        ) : (
+          <CodePreview url={url} extension="html" />
+        )}
+      </div>
     </div>
   );
 };

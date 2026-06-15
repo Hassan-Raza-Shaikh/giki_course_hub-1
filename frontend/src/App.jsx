@@ -8,6 +8,8 @@ import api from './services/api';
 import Navbar      from './components/Navbar';
 import LoginModal  from './components/LoginModal';
 import ProfileCompleteModal from './components/ProfileCompleteModal';
+import { ToastProvider } from './components/Toast';
+import BackToTop from './components/BackToTop';
 
 // Lazy loaded heavy routes to reduce initial bundle size
 const Landing      = lazy(() => import('./pages/Landing'));
@@ -165,16 +167,18 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <AppContent
-        user={user}
-        showLogin={showLogin}
-        setShowLogin={setShowLogin}
-        setUser={setUser}
-        handleSignIn={handleSignIn}
-        handleSignOut={handleSignOut}
-      />
-    </Router>
+    <ToastProvider>
+      <Router>
+        <AppContent
+          user={user}
+          showLogin={showLogin}
+          setShowLogin={setShowLogin}
+          setUser={setUser}
+          handleSignIn={handleSignIn}
+          handleSignOut={handleSignOut}
+        />
+      </Router>
+    </ToastProvider>
   );
 };
 
@@ -209,6 +213,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
   return (
     <>
       <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
+      <BackToTop />
 
       {/* Profile completion gate — shown to ALL users until program/batch is set */}
       {user && user.profileComplete === false && (
