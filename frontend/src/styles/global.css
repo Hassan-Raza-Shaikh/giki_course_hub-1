@@ -1252,25 +1252,28 @@ input::placeholder, textarea::placeholder {
 
 /* ── Simpsons ── */
 [data-theme='simpsons'] {
-  --primary:      #FFD90F;
-  --primary-dark: #E5C30D;
-  --primary-mid:  #FFE14D;
-  --secondary:    #72B5F1;
-  --accent:       #F884B6;
-  --tertiary:     #F884B6;
-  --electric:     #FFD90F;
-  --bg-hero:      #FFFFFF;
-  --bg-dark:      #F3F4F6;
-  --bg-subtle:    #F9FAFB;
-  --bg-white:     #FFFFFF;
-  --bg-body:      #FFFFFF;
-  --text:         #111827;
+  --primary:      #FFD90F;   /* Homer Yellow */
+  --primary-dark: #D4B30B;
+  --primary-mid:  #FFE34D;
+  --secondary:    #0052C4;   /* Homer Pants Blue */
+  --accent:       #FF81C6;   /* Donut Pink */
+  --tertiary:     #EF2F1B;   /* Bart Red */
+  --electric:     #FF81C6;
+  
+  --bg-hero:      #62C1FB;   /* Simpsons Sky Blue */
+  --bg-dark:      #0052C4;   
+  --bg-subtle:    #B2E2FF;   /* Light cloud blue */
+  --bg-white:     #FFFFFF;   /* Clouds / Cards */
+  --bg-body:      #62C1FB;   /* Sky Blue */
+  
+  --text:         #000000;   /* Cartoon outline black */
   --text-muted:   #4B5563;
   --text-light:   #6B7280;
-  --border:       #111827;
-  --shadow-sm:    4px 4px 0px #111827;
-  --shadow-md:    8px 8px 0px #72B5F1;
-  --shadow-lg:    12px 12px 0px #F884B6;
+  
+  --border:       #000000;   /* Cartoon outlines */
+  --shadow-sm:    4px 4px 0px #000000;
+  --shadow-md:    8px 8px 0px #FFD90F; /* Yellow shadow */
+  --shadow-lg:    12px 12px 0px #FF81C6; /* Pink shadow */
   --nav-btn-text: #000000;
 }
 
@@ -1300,25 +1303,28 @@ input::placeholder, textarea::placeholder {
 
 /* ── Forest ── */
 [data-theme='forest'] {
-  --primary:      #15803D;
-  --primary-dark: #166534;
-  --primary-mid:  #22C55E;
-  --secondary:    #A16207;
-  --accent:       #84CC16;
-  --tertiary:     #FACC15;
-  --electric:     #15803D;
-  --bg-hero:      #F0FDF4;
-  --bg-dark:      #DCFCE7;
-  --bg-subtle:    #F0FDF4;
-  --bg-white:     #FFFFFF;
-  --bg-body:      #F0FDF4;
-  --text:         #052E16;
-  --text-muted:   #166534;
-  --text-light:   #14532D;
-  --border:       #15803D;
-  --shadow-sm:    4px 4px 0px #166534;
-  --shadow-md:    8px 8px 0px #A16207;
-  --shadow-lg:    12px 12px 0px #15803D;
+  --primary:      #22C55E;   /* Bright leaf green */
+  --primary-dark: #16A34A;
+  --primary-mid:  #4ADE80;
+  --secondary:    #8B5A2B;   /* Tree bark brown */
+  --accent:       #FBBF24;   /* Firefly yellow/gold */
+  --tertiary:     #D97706;   /* Amber */
+  --electric:     #A3E635;   /* Moss green */
+  
+  --bg-hero:      #064E3B;   /* Very dark emerald/pine */
+  --bg-dark:      #022C22;   /* Pure dark green */
+  --bg-subtle:    #065F46;   
+  --bg-white:     #0F3F31;   /* Card background */
+  --bg-body:      #022C22;   /* Deep forest */
+  
+  --text:         #ECFDF5;   /* Off white/green tint */
+  --text-muted:   #A7F3D0;   
+  --text-light:   #6EE7B7;
+  
+  --border:       #065F46;   
+  --shadow-sm:    4px 4px 0px #022C22;
+  --shadow-md:    8px 8px 0px #8B5A2B;
+  --shadow-lg:    12px 12px 0px #22C55E;
   --nav-btn-text: #FFFFFF;
 }
 
