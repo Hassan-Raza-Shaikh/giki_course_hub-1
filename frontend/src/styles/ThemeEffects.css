@@ -233,24 +233,27 @@
 ===================== */
 .pacman-chase {
   position: absolute;
-  bottom: 20px;
   font-size: 35px;
   display: flex;
   gap: 20px;
-  animation: pacmanRun 15s linear infinite;
+  animation: pacmanRun 30s linear infinite;
   white-space: nowrap;
   filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
 }
 .pacman-top { transform-origin: 50% 50%; animation: chompTop 0.3s alternate infinite; }
 .pacman-bottom { transform-origin: 50% 50%; animation: chompBottom 0.3s alternate infinite; }
-@keyframes chompTop { 0% { transform: rotate(0deg); } 100% { transform: rotate(-30deg); } }
-@keyframes chompBottom { 0% { transform: rotate(0deg); } 100% { transform: rotate(30deg); } }
+@keyframes chompTop { 0% { transform: rotate(-30deg); } 100% { transform: rotate(0deg); } }
+@keyframes chompBottom { 0% { transform: rotate(30deg); } 100% { transform: rotate(0deg); } }
 @keyframes pacmanRun {
-  0% { transform: translateX(-200px); }
-  49.9% { transform: translateX(110vw); }
-  50% { transform: translateX(110vw) scaleX(-1); }
-  99.9% { transform: translateX(-200px) scaleX(-1); }
-  100% { transform: translateX(-200px); }
+  0% { transform: translateX(-200px); top: 80vh; }
+  24.9% { transform: translateX(110vw); top: 80vh; }
+  25% { transform: translateX(110vw) scaleX(-1); top: 20vh; }
+  49.9% { transform: translateX(-200px) scaleX(-1); top: 20vh; }
+  50% { transform: translateX(-200px); top: 50vh; }
+  74.9% { transform: translateX(110vw); top: 50vh; }
+  75% { transform: translateX(110vw) scaleX(-1); top: 90vh; }
+  99.9% { transform: translateX(-200px) scaleX(-1); top: 90vh; }
+  100% { transform: translateX(-200px); top: 80vh; }
 }
 
 /* =====================

@@ -132,9 +132,9 @@ const DraculaBats = () => Array.from({ length: 10 }).map((_, i) => (
 ));
 
 const SvgPacman = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path className="pacman-top" fill="#ffeb3b" d="M50 50 L100 20 A50 50 0 1 0 100 50 Z" />
-    <path className="pacman-bottom" fill="#ffeb3b" d="M50 50 L100 50 A50 50 0 0 1 100 80 Z" />
+  <svg viewBox="0 0 100 100" width="1em" height="1em" style={{ overflow: 'visible' }} xmlns="http://www.w3.org/2000/svg">
+    <path className="pacman-top" fill="#ffeb3b" d="M50,50 L100,50 A50,50 0 0,0 0,50 Z" />
+    <path className="pacman-bottom" fill="#ffeb3b" d="M50,50 L0,50 A50,50 0 0,0 100,50 Z" />
   </svg>
 );
 
