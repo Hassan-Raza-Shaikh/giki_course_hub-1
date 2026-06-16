@@ -204,15 +204,62 @@ const DraculaBats = () => Array.from({ length: 15 }).map((_, i) => (
   <img key={i} src="/dracula-bat.png" className="bat" alt="bat" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, animationDuration: `${8 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, width: `${30 + Math.random() * 30}px`, imageRendering: 'pixelated' }} />
 ));
 
-const PacmanChase = () => (
-  <div className="pacman-chase">
-    <img src="/pacman.png" className="pacman-img" alt="pacman" />
-    <img src="/ghost.png" className="ghost-img ghost-red" alt="ghost" />
-    <img src="/ghost.png" className="ghost-img ghost-pink" alt="ghost" />
-    <img src="/ghost.png" className="ghost-img ghost-cyan" alt="ghost" />
-    <img src="/ghost.png" className="ghost-img ghost-orange" alt="ghost" />
-  </div>
-);
+const PacmanChase = () => {
+  const [chases, setChases] = useState([]);
+
+  useEffect(() => {
+    const spawn = () => {
+      setChases(prev => {
+        const newChases = [...prev, {
+          id: Date.now(),
+          top: Math.random() * 80 + 10,
+          direction: Math.random() > 0.5 ? 1 : -1,
+          isPowerPellet: Math.random() > 0.7,
+          speed: 10 + Math.random() * 8
+        }];
+        return newChases.slice(-3); // Keep maximum 3 chases on screen
+      });
+    };
+    
+    spawn();
+    const interval = setInterval(spawn, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      {chases.map(chase => (
+        <div key={chase.id} style={{
+          position: 'absolute',
+          top: `${chase.top}vh`,
+          left: chase.direction === 1 ? '-400px' : '100vw',
+          display: 'flex',
+          gap: '20px',
+          flexDirection: chase.direction === 1 ? 'row' : 'row-reverse',
+          animation: `pacmanSlide${chase.direction === 1 ? 'Right' : 'Left'} ${chase.speed}s linear forwards`,
+          whiteSpace: 'nowrap'
+        }}>
+          {chase.isPowerPellet ? (
+             <>
+               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+               <img src="/pacman.png" alt="pacman" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+             </>
+          ) : (
+             <>
+               <img src="/pacman.png" alt="pacman" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-red" className="ghost-red" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-pink" className="ghost-pink" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-cyan" className="ghost-cyan" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-orange" className="ghost-orange" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
+             </>
+          )}
+        </div>
+      ))}
+    </>
+  );
+};
 
 const MinecraftBlocks = () => Array.from({ length: 25 }).map((_, i) => (
   <img key={i} src="/minecraft-block.png" className="minecraft-block-sprite" alt="minecraft-block" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 30}px`, opacity: 0.9 }} />

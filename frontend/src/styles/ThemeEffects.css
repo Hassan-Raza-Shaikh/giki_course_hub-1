@@ -265,60 +265,15 @@
 /* =====================
    PACMAN
 ===================== */
-.pacman-chase {
-  position: absolute;
-  top: 80vh;
-  display: flex;
-  gap: 15px;
-  animation: pacmanRun 15s linear infinite;
-  white-space: nowrap;
-}
 .pacman-img {
   width: 40px;
   image-rendering: pixelated;
-  animation: pacmanFlip 15s linear infinite;
 }
 .ghost-img {
   width: 40px;
   image-rendering: pixelated;
 }
-.ghost-red { animation: ghostRedFlip 15s linear infinite; }
-.ghost-pink { animation: ghostPinkFlip 15s linear infinite; }
-.ghost-cyan { animation: ghostCyanFlip 15s linear infinite; }
-.ghost-orange { animation: ghostOrangeFlip 15s linear infinite; }
 
-@keyframes pacmanRun {
-  0% { left: 110vw; top: 80vh; }
-  49.9% { left: -20vw; top: 80vh; }
-  50% { left: -20vw; top: 20vh; }
-  99.9% { left: 110vw; top: 20vh; }
-  100% { left: 110vw; top: 80vh; }
-}
-
-@keyframes pacmanFlip {
-  0%, 49.9% { transform: scaleX(-1); }
-  50%, 100% { transform: scaleX(1); }
-}
-
-@keyframes ghostRedFlip {
-  0%, 49.9% { transform: scaleX(1); filter: none; }
-  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
-}
-
-@keyframes ghostPinkFlip {
-  0%, 49.9% { transform: scaleX(1); filter: hue-rotate(90deg); }
-  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
-}
-
-@keyframes ghostCyanFlip {
-  0%, 49.9% { transform: scaleX(1); filter: hue-rotate(180deg); }
-  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
-}
-
-@keyframes ghostOrangeFlip {
-  0%, 49.9% { transform: scaleX(1); filter: hue-rotate(270deg); }
-  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
-}
 
 /* =====================
    CYBERPUNK (Scanlines)
@@ -455,3 +410,11 @@
   100% { transform: rotate(-45deg) translateX(-100vw); opacity: 0; }
 }
 
+@keyframes pacmanSlideRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 600px)); }
+}
+@keyframes pacmanSlideLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100vw - 600px)); }
+}
