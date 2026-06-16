@@ -1,0 +1,106 @@
+--- frontend/src/styles/ThemeEffects.css
++++ frontend/src/styles/ThemeEffects.css
+@@ -79,15 +79,25 @@
+ .snake-segment {
+   position: absolute;
+   width: 20px;
+   height: 20px;
+   background-color: #39ff14;
+   border: 1px solid #000;
+-  animation: slither 15s linear infinite;
++  animation: slither 10s steps(40) infinite;
+   opacity: 0.8;
+ }
+ @keyframes slither {
+-  0% { left: -100px; top: 90vh; }
+-  25% { left: 100vw; top: 90vh; }
+-  25.01% { left: 100vw; top: 10vh; }
+-  50% { left: -100px; top: 10vh; }
+-  50.01% { left: 50vw; top: -100px; }
+-  75% { left: 50vw; top: 100vh; }
+-  75.01% { left: 10vw; top: 100vh; }
+-  100% { left: 10vw; top: -100px; }
++  0% { left: 0vw; top: 90vh; }
++  20% { left: 80vw; top: 90vh; }
++  20.01% { left: 80vw; top: 90vh; }
++  40% { left: 80vw; top: 20vh; }
++  40.01% { left: 80vw; top: 20vh; }
++  60% { left: 20vw; top: 20vh; }
++  60.01% { left: 20vw; top: 20vh; }
++  80% { left: 20vw; top: 60vh; }
++  80.01% { left: 20vw; top: 60vh; }
++  100% { left: 100vw; top: 60vh; }
+ }
+ 
+ /* =====================
+@@ -131,8 +141,8 @@
+   font-family: monospace;
+   font-size: 20px;
+-  text-shadow: 0 0 5px #0f0;
++  text-shadow: 0 0 8px #0f0, 0 0 20px #0f0;
+   animation: matrixFall linear infinite;
+ }
+ @keyframes matrixFall {
+   0% { transform: translateY(-100px); opacity: 1; }
++  95% { transform: translateY(95vh); opacity: 1; }
+   100% { transform: translateY(100vh); opacity: 0; }
+ }
+@@ -148,8 +158,11 @@
+   border: 1px solid rgba(255, 255, 255, 0.4);
+   background: rgba(255, 255, 255, 0.1);
+   animation: bubbleRise linear infinite;
++  backdrop-filter: blur(2px);
++  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+ }
+ @keyframes bubbleRise {
+-  0% { transform: translateY(0) scale(1); opacity: 1; }
+-  100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
++  0% { transform: translateY(0) scale(1) translateX(0); opacity: 0; }
++  10% { opacity: 1; }
++  100% { transform: translateY(-120vh) scale(1.5) translateX(20px); opacity: 0; }
+ }
+@@ -211,8 +224,10 @@
+   gap: 20px;
+   animation: pacmanRun 15s linear infinite;
+   white-space: nowrap;
++  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+ }
+ .pacman-top { transform-origin: 50% 50%; animation: chompTop 0.3s alternate infinite; }
+ .pacman-bottom { transform-origin: 50% 50%; animation: chompBottom 0.3s alternate infinite; }
+ @keyframes chompTop { 0% { transform: rotate(0deg); } 100% { transform: rotate(-30deg); } }
+ @keyframes chompBottom { 0% { transform: rotate(0deg); } 100% { transform: rotate(30deg); } }
+ @keyframes pacmanRun {
+@@ -231,12 +246,31 @@
+   width: 100vw;
+   height: 2px;
+-  background: rgba(0, 255, 255, 0.3);
+-  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
++  background: rgba(0, 255, 255, 0.5);
++  box-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.8);
+   animation: scanlineFall linear infinite;
+ }
+ @keyframes scanlineFall {
+   0% { transform: translateY(-10px); }
+   100% { transform: translateY(100vh); }
+ }
+ 
++/* MINECRAFT CUBES */
++.minecraft-block {
++  transform-style: preserve-3d;
++  animation: blockRotate 10s infinite linear, fall linear infinite;
++}
++.cube-face {
++  position: absolute; width: 100%; height: 100%; background: #8d6e63; border: 2px solid #5d4037;
++}
++.cube-face.front  { transform: translateZ(10px); }
++.cube-face.back   { transform: rotateY(180deg) translateZ(10px); }
++.cube-face.right  { transform: rotateY(90deg) translateZ(10px); }
++.cube-face.left   { transform: rotateY(-90deg) translateZ(10px); }
++.cube-face.top    { transform: rotateX(90deg) translateZ(10px); background: #4caf50; border: 2px solid #388e3c; }
++.cube-face.bottom { transform: rotateX(-90deg) translateZ(10px); }
++@keyframes blockRotate {
++  0% { transform: translateY(-100px) rotateX(0) rotateY(0) rotateZ(0); }
++  100% { transform: translateY(110vh) rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
++}
++
+ /* =====================

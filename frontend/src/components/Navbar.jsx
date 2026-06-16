@@ -1,25 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot } from 'lucide-react';
+import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon } from './ThemeIcons';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
-const BatIcon = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 122.13 69.89" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-    <path fill="currentColor" d="M121.06,35c0,18.71-26.86,33.88-60,33.88S1.06,53.66,1.06,35s26.87-33.89,60-33.89,60,15.17,60,33.89ZM51.72,24.46c-14.49,5.37-21.86-8-14.49-15.74-11.75,3-30.86,11.49-30.86,25.63,0,12.83,12.49,20.09,21.49,23.22-8.68-10.74,3.25-19.16,13.7-7.41C49.69,35.73,59.28,56.44,61,59.58h0c1.71-3.14,11.31-23.85,19.44-9.42,10.45-11.75,22.38-3.33,13.7,7.41,9-3.13,21.49-10.39,21.49-23.22,0-14.14-19.11-22.63-30.86-25.63,7.37,7.74,0,21.11-14.49,15.74-1.67-2-2.75-6.11-2.75-18.24-1.94,1.26-3.33,5.71-3.45,6a12,12,0,0,0-6.15,0c-.12-.32-1.51-4.77-3.45-6,0,12.13-1.08,16.25-2.75,18.24Z"/>
-  </svg>
-);
-
-const DonutIcon = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{ display: 'inline-block', verticalAlign: 'middle' }}>
-    <path fill="#f4a460" d="M50 10 A40 40 0 1 0 90 50 A40 40 0 0 0 50 10 Z M50 35 A15 15 0 1 1 35 50 A15 15 0 0 1 50 35 Z" fillRule="evenodd" />
-    <path fill="#ff69b4" d="M50 15 A35 35 0 1 0 85 50 Q85 40 75 40 Q65 40 65 30 Q65 20 50 15 Z M50 35 A15 15 0 1 1 35 50 A15 15 0 0 1 50 35 Z" fillRule="evenodd" />
-    <circle cx="35" cy="30" r="3" fill="#00bcd4" />
-    <circle cx="65" cy="65" r="3" fill="#ffeb3b" />
-    <circle cx="30" cy="60" r="3" fill="#8bc34a" />
-    <circle cx="70" cy="35" r="3" fill="#ffffff" />
-  </svg>
-);
 
 const Navbar = ({ onSignIn, onSignOut, user }) => {
   const [scrolled, setScrolled]   = useState(false);
@@ -80,17 +65,17 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   const themes = [
     { id: 'light', name: 'Light', icon: <Sun size={14} /> },
     { id: 'dark', name: 'Dark', icon: <Moon size={14} /> },
-    { id: 'mario', name: 'Mario', icon: <Gamepad2 size={14} /> },
-    { id: 'batman', name: 'Batman', icon: <Cloud size={14} /> },
+    { id: 'mario', name: 'Mario', icon: <MushroomIcon size={14} /> },
+    { id: 'batman', name: 'Batman', icon: <BatIcon size={14} /> },
     { id: 'nord', name: 'Nord', icon: <Cloud size={14} /> },
     { id: 'solarized', name: 'Solarized', icon: <SunDim size={14} /> },
     { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
     { id: 'retro', name: 'Retro', icon: <Gamepad2 size={14} /> },
-    { id: 'pacman', name: 'Pac-Man', icon: <Circle size={14} /> },
-    { id: 'minecraft', name: 'Minecraft', icon: <Box size={14} /> },
-    { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
+    { id: 'pacman', name: 'Pac-Man', icon: <PacmanIcon size={14} /> },
+    { id: 'minecraft', name: 'Minecraft', icon: <BlockIcon size={14} /> },
+    { id: 'matrix', name: 'Matrix', icon: <MatrixIcon size={14} /> },
     { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> },
-    { id: 'zelda', name: 'Zelda', icon: <Star size={14} /> },
+    { id: 'zelda', name: 'Zelda', icon: <TriforceIcon size={14} /> },
     { id: 'gh-dark', name: 'Dev Dark', icon: <Github size={14} /> },
     { id: 'minimal', name: 'Minimal', icon: <Square size={14} /> },
     { id: 'discord', name: 'Midnight', icon: <MessageSquare size={14} /> },
@@ -99,13 +84,13 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'space', name: 'Space', icon: <Sparkles size={14} /> },
     { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
     { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
-    { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> },
+    { id: 'lotr', name: 'LOTR', icon: <RingIcon size={14} /> },
     { id: 'snake', name: 'Snake', icon: <Activity size={14} /> },
-    { id: 'simpsons', name: 'Simpsons', icon: <Circle size={14} /> },
+    { id: 'simpsons', name: 'Simpsons', icon: <DonutIcon size={14} /> },
     { id: 'barbie', name: 'Barbie', icon: <Heart size={14} /> },
     { id: 'forest', name: 'Forest', icon: <TreePine size={14} /> },
     { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> },
-    { id: 'pokemon', name: 'Pokémon', icon: <CircleDot size={14} /> }
+    { id: 'pokemon', name: 'Pokémon', icon: <PokeballIcon size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
