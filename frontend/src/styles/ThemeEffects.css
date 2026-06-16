@@ -132,29 +132,9 @@
 }
 
 /* =====================
-   FIRE SPARKS
+   SNAKE
 ===================== */
-.snake-container {
-  position: absolute;
-  top: 50vh;
-  left: -300px;
-  display: flex;
-  align-items: center;
-  animation: snakeSlither 15s linear infinite;
-}
-.snake-segment {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #39ff14;
-  border: 1px solid #000;
-  image-rendering: pixelated;
-  opacity: 0.8;
-}
-@keyframes snakeSlither {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(120vw); }
-}
+/* The snake effect is now fully simulated in React (ThemeEffects.jsx) */
 
 /* =====================
    MARIO (Clouds/Coins)

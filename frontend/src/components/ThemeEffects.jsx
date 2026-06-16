@@ -20,12 +20,77 @@ const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
 ));
 
 const SnakeEffect = () => {
-  const [length, setLength] = useState(1);
+  const [snake, setSnake] = useState(() => {
+    const init = [];
+    for(let i=0; i<15; i++) init.push({x: 20 - i, y: 10});
+    return init;
+  });
+  const directionRef = React.useRef({dx: 1, dy: 0});
+  const headRotRef = React.useRef(0);
+
+  useEffect(() => {
+    const moveInterval = setInterval(() => {
+      setSnake(prev => {
+        const head = prev[0];
+        let { dx, dy } = directionRef.current;
+        
+        // 5% chance to randomly turn
+        if (Math.random() < 0.05) {
+          if (dx !== 0) {
+            dx = 0;
+            dy = Math.random() < 0.5 ? 1 : -1;
+            headRotRef.current = dy === 1 ? 90 : -90;
+          } else {
+            dx = Math.random() < 0.5 ? 1 : -1;
+            dy = 0;
+            headRotRef.current = dx === 1 ? 0 : 180;
+          }
+          directionRef.current = { dx, dy };
+        }
+
+        let newX = head.x + dx;
+        let newY = head.y + dy;
+
+        const maxX = Math.floor(window.innerWidth / 25);
+        const maxY = Math.floor(window.innerHeight / 25);
+
+        // Wrap around boundaries
+        if (newX < 0) newX = maxX;
+        if (newX > maxX) newX = 0;
+        if (newY < 0) newY = maxY;
+        if (newY > maxY) newY = 0;
+
+        const newSnake = [{x: newX, y: newY}, ...prev.slice(0, prev.length - 1)];
+        
+        // Slowly grow
+        if (prev.length < 60 && Math.random() < 0.05) {
+          newSnake.push(prev[prev.length - 1]);
+        }
+        return newSnake;
+      });
+    }, 120);
+
+    return () => clearInterval(moveInterval);
+  }, []);
+
   return (
-    <div className="snake-container" onAnimationIteration={() => setLength(l => Math.min(l + 5, 100))}>
-      <img src="/snake-head.png" className="snake-segment" alt="snake-head" style={{ width: '20px', height: '20px', left: '0px' }} />
-      {Array.from({ length }).map((_, i) => (
-        <img key={i} src="/snake-body.png" className="snake-segment" alt="snake-body" style={{ width: '20px', height: '20px', left: `-${(i + 1) * 20}px` }} />
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
+      {snake.map((segment, i) => (
+        <img 
+          key={i} 
+          src={i === 0 ? "/snake-head.png" : "/snake-body.png"} 
+          alt="snake"
+          style={{
+            position: 'absolute',
+            left: `${segment.x * 25}px`,
+            top: `${segment.y * 25}px`,
+            width: '25px',
+            height: '25px',
+            imageRendering: 'pixelated',
+            transform: i === 0 ? `rotate(${headRotRef.current}deg)` : 'none',
+            opacity: 0.8
+          }} 
+        />
       ))}
     </div>
   );
