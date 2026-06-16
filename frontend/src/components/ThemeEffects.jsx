@@ -144,9 +144,19 @@ const ForestLeaves = () => Array.from({ length: 30 }).map((_, i) => {
   return <img key={i} src={src} className="leaf" alt="leaf" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />;
 });
 
-const PokemonSprites = () => Array.from({ length: 15 }).map((_, i) => (
-  <img key={i} src="/pokeball.png" className="pokeball-bounce" alt="pokeball" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s`, width: `${30 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />
-));
+const PokemonSprites = () => (
+  <>
+    {/* Pokeballs bouncing */}
+    {Array.from({ length: 10 }).map((_, i) => (
+      <img key={`ball-${i}`} src="/pokeball.png" className="pokeball-bounce" alt="pokeball" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s`, width: `${30 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />
+    ))}
+    {/* Pokemon walking */}
+    <img src="/pikachu.png" className="pokemon-sprite" alt="pikachu" style={{ animationDuration: '25s', animationDelay: '-2s', width: '60px' }} />
+    <img src="/charmander.png" className="pokemon-sprite" alt="charmander" style={{ animationDuration: '28s', animationDelay: '-12s', width: '60px' }} />
+    <img src="/bulbasaur.png" className="pokemon-sprite" alt="bulbasaur" style={{ animationDuration: '32s', animationDelay: '-20s', width: '60px' }} />
+    <img src="/squirtle.png" className="pokemon-sprite" alt="squirtle" style={{ animationDuration: '30s', animationDelay: '-5s', width: '60px' }} />
+  </>
+);
 
 
 export default function ThemeEffects() {

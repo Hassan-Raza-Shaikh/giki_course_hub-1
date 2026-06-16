@@ -388,3 +388,17 @@
   90% { transform: translateY(0) rotate(720deg); opacity: 0; }
   100% { transform: translateY(0) rotate(720deg); opacity: 0; }
 }
+
+.pokemon-sprite {
+  position: absolute;
+  bottom: 10px;
+  animation: pokemonWalk linear infinite;
+  image-rendering: pixelated;
+}
+@keyframes pokemonWalk {
+  0% { left: 110vw; transform: scaleX(1); }
+  49.9% { left: -20vw; transform: scaleX(1); }
+  50% { left: -20vw; transform: scaleX(-1); }
+  99.9% { left: 110vw; transform: scaleX(-1); }
+  100% { left: 110vw; transform: scaleX(1); }
+}
