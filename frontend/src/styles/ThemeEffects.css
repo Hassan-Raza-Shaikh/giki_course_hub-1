@@ -254,19 +254,51 @@
   animation: pacmanRun 15s linear infinite;
   white-space: nowrap;
 }
-.pacman-chase img {
+.pacman-img {
+  width: 40px;
+  image-rendering: pixelated;
+  animation: pacmanFlip 15s linear infinite;
+}
+.ghost-img {
+  width: 40px;
   image-rendering: pixelated;
 }
-.pacman-top { transform-origin: 50% 50%; animation: chompTop 0.3s alternate infinite; }
-.pacman-bottom { transform-origin: 50% 50%; animation: chompBottom 0.3s alternate infinite; }
-@keyframes chompTop { 0% { transform: rotate(-30deg); } 100% { transform: rotate(0deg); } }
-@keyframes chompBottom { 0% { transform: rotate(30deg); } 100% { transform: rotate(0deg); } }
+.ghost-red { animation: ghostRedFlip 15s linear infinite; }
+.ghost-pink { animation: ghostPinkFlip 15s linear infinite; }
+.ghost-cyan { animation: ghostCyanFlip 15s linear infinite; }
+.ghost-orange { animation: ghostOrangeFlip 15s linear infinite; }
+
 @keyframes pacmanRun {
-  0% { left: 110vw; transform: scaleX(1); top: 80vh; }
-  49% { left: -20vw; transform: scaleX(1); top: 80vh; }
-  50% { left: -20vw; transform: scaleX(-1); top: 20vh; }
-  99% { left: 110vw; transform: scaleX(-1); top: 20vh; }
-  100% { left: 110vw; transform: scaleX(1); top: 80vh; }
+  0% { left: 110vw; top: 80vh; }
+  49.9% { left: -20vw; top: 80vh; }
+  50% { left: -20vw; top: 20vh; }
+  99.9% { left: 110vw; top: 20vh; }
+  100% { left: 110vw; top: 80vh; }
+}
+
+@keyframes pacmanFlip {
+  0%, 49.9% { transform: scaleX(-1); }
+  50%, 100% { transform: scaleX(1); }
+}
+
+@keyframes ghostRedFlip {
+  0%, 49.9% { transform: scaleX(1); filter: none; }
+  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
+}
+
+@keyframes ghostPinkFlip {
+  0%, 49.9% { transform: scaleX(1); filter: hue-rotate(90deg); }
+  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
+}
+
+@keyframes ghostCyanFlip {
+  0%, 49.9% { transform: scaleX(1); filter: hue-rotate(180deg); }
+  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
+}
+
+@keyframes ghostOrangeFlip {
+  0%, 49.9% { transform: scaleX(1); filter: hue-rotate(270deg); }
+  50%, 100% { transform: scaleX(-1); filter: sepia(1) hue-rotate(200deg) saturate(3) brightness(0.8); }
 }
 
 /* =====================

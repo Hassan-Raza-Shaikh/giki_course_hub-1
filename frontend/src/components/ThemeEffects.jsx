@@ -108,11 +108,11 @@ const DraculaBats = () => Array.from({ length: 10 }).map((_, i) => (
 
 const PacmanChase = () => (
   <div className="pacman-chase">
-    <img src="/pacman.png" style={{ width: '40px', transform: 'rotateY(180deg)' }} alt="pacman" />
-    <img src="/ghost.png" style={{ width: '40px' }} alt="ghost" />
-    <img src="/ghost.png" style={{ width: '40px', filter: 'hue-rotate(90deg)' }} alt="ghost" />
-    <img src="/ghost.png" style={{ width: '40px', filter: 'hue-rotate(180deg)' }} alt="ghost" />
-    <img src="/ghost.png" style={{ width: '40px', filter: 'hue-rotate(270deg)' }} alt="ghost" />
+    <img src="/pacman.png" className="pacman-img" alt="pacman" />
+    <img src="/ghost.png" className="ghost-img ghost-red" alt="ghost" />
+    <img src="/ghost.png" className="ghost-img ghost-pink" alt="ghost" />
+    <img src="/ghost.png" className="ghost-img ghost-cyan" alt="ghost" />
+    <img src="/ghost.png" className="ghost-img ghost-orange" alt="ghost" />
   </div>
 );
 
