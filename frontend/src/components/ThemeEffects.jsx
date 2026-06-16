@@ -20,12 +20,12 @@ const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
 ));
 
 const SnakeEffect = () => (
-  <>
+  <div className="snake-container">
     <img src="/snake-head.png" className="snake-segment" alt="snake-head" style={{ width: '20px', height: '20px' }} />
     {Array.from({ length: 15 }).map((_, i) => (
       <img key={i} src="/snake-body.png" className="snake-segment" alt="snake-body" style={{ width: '20px', height: '20px', animationDelay: `-${(i + 1) * 0.15}s` }} />
     ))}
-  </>
+  </div>
 );
 
 const MarioSprites = () => Array.from({ length: 6 }).map((_, i) => (
