@@ -117,14 +117,7 @@ const PacmanChase = () => (
 );
 
 const MinecraftBlocks = () => Array.from({ length: 25 }).map((_, i) => (
-  <div key={i} className="snow-flake minecraft-block" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${8 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, width: `${20 + Math.random() * 20}px`, height: `${20 + Math.random() * 20}px`, opacity: 0.9 }}>
-    <div className="cube-face front"></div>
-    <div className="cube-face back"></div>
-    <div className="cube-face right"></div>
-    <div className="cube-face left"></div>
-    <div className="cube-face top"></div>
-    <div className="cube-face bottom"></div>
-  </div>
+  <img key={i} src="/minecraft-block.png" className="minecraft-block-sprite" alt="minecraft-block" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 30}px`, opacity: 0.9 }} />
 ));
 
 const CyberpunkScanlines = () => Array.from({ length: 5 }).map((_, i) => (

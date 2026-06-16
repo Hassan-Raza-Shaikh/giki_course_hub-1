@@ -86,7 +86,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
     { id: 'retro', name: 'Retro', icon: <Gamepad2 size={14} /> },
     { id: 'pacman', name: 'Pac-Man', icon: <img src="/pacman.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
-    { id: 'minecraft', name: 'Minecraft', icon: <Box size={14} /> },
+    { id: 'minecraft', name: 'Minecraft', icon: <img src="/minecraft-block.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
     { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
     { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> },
     { id: 'mario', name: 'Mario', icon: <img src="/mario.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
