@@ -79,31 +79,27 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
   const themes = [
     { id: 'light', name: 'Light', icon: <Sun size={14} /> },
-    { id: 'dark', name: 'Ember', icon: <Moon size={14} /> },
-    { id: 'batman', name: 'Batman', icon: <BatIcon size={14} /> },
-    { id: 'nord', name: 'Nord', icon: <Cloud size={14} /> },
-    { id: 'solarized', name: 'Solarized', icon: <SunDim size={14} /> },
-    { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
+    { id: 'dark', name: 'Dark', icon: <Moon size={14} /> },
+    { id: 'mario', name: 'Mario', icon: <img src="/mario.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'batman', name: 'Batman', icon: <img src="/bat-signal.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'dracula', name: 'Dracula', icon: <img src="/dracula-bat.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
     { id: 'retro', name: 'Retro', icon: <Gamepad2 size={14} /> },
     { id: 'pacman', name: 'Pac-Man', icon: <img src="/pacman.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
     { id: 'minecraft', name: 'Minecraft', icon: <img src="/minecraft-block.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
     { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
-    { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> },
-    { id: 'mario', name: 'Mario', icon: <img src="/mario.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'cyberpunk', name: 'Cyberpunk', icon: <img src="/neon-car.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
     { id: 'zelda', name: 'Zelda', icon: <img src="/navi.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
-    { id: 'gh-dark', name: 'Dev Dark', icon: <Github size={14} /> },
-    { id: 'minimal', name: 'Minimal', icon: <Square size={14} /> },
     { id: 'discord', name: 'Midnight', icon: <MessageSquare size={14} /> },
     { id: 'vaporwave', name: 'Vaporwave', icon: <Sunset size={14} /> },
     { id: 'gruvbox', name: 'Gruvbox', icon: <Coffee size={14} /> },
-    { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
-    { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
-    { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> },
+    { id: 'frozen', name: 'Frozen', icon: <img src="/ice-crystal.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'fire', name: 'Fire', icon: <img src="/flame.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'lotr', name: 'LOTR', icon: <img src="/the-ring.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
     { id: 'snake', name: 'Snake', icon: <img src="/snake-head.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
-    { id: 'simpsons', name: 'Simpsons', icon: <img src="/simpsons-donut.png" style={{ width: '14px', height: '14px' }} alt="" /> },
-    { id: 'barbie', name: 'Barbie', icon: <Heart size={14} /> },
-    { id: 'forest', name: 'Forest', icon: <TreePine size={14} /> },
-    { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> }
+    { id: 'simpsons', name: 'Simpsons', icon: <img src="/simpsons-donut.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'barbie', name: 'Barbie', icon: <img src="/barbie-bow.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'forest', name: 'Forest', icon: <img src="/leaf-green.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> },
+    { id: 'ocean', name: 'Ocean', icon: <img src="/fish.png" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} alt="" /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];

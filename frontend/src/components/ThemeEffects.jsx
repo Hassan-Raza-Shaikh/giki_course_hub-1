@@ -12,7 +12,7 @@ const BatSignal = () => (
 );
 
 const Snowflakes = () => Array.from({ length: 30 }).map((_, i) => (
-  <div key={i} className="snow-flake" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, fontSize: `${10 + Math.random() * 20}px` }}>❄</div>
+  <img key={i} src="/ice-crystal.png" className="snow-flake" alt="ice" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, width: `${15 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />
 ));
 
 const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
@@ -32,8 +32,8 @@ const MarioSprites = () => Array.from({ length: 6 }).map((_, i) => (
   <img key={i} src={i % 3 === 0 ? "/mario.png" : "/goomba.png"} className="mario-sprite" alt="mario-sprite" style={{ bottom: '20px', animationDuration: `${15 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 20}s`, width: `${40 + Math.random() * 20}px` }} />
 ));
 
-const LotrEmbers = () => Array.from({ length: 40 }).map((_, i) => (
-  <div key={i} className="ember" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s` }} />
+const LotrEmbers = () => Array.from({ length: 20 }).map((_, i) => (
+  <img key={i} src="/the-ring.png" className="ember" alt="ring" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s`, width: `${10 + Math.random() * 15}px`, imageRendering: 'pixelated', boxShadow: 'none', background: 'none' }} />
 ));
 
 const HackerRain = () => {
@@ -45,9 +45,9 @@ const HackerRain = () => {
   ));
 };
 
-const OceanBubbles = () => Array.from({ length: 30 }).map((_, i) => {
-  const size = 10 + Math.random() * 30;
-  return <div key={i} className="bubble" style={{ left: `${Math.random() * 100}vw`, width: `${size}px`, height: `${size}px`, animationDuration: `${4 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s` }} />;
+const OceanBubbles = () => Array.from({ length: 20 }).map((_, i) => {
+  const isLeft = Math.random() > 0.5;
+  return <img key={i} src="/fish.png" className="bubble" alt="fish" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: `${20 + Math.random() * 30}px`, animationDuration: `${10 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 10}s`, transform: `scaleX(${isLeft ? -1 : 1})`, imageRendering: 'pixelated', opacity: 0.8, boxShadow: 'none', background: 'none', border: 'none', borderRadius: '0' }} />;
 });
 
 const SpaceStars = () => Array.from({ length: 100 }).map((_, i) => {
@@ -93,17 +93,8 @@ const ZeldaFairy = () => Array.from({ length: 5 }).map((_, i) => (
   <img key={i} src="/navi.png" className="navi-fairy" alt="navi" style={{ left: `${20 + Math.random() * 60}vw`, top: `${20 + Math.random() * 60}vh`, animationDuration: `${4 + Math.random() * 4}s`, animationDelay: `-${Math.random() * 4}s`, width: `${30 + Math.random() * 20}px`, filter: 'drop-shadow(0 0 10px #64c8ff)' }} />
 ));
 
-const SvgBat = () => (
-  <svg viewBox="0 0 100 60" width="1em" height="0.6em" xmlns="http://www.w3.org/2000/svg">
-    <path className="bat-wing" fill="#1e1e24" d="M50 30 Q70 10 90 20 Q80 40 100 50 Q75 55 50 60 Q25 55 0 50 Q20 40 10 20 Q30 10 50 30 Z" />
-    <circle cx="50" cy="30" r="8" fill="#1e1e24" />
-    <circle cx="47" cy="28" r="2" fill="#ff0000" />
-    <circle cx="53" cy="28" r="2" fill="#ff0000" />
-  </svg>
-);
-
-const DraculaBats = () => Array.from({ length: 10 }).map((_, i) => (
-  <div key={i} className="bat" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${8 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, fontSize: `${40 + Math.random() * 40}px` }}><SvgBat /></div>
+const DraculaBats = () => Array.from({ length: 15 }).map((_, i) => (
+  <img key={i} src="/dracula-bat.png" className="bat" alt="bat" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, animationDuration: `${8 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, width: `${30 + Math.random() * 30}px`, imageRendering: 'pixelated' }} />
 ));
 
 const PacmanChase = () => (
@@ -120,51 +111,22 @@ const MinecraftBlocks = () => Array.from({ length: 25 }).map((_, i) => (
   <img key={i} src="/minecraft-block.png" className="minecraft-block-sprite" alt="minecraft-block" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 30}px`, opacity: 0.9 }} />
 ));
 
-const CyberpunkScanlines = () => Array.from({ length: 5 }).map((_, i) => (
-  <div key={i} className="scanline" style={{ animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s` }} />
+const CyberpunkScanlines = () => Array.from({ length: 10 }).map((_, i) => (
+  <img key={i} src="/neon-car.png" className="drift-left" alt="neon" style={{ left: `${100 + Math.random() * 50}vw`, top: `${Math.random() * 100}vh`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, width: `${80 + Math.random() * 100}px`, imageRendering: 'pixelated', opacity: 0.8, filter: 'drop-shadow(0 0 10px #e91e63)' }} />
 ));
-
-const SvgFlame = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#ff9800" d="M50 100 C 10 100 10 60 30 40 C 30 60 50 70 50 50 C 50 30 30 10 50 0 C 70 20 90 50 90 70 C 90 100 50 100 50 100 Z" />
-    <path fill="#ffeb3b" d="M50 100 C 30 100 30 70 40 55 C 40 70 50 75 50 60 C 50 45 40 30 50 20 C 60 35 70 55 70 70 C 70 100 50 100 50 100 Z" />
-  </svg>
-);
 
 const FireSparks = () => Array.from({ length: 30 }).map((_, i) => (
-  <div key={i} className="ember" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s`, background: 'none', boxShadow: 'none', fontSize: `${40 + Math.random() * 40}px` }}>
-    <SvgFlame />
-  </div>
+  <img key={i} src="/flame.png" className="ember" alt="flame" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s`, width: `${20 + Math.random() * 30}px`, imageRendering: 'pixelated', boxShadow: 'none', background: 'none' }} />
 ));
 
-const SvgSparkle = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#ff69b4" d="M50 0 Q50 50 100 50 Q50 50 50 100 Q50 50 0 50 Q50 50 50 0 Z" />
-  </svg>
-);
-const SvgHeart = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#ff1493" d="M50 30 A20 20 0 0 1 90 30 A20 20 0 0 1 50 80 A20 20 0 0 1 10 30 A20 20 0 0 1 50 30 Z" />
-  </svg>
-);
-
-const BarbieSparkles = () => Array.from({ length: 30 }).map((_, i) => {
-  return <div key={i} className="float-up barbie-item" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${6 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, fontSize: `${20 + Math.random() * 30}px`, opacity: 0.8 }}>
-    {i % 2 === 0 ? <SvgSparkle /> : <SvgHeart />}
-  </div>;
+const BarbieSparkles = () => Array.from({ length: 25 }).map((_, i) => {
+  return <img key={i} src="/barbie-bow.png" className="float-up barbie-item" alt="bow" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${6 + Math.random() * 8}s`, animationDelay: `-${Math.random() * 8}s`, width: `${20 + Math.random() * 30}px`, imageRendering: 'pixelated', opacity: 0.8 }} />;
 });
 
-const SvgLeaf1 = () => (
-  <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#4caf50" d="M10 90 Q10 40 50 10 Q90 40 90 90 Q50 90 10 90 Z" />
-    <path stroke="#388e3c" strokeWidth="4" d="M50 90 V20 M50 70 L30 50 M50 60 L70 40 M50 40 L40 30" fill="none"/>
-  </svg>
-);
-
-const ForestLeaves = () => Array.from({ length: 25 }).map((_, i) => {
-  return <div key={i} className="leaf" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${30 + Math.random() * 30}px` }}>
-    <SvgLeaf1 />
-  </div>;
+const ForestLeaves = () => Array.from({ length: 30 }).map((_, i) => {
+  const leaves = ["/leaf-green.png", "/leaf-orange.png", "/leaf-red.png"];
+  const src = leaves[i % leaves.length];
+  return <img key={i} src={src} className="leaf" alt="leaf" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />;
 });
 
 
