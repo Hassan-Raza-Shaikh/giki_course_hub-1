@@ -1278,6 +1278,33 @@ input::placeholder, textarea::placeholder {
   --nav-btn-text: #FFFFFF;
 }
 
+[data-theme='pokemon'] {
+  --primary:      #FF0000;   /* Pokeball Red */
+  --primary-dark: #CC0000;
+  --primary-mid:  #FF3333;
+  --secondary:    #FFCC00;   /* Pikachu Yellow */
+  --accent:       #3B4CCA;   /* Pokemon Blue */
+
+  --bg-hero:    #1A1A1A;
+  --bg-dark:    #000000;
+  --bg-subtle:  #242424;
+  --bg-white:   #2C2C2C;
+  --bg-body:    #000000;
+
+  --text:       #FFFFFF;
+  --text-muted: #B3B3B3;
+  --text-light: #808080;
+  
+  --tertiary:   #4CAF50;     /* Grass Green */
+  --electric:   #FFDE00;     /* Electric Yellow */
+
+  --border:     #FF0000;
+  --shadow-sm:  4px 4px 0px #FF0000;
+  --shadow-md:  8px 8px 0px #FF0000;
+  --shadow-lg:  12px 12px 0px #CC0000;
+  --shadow-glow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
 /* ── Barbie ── */
 [data-theme='barbie'] {
   --primary:      #FF1493;

@@ -144,6 +144,10 @@ const ForestLeaves = () => Array.from({ length: 30 }).map((_, i) => {
   return <img key={i} src={src} className="leaf" alt="leaf" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />;
 });
 
+const PokemonSprites = () => Array.from({ length: 15 }).map((_, i) => (
+  <img key={i} src="/pokeball.png" className="pokeball-bounce" alt="pokeball" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s`, width: `${30 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />
+));
+
 
 export default function ThemeEffects() {
   const [theme, setTheme] = useState(document.documentElement.getAttribute('data-theme') || 'light');
@@ -183,6 +187,7 @@ export default function ThemeEffects() {
       case 'fire': return <FireSparks />;
       case 'barbie': return <BarbieSparkles />;
       case 'forest': return <ForestLeaves />;
+      case 'pokemon': return <PokemonSprites />;
       default: return null;
     }
   };

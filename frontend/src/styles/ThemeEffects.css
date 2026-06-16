@@ -372,3 +372,19 @@
 
 .bat-wing { transform-origin: 50% 50%; animation: flapBat 0.15s alternate infinite; }
 @keyframes flapBat { 0% { transform: scaleY(1); } 100% { transform: scaleY(0.4); } }
+
+/* =====================
+   POKEMON
+===================== */
+.pokeball-bounce {
+  position: absolute;
+  bottom: 0;
+  animation: pokeballBounce linear infinite;
+}
+@keyframes pokeballBounce {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  60% { transform: translateY(0) rotate(360deg); opacity: 1; }
+  75% { transform: translateY(-30vh) rotate(540deg); opacity: 1; }
+  90% { transform: translateY(0) rotate(720deg); opacity: 0; }
+  100% { transform: translateY(0) rotate(720deg); opacity: 0; }
+}
