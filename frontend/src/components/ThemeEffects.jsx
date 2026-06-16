@@ -134,14 +134,9 @@ const MinecraftBlocks = () => Array.from({ length: 25 }).map((_, i) => (
   <img key={i} src="/minecraft-block.png" className="minecraft-block-sprite" alt="minecraft-block" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 30}px`, opacity: 0.9 }} />
 ));
 
-const CyberpunkScanlines = () => (
-  <>
-    <div className="scanlines-overlay"></div>
-    {Array.from({ length: 5 }).map((_, i) => (
-      <div key={i} className="glitch-band" style={{ top: `${Math.random() * 100}vh`, height: `${Math.random() * 20 + 5}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }}></div>
-    ))}
-  </>
-);
+const CyberpunkScanlines = () => Array.from({ length: 15 }).map((_, i) => (
+  <div key={i} className="scanline" style={{ top: `${Math.random() * 100}vh`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }}></div>
+));
 
 const FireSparks = () => Array.from({ length: 30 }).map((_, i) => (
   <img key={i} src="/flame.png" className="ember" alt="flame" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s`, width: `${20 + Math.random() * 30}px`, imageRendering: 'pixelated', boxShadow: 'none', background: 'none' }} />
