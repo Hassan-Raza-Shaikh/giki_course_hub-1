@@ -135,11 +135,19 @@ const OceanBubbles = () => Array.from({ length: 20 }).map((_, i) => (
 
 const SpaceStars = () => (
   <>
-    <div className="space-planet" />
-    <Rocket size={48} className="space-rocket" strokeWidth={1} color="#e2e8f0" />
-    {Array.from({ length: 80 }).map((_, i) => {
-      const size = 1 + Math.random() * 3;
-      return <div key={i} className="star" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: `${size}px`, height: `${size}px`, animationDuration: `${1 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }} />;
+    <div className="nebula-cloud nebula-1" />
+    <div className="nebula-cloud nebula-2" />
+    <div className="nebula-cloud nebula-3" />
+    {Array.from({ length: 150 }).map((_, i) => {
+      const size = Math.random() > 0.8 ? 2 : 1;
+      return <div key={i} className="space-star" style={{ 
+        left: `${Math.random() * 100}vw`, 
+        top: `${Math.random() * 100}vh`, 
+        width: `${size}px`, 
+        height: `${size}px`,
+        animationDuration: `${3 + Math.random() * 5}s`,
+        animationDelay: `-${Math.random() * 5}s`
+      }} />;
     })}
   </>
 );

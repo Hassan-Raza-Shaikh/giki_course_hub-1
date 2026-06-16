@@ -278,30 +278,58 @@
   opacity: 0.9;
 }
 
-.space-planet {
+.nebula-cloud {
   position: absolute;
-  top: 20vh;
-  left: 10vw;
-  width: 200px;
-  height: 200px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #8B5CF6, #4C1D95, #000);
-  box-shadow: inset -20px -20px 40px rgba(0,0,0,0.8), 0 0 50px rgba(139, 92, 246, 0.4);
-  animation: floatSlow 15s ease-in-out infinite alternate;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: nebulaDrift 30s ease-in-out infinite alternate;
+  z-index: 0;
+}
+.nebula-1 {
+  width: 60vw;
+  height: 60vh;
+  top: -10vh;
+  left: -10vw;
+  background: radial-gradient(circle, #4C1D95, #8B5CF6, transparent);
+  animation-duration: 40s;
+}
+.nebula-2 {
+  width: 50vw;
+  height: 50vh;
+  bottom: -10vh;
+  right: -10vw;
+  background: radial-gradient(circle, #0F766E, #06B6D4, transparent);
+  animation-duration: 50s;
+  animation-delay: -10s;
+}
+.nebula-3 {
+  width: 40vw;
+  height: 40vh;
+  top: 30vh;
+  left: 40vw;
+  background: radial-gradient(circle, #BE185D, #EC4899, transparent);
+  animation-duration: 45s;
+  animation-delay: -20s;
 }
 
-.space-rocket {
+@keyframes nebulaDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, 5vh) scale(1.1); }
+  100% { transform: translate(-5vw, -5vh) scale(0.9); }
+}
+
+.space-star {
   position: absolute;
-  bottom: 10vh;
-  left: -100px;
-  transform: rotate(45deg);
-  animation: rocketFly 20s linear infinite;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  animation: spaceStarTwinkle 4s ease-in-out infinite alternate;
 }
 
-@keyframes rocketFly {
-  0% { transform: translate(0, 0) rotate(45deg); }
-  100% { transform: translate(120vw, -100vh) rotate(45deg); }
+@keyframes spaceStarTwinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
 }
 
 @keyframes floatSlow {
