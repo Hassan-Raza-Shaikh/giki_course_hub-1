@@ -70,26 +70,26 @@ body { overflow-x: hidden; }
 /* ── Discord / Midnight ── */
 [data-theme='discord'] {
   --font-primary: 'Inter', sans-serif;
-  --primary:      #5865F2;
-  --primary-dark: #4752C4;
-  --primary-mid:  #7289DA;
-  --secondary:    #57F287;
-  --accent:       #FEE75C;
-  --tertiary:     #EB459E;
-  --electric:     #ED4245;
-  --bg-hero:      #36393F;
-  --bg-dark:      #202225;
-  --bg-subtle:    #2F3136;
-  --bg-white:     #36393F;
-  --bg-body:      #2F3136;
-  --text:         #FFFFFF;
-  --text-muted:   #B9BBBE;
-  --text-light:   #8E9297;
-  --border:       #202225;
-  --shadow-sm:    4px 4px 0px #202225;
-  --shadow-md:    8px 8px 0px #5865F2;
-  --shadow-lg:    12px 12px 0px #57F287;
-  --nav-btn-text: #FFFFFF;
+  --primary:      #818CF8; /* Indigo */
+  --primary-dark: #6366F1;
+  --primary-mid:  #4F46E5;
+  --secondary:    #38BDF8; /* Sky Blue */
+  --accent:       #FDE047; /* Yellow Star */
+  --tertiary:     #C084FC; /* Purple Aurora */
+  --electric:     #A78BFA; /* Light Purple */
+  --bg-hero:      #0F172A; /* Midnight Blue */
+  --bg-dark:      #020617; /* Deep Space */
+  --bg-subtle:    #1E293B; /* Slate */
+  --bg-white:     #0F172A;
+  --bg-body:      #090E17; /* Very Dark Blue */
+  --text:         #F8FAFC; /* Starlight White */
+  --text-muted:   #94A3B8; /* Slate Grey */
+  --text-light:   #64748B;
+  --border:       #1E293B;
+  --shadow-sm:    0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-md:    0 10px 15px -3px rgba(0, 0, 0, 0.8), 0 0 20px rgba(129, 140, 248, 0.3);
+  --shadow-lg:    0 20px 25px -5px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.2);
+  --nav-btn-text: #F8FAFC;
 }
 
 /* ── Vaporwave ── */
@@ -1276,6 +1276,56 @@ input::placeholder, textarea::placeholder {
   --shadow-md:    8px 8px 0px #0052C4; /* Blue shadow */
   --shadow-lg:    12px 12px 0px #EF2F1B; /* Red shadow */
   --nav-btn-text: #FFFFFF;
+}
+
+[data-theme='pokemon'] {
+  --primary:      #FF0000;   /* Pokeball Red */
+  --primary-dark: #CC0000;
+  --primary-mid:  #FF3333;
+  --secondary:    #FFCC00;   /* Pikachu Yellow */
+  --accent:       #3B4CCA;   /* Pokemon Blue */
+
+  --bg-hero:    #1A1A1A;
+  --bg-dark:    #000000;
+  --bg-subtle:  #242424;
+  --bg-white:   #2C2C2C;
+  --bg-body:    #000000;
+
+  --text:       #FFFFFF;
+  --text-muted: #B3B3B3;
+  --text-light: #808080;
+  
+  --tertiary:   #4CAF50;     /* Grass Green */
+  --electric:   #FFDE00;     /* Electric Yellow */
+
+  --border:     #FF0000;
+  --shadow-sm:  4px 4px 0px #FF0000;
+  --shadow-md:  8px 8px 0px #FF0000;
+  --shadow-lg:  12px 12px 0px #CC0000;
+  --shadow-glow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
+/* ── Space ── */
+[data-theme='space'] {
+  --font-primary: 'Orbitron', 'Inter', sans-serif;
+  --primary:      #8B5CF6;
+  --primary-dark: #6D28D9;
+  --primary-mid:  #7C3AED;
+  --secondary:    #EC4899;
+  --accent:       #06B6D4;
+  --tertiary:     #10B981;
+  --electric:     #F59E0B;
+  
+  --bg-hero:      #0B0E14;
+  --bg-dark:      #111827;
+  --bg-subtle:    #1F2937;
+  --bg-white:     #111827;
+  --bg-body:      #030712;
+  --text:         #F3F4F6;
+  --text-muted:   #9CA3AF;
+  --border:       #374151;
+  --glass-bg:     rgba(17, 24, 39, 0.7);
+  --glass-border: rgba(139, 92, 246, 0.2);
 }
 
 /* ── Barbie ── */

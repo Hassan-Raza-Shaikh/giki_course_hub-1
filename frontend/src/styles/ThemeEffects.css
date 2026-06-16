@@ -1,0 +1,497 @@
+.theme-effects-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10000;
+  overflow: hidden;
+}
+
+/* =====================
+   FROZEN (Snowflakes)
+===================== */
+.snow-flake {
+  position: absolute;
+  color: white;
+  opacity: 1;
+  filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.4));
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* =====================
+   SIMPSONS (Donuts)
+===================== */
+.donut {
+  position: absolute;
+  bottom: -50px;
+  font-size: 30px;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* =====================
+   BATMAN
+===================== */
+.bat-signal-container {
+  position: absolute;
+  bottom: -10vh;
+  left: 50%;
+  width: 100vw;
+  height: 120vh;
+  transform-origin: bottom center;
+  animation: batSearchlight 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes batSearchlight {
+  0% { transform: translateX(-50%) rotate(-20deg); }
+  50% { transform: translateX(-50%) rotate(20deg); }
+  100% { transform: translateX(-50%) rotate(-20deg); }
+}
+
+.bat-logo {
+  width: 250px;
+  position: absolute;
+  top: 15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 30px rgba(247, 221, 48, 0.8));
+  animation: batFlicker 7s infinite;
+  z-index: 2;
+}
+
+.bat-beam {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  height: 100%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.4) 0%, rgba(247, 221, 48, 0.15) 60%, transparent 100%);
+  clip-path: polygon(10% 0, 90% 0, 52% 100%, 48% 100%);
+  z-index: 1;
+}
+
+@keyframes batFlicker {
+  0%, 100% { opacity: 0.8; }
+  10%, 12% { opacity: 0.2; }
+  50% { opacity: 0.9; }
+  55% { opacity: 0.3; }
+  57% { opacity: 0.8; }
+}
+
+/* =====================
+   CYBERPUNK
+===================== */
+.scanlines-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+.glitch-band {
+  position: absolute;
+  width: 100vw;
+  background: rgba(0,255,255,0.05);
+  animation: glitchLine linear infinite;
+  pointer-events: none;
+}
+@keyframes glitchLine {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { transform: translateX(-5px); opacity: 0.5; }
+  20% { transform: translateX(5px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 0; }
+}
+
+/* =====================
+   OCEAN BUBBLES
+===================== */
+.bubble {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  animation: floatUp ease-in infinite;
+}
+
+/* =====================
+   SNAKE
+===================== */
+/* The snake effect is now fully simulated in React (ThemeEffects.jsx) */
+
+/* =====================
+   MARIO (Clouds/Coins)
+===================== */
+.mario-sprite {
+  position: absolute;
+  animation: marioRun linear infinite;
+  image-rendering: pixelated;
+}
+@keyframes marioRun {
+  0% { left: -10vw; transform: scaleX(1); }
+  49% { left: 110vw; transform: scaleX(1); }
+  50% { left: 110vw; transform: scaleX(-1); }
+  99% { left: -10vw; transform: scaleX(-1); }
+  100% { left: -10vw; transform: scaleX(1); }
+}
+
+.mario-cloud {
+  position: absolute;
+  font-size: 40px;
+  opacity: 0.7;
+  animation: driftRight linear infinite;
+}
+@keyframes driftRight {
+  0% { transform: translateX(-100px); }
+  100% { transform: translateX(110vw); }
+}
+
+/* =====================
+   LOTR (Embers)
+===================== */
+.ember {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #ff4500;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff4500, 0 0 20px #ffa500;
+  animation: emberRise linear infinite;
+  opacity: 0;
+}
+@keyframes emberRise {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+}
+
+/* =====================
+   HACKER (Matrix Rain)
+===================== */
+.matrix-char {
+  position: absolute;
+  color: #0f0;
+  font-family: monospace;
+  font-size: 20px;
+  text-shadow: 0 0 8px #0f0, 0 0 20px #0f0;
+  animation: matrixFall linear infinite;
+}
+@keyframes matrixFall {
+  0% { transform: translateY(-100px); opacity: 1; }
+  95% { transform: translateY(95vh); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* =====================
+   OCEAN (Bubbles)
+===================== */
+.bubble {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  animation: bubbleRise linear infinite;
+  backdrop-filter: blur(2px);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+}
+@keyframes bubbleRise {
+  0% { transform: translateY(0) scale(1) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-120vh) scale(1.5) translateX(20px); opacity: 0; }
+}
+
+/* =====================
+   SPACE (Stars)
+===================== */
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle linear infinite alternate;
+}
+@keyframes twinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px white; }
+}
+
+/* =====================
+   ZELDA (Fairy)
+===================== */
+.navi-fairy {
+  position: absolute;
+  font-size: 30px;
+  filter: drop-shadow(0 0 15px #fff) drop-shadow(0 0 30px #0ff);
+  animation: floatNavi linear infinite alternate;
+}
+@keyframes floatNavi {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -30px) scale(1.1); }
+  50% { transform: translate(100px, 20px) scale(0.9); }
+  75% { transform: translate(150px, -10px) scale(1.2); }
+  100% { transform: translate(200px, 0) scale(1); }
+}
+
+/* =====================
+   DRACULA (Bats)
+===================== */
+.bat {
+  position: absolute;
+  font-size: 24px;
+  animation: flyDiagonal linear infinite;
+  opacity: 0.6;
+}
+@keyframes flyDiagonal {
+  0% { transform: translate(-100px, 100vh) scale(0.8); }
+  100% { transform: translate(110vw, -100px) scale(1.5); }
+}
+
+/* =====================
+   MIDNIGHT & SPACE OBJECTS
+===================== */
+.midnight-moon {
+  position: absolute;
+  top: 15vh;
+  right: 15vw;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: inset -25px -25px 0 0 #F8FAFC;
+  filter: drop-shadow(0 0 15px rgba(248, 250, 252, 0.3));
+  animation: floatSlow 10s ease-in-out infinite alternate;
+  opacity: 0.9;
+}
+
+.nebula-cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: nebulaDrift 30s ease-in-out infinite alternate;
+  z-index: 0;
+}
+.nebula-1 {
+  width: 60vw;
+  height: 60vh;
+  top: -10vh;
+  left: -10vw;
+  background: radial-gradient(circle, #4C1D95, #8B5CF6, transparent);
+  animation-duration: 40s;
+}
+.nebula-2 {
+  width: 50vw;
+  height: 50vh;
+  bottom: -10vh;
+  right: -10vw;
+  background: radial-gradient(circle, #0F766E, #06B6D4, transparent);
+  animation-duration: 50s;
+  animation-delay: -10s;
+}
+.nebula-3 {
+  width: 40vw;
+  height: 40vh;
+  top: 30vh;
+  left: 40vw;
+  background: radial-gradient(circle, #BE185D, #EC4899, transparent);
+  animation-duration: 45s;
+  animation-delay: -20s;
+}
+
+@keyframes nebulaDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, 5vh) scale(1.1); }
+  100% { transform: translate(-5vw, -5vh) scale(0.9); }
+}
+
+.space-star {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  animation: spaceStarTwinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes spaceStarTwinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(30px) rotate(5deg); }
+}
+
+/* =====================
+   PACMAN
+===================== */
+.pacman-img {
+  width: 40px;
+  image-rendering: pixelated;
+}
+.ghost-img {
+  width: 40px;
+  image-rendering: pixelated;
+}
+.ghost-red { filter: hue-rotate(0deg); }
+.ghost-pink { filter: hue-rotate(280deg); }
+.ghost-cyan { filter: hue-rotate(180deg); }
+.ghost-orange { filter: hue-rotate(30deg); }
+/* =====================
+   CYBERPUNK (Scanlines)
+===================== */
+.scanline {
+  position: absolute;
+  width: 100vw;
+  height: 2px;
+  background: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.8);
+  animation: scanlineFall linear infinite;
+}
+@keyframes scanlineFall {
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* =====================
+   MINECRAFT CUBES
+===================== */
+.minecraft-block-sprite {
+  position: absolute;
+  image-rendering: pixelated;
+  animation: fall linear infinite;
+}
+
+/* =====================
+   FOREST (Leaves)
+===================== */
+.leaf {
+  position: absolute;
+  font-size: 25px;
+  opacity: 0.7;
+  animation: leafFall linear infinite;
+}
+@keyframes leafFall {
+  0% { transform: translate(0, -100px) rotate(0deg); }
+  25% { transform: translate(50px, 25vh) rotate(90deg); }
+  50% { transform: translate(-50px, 50vh) rotate(180deg); }
+  75% { transform: translate(50px, 75vh) rotate(270deg); }
+  100% { transform: translate(0, 110vh) rotate(360deg); }
+}
+
+/* =====================
+   GENERIC CLASSES
+===================== */
+.float-up {
+  position: absolute;
+  bottom: -50px;
+  animation: genericFloatUp linear infinite;
+}
+@keyframes genericFloatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+.drift-left {
+  position: absolute;
+  animation: genericDriftLeft linear infinite;
+}
+@keyframes genericDriftLeft {
+  0% { transform: translateX(110vw); }
+  100% { transform: translateX(-100px); }
+}
+
+/* WING ANIMATIONS */
+.navi-wing-l { transform-origin: 50% 50%; animation: flapLeft 0.15s alternate infinite ease-in-out; }
+.navi-wing-r { transform-origin: 50% 50%; animation: flapRight 0.15s alternate infinite ease-in-out; }
+@keyframes flapLeft { 0% { transform: scaleY(1) rotate(-10deg); } 100% { transform: scaleY(0.3) rotate(20deg); } }
+@keyframes flapRight { 0% { transform: scaleY(1) rotate(10deg); } 100% { transform: scaleY(0.3) rotate(-20deg); } }
+
+.bat-wing { transform-origin: 50% 50%; animation: flapBat 0.15s alternate infinite; }
+@keyframes flapBat { 0% { transform: scaleY(1); } 100% { transform: scaleY(0.4); } }
+
+/* =====================
+   POKEMON
+===================== */
+.pokeball-bounce {
+  position: absolute;
+  bottom: 0;
+  animation: pokeballBounce linear infinite;
+}
+@keyframes pokeballBounce {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  60% { transform: translateY(0) rotate(360deg); opacity: 1; }
+  75% { transform: translateY(-30vh) rotate(540deg); opacity: 1; }
+  90% { transform: translateY(0) rotate(720deg); opacity: 0; }
+  100% { transform: translateY(0) rotate(720deg); opacity: 0; }
+}
+
+.pokemon-sprite {
+  position: absolute;
+  bottom: 10px;
+  animation: pokemonWalk linear infinite;
+  image-rendering: pixelated;
+}
+@keyframes pokemonWalk {
+  0% { left: 110vw; transform: scaleX(1); }
+  49.9% { left: -20vw; transform: scaleX(1); }
+  50% { left: -20vw; transform: scaleX(-1); }
+  99.9% { left: 110vw; transform: scaleX(-1); }
+  100% { left: 110vw; transform: scaleX(1); }
+}
+
+/* =====================
+   MIDNIGHT STARS
+===================== */
+.midnight-star {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: starTwinkle infinite alternate ease-in-out;
+  box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes starTwinkle {
+  0% { opacity: 0.1; transform: scale(0.8); }
+  100% { opacity: 0.8; transform: scale(1.2); }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transform: rotate(-45deg);
+  animation: shootingStar linear infinite;
+}
+
+@keyframes shootingStar {
+  0% { transform: rotate(-45deg) translateX(0); opacity: 1; }
+  10% { transform: rotate(-45deg) translateX(-100vw); opacity: 0; }
+  100% { transform: rotate(-45deg) translateX(-100vw); opacity: 0; }
+}
+
+@keyframes pacmanSlideRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 600px)); }
+}
+@keyframes pacmanSlideLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100vw - 600px)); }
+}

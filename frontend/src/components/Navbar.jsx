@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot } from 'lucide-react';
+import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon } from './ThemeIcons';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+
 
 const Navbar = ({ onSignIn, onSignOut, user }) => {
   const [scrolled, setScrolled]   = useState(false);
@@ -62,31 +64,33 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
   const themes = [
     { id: 'light', name: 'Light', icon: <Sun size={14} /> },
-    { id: 'dark', name: 'Ember', icon: <Moon size={14} /> },
-    { id: 'batman', name: 'Batman', icon: <Shield size={14} /> },
+    { id: 'dark', name: 'Dark', icon: <Moon size={14} /> },
+    { id: 'mario', name: 'Mario', icon: <MushroomIcon size={14} /> },
+    { id: 'batman', name: 'Batman', icon: <BatIcon size={14} /> },
     { id: 'nord', name: 'Nord', icon: <Cloud size={14} /> },
     { id: 'solarized', name: 'Solarized', icon: <SunDim size={14} /> },
     { id: 'dracula', name: 'Dracula', icon: <Droplet size={14} /> },
     { id: 'retro', name: 'Retro', icon: <Gamepad2 size={14} /> },
-    { id: 'pacman', name: 'Pac-Man', icon: <Ghost size={14} /> },
-    { id: 'minecraft', name: 'Minecraft', icon: <Box size={14} /> },
-    { id: 'matrix', name: 'Matrix', icon: <Terminal size={14} /> },
+    { id: 'pacman', name: 'Pac-Man', icon: <PacmanIcon size={14} /> },
+    { id: 'minecraft', name: 'Minecraft', icon: <BlockIcon size={14} /> },
+    { id: 'matrix', name: 'Matrix', icon: <MatrixIcon size={14} /> },
     { id: 'cyberpunk', name: 'Cyberpunk', icon: <Palette size={14} /> },
-    { id: 'mario', name: 'Mario', icon: <Star size={14} /> },
-    { id: 'zelda', name: 'Zelda', icon: <Swords size={14} /> },
+    { id: 'zelda', name: 'Zelda', icon: <TriforceIcon size={14} /> },
     { id: 'gh-dark', name: 'Dev Dark', icon: <Github size={14} /> },
     { id: 'minimal', name: 'Minimal', icon: <Square size={14} /> },
     { id: 'discord', name: 'Midnight', icon: <MessageSquare size={14} /> },
     { id: 'vaporwave', name: 'Vaporwave', icon: <Sunset size={14} /> },
     { id: 'gruvbox', name: 'Gruvbox', icon: <Coffee size={14} /> },
+    { id: 'space', name: 'Space', icon: <Sparkles size={14} /> },
     { id: 'frozen', name: 'Frozen', icon: <Snowflake size={14} /> },
     { id: 'fire', name: 'Fire', icon: <Flame size={14} /> },
-    { id: 'lotr', name: 'LOTR', icon: <Crown size={14} /> },
+    { id: 'lotr', name: 'LOTR', icon: <RingIcon size={14} /> },
     { id: 'snake', name: 'Snake', icon: <Activity size={14} /> },
-    { id: 'simpsons', name: 'Simpsons', icon: <Tv size={14} /> },
+    { id: 'simpsons', name: 'Simpsons', icon: <DonutIcon size={14} /> },
     { id: 'barbie', name: 'Barbie', icon: <Heart size={14} /> },
     { id: 'forest', name: 'Forest', icon: <TreePine size={14} /> },
-    { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> }
+    { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> },
+    { id: 'pokemon', name: 'Pokémon', icon: <PokeballIcon size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];
