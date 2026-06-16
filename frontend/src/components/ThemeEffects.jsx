@@ -19,14 +19,17 @@ const SimpsonsDonuts = () => Array.from({ length: 15 }).map((_, i) => (
   <img key={i} src="/simpsons-donut.png" className="donut" alt="donut" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 15}s`, width: `${40 + Math.random() * 60}px` }} />
 ));
 
-const SnakeEffect = () => (
-  <div className="snake-container">
-    <img src="/snake-head.png" className="snake-segment" alt="snake-head" style={{ width: '20px', height: '20px' }} />
-    {Array.from({ length: 15 }).map((_, i) => (
-      <img key={i} src="/snake-body.png" className="snake-segment" alt="snake-body" style={{ width: '20px', height: '20px', animationDelay: `-${(i + 1) * 0.15}s` }} />
-    ))}
-  </div>
-);
+const SnakeEffect = () => {
+  const [length, setLength] = useState(1);
+  return (
+    <div className="snake-container" onAnimationIteration={() => setLength(l => Math.min(l + 5, 100))}>
+      <img src="/snake-head.png" className="snake-segment" alt="snake-head" style={{ width: '20px', height: '20px', left: '0px' }} />
+      {Array.from({ length }).map((_, i) => (
+        <img key={i} src="/snake-body.png" className="snake-segment" alt="snake-body" style={{ width: '20px', height: '20px', left: `-${(i + 1) * 20}px` }} />
+      ))}
+    </div>
+  );
+};
 
 const MarioSprites = () => (
   <>
@@ -60,10 +63,9 @@ const HackerRain = () => {
   ));
 };
 
-const OceanBubbles = () => Array.from({ length: 20 }).map((_, i) => {
-  const isLeft = Math.random() > 0.5;
-  return <img key={i} src="/fish.png" className="bubble" alt="fish" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: `${20 + Math.random() * 30}px`, animationDuration: `${10 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 10}s`, transform: `scaleX(${isLeft ? -1 : 1})`, imageRendering: 'pixelated', opacity: 0.8, boxShadow: 'none', background: 'none', border: 'none', borderRadius: '0' }} />;
-});
+const OceanBubbles = () => Array.from({ length: 20 }).map((_, i) => (
+  <div key={i} className="bubble" style={{ left: `${Math.random() * 100}vw`, width: `${20 + Math.random() * 30}px`, height: `${20 + Math.random() * 30}px`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 5}s` }}></div>
+));
 
 const SpaceStars = () => Array.from({ length: 100 }).map((_, i) => {
   const size = 1 + Math.random() * 3;
@@ -72,8 +74,14 @@ const SpaceStars = () => Array.from({ length: 100 }).map((_, i) => {
 
 // === NEW EFFECTS ===
 
+const SvgDiscord = () => (
+  <svg viewBox="0 0 127.14 96.36" width="1em" height="1em" fill="currentColor">
+    <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.1,46,96,53,91.08,65.69,84.69,65.69Z"/>
+  </svg>
+);
+
 const DiscordControllers = () => Array.from({ length: 15 }).map((_, i) => (
-  <div key={i} className="float-up" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${20 + Math.random() * 20}px`, opacity: 0.5 }}>🎮</div>
+  <div key={i} className="float-up discord-icon" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${30 + Math.random() * 30}px`, opacity: 0.2 }}><SvgDiscord /></div>
 ));
 
 const SvgPalm = () => (
@@ -126,9 +134,14 @@ const MinecraftBlocks = () => Array.from({ length: 25 }).map((_, i) => (
   <img key={i} src="/minecraft-block.png" className="minecraft-block-sprite" alt="minecraft-block" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, width: `${20 + Math.random() * 30}px`, opacity: 0.9 }} />
 ));
 
-const CyberpunkScanlines = () => Array.from({ length: 10 }).map((_, i) => (
-  <img key={i} src="/neon-car.png" className="drift-left" alt="neon" style={{ left: `${100 + Math.random() * 50}vw`, top: `${Math.random() * 100}vh`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 10}s`, width: `${80 + Math.random() * 100}px`, imageRendering: 'pixelated', opacity: 0.8, filter: 'drop-shadow(0 0 10px #e91e63)' }} />
-));
+const CyberpunkScanlines = () => (
+  <>
+    <div className="scanlines-overlay"></div>
+    {Array.from({ length: 5 }).map((_, i) => (
+      <div key={i} className="glitch-band" style={{ top: `${Math.random() * 100}vh`, height: `${Math.random() * 20 + 5}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }}></div>
+    ))}
+  </>
+);
 
 const FireSparks = () => Array.from({ length: 30 }).map((_, i) => (
   <img key={i} src="/flame.png" className="ember" alt="flame" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${2 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s`, width: `${20 + Math.random() * 30}px`, imageRendering: 'pixelated', boxShadow: 'none', background: 'none' }} />

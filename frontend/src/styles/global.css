@@ -1305,6 +1305,29 @@ input::placeholder, textarea::placeholder {
   --shadow-glow: 0 0 15px rgba(255, 0, 0, 0.5);
 }
 
+/* ── Space ── */
+[data-theme='space'] {
+  --font-primary: 'Orbitron', 'Inter', sans-serif;
+  --primary:      #8B5CF6;
+  --primary-dark: #6D28D9;
+  --primary-mid:  #7C3AED;
+  --secondary:    #EC4899;
+  --accent:       #06B6D4;
+  --tertiary:     #10B981;
+  --electric:     #F59E0B;
+  
+  --bg-hero:      #0B0E14;
+  --bg-dark:      #111827;
+  --bg-subtle:    #1F2937;
+  --bg-white:     #111827;
+  --bg-body:      #030712;
+  --text:         #F3F4F6;
+  --text-muted:   #9CA3AF;
+  --border:       #374151;
+  --glass-bg:     rgba(17, 24, 39, 0.7);
+  --glass-border: rgba(139, 92, 246, 0.2);
+}
+
 /* ── Barbie ── */
 [data-theme='barbie'] {
   --primary:      #FF1493;
