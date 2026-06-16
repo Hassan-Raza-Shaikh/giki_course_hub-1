@@ -28,9 +28,24 @@ const SnakeEffect = () => (
   </div>
 );
 
-const MarioSprites = () => Array.from({ length: 6 }).map((_, i) => (
-  <img key={i} src={i % 3 === 0 ? "/mario.png" : "/goomba.png"} className="mario-sprite" alt="mario-sprite" style={{ bottom: '20px', animationDuration: `${15 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 20}s`, width: `${40 + Math.random() * 20}px` }} />
-));
+const MarioSprites = () => (
+  <>
+    {/* 1 Mario running at bottom */}
+    <img src="/mario.png" className="mario-sprite" alt="mario" style={{ bottom: '20px', animationDuration: `12s`, width: `40px` }} />
+    {/* 2 Goombas following */}
+    <img src="/goomba.png" className="mario-sprite" alt="goomba" style={{ bottom: '20px', animationDuration: `15s`, width: `40px` }} />
+    <img src="/goomba.png" className="mario-sprite" alt="goomba" style={{ bottom: '20px', animationDuration: `18s`, width: `40px` }} />
+    
+    {/* Floating Blocks */}
+    {Array.from({ length: 3 }).map((_, i) => (
+      <img key={`block-${i}`} src="/mario-block.png" className="drift-left" alt="block" style={{ top: `${20 + i * 15}vh`, animationDuration: `${20 + Math.random() * 20}s`, animationDelay: `-${Math.random() * 20}s`, width: `40px`, imageRendering: 'pixelated', opacity: 0.9 }} />
+    ))}
+    {/* Floating Clouds */}
+    {Array.from({ length: 4 }).map((_, i) => (
+      <img key={`cloud-${i}`} src="/mario-cloud.png" className="mario-cloud" alt="cloud" style={{ top: `${10 + Math.random() * 40}vh`, animationDuration: `${30 + Math.random() * 30}s`, animationDelay: `-${Math.random() * 30}s`, width: `${60 + Math.random() * 40}px`, imageRendering: 'pixelated', opacity: 0.8 }} />
+    ))}
+  </>
+);
 
 const LotrEmbers = () => Array.from({ length: 20 }).map((_, i) => (
   <img key={i} src="/the-ring.png" className="ember" alt="ring" style={{ left: `${Math.random() * 100}vw`, bottom: `${-10 - Math.random() * 20}px`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s`, width: `${10 + Math.random() * 15}px`, imageRendering: 'pixelated', boxShadow: 'none', background: 'none' }} />
