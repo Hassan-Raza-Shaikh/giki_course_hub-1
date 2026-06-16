@@ -263,6 +263,53 @@
 }
 
 /* =====================
+   MIDNIGHT & SPACE OBJECTS
+===================== */
+.midnight-moon {
+  position: absolute;
+  top: 15vh;
+  right: 15vw;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: inset -25px -25px 0 0 #F8FAFC;
+  filter: drop-shadow(0 0 15px rgba(248, 250, 252, 0.3));
+  animation: floatSlow 10s ease-in-out infinite alternate;
+  opacity: 0.9;
+}
+
+.space-planet {
+  position: absolute;
+  top: 20vh;
+  left: 10vw;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #8B5CF6, #4C1D95, #000);
+  box-shadow: inset -20px -20px 40px rgba(0,0,0,0.8), 0 0 50px rgba(139, 92, 246, 0.4);
+  animation: floatSlow 15s ease-in-out infinite alternate;
+}
+
+.space-rocket {
+  position: absolute;
+  bottom: 10vh;
+  left: -100px;
+  transform: rotate(45deg);
+  animation: rocketFly 20s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes rocketFly {
+  0% { transform: translate(0, 0) rotate(45deg); }
+  100% { transform: translate(120vw, -100vh) rotate(45deg); }
+}
+
+@keyframes floatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(30px) rotate(5deg); }
+}
+
+/* =====================
    PACMAN
 ===================== */
 .pacman-img {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Rocket } from 'lucide-react';
 import '../styles/ThemeEffects.css';
 
 const BatSignal = () => (
@@ -132,10 +133,16 @@ const OceanBubbles = () => Array.from({ length: 20 }).map((_, i) => (
   <div key={i} className="bubble" style={{ left: `${Math.random() * 100}vw`, width: `${20 + Math.random() * 30}px`, height: `${20 + Math.random() * 30}px`, animationDuration: `${5 + Math.random() * 10}s`, animationDelay: `-${Math.random() * 5}s` }}></div>
 ));
 
-const SpaceStars = () => Array.from({ length: 100 }).map((_, i) => {
-  const size = 1 + Math.random() * 3;
-  return <div key={i} className="star" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: `${size}px`, height: `${size}px`, animationDuration: `${1 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }} />;
-});
+const SpaceStars = () => (
+  <>
+    <div className="space-planet" />
+    <Rocket size={48} className="space-rocket" strokeWidth={1} color="#e2e8f0" />
+    {Array.from({ length: 80 }).map((_, i) => {
+      const size = 1 + Math.random() * 3;
+      return <div key={i} className="star" style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: `${size}px`, height: `${size}px`, animationDuration: `${1 + Math.random() * 3}s`, animationDelay: `-${Math.random() * 3}s` }} />;
+    })}
+  </>
+);
 
 // === NEW EFFECTS ===
 
@@ -147,6 +154,7 @@ const SvgDiscord = () => (
 
 const MidnightStars = () => (
   <>
+    <div className="midnight-moon" />
     {Array.from({ length: 60 }).map((_, i) => (
       <div key={`star-${i}`} className="midnight-star" style={{
         left: `${Math.random() * 100}vw`,
