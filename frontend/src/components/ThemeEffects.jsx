@@ -233,12 +233,12 @@ const PacmanChase = () => {
           isPowerPellet: Math.random() > 0.7,
           speed: 10 + Math.random() * 8
         }];
-        return newChases.slice(-3); // Keep maximum 3 chases on screen
+        return newChases.slice(-1); // Only 1 chase at a time!
       });
     };
     
     spawn();
-    const interval = setInterval(spawn, 6000);
+    const interval = setInterval(spawn, 15000); // Wait 15s between chases so it's less crowded
     return () => clearInterval(interval);
   }, []);
 
