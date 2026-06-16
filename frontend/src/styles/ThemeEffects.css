@@ -42,17 +42,25 @@
 ===================== */
 .bat-signal-container {
   position: absolute;
-  bottom: -50px;
+  bottom: -20vh;
   left: 50%;
-  width: 100vw;
-  height: 120vh;
+  width: 150vw;
+  height: 150vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   transform-origin: bottom center;
-  animation: batSweep 15s ease-in-out infinite alternate;
+  animation: batSearchlight 12s ease-in-out infinite;
   pointer-events: none;
+}
+
+@keyframes batSearchlight {
+  0% { transform: translateX(-50%) rotate(-35deg) scale(0.8); opacity: 0.8; }
+  25% { transform: translateX(-40%) rotate(-10deg) scale(1); opacity: 1; }
+  50% { transform: translateX(-50%) rotate(35deg) scale(0.9); opacity: 0.9; }
+  75% { transform: translateX(-60%) rotate(10deg) scale(1.1); opacity: 0.85; }
+  100% { transform: translateX(-50%) rotate(-35deg) scale(0.8); opacity: 0.8; }
 }
 
 .bat-logo {
