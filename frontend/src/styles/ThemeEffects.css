@@ -421,3 +421,37 @@
   99.9% { left: 110vw; transform: scaleX(-1); }
   100% { left: 110vw; transform: scaleX(1); }
 }
+
+/* =====================
+   MIDNIGHT STARS
+===================== */
+.midnight-star {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: starTwinkle infinite alternate ease-in-out;
+  box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes starTwinkle {
+  0% { opacity: 0.1; transform: scale(0.8); }
+  100% { opacity: 0.8; transform: scale(1.2); }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transform: rotate(-45deg);
+  animation: shootingStar linear infinite;
+}
+
+@keyframes shootingStar {
+  0% { transform: rotate(-45deg) translateX(0); opacity: 1; }
+  10% { transform: rotate(-45deg) translateX(-100vw); opacity: 0; }
+  100% { transform: rotate(-45deg) translateX(-100vw); opacity: 0; }
+}
+

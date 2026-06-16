@@ -145,9 +145,28 @@ const SvgDiscord = () => (
   </svg>
 );
 
-const DiscordControllers = () => Array.from({ length: 15 }).map((_, i) => (
-  <div key={i} className="float-up discord-icon" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${10 + Math.random() * 15}s`, animationDelay: `-${Math.random() * 15}s`, fontSize: `${30 + Math.random() * 30}px`, opacity: 0.2 }}><SvgDiscord /></div>
-));
+const MidnightStars = () => (
+  <>
+    {Array.from({ length: 60 }).map((_, i) => (
+      <div key={`star-${i}`} className="midnight-star" style={{
+        left: `${Math.random() * 100}vw`,
+        top: `${Math.random() * 100}vh`,
+        width: `${Math.random() * 3 + 1}px`,
+        height: `${Math.random() * 3 + 1}px`,
+        animationDuration: `${2 + Math.random() * 4}s`,
+        animationDelay: `-${Math.random() * 5}s`,
+      }} />
+    ))}
+    {Array.from({ length: 3 }).map((_, i) => (
+      <div key={`shooting-${i}`} className="shooting-star" style={{
+        top: `${Math.random() * 50}vh`,
+        left: `${Math.random() * 100}vw`,
+        animationDuration: `${5 + Math.random() * 10}s`,
+        animationDelay: `${Math.random() * 10}s`
+      }} />
+    ))}
+  </>
+);
 
 const SvgPalm = () => (
   <svg viewBox="0 0 100 100" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg">
@@ -259,7 +278,7 @@ export default function ThemeEffects() {
       case 'hacker': return <HackerRain />;
       case 'ocean': return <OceanBubbles />;
       case 'space': return <SpaceStars />;
-      case 'discord': return <DiscordControllers />;
+      case 'discord': return <MidnightStars />;
       case 'vaporwave': return <VaporwaveGrid />;
       case 'gruvbox': return <GruvboxBrackets />;
       case 'zelda': return <ZeldaFairy />;
