@@ -58,7 +58,7 @@ const Bookmarks = ({ user, onSignIn }) => {
               My <span className="gradient-text">Bookmarks</span> <Bookmark size={40} color="var(--primary)" />
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px' }}>
-              Your personally curated collection of saved resources.
+              Your personally curated collection of bookmarked resources.
             </p>
           </div>
         </ScrollReveal>
@@ -68,7 +68,7 @@ const Bookmarks = ({ user, onSignIn }) => {
             <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
               <div style={{ marginBottom: '24px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><Lock size={64} strokeWidth={1.5} /></div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Account Required</h2>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Please sign in to view and manage your saved resources.</p>
+              <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Please sign in to view and manage your bookmarked resources.</p>
               <button className="btn-primary" onClick={onSignIn}>Sign In Now</button>
             </div>
           </ScrollReveal>
