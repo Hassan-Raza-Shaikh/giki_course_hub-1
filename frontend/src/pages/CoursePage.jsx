@@ -633,7 +633,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
                     >
-                      {bookmarks.has(file.file_id ?? file.id) ? <><BookmarkCheck size={14} style={{ marginRight: '6px' }} /> Saved</> : <><BookmarkPlus size={14} style={{ marginRight: '6px' }} /> Save</>}
+                      {bookmarks.has(file.file_id ?? file.id) ? <><BookmarkCheck size={14} style={{ marginRight: '6px' }} /> Bookmarked</> : <><BookmarkPlus size={14} style={{ marginRight: '6px' }} /> Bookmark</>}
                     </button>
                     {/* Copy Link */}
                     <CopyLinkButton
