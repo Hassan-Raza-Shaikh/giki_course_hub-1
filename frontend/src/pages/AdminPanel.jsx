@@ -1438,8 +1438,8 @@ const AdminPanel = ({ user }) => {
                 {editingCourse
                   ? 'Update Course Details'
                   : bulkCourseMode
-                    ? `<Plus size={16} /> Add to ${selectedPrograms.length || '…'} Program${selectedPrograms.length !== 1 ? 's' : ''}`
-                    : '<Plus size={16} /> Create Course'}
+                    ? <><Plus size={16} /> Add to {selectedPrograms.length || '…'} Program{selectedPrograms.length !== 1 ? 's' : ''}</>
+                    : <><Plus size={16} /> Create Course</>}
               </button>
             </form>
 
