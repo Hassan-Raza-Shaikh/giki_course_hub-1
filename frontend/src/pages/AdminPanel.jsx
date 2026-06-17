@@ -1462,7 +1462,7 @@ const AdminPanel = ({ user }) => {
                   <span style={{ fontSize: '1.5rem' }}><IconMapper emoji={c.icon} size={28} /></span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 800 }}>{c.name} <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>({c.code})</span></div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.faculty_name} · {c.program_name} · Year {c.year} Sem {c.semester} {c.is_lab && '· <FlaskConical size={12} /> Lab'}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.faculty_name} · {c.program_name} · Year {c.year} Sem {c.semester} {c.is_lab && <>· <FlaskConical size={12} /> Lab</>}</div>
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button onClick={() => editCourse(c)} style={btnStyle('#6366F1')}>Edit</button>
