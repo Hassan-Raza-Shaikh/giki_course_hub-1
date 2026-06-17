@@ -1231,7 +1231,7 @@ const AdminPanel = ({ user }) => {
             {/* Course Form */}
             <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
               <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'var(--font-primary)' }}>
-                {editingCourse ? '<Edit3 size={14} /> Edit Course' : <><BookOpen size={16} /> Add New Course</>}
+                {editingCourse ? <><Edit3 size={14} /> Edit Course</> : <><BookOpen size={16} /> Add New Course</>}
                 {editingCourse && <button type="button" onClick={() => {
                   setEditingCourse(null);
                   setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });
