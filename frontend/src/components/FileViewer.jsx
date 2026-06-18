@@ -329,7 +329,7 @@ const GoogleDocPreview = ({ url, title, type }) => {
           <span style={{ fontSize: '3.5rem', animation: 'float 2s ease-in-out infinite' }}>{type === 'xlsx' ? <LineChart size={56} color="var(--primary)"/> : <Presentation size={56} color="var(--primary)"/>}</span>
           <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '1rem' }}>Loading document…</p>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', maxWidth: '340px', lineHeight: 1.5 }}>
-            Powered by Google Docs Viewer. Large files may take a few seconds to render.
+            Powered by Microsoft Office Online Viewer. Large files may take a few seconds to render.
           </p>
         </div>
       )}
