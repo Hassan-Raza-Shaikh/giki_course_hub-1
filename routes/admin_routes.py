@@ -888,10 +888,10 @@ def admin_all_course_codes():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT code, name, icon FROM courses ORDER BY code;")
+        cur.execute("SELECT course_id, code, name, icon FROM courses ORDER BY code;")
         rows = cur.fetchall()
         cur.close()
-        return jsonify({"success": True, "courses": [{"code": r[0], "name": r[1], "icon": r[2] or '📘'} for r in rows]})
+        return jsonify({"success": True, "courses": [{"course_id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘'} for r in rows]})
     finally:
         conn.close()
 
