@@ -343,37 +343,6 @@ const GoogleDocPreview = ({ url, title, type }) => {
         sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
       />
 
-      {/* Reload hint shown after loading, in case Google viewer shows its own error */}
-      {loaded && (
-        <div style={{
-          position: 'absolute', bottom: '14px', right: '14px', zIndex: 3,
-          display: 'flex', gap: '8px',
-        }}>
-          <button
-            onClick={() => { setLoaded(false); setKey(k => k + 1); }}
-            style={{
-              padding: '6px 14px', borderRadius: '8px', border: '2px solid var(--border)',
-              background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700,
-              fontSize: '0.78rem', cursor: 'pointer', boxShadow: '2px 2px 0 var(--border)',
-            }}
-          >
-            <RefreshCw size={16}/> Retry
-          </button>
-          <a
-            href={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              padding: '6px 14px', borderRadius: '8px', border: '2px solid var(--border)',
-              background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700,
-              fontSize: '0.78rem', cursor: 'pointer', boxShadow: '2px 2px 0 var(--border)',
-              textDecoration: 'none',
-            }}
-          >
-            <ExternalLink size={16} style={{ marginRight: '4px' }} /> Open in Office
-          </a>
-        </div>
-      )}
     </div>
   );
 };
