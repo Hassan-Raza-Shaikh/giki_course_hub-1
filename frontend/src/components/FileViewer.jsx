@@ -360,7 +360,7 @@ const GoogleDocPreview = ({ url, title, type }) => {
             <RefreshCw size={16}/> Retry
           </button>
           <a
-            href={url}
+            href={`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`}
             target="_blank"
             rel="noreferrer"
             style={{
@@ -370,7 +370,7 @@ const GoogleDocPreview = ({ url, title, type }) => {
               textDecoration: 'none',
             }}
           >
-            <ExternalLink size={16} style={{ marginRight: '4px' }} /> Open in Google
+            <ExternalLink size={16} style={{ marginRight: '4px' }} /> Open in Office
           </a>
         </div>
       )}
