@@ -311,11 +311,11 @@ const TextPreview = ({ url }) => {
   );
 };
 
-// PPTX/PPT/XLSX viewer using Google Docs Viewer
+// PPTX/PPT/XLSX/DOCX viewer using Microsoft Office Viewer
 const GoogleDocPreview = ({ url, title, type }) => {
   const [key, setKey] = useState(0); // used to force-reload the iframe
   const [loaded, setLoaded] = useState(false);
-  const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+  const viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', background: 'var(--bg-subtle)' }}>
