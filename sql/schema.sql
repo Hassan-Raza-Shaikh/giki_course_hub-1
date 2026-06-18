@@ -81,6 +81,8 @@ CREATE TABLE files (
     file_url TEXT,
     upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     storage_path TEXT,
+    content_hash VARCHAR(64),
+    batch_id VARCHAR(50),
     CONSTRAINT unique_file UNIQUE (title, course_code, category_id)
 );
 
