@@ -579,7 +579,7 @@ def upload_to_course(course_id):
         # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)
         cur.execute(
-            "SELECT f.file_id, f.title, f.course_code FROM files f JOIN file_metadata m ON f.file_id = m.file_id WHERE m.file_hash = %s AND f.status != 'rejected' LIMIT 1;",
+            "SELECT file_id, title, course_code FROM files WHERE content_hash = %s AND status != 'rejected' LIMIT 1;",
             (content_hash,)
         )
         dup = cur.fetchone()
@@ -1124,7 +1124,7 @@ def bulk_upload_file(course_id, batch_id):
         # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)
         cur.execute(
-            "SELECT f.file_id, f.title, f.course_code FROM files f JOIN file_metadata m ON f.file_id = m.file_id WHERE m.file_hash = %s AND f.status != 'rejected' LIMIT 1;",
+            "SELECT file_id, title, course_code FROM files WHERE content_hash = %s AND status != 'rejected' LIMIT 1;",
             (content_hash,)
         )
         dup = cur.fetchone()
