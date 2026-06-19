@@ -1402,3 +1402,28 @@ input::placeholder, textarea::placeholder {
   --shadow-lg:    12px 12px 0px #10B981;
   --nav-btn-text: #083344;
 }
+
+/* Jupyter Notebook HTML Output Tables */
+.ipynb-html-output table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  margin: 16px 0;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.ipynb-html-output th, .ipynb-html-output td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+}
+.ipynb-html-output th {
+  background: var(--bg-card);
+  font-weight: 700;
+}
+.ipynb-html-output tr:nth-child(even) {
+  background: var(--bg-white);
+}
+.ipynb-html-output tr:nth-child(odd) {
+  background: var(--bg-subtle);
+}

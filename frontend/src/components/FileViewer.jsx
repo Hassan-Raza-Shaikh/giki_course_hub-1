@@ -693,33 +693,33 @@ const IpynbPreview = ({ url }) => {
           if (cell.cell_type === 'code') {
             return (
               <div key={idx} style={{ padding: 'clamp(12px, 3vw, 24px)', borderBottom: '1px solid var(--border)' }}>
-                <div style={{ background: '#f6f8fa', borderRadius: '8px', border: '1px solid #d0d7de', overflow: 'hidden', marginBottom: cell.outputs?.length ? '12px' : 0 }}>
-                  <SyntaxHighlighter language="python" style={atomDark} customStyle={{ margin: 0, padding: 'clamp(10px, 3vw, 16px)', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }}>
+                <div style={{ background: '#1d1f21', borderRadius: '8px', border: '1px solid var(--border)', overflow: 'hidden', marginBottom: cell.outputs?.length ? '12px' : 0 }}>
+                  <SyntaxHighlighter language="python" style={atomDark} customStyle={{ margin: 0, padding: 'clamp(10px, 3vw, 16px)', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)', background: 'transparent' }}>
                     {source}
                   </SyntaxHighlighter>
                 </div>
                 {cell.outputs && cell.outputs.length > 0 && (
-                  <div style={{ padding: '12px 16px', background: '#ffffff', border: '1px solid #d0d7de', borderRadius: '8px', borderLeft: '4px solid #0969da' }}>
+                  <div style={{ padding: '12px 16px', background: 'var(--bg-subtle)', color: 'var(--text)', border: '1px solid var(--border)', borderRadius: '8px', borderLeft: '4px solid var(--primary)' }}>
                     {cell.outputs.map((out, oIdx) => {
                       if (out.output_type === 'stream') {
-                        return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#24292f' }}>{Array.isArray(out.text) ? out.text.join('') : out.text}</pre>;
+                        return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: 'var(--text)' }}>{Array.isArray(out.text) ? out.text.join('') : out.text}</pre>;
                       }
                       if (out.output_type === 'error') {
-                        return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#cf222e' }}>{out.traceback?.join('\n') || out.ename + ': ' + out.evalue}</pre>;
+                        return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#ef4444' }}>{out.traceback?.join('\n') || out.ename + ': ' + out.evalue}</pre>;
                       }
                       if (out.output_type === 'execute_result' || out.output_type === 'display_data') {
                         const html = out.data?.['text/html'];
                         if (html) {
                           const htmlStr = Array.isArray(html) ? html.join('') : html;
-                          return <div key={oIdx} dangerouslySetInnerHTML={{ __html: htmlStr }} style={{ margin: '8px 0', overflow: 'auto' }} />;
+                          return <div key={oIdx} dangerouslySetInnerHTML={{ __html: htmlStr }} className="ipynb-html-output" style={{ margin: '8px 0', overflow: 'auto' }} />;
                         }
                         const img = out.data?.['image/png'];
                         if (img) {
-                          return <img key={oIdx} src={`data:image/png;base64,${img.replace(/\n/g, '')}`} alt="output" style={{ maxWidth: '100%', height: 'auto', margin: '8px 0' }} />;
+                          return <img key={oIdx} src={`data:image/png;base64,${img.replace(/\n/g, '')}`} alt="output" style={{ maxWidth: '100%', height: 'auto', margin: '8px 0', background: 'white', borderRadius: '4px', padding: '4px' }} />;
                         }
                         const text = out.data?.['text/plain'];
                         if (text) {
-                          return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: '#24292f' }}>{Array.isArray(text) ? text.join('') : text}</pre>;
+                          return <pre key={oIdx} style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '0.85rem', color: 'var(--text)' }}>{Array.isArray(text) ? text.join('') : text}</pre>;
                         }
                       }
                       return null;
