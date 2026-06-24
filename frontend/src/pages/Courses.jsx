@@ -292,7 +292,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
           transform: open ? 'rotate(180deg)' : 'none',
           color: open ? 'white' : 'var(--electric)',
         }}>
-          ⌄
+          <ChevronDown size={20} strokeWidth={2.5} />
         </div>
       </div>
 
