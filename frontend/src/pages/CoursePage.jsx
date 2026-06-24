@@ -286,30 +286,30 @@ const CoursePage = ({ user, onSignIn }) => {
           <button
             onClick={() => navigate('/courses')}
             style={{ 
-              background: 'var(--bg-white)', border: '2px solid var(--border)', color: 'var(--text)', 
+              background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)', 
               padding: '8px 16px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700, 
               marginBottom: 32, cursor: 'pointer', transition: 'all 0.2s',
-              boxShadow: '2px 2px 0px var(--border)'
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '4px 4px 0px var(--border)'; }}
-            onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0px var(--border)'; }}
+            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+            onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
           >
             ← Back to Courses
           </button>
 
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', filter: 'drop-shadow(4px 4px 0px rgba(0,0,0,0.1))', lineHeight: 1 }}><IconMapper emoji={course.icon} size={56} /></div>
+            <div style={{ display: 'flex', alignItems: 'center', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))', lineHeight: 1 }}><IconMapper emoji={course.icon} size={56} /></div>
             <div style={{ flex: 1, minWidth: '220px' }}>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap' }}>
                 <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
-                  background: 'var(--accent)', color: 'var(--text)', border: '2px solid var(--text)' }}>
+                  background: 'color-mix(in srgb, var(--accent) 20%, transparent)', color: 'var(--primary)', border: '1px solid var(--accent)' }}>
                   Sem {course.semester}
                 </span>
                 <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
-                  background: 'var(--tertiary)', color: 'white', border: '2px solid var(--text)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  background: 'color-mix(in srgb, var(--tertiary) 20%, transparent)', color: 'var(--tertiary)', border: '1px solid var(--tertiary)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {course.program}
                 </span>
-                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '2px solid var(--border)', background: 'var(--bg-white)' }}>{course.code}</span>
+                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>{course.code}</span>
               </div>
               <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
                 {course.name}
@@ -319,9 +319,9 @@ const CoursePage = ({ user, onSignIn }) => {
                   <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
                   {fileInstructors.map(inst => (
                     <span key={inst.id} style={{
-                    background: 'var(--bg-white)', border: '1.5px solid var(--border)',
+                    background: 'var(--bg-subtle)', border: '1px solid var(--border)',
                     padding: '6px 12px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700,
-                    color: 'var(--text)', boxShadow: '2px 2px 0 var(--border)', display: 'flex', alignItems: 'center', gap: '6px'
+                    color: 'var(--text)', boxShadow: 'none', display: 'flex', alignItems: 'center', gap: '6px'
                   }}>
                     <User size={14} color="var(--primary)" /> {inst.name}
                   </span>
@@ -380,7 +380,7 @@ const CoursePage = ({ user, onSignIn }) => {
             background: var(--primary);
             color: white;
             border: 2px solid var(--text);
-            box-shadow: 4px 4px 0px var(--text);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transform: translateY(-2px);
           }
           @media (max-width: 768px) {
@@ -471,8 +471,8 @@ const CoursePage = ({ user, onSignIn }) => {
               }}
               className="upload-trigger-btn"
               style={{
-                marginTop: '24px', background: 'var(--tertiary)', color: 'var(--bg-hero)', border: '2px solid var(--text)',
-                boxShadow: '4px 4px 0px var(--text)', padding: '16px 20px', borderRadius: 'var(--radius-md)',
+                marginTop: '24px', background: 'var(--tertiary)', color: 'white', border: '1px solid color-mix(in srgb, var(--tertiary) 80%, black)',
+                boxShadow: '0 4px 16px rgba(124, 58, 237, 0.25)', padding: '16px 20px', borderRadius: '16px',
                 fontWeight: 900, fontSize: '0.95rem', cursor: 'pointer', textAlign: 'center',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
                 width: '100%', transition: 'all 0.2s'
@@ -490,8 +490,8 @@ const CoursePage = ({ user, onSignIn }) => {
                  setTimeout(() => uploadRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
               }}
               style={{
-                width: '100%', background: 'var(--tertiary)', color: 'var(--bg-hero)', border: '2px solid var(--text)',
-                boxShadow: '4px 4px 0px var(--text)', padding: '14px 20px', borderRadius: 'var(--radius-md)',
+                width: '100%', background: 'var(--tertiary)', color: 'white', border: '1px solid color-mix(in srgb, var(--tertiary) 80%, black)',
+                boxShadow: '0 4px 16px rgba(124, 58, 237, 0.25)', padding: '14px 20px', borderRadius: '16px',
                 fontWeight: 900, marginBottom: '24px', justifyContent: 'center', alignItems: 'center', gap: '12px'
               }}
             >
@@ -597,20 +597,20 @@ const CoursePage = ({ user, onSignIn }) => {
                         onClick={() => openEditFile(file)}
                         title="Edit file (Admin only)"
                         style={{
-                          background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
-                          color: 'var(--bg-hero)',
-                          border: '2px solid var(--text)',
+                          background: 'var(--bg-subtle)',
+                          color: 'var(--primary)',
+                          border: '1px solid var(--border)',
                           borderRadius: '8px',
                           padding: '6px 12px',
                           cursor: 'pointer',
                           fontWeight: 700,
                           fontSize: '0.8rem',
-                          boxShadow: '2px 2px 0 var(--text)',
+                          boxShadow: 'none',
                           transition: 'all 0.15s',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}
-                        onMouseOver={e => { e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '3px 3px 0 var(--text)'; }}
-                        onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}
+                        onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                       >
                         <Edit3 size={14} /> Edit
                       </button>
@@ -619,16 +619,16 @@ const CoursePage = ({ user, onSignIn }) => {
                     <button
                       onClick={() => toggleBookmark(file)}
                       style={{
-                        background: bookmarks.has(file.file_id ?? file.id) ? 'var(--accent)' : 'var(--bg-white)',
-                        border: '2px solid var(--text)',
+                        background: bookmarks.has(file.file_id ?? file.id) ? 'var(--primary)' : 'var(--bg-subtle)',
+                        border: bookmarks.has(file.file_id ?? file.id) ? '1px solid var(--primary)' : '1px solid var(--border)',
                         borderRadius: '8px',
                         padding: '8px 12px',
                         fontSize: '0.75rem',
                         fontWeight: 800,
                         cursor: 'pointer',
                         transition: 'all 0.2s',
-                        color: 'var(--text)',
-                        boxShadow: bookmarks.has(file.file_id ?? file.id) ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '2px 2px 0px var(--text)',
+                        color: bookmarks.has(file.file_id ?? file.id) ? 'white' : 'var(--text)',
+                        boxShadow: bookmarks.has(file.file_id ?? file.id) ? '0 2px 8px rgba(0,0,0,0.1)' : 'none',
                         whiteSpace: 'nowrap',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
@@ -652,10 +652,10 @@ const CoursePage = ({ user, onSignIn }) => {
                           if (user) api.post(`/files/${file.file_id ?? file.id}/download`).catch(() => {});
                         }}
                         style={{
-                          background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white',
+                          background: 'var(--primary)', color: 'white',
                           padding: '8px 14px', borderRadius: 8,
                           fontWeight: 700, fontSize: '0.82rem',
-                          border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--text)',
+                          border: '1px solid color-mix(in srgb, var(--primary) 80%, black)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                           textDecoration: 'none', whiteSpace: 'nowrap',
                           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px',
                         }}
@@ -673,21 +673,21 @@ const CoursePage = ({ user, onSignIn }) => {
                         setReportSent(false);
                       }}
                       style={{
-                        background: 'var(--bg-white)',
-                        border: '2px solid var(--text)',
+                        background: 'var(--bg-subtle)',
+                        border: '1px solid var(--border)',
                         borderRadius: '8px',
                         padding: '8px 12px',
                         fontSize: '0.75rem',
                         fontWeight: 800,
                         cursor: 'pointer',
                         transition: 'all 0.2s',
-                        color: '#DC2626',
-                        boxShadow: '2px 2px 0px var(--text)',
+                        color: 'var(--danger, #DC2626)',
+                        boxShadow: 'none',
                         whiteSpace: 'nowrap',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
-                      onMouseOver={e => { e.currentTarget.style.background = '#FEF2F2'; }}
-                      onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; }}
+                      onMouseOver={e => { e.currentTarget.style.background = 'rgba(220, 38, 38, 0.05)'; e.currentTarget.style.borderColor = 'var(--danger, #DC2626)'; }}
+                      onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                     >
                       <Flag size={14} /> Flag
                     </button>
@@ -762,7 +762,7 @@ const CoursePage = ({ user, onSignIn }) => {
     {/* Edit File Modal (Admins only) */}
     {editFileModal && (
       <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 12px 40px rgba(0,0,0,0.15)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
           <h3 style={{ fontWeight: 900, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}><Edit3 size={20} /> Edit File Details</h3>
           
           <div style={{ marginBottom: '16px' }}>
@@ -771,7 +771,7 @@ const CoursePage = ({ user, onSignIn }) => {
               type="text" 
               value={editFileForm.title} 
               onChange={e => setEditFileForm({ ...editFileForm, title: e.target.value })}
-              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none' }}
             />
           </div>
 
@@ -780,7 +780,7 @@ const CoursePage = ({ user, onSignIn }) => {
             <select 
               value={editFileForm.category_id}
               onChange={e => setEditFileForm({ ...editFileForm, category_id: e.target.value })}
-              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none', appearance: 'auto' }}
             >
               <option value="">Select Category</option>
               {categories.map(c => (
@@ -794,7 +794,7 @@ const CoursePage = ({ user, onSignIn }) => {
             <select 
               value={editFileForm.instructor_id}
               onChange={e => setEditFileForm({ ...editFileForm, instructor_id: e.target.value })}
-              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none', appearance: 'auto' }}
             >
               <option value="">None / General</option>
               {instructors.map(i => (
@@ -811,7 +811,7 @@ const CoursePage = ({ user, onSignIn }) => {
               value={editFileForm.course_code}
               onChange={e => setEditFileForm({ ...editFileForm, course_code: e.target.value.toUpperCase() })}
               placeholder={`Current: ${editFileModal?.course_code || course?.code || '—'}`}
-              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '12px', padding: '12px 16px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-subtle)', color: 'var(--text)', outline: 'none' }}
             />
             <datalist id="edit-course-list">
               {editCourses.map(c => (
@@ -822,8 +822,8 @@ const CoursePage = ({ user, onSignIn }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-            <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-            <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
+            <button onClick={() => setEditFileModal(null)} style={{ padding: '12px 24px', border: 'none', borderRadius: '12px', background: 'var(--bg-subtle)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+            <button onClick={saveEditFile} style={{ padding: '12px 24px', border: 'none', background: 'var(--primary)', color: 'white', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>Save Changes</button>
           </div>
         </div>
       </div>
@@ -834,13 +834,13 @@ const CoursePage = ({ user, onSignIn }) => {
         onClick={() => setReportModal(null)}
         style={{ position: 'fixed', inset: 0, zIndex: 10001, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
       >
-        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '460px', maxHeight: '90dvh', overflowY: 'auto' }}>
+        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 12px 40px rgba(0,0,0,0.15)', padding: '28px', width: '100%', maxWidth: '460px', maxHeight: '90dvh', overflowY: 'auto' }}>
           {reportSent ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <div style={{ color: 'var(--primary)', marginBottom: '12px', display: 'flex', justifyContent: 'center' }}><CheckCircle size={48} strokeWidth={1.5} /></div>
               <h3 style={{ fontWeight: 800, marginBottom: '8px' }}>Report submitted</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Thank you for helping keep the platform safe. An admin will review it.</p>
-              <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '10px 24px', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
+              <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '12px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
             </div>
           ) : (
             <>

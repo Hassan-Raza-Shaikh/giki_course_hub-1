@@ -40,7 +40,7 @@ const CourseRow = ({ course, onClick }) => (
   >
     <div style={{
       minWidth: '48px', fontSize: '0.72rem', fontWeight: 800,
-      color: 'var(--secondary)', border: '1px solid var(--secondary)', background: 'var(--bg-white)',
+      color: 'var(--secondary)', border: '1px solid var(--border)', background: 'var(--bg-subtle)',
       padding: '4px 8px', borderRadius: '6px', textAlign: 'center',
       letterSpacing: '0.02em', lineHeight: 1.2,
     }}>
@@ -93,7 +93,7 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
             background: 'var(--accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontFamily: 'var(--font-primary)', fontWeight: 900, color: 'var(--text)', fontSize: '0.85rem',
-            border: '2px solid var(--text)'
+            border: 'none', boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
           }}>
             Y{year}
           </div>
@@ -179,7 +179,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
           <span style={{
             fontSize: '0.75rem', fontWeight: 700,
             color: open ? 'white' : 'var(--text)',
-            background: open ? 'var(--primary)' : 'var(--bg-white)', border: '1px solid var(--text)',
+            background: open ? 'var(--primary)' : 'var(--bg-white)', border: '1px solid var(--border)',
             padding: '4px 12px', borderRadius: '100px', transition: 'all 0.2s',
           }}>
             {open ? 'Collapse' : 'Expand'}
@@ -248,11 +248,11 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{
             width: 54, height: 54, borderRadius: '14px',
-            background: 'var(--bg-white)',
+            background: 'var(--bg-card)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '1.6rem', transition: 'all 0.3s',
-            border: '2px solid var(--text)',
-            boxShadow: open ? '4px 4px 0px var(--text)' : '2px 2px 0px var(--text)',
+            border: '1px solid var(--border)',
+            boxShadow: open ? '0 6px 16px rgba(0,0,0,0.1)' : '0 2px 8px rgba(0,0,0,0.05)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center' }}><IconMapper emoji={faculty.icon} size={28} /></div>
           </div>
@@ -298,7 +298,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
 
       {/* Programs list */}
       {open && (
-        <div style={{ padding: '24px', borderTop: '2px solid var(--text)', display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--bg-white)' }}>
+        <div style={{ padding: '24px', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--bg-white)' }}>
           {faculty.programs.map(prog => (
             <ProgramAccordion key={prog.id} program={prog} onCourseClick={onCourseClick} />
           ))}
@@ -399,10 +399,12 @@ const Courses = () => {
                 onChange={e => setSearch(e.target.value)}
                 style={{
                   width: '100%', padding: '16px 16px 16px 48px',
-                  borderRadius: 'var(--radius-md)', border: '2px solid var(--text)', outline: 'none',
-                  fontSize: '0.95rem', background: 'var(--bg-white)',
-                  color: 'var(--text)', boxShadow: '4px 4px 0px var(--text)',
+                  borderRadius: '16px', border: '1px solid var(--border)', outline: 'none',
+                  fontSize: '0.95rem', background: 'var(--bg-card)',
+                  color: 'var(--text)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)', transition: 'all 0.3s',
                 }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}
+                onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.05)'; }}
               />
               <style>{`input::placeholder { color: var(--text-muted); }`}</style>
             </div>
@@ -415,19 +417,21 @@ const Courses = () => {
               return (
                 <Link to={`/category/${slug}`} key={rt.label} style={{
                   display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none',
-                  background: 'var(--bg-white)', border: '1px solid var(--text)',
+                  background: 'var(--bg-card)', border: '1px solid var(--border)',
                   padding: '8px 16px', borderRadius: '100px',
                   fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)',
-                  boxShadow: '2px 2px 0px var(--text)', transition: 'transform 0.15s, box-shadow 0.15s'
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)', transition: 'transform 0.15s, box-shadow 0.15s'
                 }}
                 onMouseOver={e => {
-                  e.currentTarget.style.transform = 'translate(-2px, -2px)';
-                  e.currentTarget.style.boxShadow = '4px 4px 0px var(--text)';
-                  e.currentTarget.style.color = 'var(--electric)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)';
+                  e.currentTarget.style.borderColor = 'var(--primary)';
+                  e.currentTarget.style.color = 'var(--primary)';
                 }}
                 onMouseOut={e => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '2px 2px 0px var(--text)';
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+                  e.currentTarget.style.borderColor = 'var(--border)';
                   e.currentTarget.style.color = 'var(--text)';
                 }}
                 >
@@ -442,8 +446,8 @@ const Courses = () => {
       {/* ── Search Results ──────────────────────────────────────── */}
       {searchResults && (
         <div className="page-container" style={{ padding: '40px 24px 0' }}>
-          <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', overflow: 'hidden', boxShadow: 'var(--shadow-md)' }}>
-            <div style={{ padding: '20px 28px', borderBottom: '2px solid var(--text)', fontWeight: 800, fontFamily: 'var(--font-primary)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
+            <div style={{ padding: '20px 28px', borderBottom: '1px solid var(--border)', fontWeight: 800, fontFamily: 'var(--font-primary)', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Search size={18} /> {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{search}"
             </div>
             {searchResults.length === 0 ? (

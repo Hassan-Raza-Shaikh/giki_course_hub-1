@@ -76,10 +76,10 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
     backdropFilter: 'blur(4px)',
   };
   const card = {
-    background: 'var(--bg-white)',
-    border: '2px solid var(--text)',
-    borderRadius: '20px',
-    boxShadow: '6px 6px 0px var(--text)',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
+    borderRadius: '24px',
+    boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
     padding: 'clamp(24px, 5vw, 40px)',
     width: '100%',
     maxWidth: '520px',
@@ -98,15 +98,15 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
   };
   const selectStyle = {
     width: '100%',
-    padding: '10px 14px',
-    borderRadius: '100px',
-    border: '1.5px solid var(--text)',
-    background: 'var(--bg-body)',
+    padding: '12px 16px',
+    borderRadius: '12px',
+    border: '1px solid var(--border)',
+    background: 'var(--bg-subtle)',
     color: 'var(--text)',
     fontFamily: 'var(--font-primary)',
     fontWeight: 600,
     fontSize: '0.9rem',
-    boxShadow: '2px 2px 0px var(--text)',
+    boxShadow: 'none',
     outline: 'none',
     cursor: 'pointer',
     appearance: 'auto',
@@ -133,10 +133,10 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            width: '52px', height: '52px', borderRadius: '50%',
+            width: '56px', height: '56px', borderRadius: '50%',
             background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'var(--nav-btn-text)',
-            marginBottom: '14px',
-            border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)',
+            marginBottom: '16px',
+            border: 'none', boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
           }}>
             <User size={24} />
           </div>
@@ -176,10 +176,11 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
                   onClick={() => setUserType(t.value)}
                   className="btn-nav"
                   style={{
-                    background:  userType === t.value ? 'var(--primary)' : 'var(--bg-body)',
+                    background:  userType === t.value ? 'var(--primary)' : 'var(--bg-subtle)',
                     color:       userType === t.value ? 'var(--nav-btn-text)' : 'var(--text)',
-                    boxShadow:   userType === t.value ? 'inset 2px 2px 4px rgba(0,0,0,0.2)' : '2px 2px 0px var(--text)',
-                    transform:   userType === t.value ? 'translate(1px,1px)' : 'none',
+                    boxShadow:   userType === t.value ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
+                    border:      userType === t.value ? '1px solid var(--primary)' : '1px solid var(--border)',
+                    transform:   userType === t.value ? 'translateY(-2px)' : 'none',
                     padding: '10px 12px',
                     borderRadius: '12px',
                     display: 'flex', alignItems: 'center', gap: '8px',

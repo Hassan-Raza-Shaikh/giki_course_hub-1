@@ -86,11 +86,11 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
           <div style={{ animation: 'fadeSlideUp 0.9s ease forwards' }}>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
-              background: 'var(--bg-white)', border: '2px solid var(--text)',
+              background: 'var(--bg-card)', border: '1px solid var(--border)',
               padding: '8px 18px', borderRadius: '100px', marginBottom: '40px',
               fontSize: '0.8rem', fontWeight: 800, color: 'var(--text)',
               textTransform: 'uppercase', letterSpacing: '0.1em',
-              boxShadow: '4px 4px 0px var(--secondary)',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
               maxWidth: '100%', boxSizing: 'border-box',
             }}>
               <span style={{ color: 'var(--accent)', flexShrink: 0, display: 'flex', alignItems: 'center' }}><Sparkles size={16} /></span>

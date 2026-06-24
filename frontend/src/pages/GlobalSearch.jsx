@@ -121,10 +121,12 @@ const GlobalSearch = ({ user, onSignIn }) => {
                   onChange={(e) => updateFilters('q', e.target.value)}
                   style={{
                     width: '100%', padding: '16px 56px 16px 48px',
-                    borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                    fontSize: '1rem', boxShadow: '4px 4px 0px var(--text)',
-                    outline: 'none', background: 'var(--bg-white)', color: 'var(--text)'
+                    borderRadius: '16px', border: '1px solid var(--border)',
+                    fontSize: '1rem', boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+                    outline: 'none', background: 'var(--bg-card)', color: 'var(--text)', transition: 'all 0.3s'
                   }}
+                  onFocus={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.05)'; }}
                 />
                 {/* '/' shortcut hint — hides when user has typed something */}
                 {!query && (
@@ -142,9 +144,9 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 value={facultyId}
                 onChange={(e) => updateFilters('faculty_id', e.target.value)}
                 style={{
-                  padding: '14px 12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                  background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
-                  boxShadow: '4px 4px 0px var(--text)', outline: 'none'
+                  padding: '14px 12px', borderRadius: '12px', border: '1px solid var(--border)',
+                  background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)', outline: 'none', appearance: 'auto', transition: 'all 0.2s'
                 }}
               >
                 <option value="" style={{ background: 'var(--bg-white)', color: 'var(--text)' }}>All Faculties</option>
@@ -155,9 +157,9 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 value={categoryId}
                 onChange={(e) => updateFilters('category_id', e.target.value)}
                 style={{
-                  padding: '14px 12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--text)',
-                  background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
-                  boxShadow: '4px 4px 0px var(--text)', outline: 'none'
+                  padding: '14px 12px', borderRadius: '12px', border: '1px solid var(--border)',
+                  background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)', outline: 'none', appearance: 'auto', transition: 'all 0.2s'
                 }}
               >
                 <option value="" style={{ background: 'var(--bg-white)', color: 'var(--text)' }}>All Categories</option>
@@ -190,12 +192,20 @@ const GlobalSearch = ({ user, onSignIn }) => {
                       key={course.id} 
                       onClick={() => navigate(`/course/${course.id}`)}
                       style={{
-                        background: 'var(--bg-white)', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
-                        padding: '20px', boxShadow: '4px 4px 0px var(--text)', cursor: 'pointer',
-                        transition: '0.2s'
+                        background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)',
+                        padding: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer',
+                        transition: 'transform 0.2s, box-shadow 0.2s'
                       }}
-                      onMouseOver={e => e.currentTarget.style.transform = 'translate(-2px, -2px)'}
-                      onMouseOut={e => e.currentTarget.style.transform = 'none'}
+                      onMouseOver={e => {
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.1)';
+                        e.currentTarget.style.borderColor = 'var(--primary)';
+                      }}
+                      onMouseOut={e => {
+                        e.currentTarget.style.transform = 'none';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                        e.currentTarget.style.borderColor = 'var(--border)';
+                      }}
                     >
                       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                         <div style={{ fontSize: '1.8rem', display: 'flex', alignItems: 'center' }}><IconMapper emoji={course.icon} size={28} /></div>
@@ -221,8 +231,19 @@ const GlobalSearch = ({ user, onSignIn }) => {
                     <div 
                       key={file.id} 
                       style={{
-                        background: 'var(--bg-white)', border: '2px solid var(--text)', borderRadius: 'var(--radius-lg)',
-                        padding: '16px 20px', boxShadow: '4px 4px 0px var(--text)', display: 'flex', flexDirection: 'column', gap: '8px'
+                        background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)',
+                        padding: '16px 20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', gap: '8px',
+                        transition: 'transform 0.2s, box-shadow 0.2s'
+                      }}
+                      onMouseOver={e => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.08)';
+                        e.currentTarget.style.borderColor = 'var(--primary)';
+                      }}
+                      onMouseOut={e => {
+                        e.currentTarget.style.transform = 'none';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                        e.currentTarget.style.borderColor = 'var(--border)';
                       }}
                     >
                       <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.1rem' }}>{file.title}</div>
@@ -271,7 +292,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
             )}
             
             {!query && !facultyId && !categoryId && (
-                <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--bg-white)', borderRadius: '24px', border: '2px solid var(--border)' }}>
+                <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)' }}>
                   <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}><Sunset size={64} color="var(--text-muted)" /></div>
                   <h3 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Search for anything...</h3>
                   <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Type a course name, resource title, or course code to begin.</p>

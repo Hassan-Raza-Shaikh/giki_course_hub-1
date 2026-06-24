@@ -65,7 +65,7 @@ const Bookmarks = ({ user, onSignIn }) => {
 
         {!user ? (
           <ScrollReveal delay="reveal-delay-1">
-            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '80px 32px', textAlign: 'center' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', padding: '80px 32px', textAlign: 'center' }}>
               <div style={{ marginBottom: '24px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><Lock size={64} strokeWidth={1.5} /></div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Account Required</h2>
               <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Please sign in to view and manage your bookmarked resources.</p>
@@ -76,7 +76,7 @@ const Bookmarks = ({ user, onSignIn }) => {
           <LoadingSpinner message="Loading your library..." />
         ) : bookmarks.length === 0 ? (
           <ScrollReveal delay="reveal-delay-1">
-            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '2px solid var(--text)', boxShadow: 'var(--shadow-md)', padding: '60px 32px', textAlign: 'center' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', padding: '60px 32px', textAlign: 'center' }}>
               {/* Open book with bookmark ribbon SVG */}
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
                 <svg width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,7 +103,7 @@ const Bookmarks = ({ user, onSignIn }) => {
           <div className="bookmarks-grid">
             {bookmarks.map((file, i) => (
               <ScrollReveal key={file.file_id} delay={`reveal-delay-${(i % 3) + 1}`}>
-                <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '2px solid var(--text)', boxShadow: '4px 4px 0px var(--text)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
+                <div style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
 
                   {/* Remove button */}
                   <button

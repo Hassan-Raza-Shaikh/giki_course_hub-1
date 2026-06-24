@@ -132,22 +132,22 @@ const App = () => {
             <button 
               onClick={() => window.location.reload()}
               style={{
-                background: 'var(--bg-white)',
-                border: '2px solid var(--text)',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border)',
                 padding: '10px 20px',
                 borderRadius: '12px',
                 fontSize: '0.85rem',
                 fontWeight: 800,
                 color: 'var(--text)',
                 cursor: 'pointer',
-                boxShadow: '4px 4px 0px var(--text)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                 transition: 'all 0.2s',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px'
               }}
-              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px var(--text)'; }}
-              onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px var(--text)'; }}
+              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.08)'; }}
+              onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
             >
               <span><RefreshCw size={16} /></span> Refresh Page
             </button>

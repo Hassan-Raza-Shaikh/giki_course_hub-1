@@ -97,7 +97,7 @@ const CategoryView = () => {
       <div style={{
         background: 'var(--bg-hero)',
         padding: 'clamp(40px, 6vw, 60px) 0 clamp(40px, 6vw, 60px)', 
-        borderBottom: '2px solid var(--border)',
+        borderBottom: '1px solid var(--border)',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -108,8 +108,8 @@ const CategoryView = () => {
             style={{ 
               textDecoration: 'none', background: 'var(--bg-white)', color: 'var(--text)', 
               marginBottom: '32px', display: 'inline-flex', padding: '8px 16px', borderRadius: '100px',
-              border: '2px solid var(--text)', fontWeight: 600, fontSize: '0.85rem',
-              boxShadow: '4px 4px 0px var(--text)'
+              border: '1px solid var(--border)', fontWeight: 600, fontSize: '0.85rem',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}
           >
             <ArrowLeft size={16} strokeWidth={2.5} style={{ marginRight: '6px' }} /> Back to Courses
@@ -122,7 +122,8 @@ const CategoryView = () => {
               background: 'var(--bg-white)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'var(--category-primary)',
-              boxShadow: `0 20px 40px rgba(0,0,0,0.1), 0 0 0 2px var(--border)`,
+              border: '1px solid var(--border)',
+              boxShadow: `0 20px 40px rgba(0,0,0,0.1)`,
               transform: 'rotate(-5deg)',
               animation: 'float 3s ease-in-out infinite'
             }}>
@@ -151,11 +152,13 @@ const CategoryView = () => {
               onChange={e => setSearch(e.target.value)}
               style={{
                 width: '100%', padding: '16px 16px 16px 48px', margin: 0,
-                borderRadius: 'var(--radius-md)', border: '2px solid var(--text)', outline: 'none',
-                fontSize: '0.95rem', background: 'var(--bg-white)',
-                color: 'var(--text)', boxShadow: '4px 4px 0px var(--text)',
+                borderRadius: '16px', border: '1px solid var(--border)', outline: 'none',
+                fontSize: '0.95rem', background: 'var(--bg-card)',
+                color: 'var(--text)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)', transition: 'all 0.3s',
                 fontFamily: 'inherit', boxSizing: 'border-box', WebkitAppearance: 'none'
               }}
+              onFocus={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}
+              onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.05)'; }}
             />
           </div>
         </div>
@@ -165,16 +168,16 @@ const CategoryView = () => {
       <div className="container" style={{ maxWidth: '1200px', margin: '40px auto 0', padding: '0 24px', position: 'relative', zIndex: 10 }}>
         
         {loading ? (
-          <div style={{ padding: '80px 0', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '2px solid var(--border)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+          <div style={{ padding: '80px 0', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
             <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: `3px solid var(--category-primary)`, borderTopColor: 'transparent', animation: 'spin 1s linear infinite', margin: '0 auto' }} />
           </div>
         ) : error ? (
-          <div style={{ padding: '80px 24px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '2px solid var(--border)' }}>
+          <div style={{ padding: '80px 24px', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)' }}>
             <h2 style={{ color: 'var(--text)', marginBottom: '16px' }}>Oops!</h2>
             <p style={{ color: 'var(--text-muted)' }}>{error}</p>
           </div>
         ) : files.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 24px', background: 'var(--bg-card)', borderRadius: '24px', border: '2px dashed var(--border)' }}>
+          <div style={{ textAlign: 'center', padding: '80px 24px', background: 'var(--bg-card)', borderRadius: '24px', border: '1px dashed var(--border)' }}>
             <div style={{ color: 'var(--text-muted)', opacity: 0.5, marginBottom: '16px' }}>{icon}</div>
             <h3 style={{ color: 'var(--text)', marginBottom: '8px', fontFamily: 'var(--font-primary)' }}>No materials found</h3>
             <p style={{ color: 'var(--text-muted)', margin: 0 }}>There are currently no matching {categoryName?.toLowerCase()} available.</p>
@@ -186,22 +189,22 @@ const CategoryView = () => {
                 <div 
                   key={f.id} 
                   style={{ 
-                    background: 'var(--bg-card)', border: '2px solid var(--border)', borderRadius: '20px', 
+                    background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px', 
                     padding: '24px', display: 'flex', flexDirection: 'column', 
                     animation: `fadeUp 0.4s ease-out forwards`,
                     animationDelay: `${i * 0.05}s`,
                     opacity: 0,
-                    boxShadow: '4px 4px 0px rgba(0,0,0,0.05)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                     transition: 'transform 0.2s, box-shadow 0.2s'
                   }}
                   onMouseOver={e => {
-                    e.currentTarget.style.transform = 'translate(-4px, -4px)';
-                    e.currentTarget.style.boxShadow = `8px 8px 0px var(--category-primary)`;
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = `0 12px 24px rgba(0,0,0,0.1)`;
                     e.currentTarget.style.borderColor = 'var(--category-primary)';
                   }}
                   onMouseOut={e => {
                     e.currentTarget.style.transform = 'none';
-                    e.currentTarget.style.boxShadow = '4px 4px 0px rgba(0,0,0,0.05)';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
                     e.currentTarget.style.borderColor = 'var(--border)';
                   }}
                 >
@@ -229,7 +232,7 @@ const CategoryView = () => {
                     </div>
                   </div>
                   
-                  <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '2px dashed var(--border)' }}>
+                  <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '1px dashed var(--border)' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Download size={12}/> {fmtSize(f.file_size)}</span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Clock size={12}/> {fmtDate(f.date)}</span>
@@ -238,7 +241,7 @@ const CategoryView = () => {
                     <button
                       onClick={() => handleDownload(f)}
                       className="btn-nav hover-opacity"
-                      style={{ background: 'var(--category-primary)', color: '#fff', padding: '8px 16px', fontSize: '0.85rem', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '2px 2px 0px var(--text)' }}
+                      style={{ background: 'var(--category-primary)', color: '#fff', padding: '8px 16px', fontSize: '0.85rem', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, border: 'none', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', transition: 'all 0.2s' }}
                     >
                       <Download size={14} strokeWidth={2.5} /> Open
                     </button>
@@ -254,25 +257,25 @@ const CategoryView = () => {
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
                   style={{ 
-                    background: 'var(--bg-white)', color: 'var(--text)', border: '2px solid var(--text)',
+                    background: 'var(--bg-card)', color: 'var(--text)', border: '1px solid var(--border)',
                     padding: '10px 20px', borderRadius: '100px', fontWeight: 700, fontSize: '0.9rem',
                     opacity: page === 1 ? 0.4 : 1, cursor: page === 1 ? 'not-allowed' : 'pointer',
-                    boxShadow: page === 1 ? 'none' : '2px 2px 0px var(--text)'
+                    boxShadow: page === 1 ? 'none' : '0 2px 8px rgba(0,0,0,0.05)', transition: 'all 0.2s'
                   }}
                 >
                   ← Prev
                 </button>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 600, background: 'var(--bg-card)', padding: '8px 16px', borderRadius: '100px', border: '2px solid var(--border)' }}>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: 600, background: 'var(--bg-card)', padding: '8px 16px', borderRadius: '100px', border: '1px solid var(--border)' }}>
                   Page {page} of {totalPages}
                 </div>
                 <button
                   onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
                   style={{ 
-                    background: 'var(--bg-white)', color: 'var(--text)', border: '2px solid var(--text)',
+                    background: 'var(--bg-card)', color: 'var(--text)', border: '1px solid var(--border)',
                     padding: '10px 20px', borderRadius: '100px', fontWeight: 700, fontSize: '0.9rem',
                     opacity: page === totalPages ? 0.4 : 1, cursor: page === totalPages ? 'not-allowed' : 'pointer',
-                    boxShadow: page === totalPages ? 'none' : '2px 2px 0px var(--text)'
+                    boxShadow: page === totalPages ? 'none' : '0 2px 8px rgba(0,0,0,0.05)', transition: 'all 0.2s'
                   }}
                 >
                   Next →

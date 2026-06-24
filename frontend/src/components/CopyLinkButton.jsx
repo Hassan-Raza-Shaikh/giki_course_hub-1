@@ -61,7 +61,7 @@ const CopyLinkButton = ({ id, url, copyLink, copiedId, msg, style = {} }) => {
       style={{
         position: 'relative',
         background: isCopied ? 'var(--electric, #7C3AED)' : 'var(--bg-white)',
-        border: '2px solid var(--text)',
+        border: '1px solid var(--border)',
         borderRadius: '8px',
         padding: '8px 12px',
         fontSize: '0.75rem',
@@ -69,7 +69,8 @@ const CopyLinkButton = ({ id, url, copyLink, copiedId, msg, style = {} }) => {
         cursor: 'pointer',
         transition: 'all 0.2s',
         color: isCopied ? 'white' : 'var(--text)',
-        boxShadow: isCopied ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '2px 2px 0px var(--text)',
+        boxShadow: isCopied ? 'inset 1px 1px 3px rgba(0,0,0,0.15)' : '0 2px 8px rgba(0,0,0,0.05)',
+        outline: 'none',
         whiteSpace: 'nowrap',
         textAlign: 'center',
         minWidth: '90px',

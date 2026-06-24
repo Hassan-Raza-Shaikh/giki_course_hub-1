@@ -243,14 +243,14 @@ const UserProfile = ({ user, setUser }) => {
               )}
 
               {gpaData && gpaData.cgpa && (
-                <div style={{ marginLeft: user && user.username === profile.username ? '0' : 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
+                <div style={{ marginLeft: user && user.username === profile.username ? '0' : 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                   CGPA: {gpaData.cgpa}
                 </div>
               )}
             </div>
 
             {gpaData && gpaData.is_private ? (
-              <div style={{ background: 'var(--bg-subtle)', padding: '24px', borderRadius: '16px', border: '2px dashed var(--border)', textAlign: 'center' }}>
+              <div style={{ background: 'var(--bg-subtle)', padding: '24px', borderRadius: '16px', border: '1px dashed var(--border)', textAlign: 'center' }}>
                 <Calculator size={32} style={{ color: 'var(--text-muted)', marginBottom: '12px', opacity: 0.5 }} />
                 <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: '4px' }}>Academic Records are Private</div>
                 <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>This user has chosen to keep their GPA private.</div>
@@ -259,15 +259,19 @@ const UserProfile = ({ user, setUser }) => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                 {gpaData.records.map(r => (
                   <div key={r.gpa_id} style={{
-                    background: 'var(--bg-white)',
-                    border: '2px solid var(--text)',
+                    background: 'var(--bg-card)',
+                    border: '1px solid var(--border)',
                     borderRadius: '16px',
                     padding: '20px',
-                    boxShadow: '4px 4px 0px var(--text)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '12px'
-                  }}>
+                    gap: '12px',
+                    transition: 'transform 0.2s, box-shadow 0.2s'
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.08)'; }}
+                  onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
+                  >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
                         <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '2px' }}>Semester {r.semester}</div>
@@ -275,7 +279,7 @@ const UserProfile = ({ user, setUser }) => {
                       </div>
                       <div style={{
                         background: 'var(--bg-subtle)',
-                        border: '2px solid var(--text)',
+                        border: '1px solid var(--border)',
                         borderRadius: '10px',
                         padding: '8px 12px',
                         fontWeight: 900,
@@ -293,7 +297,7 @@ const UserProfile = ({ user, setUser }) => {
                 ))}
               </div>
             ) : (
-              <div style={{ textAlign: 'center', padding: '40px 20px', background: 'var(--bg-card)', borderRadius: '16px', border: '2px dashed var(--border)' }}>
+              <div style={{ textAlign: 'center', padding: '40px 20px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px dashed var(--border)' }}>
                 <Calculator size={48} style={{ color: 'var(--border)', margin: '0 auto 16px' }} />
                 <h3 style={{ margin: '0 0 8px', fontSize: '1.2rem', color: 'var(--text)' }}>No GPA Records</h3>
                 <p style={{ color: 'var(--text-muted)', margin: '0 0 24px' }}>Start tracking your academic performance semester by semester.</p>

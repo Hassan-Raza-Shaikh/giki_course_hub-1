@@ -322,9 +322,10 @@ function GpaCalculator({ user }) {
             value={faculty} 
             onChange={(e) => { setFaculty(e.target.value); setProgram(''); setSemester(''); }}
             style={{ 
-              width: '100%', cursor: 'pointer', padding: '12px 16px', borderRadius: '12px', 
-              border: '1px solid var(--border)', background: 'var(--bg-body)', color: 'var(--text)', 
-              fontSize: '0.95rem', outline: 'none', transition: 'border-color 0.2s', appearance: 'auto'
+              width: '100%', cursor: 'pointer', padding: '14px 16px', borderRadius: '12px', 
+              border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'var(--text)', 
+              fontSize: '0.95rem', fontWeight: 700, outline: 'none', transition: 'all 0.2s', appearance: 'auto',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}
           >
             <option value="">Select Faculty...</option>
@@ -342,9 +343,9 @@ function GpaCalculator({ user }) {
             disabled={!faculty}
             style={{ 
               width: '100%', cursor: !faculty ? 'not-allowed' : 'pointer', opacity: !faculty ? 0.6 : 1, 
-              padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
-              background: 'var(--bg-body)', color: 'var(--text)', fontSize: '0.95rem', outline: 'none', 
-              transition: 'all 0.2s', appearance: 'auto'
+              padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
+              background: 'var(--bg-card)', color: 'var(--text)', fontSize: '0.95rem', fontWeight: 700, outline: 'none', 
+              transition: 'all 0.2s', appearance: 'auto', boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}
           >
             <option value="">Select Program...</option>
@@ -362,9 +363,9 @@ function GpaCalculator({ user }) {
             disabled={!program}
             style={{ 
               width: '100%', cursor: !program ? 'not-allowed' : 'pointer', opacity: !program ? 0.6 : 1, 
-              padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
-              background: 'var(--bg-body)', color: 'var(--text)', fontSize: '0.95rem', outline: 'none', 
-              transition: 'all 0.2s', appearance: 'auto'
+              padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
+              background: 'var(--bg-card)', color: 'var(--text)', fontSize: '0.95rem', fontWeight: 700, outline: 'none', 
+              transition: 'all 0.2s', appearance: 'auto', boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}
           >
             <option value="">Select Semester...</option>
@@ -433,8 +434,8 @@ function GpaCalculator({ user }) {
                         <div style={{ 
                           position: 'absolute', top: '100%', left: '16px', zIndex: 10, marginTop: '8px',
                           background: 'var(--text)', color: 'var(--bg-white)',
-                          padding: '12px', borderRadius: '8px', border: '2px solid var(--text)',
-                          boxShadow: '4px 4px 0px rgba(0,0,0,0.2)', width: 'max-content', maxWidth: '280px',
+                          padding: '12px', borderRadius: '8px', border: '1px solid var(--border)',
+                          boxShadow: '0 8px 24px rgba(0,0,0,0.1)', width: 'max-content', maxWidth: '280px',
                           fontSize: '0.85rem', fontWeight: 600, lineHeight: 1.4
                         }}>
                           {course.name}
@@ -457,7 +458,8 @@ function GpaCalculator({ user }) {
                         onChange={(e) => handleCHChange(course.id, e.target.value)}
                         style={{ 
                           padding: '10px 12px', borderRadius: '12px', border: '1px solid var(--border)', 
-                          background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer', width: '80px', outline: 'none'
+                          background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer', width: '80px', outline: 'none',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.05)', transition: 'all 0.2s'
                         }}
                       >
                         {[1, 2, 3, 4, 5, 6].map(num => (
@@ -473,7 +475,8 @@ function GpaCalculator({ user }) {
                         onChange={(e) => handleGradeChange(course.id, e.target.value)}
                         style={{ 
                           padding: '10px 12px', borderRadius: '12px', border: '1px solid var(--primary)', 
-                          background: 'var(--primary)', color: 'var(--nav-btn-text)', fontWeight: 700, cursor: 'pointer', width: '100px', outline: 'none'
+                          background: 'var(--primary)', color: 'var(--nav-btn-text)', fontWeight: 700, cursor: 'pointer', width: '100px', outline: 'none',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)', transition: 'all 0.2s'
                         }}
                       >
                         {GRADING_SCALE.map(scale => (
@@ -509,7 +512,7 @@ function GpaCalculator({ user }) {
               <button 
                 onClick={() => setShowAddForm(true)}
                 style={{
-                  width: '100%', background: 'var(--bg-body)', border: '2px dashed var(--border)',
+                  width: '100%', background: 'var(--bg-body)', border: '1px dashed var(--border)',
                   borderRadius: '16px', padding: '24px', color: 'var(--text-muted)', fontWeight: 700,
                   fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                   transition: 'all 0.2s'
@@ -562,7 +565,8 @@ function GpaCalculator({ user }) {
                       style={{ 
                         width: '100%', padding: '12px 16px', cursor: 'pointer', borderRadius: '12px', 
                         border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'var(--text)', 
-                        fontSize: '0.95rem', outline: 'none', appearance: 'auto' 
+                        fontSize: '0.95rem', fontWeight: 700, outline: 'none', appearance: 'auto',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.05)', transition: 'all 0.2s'
                       }}
                     >
                       {[1, 2, 3, 4, 5, 6].map(num => (
@@ -689,7 +693,7 @@ function GpaCalculator({ user }) {
               Your Saved Records
             </h2>
             {cgpaData.cgpa && (
-              <div style={{ marginLeft: 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
+              <div style={{ marginLeft: 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '1px solid var(--border)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
                 CGPA: {cgpaData.cgpa}
               </div>
             )}
@@ -698,15 +702,19 @@ function GpaCalculator({ user }) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
             {cgpaData.records.map(r => (
               <div key={r.gpa_id} style={{
-                background: 'var(--bg-white)',
-                border: '2px solid var(--text)',
+                background: 'var(--bg-card)',
+                border: '1px solid var(--border)',
                 borderRadius: '16px',
                 padding: '20px',
-                boxShadow: '4px 4px 0px var(--text)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '12px'
-              }}>
+                gap: '12px',
+                transition: 'transform 0.2s, box-shadow 0.2s'
+              }}
+              onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.08)'; }}
+              onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
+              >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
                     <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', marginBottom: '2px' }}>Semester {r.semester}</div>
@@ -714,7 +722,7 @@ function GpaCalculator({ user }) {
                   </div>
                   <div style={{
                     background: 'var(--bg-subtle)',
-                    border: '2px solid var(--text)',
+                    border: '1px solid var(--border)',
                     borderRadius: '10px',
                     padding: '8px 12px',
                     fontWeight: 900,

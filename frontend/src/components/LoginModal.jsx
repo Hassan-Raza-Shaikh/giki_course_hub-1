@@ -222,15 +222,15 @@ const LoginModal = ({ onClose, onSuccess }) => {
           aria-label="Close"
           style={{
             position: 'absolute', top: '16px', right: '16px',
-            width: '32px', height: '32px', borderRadius: '8px',
-            background: 'var(--bg-white)', border: '2px solid var(--text)',
-            boxShadow: '2px 2px 0px var(--text)',
-            fontSize: '1.1rem', lineHeight: 1, cursor: 'pointer',
+            width: '32px', height: '32px', borderRadius: '50%',
+            background: 'var(--bg-subtle)', border: 'none',
+            boxShadow: 'none',
+            fontSize: '1.2rem', lineHeight: 1, cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'var(--text)', fontWeight: 900, transition: 'all 0.15s',
+            color: 'var(--text-muted)', transition: 'all 0.15s',
           }}
-          onMouseOver={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 85%, var(--accent))'; e.currentTarget.style.color = 'var(--bg-hero)'; e.currentTarget.style.boxShadow = 'none'; }}
-          onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.boxShadow = '2px 2px 0px var(--text)'; }}
+          onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.color = 'var(--text)'; }}
+          onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
         >
           ✕
         </button>
@@ -239,11 +239,11 @@ const LoginModal = ({ onClose, onSuccess }) => {
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             <div style={{
-              width: 46, height: 46, borderRadius: '14px', margin: '0 auto 12px',
-              background: 'var(--accent)', border: '2px solid var(--text)',
+              width: 48, height: 48, borderRadius: '50%', margin: '0 auto 16px',
+              background: 'var(--bg-subtle)', border: '1px solid var(--border)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '1.4rem', boxShadow: '3px 3px 0px var(--text)',
-            }}><BookOpen size={48} color="var(--primary)" /></div>
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+            }}><BookOpen size={24} color="var(--primary)" /></div>
             <h2 style={{ fontSize: '1.3rem', fontWeight: 900, fontFamily: 'var(--font-primary)', marginBottom: '3px', color: 'var(--text)' }}>
               {tab === 'login' ? 'Welcome Back' : tab === 'signup-success' ? 'Account Created!' : 'Create Account'}
             </h2>
@@ -254,15 +254,15 @@ const LoginModal = ({ onClose, onSuccess }) => {
 
           {/* Tab switcher — hidden on success screen */}
           {tab !== 'signup-success' && (
-            <div style={{ display: 'flex', border: '2px solid var(--text)', borderRadius: '10px', marginBottom: '18px', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', background: 'var(--bg-subtle)', borderRadius: '12px', marginBottom: '24px', padding: '4px' }}>
               {['login', 'signup'].map(t => (
                 <button key={t} onClick={() => { setTab(t); setError(''); }}
                   style={{
-                    flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.88rem',
-                    background: tab === t ? 'color-mix(in srgb, var(--primary) 85%, var(--accent))' : 'var(--bg-white)',
-                    color: tab === t ? 'var(--bg-hero)' : 'var(--text)',
-                    border: 'none', cursor: 'pointer', transition: 'all 0.2s',
-                    textTransform: 'capitalize',
+                    flex: 1, padding: '8px', fontWeight: 700, fontSize: '0.9rem',
+                    background: tab === t ? 'var(--bg-card)' : 'transparent',
+                    color: tab === t ? 'var(--text)' : 'var(--text-muted)',
+                    border: 'none', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s',
+                    textTransform: 'capitalize', boxShadow: tab === t ? '0 2px 8px rgba(0,0,0,0.05)' : 'none'
                   }}
                 >
                   {t === 'login' ? 'Sign In' : 'Sign Up'}

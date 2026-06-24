@@ -736,7 +736,7 @@ const AdminPanel = ({ user }) => {
       {/* Reject modal */}
       {rejectTarget && (
         <div onClick={() => setRejectTarget(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', color: 'var(--text)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '480px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', color: 'var(--text)', borderRadius: '14px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '480px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 800, marginBottom: '8px', color: 'var(--text)' }}>Reject File</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Rejecting: <strong>{rejectTarget.title}</strong>
@@ -759,7 +759,7 @@ const AdminPanel = ({ user }) => {
       {/* Resolve Content Flag modal */}
       {resolveModal && (
         <div onClick={() => setResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Flag size={24} color="var(--accent)" /> Resolve Content Flag</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Flagged file: <strong>{resolveModal.file_title}</strong>
@@ -792,7 +792,7 @@ const AdminPanel = ({ user }) => {
       {/* Platform Issue Resolve modal */}
       {issueResolveModal && (
         <div onClick={() => setIssueResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><CheckCircle size={24} color="#10B981" /> Resolve Platform Issue</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.9rem' }}>
               <strong>{issueResolveModal.title}</strong>
@@ -829,7 +829,7 @@ const AdminPanel = ({ user }) => {
       {/* Edit File Modal */}
       {editFileModal && (
         <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}><Edit3 size={24} /> Edit File Details</h3>
             
             <div style={{ marginBottom: '16px' }}>
@@ -891,7 +891,7 @@ const AdminPanel = ({ user }) => {
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
+              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Save Changes</button>
             </div>
           </div>
         </div>
@@ -900,7 +900,7 @@ const AdminPanel = ({ user }) => {
       {/* Cross-Link File Modal */}
       {linkModal && (
         <div onClick={() => setLinkModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
               <div>
                 <h3 style={{ fontWeight: 900, fontSize: '1.4rem' }}><Link size={24} /> Cross-Link File</h3>
@@ -983,7 +983,7 @@ const AdminPanel = ({ user }) => {
       {/* File Note modal */}
       {noteModal && (
         <div onClick={() => setNoteModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Pin size={24} /> Admin Note</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               File: <strong>{noteModal.title}</strong><br/>
@@ -1017,7 +1017,7 @@ const AdminPanel = ({ user }) => {
             </h1>
             <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.9rem' }}>Command center for GIKI Hub.</p>
           </div>
-          <button onClick={loadStats} style={{ background: 'var(--bg-white)', border: '2px solid var(--text)', padding: '8px 12px', borderRadius: '10px', boxShadow: '3px 3px 0 var(--text)', cursor: 'pointer' }}>
+          <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer' }}>
             <RefreshCw size={20} />
           </button>
         </div>
@@ -1035,9 +1035,9 @@ const AdminPanel = ({ user }) => {
                 key={s.label} 
                 onClick={() => setTab(s.key)}
                 style={{ 
-                  background: 'var(--bg-white)', border: `2px solid var(--text)`, 
+                  background: 'var(--bg-white)', border: `1px solid var(--border)`, 
                   borderRadius: '14px', padding: '20px', textAlign: 'center',
-                  boxShadow: `4px 4px 0px ${s.accent}`, cursor: 'pointer',
+                  boxShadow: `0 4px 12px rgba(0,0,0,0.05)`, cursor: 'pointer',
                   transition: 'transform 0.1s'
                 }}
                 onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
@@ -1061,7 +1061,7 @@ const AdminPanel = ({ user }) => {
               style={{
                 padding: '10px 18px', borderRadius: '100px',
                 fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
-                border: '2px solid var(--text)',
+                border: '1px solid var(--border)',
                 background: tab === t.key ? 'var(--text)' : 'var(--bg-white)',
                 color: tab === t.key ? 'var(--bg-hero)' : 'var(--text)',
                 boxShadow: tab === t.key ? 'none' : '2px 2px 0 var(--text)',
@@ -1229,7 +1229,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'courses' && (
           <div>
             {/* Course Form */}
-            <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
+            <form onSubmit={saveCourse} style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', padding: '28px', marginBottom: '32px', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
               <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'var(--font-primary)' }}>
                 {editingCourse ? <><Edit3 size={14} /> Edit Course</> : <><BookOpen size={16} /> Add New Course</>}
                 {editingCourse && <button type="button" onClick={() => {
@@ -1339,7 +1339,7 @@ const AdminPanel = ({ user }) => {
                       onClick={() => { setBulkCourseMode(b => !b); setSelectedPrograms([]); }}
                       style={{
                         padding: '7px 16px', borderRadius: '8px', fontWeight: 800, fontSize: '0.82rem',
-                        border: '2px solid var(--text)', cursor: 'pointer',
+                        border: '1px solid var(--border)', cursor: 'pointer',
                         background: bulkCourseMode ? 'var(--primary)' : 'var(--bg-white)',
                         color: bulkCourseMode ? 'white' : 'var(--text)',
                         boxShadow: '2px 2px 0 var(--border)',
