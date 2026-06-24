@@ -231,9 +231,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
             <button
               onClick={() => setMenuOpen(o => !o)}
               style={{
-                width: 44, height: 44, borderRadius: '14px',
+                height: 44, padding: '0 12px', gap: '8px', borderRadius: '14px',
                 border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 10%, var(--bg-card))',
-                color: 'var(--primary)', fontWeight: 800, fontSize: '1.1rem',
+                color: 'var(--text)', fontWeight: 800, fontSize: '0.95rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: 'pointer', transition: 'all 0.2s',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.08)'

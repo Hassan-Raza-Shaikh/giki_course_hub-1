@@ -135,7 +135,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
           </div>
         </div>
 
-            <div className="search-filters">
+            <div className="search-filters" style={{ marginBottom: '40px' }}>
               <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
                 <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}><Search size={20} color="var(--text-muted)" /></div>
                 <input 
