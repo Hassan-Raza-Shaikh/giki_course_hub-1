@@ -273,62 +273,76 @@ const CoursePage = ({ user, onSignIn }) => {
 
   return (
     <>
-    <div style={{ paddingTop: '70px', minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
 
-      {/* ── Course Header ──────────────────────────────────── */}
-      <div style={{
-        background: 'var(--bg-hero)',
-        padding: '60px 0 60px',
-        borderBottom: '2px solid var(--border)',
-        position: 'relative'
-      }}>
-        <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
-          <button
-            onClick={() => navigate('/courses')}
-            style={{ 
-              background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)', 
-              padding: '8px 16px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700, 
-              marginBottom: 32, cursor: 'pointer', transition: 'all 0.2s',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
-            onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-          >
-            ← Back to Courses
-          </button>
+      <div className="page-container">
+        {/* ── Course Header ──────────────────────────────────── */}
+        <button
+          onClick={() => navigate('/courses')}
+          style={{ 
+            background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)', 
+            padding: '8px 16px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700, 
+            marginBottom: 24, cursor: 'pointer', transition: 'all 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)', display: 'inline-block'
+          }}
+          onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+          onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+        >
+          ← Back to Courses
+        </button>
 
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))', lineHeight: 1 }}><IconMapper emoji={course.icon} size={56} /></div>
-            <div style={{ flex: 1, minWidth: '220px' }}>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap' }}>
-                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
-                  background: 'color-mix(in srgb, var(--accent) 20%, transparent)', color: 'var(--primary)', border: '1px solid var(--accent)' }}>
-                  Sem {course.semester}
-                </span>
-                <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
-                  background: 'color-mix(in srgb, var(--tertiary) 20%, transparent)', color: 'var(--tertiary)', border: '1px solid var(--tertiary)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {course.program}
-                </span>
-                <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>{course.code}</span>
-              </div>
-              <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '16px' }}>
-                {course.name}
-              </h1>
-              {fileInstructors.length > 0 && (
-                <div style={{ marginTop: '12px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
-                  {fileInstructors.map(inst => (
-                    <span key={inst.id} style={{
-                    background: 'var(--bg-subtle)', border: '1px solid var(--border)',
-                    padding: '6px 12px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700,
-                    color: 'var(--text)', boxShadow: 'none', display: 'flex', alignItems: 'center', gap: '6px'
-                  }}>
-                    <User size={14} color="var(--primary)" /> {inst.name}
-                  </span>
-                  ))}
-                </div>
-              )}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
+          <div style={{
+            background: 'var(--bg-card)',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
+          }}>
+            <IconMapper emoji={course.icon} size={40} />
+          </div>
+          <div style={{ flex: 1, minWidth: '220px' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap' }}>
+              <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
+                background: 'color-mix(in srgb, var(--accent) 20%, transparent)', color: 'var(--primary)', border: '1px solid var(--accent)' }}>
+                Sem {course.semester}
+              </span>
+              <span style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800,
+                background: 'color-mix(in srgb, var(--tertiary) 20%, transparent)', color: 'var(--tertiary)', border: '1px solid var(--tertiary)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {course.program}
+              </span>
+              <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>{course.code}</span>
             </div>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
+              {course.name}
+            </h1>
+            {fileInstructors.length > 0 && (
+              <div style={{ marginTop: '12px', display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-muted)' }}>INSTRUCTORS:</span>
+                {fileInstructors.map(inst => (
+                  <span key={inst.id} style={{
+                  background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+                  padding: '6px 12px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700,
+                  color: 'var(--text)', boxShadow: 'none', display: 'flex', alignItems: 'center', gap: '6px'
+                }}>
+                  <User size={14} color="var(--primary)" /> {inst.name}
+                </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

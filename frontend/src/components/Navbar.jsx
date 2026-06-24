@@ -128,11 +128,15 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
             <div style={{
               position: 'absolute', top: 'calc(100% + 12px)', right: 0,
               background: 'var(--bg-card)', border: '1px solid var(--border)',
-              borderRadius: '20px', boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
+              borderRadius: '20px', 
+              boxShadow: '0 16px 48px rgba(0,0,0,0.18), 0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent)',
               width: '180px', maxHeight: '75vh', overflowY: 'auto',
               zIndex: 9999, display: 'flex', flexDirection: 'column',
-              padding: '8px'
+              overflow: 'hidden'
             }}>
+              {/* Top accent */}
+              <div style={{ height: '4px', background: 'var(--accent)', flexShrink: 0 }} />
+              <div style={{ padding: '8px', display: 'flex', flexDirection: 'column' }}>
               {themes.map(t => (
                 <button
                   key={t.id}
@@ -153,6 +157,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   {t.name}
                 </button>
               ))}
+              </div>
             </div>
           )}
         </div>
@@ -226,23 +231,16 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
             <button
               onClick={() => setMenuOpen(o => !o)}
               style={{
-                background: menuOpen ? 'var(--primary)' : 'var(--bg-card)',
-                color: menuOpen ? 'var(--nav-btn-text)' : 'var(--text)',
-                padding: '6px 14px',
-                borderRadius: '100px',
-                fontSize: '0.85rem',
-                fontWeight: 700,
-                border: '1px solid var(--border)',
-                boxShadow: menuOpen ? 'none' : '0 2px 10px rgba(0,0,0,0.05)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                cursor: 'pointer',
-                transition: 'all 0.15s',
+                width: 44, height: 44, borderRadius: '14px',
+                border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 10%, var(--bg-card))',
+                color: 'var(--primary)', fontWeight: 800, fontSize: '1.1rem',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', transition: 'all 0.2s',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.08)'
               }}
             >
               {user.photoURL ? (
-                <img src={user.photoURL} alt="" style={{ width: '24px', height: '24px', borderRadius: '50%', border: '1px solid var(--border)' }} />
+                <img src={user.photoURL} alt="" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
               ) : (
                 <span style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--accent)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 800, color: 'var(--nav-btn-text)' }}>
                   {(user.displayName || user.username || '?')[0].toUpperCase()}
@@ -259,7 +257,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
               <div style={{
                 position: 'absolute', top: 'calc(100% + 12px)', right: 0,
                 background: 'var(--bg-card)', border: '1px solid var(--border)',
-                borderRadius: '24px', boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
+                borderRadius: '24px', 
+                boxShadow: '0 16px 48px rgba(0,0,0,0.18), 0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent)',
                 width: 'min(280px, calc(100vw - 24px))',
                 maxHeight: 'calc(100dvh - 160px)',
                 overflowY: 'auto',
@@ -267,10 +266,14 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 overflow: 'hidden'
               }}>
                 {/* Top accent */}
-                <div style={{ height: '5px', background: 'var(--primary)' }} />
+                <div style={{ height: '5px', background: 'linear-gradient(90deg, var(--primary), var(--electric))' }} />
 
                 {/* Profile header */}
-                <div style={{ padding: '18px 20px 14px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ 
+                  padding: '20px 20px 16px', 
+                  borderBottom: '1px solid var(--border)',
+                  background: 'linear-gradient(to bottom, color-mix(in srgb, var(--primary) 6%, transparent), transparent)'
+                }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     {user.photoURL ? (
                       <img src={user.photoURL} alt="" style={{ width: '48px', height: '48px', borderRadius: '50%', border: '1px solid var(--border)' }} />
@@ -422,12 +425,12 @@ const MobileTabBar = ({ user, onSignIn }) => {
             onClick={() => navigate(tab.path)}
             className="mob-tab-btn"
             style={{
-              background: active ? tab.color : 'var(--bg-card)',
-              color: active ? 'var(--nav-btn-text)' : 'var(--text-muted)',
-              border: active ? '1px solid transparent' : '1px solid var(--border)',
+              background: !active ? tab.color : 'var(--bg-card)',
+              color: !active ? 'var(--nav-btn-text)' : tab.color,
+              border: !active ? '1px solid transparent' : '1px solid var(--border)',
               boxShadow: active ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
               transform: active ? 'translateY(-2px)' : 'none',
-              opacity: active ? 1 : 0.82,
+              opacity: !active ? 0.9 : 1,
               borderRadius: '12px'
             }}
           >

@@ -50,18 +50,42 @@ const Bookmarks = ({ user, onSignIn }) => {
   };
 
   return (
-    <div style={{ paddingTop: '100px', minHeight: '100vh', background: 'var(--bg-subtle)' }}>
-      <div className="page-container">
-        <ScrollReveal>
-          <div style={{ marginBottom: '48px' }}>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              My <span className="gradient-text">Bookmarks</span> <Bookmark size={40} color="var(--primary)" />
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
+        
+        {/* Header */}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
+          <div style={{
+            background: 'var(--bg-card)',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
+          }}>
+            <Bookmark size={40} strokeWidth={2.5} color="var(--primary)" />
+          </div>
+          <div>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
+              My Bookmarks
             </h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px' }}>
+            <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-muted)', fontWeight: 500, lineHeight: 1.5 }}>
               Your personally curated collection of bookmarked resources.
             </p>
           </div>
-        </ScrollReveal>
+        </div>
 
         {!user ? (
           <ScrollReveal delay="reveal-delay-1">

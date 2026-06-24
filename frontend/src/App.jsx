@@ -111,8 +111,8 @@ const App = () => {
   const handleSignIn = () => setShowLogin(true);
   const handleSignOut = async () => {
     try { 
-      await api.post('/logout');
       await signOut(auth); 
+      await api.post('/logout').catch(() => {});
     } catch (e) { 
       console.error(e); 
     }

@@ -106,7 +106,7 @@ const UserProfile = ({ user, setUser }) => {
   if (error || !profile) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px' }}>
-        <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
+        <div className="page-container" style={{ maxWidth: '800px', textAlign: 'center' }}>
           <div style={{ padding: '60px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)' }}>
             <h2 style={{ margin: '0 0 16px', color: 'var(--text)' }}>User Not Found</h2>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>The user @{username} does not exist or has been removed.</p>
@@ -125,7 +125,7 @@ const UserProfile = ({ user, setUser }) => {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
-      <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 24px' }}>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
         
         {/* Back Link */}
         <Link
@@ -137,7 +137,7 @@ const UserProfile = ({ user, setUser }) => {
         </Link>
 
         {/* Profile Header */}
-        <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', padding: '40px', marginBottom: '32px', display: 'flex', gap: '32px', alignItems: 'center', animation: 'fadeUp 0.4s ease-out', flexWrap: 'wrap' }}>
+        <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', padding: '32px 40px', boxShadow: '0 8px 32px rgba(0,0,0,0.04)', marginBottom: '32px', display: 'flex', gap: '32px', alignItems: 'center', animation: 'fadeUp 0.4s ease-out', flexWrap: 'wrap' }}>
           {/* Avatar */}
           <div style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'var(--bg-subtle)', flexShrink: 0, overflow: 'hidden', border: '4px solid var(--bg-hero)', boxShadow: '0 0 0 1px var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {profile.photo_url ? (

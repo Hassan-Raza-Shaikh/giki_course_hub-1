@@ -63,17 +63,17 @@ const Login = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center', 
-      background: 'var(--bg-body)',
+      background: 'var(--bg-hero)',
       padding: '24px'
     }}>
       <div style={{ 
         width: '100%', 
         maxWidth: '420px', 
-        backgroundColor: 'var(--bg-white)', 
+        backgroundColor: 'var(--bg-card)', 
         borderRadius: '24px', 
         padding: '48px 40px',
-        boxShadow: 'var(--shadow-lg)',
-        border: '2px solid var(--border)'
+        boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+        border: '1px solid var(--border)'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}><BookOpen size={48} strokeWidth={1.5} color="var(--primary)" /></div>

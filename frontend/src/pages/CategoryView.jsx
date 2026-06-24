@@ -88,57 +88,57 @@ const CategoryView = () => {
   };
 
   return (
-    <div style={{ 
-      minHeight: '100vh', background: 'var(--bg-subtle)', paddingBottom: '120px', paddingTop: '70px', overflowX: 'hidden',
-      '--category-primary': themeColor
-    }}>
-      
-      {/* ── Standard Hero Header ───────────────────────────────── */}
-      <div style={{
-        background: 'var(--bg-hero)',
-        padding: 'clamp(40px, 6vw, 60px) 0 clamp(40px, 6vw, 60px)', 
-        borderBottom: '1px solid var(--border)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 2 }}>
-          <button
-            onClick={() => navigate('/courses')}
-            className="btn-nav hover-opacity"
-            style={{ 
-              textDecoration: 'none', background: 'var(--bg-white)', color: 'var(--text)', 
-              marginBottom: '32px', display: 'inline-flex', padding: '8px 16px', borderRadius: '100px',
-              border: '1px solid var(--border)', fontWeight: 600, fontSize: '0.85rem',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}
-          >
-            <ArrowLeft size={16} strokeWidth={2.5} style={{ marginRight: '6px' }} /> Back to Courses
-          </button>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '120px', overflowX: 'hidden', '--category-primary': themeColor }}>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
-            {/* Massive Icon Box */}
-            <div style={{
-              width: 'clamp(70px, 15vw, 100px)', height: 'clamp(70px, 15vw, 100px)', borderRadius: '24px',
-              background: 'var(--bg-white)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--category-primary)',
-              border: '1px solid var(--border)',
-              boxShadow: `0 20px 40px rgba(0,0,0,0.1)`,
-              transform: 'rotate(-5deg)',
-              animation: 'float 3s ease-in-out infinite'
-            }}>
-              {icon}
-            </div>
+        <button
+          onClick={() => navigate('/courses')}
+          style={{ 
+            background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--text)', 
+            padding: '8px 16px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: 700, 
+            marginBottom: 24, cursor: 'pointer', transition: 'all 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)', display: 'inline-flex', alignItems: 'center'
+          }}
+          onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.08)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+          onMouseOut={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+        >
+          <ArrowLeft size={16} strokeWidth={2.5} style={{ marginRight: '6px' }} /> Back to Courses
+        </button>
 
-            <div style={{ flex: 1, minWidth: '280px' }}>
-              <h1 style={{ margin: '0 0 12px', fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.04em', lineHeight: 1.1, fontFamily: 'var(--font-primary)' }}>
-                {categoryName || categorySlug.replace('-', ' ')}
-              </h1>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', margin: 0, fontWeight: 500 }}>
-                Found {totalCount} public {categoryName?.toLowerCase() || 'materials'} across all courses.
-              </p>
-            </div>
+        {/* Header */}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
+          <div style={{
+            background: 'var(--bg-card)',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+            color: 'var(--category-primary)'
+          }}>
+            {React.cloneElement(icon, { size: 40, strokeWidth: 2.5 })}
           </div>
+          <div style={{ flex: 1, minWidth: '220px' }}>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
+              {categoryName || categorySlug.replace('-', ' ')}
+            </h1>
+            <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-muted)', fontWeight: 500, lineHeight: 1.5 }}>
+              Found {totalCount} public {categoryName?.toLowerCase() || 'materials'} across all courses.
+            </p>
+          </div>
+        </div>
           
           {/* Search Bar */}
           <div style={{ marginTop: '40px', position: 'relative', maxWidth: '480px' }}>
@@ -162,10 +162,9 @@ const CategoryView = () => {
             />
           </div>
         </div>
-      </div>
 
       {/* ── Content Area ────────────────────────────────────────── */}
-      <div className="container" style={{ maxWidth: '1200px', margin: '40px auto 0', padding: '0 24px', position: 'relative', zIndex: 10 }}>
+      <div className="page-container" style={{ maxWidth: '1200px', marginTop: '40px', position: 'relative', zIndex: 10 }}>
         
         {loading ? (
           <div style={{ padding: '80px 0', textAlign: 'center', background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>

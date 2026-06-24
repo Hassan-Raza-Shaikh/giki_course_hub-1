@@ -365,31 +365,42 @@ const Courses = () => {
     : null;
 
   return (
-    <div style={{ paddingTop: '70px', minHeight: '100vh', background: 'var(--bg-subtle)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
 
-      {/* ── Header ──────────────────────────────────────────────── */}
-      <div style={{
-        background: 'var(--bg-hero)',
-        padding: 'clamp(48px, 8vw, 80px) 0 clamp(60px, 8vw, 100px)', borderBottom: '2px solid var(--border)',
-        position: 'relative', overflow: 'hidden',
-      }}>
-        <div style={{ position: 'absolute', width: 400, height: 400, background: 'var(--accent)', top: -100, right: -100, borderRadius: '50px', transform: 'rotate(15deg)', opacity: 0.15 }} />
-        <div style={{ position: 'absolute', width: 300, height: 300, background: 'var(--secondary)', bottom: -50, left: -50, borderRadius: '100px', transform: 'rotate(-25deg)', opacity: 0.15 }} />
-
-        <div className="page-container" style={{ position: 'relative', zIndex: 2 }}>
-          <ScrollReveal>
-            <p style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '16px',
-                color: 'var(--primary)' }}>
-                Academic Resources
-              </p>
-              <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.03em', marginBottom: '20px' }}>
-                All Courses by Faculty
-              </h1>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '560px', lineHeight: 1.7, marginBottom: '40px' }}>
-                Browse the complete GIKI course catalog organized by faculty, program, and year.
-              </p>
-
-            {/* Search */}
+        {/* Header */}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
+          <div style={{
+            background: 'var(--bg-card)',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
+          }}>
+            <Library size={40} strokeWidth={2.5} color="var(--primary)" />
+          </div>
+          <div>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
+              All Courses by Faculty
+            </h1>
+            <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-muted)', fontWeight: 500, lineHeight: 1.5 }}>
+              Browse the complete GIKI course catalog organized by faculty, program, and year.
+            </p>
+          </div>
+        </div>
             <div style={{ position: 'relative', maxWidth: '480px' }}>
               <span style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}><Search size={18} /></span>
               <input
@@ -408,7 +419,7 @@ const Courses = () => {
               />
               <style>{`input::placeholder { color: var(--text-muted); }`}</style>
             </div>
-          </ScrollReveal>
+
 
           {/* Resource type chips */}
           <div style={{ display: 'flex', gap: '12px', marginTop: '36px', flexWrap: 'wrap' }}>
@@ -441,7 +452,6 @@ const Courses = () => {
             })}
           </div>
         </div>
-      </div>
 
       {/* ── Search Results ──────────────────────────────────────── */}
       {searchResults && (

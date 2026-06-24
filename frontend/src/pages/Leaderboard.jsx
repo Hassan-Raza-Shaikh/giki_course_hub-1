@@ -35,20 +35,41 @@ const Leaderboard = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '90px', paddingBottom: '60px' }}>
-      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '0 16px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
 
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '32px', animation: 'fadeUp 0.5s ease-out' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(245, 158, 11, 0.12)', color: '#F59E0B', marginBottom: '14px' }}>
-            <Trophy size={28} />
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
+          <div style={{
+            background: 'var(--bg-card)',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
+          }}>
+            <Trophy size={40} strokeWidth={2.5} color="#F59E0B" />
           </div>
-          <h1 style={{ fontSize: 'clamp(1.6rem, 5vw, 2.4rem)', fontWeight: 800, color: 'var(--text)', marginBottom: '8px', letterSpacing: '-0.02em' }}>
-            Top Contributors
-          </h1>
-          <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', maxWidth: '460px', margin: '0 auto', lineHeight: 1.5 }}>
-            Celebrating the students who make learning easier for everyone by sharing their notes and resources.
-          </p>
+          <div>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
+              Top Contributors
+            </h1>
+            <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-muted)', fontWeight: 500, lineHeight: 1.5 }}>
+              Celebrating the students who make learning easier for everyone by sharing their notes and resources.
+            </p>
+          </div>
         </div>
 
         {/* Content */}

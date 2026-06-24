@@ -717,7 +717,8 @@ const AdminPanel = ({ user }) => {
 
 
   return (
-    <div style={{ paddingTop: '80px', minHeight: '100vh', background: 'var(--bg-subtle)' }}>
+    <div style={{ paddingTop: '80px', minHeight: '100vh', background: 'var(--bg-hero)' }}>
+      <div className="page-container" style={{ maxWidth: '1200px' }}>
 
       {/* Toast */}
       {toast && (
@@ -725,8 +726,8 @@ const AdminPanel = ({ user }) => {
           background: toast.type === 'error' ? '#FEE2E2' : '#D1FAE5',
           color: toast.type === 'error' ? '#991B1B' : '#065F46',
           padding: '14px 22px', borderRadius: '12px',
-          border: '2px solid currentColor', fontWeight: 700, fontSize: '0.9rem',
-          boxShadow: '4px 4px 0 rgba(0,0,0,0.15)',
+          border: '1px solid currentColor', fontWeight: 700, fontSize: '0.9rem',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
           animation: 'fadeSlideUp 0.3s ease',
         }}>
           {toast.msg}
@@ -746,11 +747,11 @@ const AdminPanel = ({ user }) => {
               onChange={e => setRejectReason(e.target.value)}
               placeholder="Reason for rejection (optional)…"
               rows={4}
-              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '2px solid #DC2626', borderRadius: '8px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
+              <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '1px solid #DC2626', borderRadius: '8px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
             </div>
           </div>
         </div>
@@ -768,13 +769,13 @@ const AdminPanel = ({ user }) => {
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution Notes <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(internal, not shown to users)</span></label>
             <textarea value={resolveNotes} onChange={e => setResolveNotes(e.target.value)}
               placeholder="What action was taken? e.g. 'Content verified — no issue found'"
-              rows={3} style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}><Pin size={14} /> Leave a note on this file <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(visible to all users)</span></label>
             <textarea value={resolveLeaveNote} onChange={e => setResolveLeaveNote(e.target.value)}
               placeholder="Optional: e.g. 'Question 3 contains an error — please ignore it.'"
-              rows={3} style={{ width: '100%', border: '2px solid #FCD34D', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid #FCD34D', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 700, color: '#DC2626' }}>
@@ -782,8 +783,8 @@ const AdminPanel = ({ user }) => {
               Also permanently delete the flagged file
             </label>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
+              <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '1px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
             </div>
           </div>
         </div>
@@ -803,11 +804,11 @@ const AdminPanel = ({ user }) => {
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution notes</label>
             <textarea value={issueResolveNotes} onChange={e => setIssueResolveNotes(e.target.value)}
               placeholder="e.g. 'Fixed in latest deploy — search button now works on mobile.'"
-              rows={4} style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              rows={4} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setIssueResolveModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
+              <button onClick={() => setIssueResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '1px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
             </div>
           </div>
         </div>
@@ -816,12 +817,12 @@ const AdminPanel = ({ user }) => {
       {/* Generic Confirm modal */}
       {confirmModal && (
         <div onClick={() => setConfirmModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: `2px solid ${confirmModal.danger ? '#DC2626' : 'var(--text)'}`, boxShadow: `6px 6px 0 ${confirmModal.danger ? '#DC2626' : 'var(--text)'}`, padding: '28px', width: '100%', maxWidth: '440px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: `1px solid var(--border)`, boxShadow: `0 10px 40px rgba(0,0,0,0.1)`, padding: '28px', width: '100%', maxWidth: '440px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>{confirmModal.title}</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>{confirmModal.body}</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setConfirmModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmModal.onConfirm} style={{ padding: '10px 20px', border: `2px solid ${confirmModal.danger ? '#DC2626' : '#10B981'}`, borderRadius: '8px', background: confirmModal.danger ? '#DC2626' : '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm</button>
+              <button onClick={() => setConfirmModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmModal.onConfirm} style={{ padding: '10px 20px', border: `1px solid ${confirmModal.danger ? '#DC2626' : '#10B981'}`, borderRadius: '8px', background: confirmModal.danger ? '#DC2626' : '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm</button>
             </div>
           </div>
         </div>
@@ -838,7 +839,7 @@ const AdminPanel = ({ user }) => {
                 type="text" 
                 value={editFileForm.title} 
                 onChange={e => setEditFileForm({ ...editFileForm, title: e.target.value })}
-                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               />
             </div>
 
@@ -847,7 +848,7 @@ const AdminPanel = ({ user }) => {
               <select 
                 value={editFileForm.category_id}
                 onChange={e => setEditFileForm({ ...editFileForm, category_id: e.target.value })}
-                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               >
                 <option value="">Select Category</option>
                 {categories.length > 0 && categories.map(c => (
@@ -861,7 +862,7 @@ const AdminPanel = ({ user }) => {
               <select 
                 value={editFileForm.instructor_id}
                 onChange={e => setEditFileForm({ ...editFileForm, instructor_id: e.target.value })}
-                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               >
                 <option value="">None / General</option>
                 {instructors.map(i => (
@@ -879,7 +880,7 @@ const AdminPanel = ({ user }) => {
                 value={editFileForm.course_code}
                 onChange={e => setEditFileForm({ ...editFileForm, course_code: e.target.value.toUpperCase() })}
                 placeholder={`Current: ${editFileModal?.course_code || '—'}`}
-                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
               />
               <datalist id="edit-course-list">
                 {editCourses.map(c => (
@@ -890,8 +891,8 @@ const AdminPanel = ({ user }) => {
             </div>
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Save Changes</button>
+              <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '1px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Save Changes</button>
             </div>
           </div>
         </div>
@@ -916,7 +917,7 @@ const AdminPanel = ({ user }) => {
                 <select 
                   value={linkForm.course_id}
                   onChange={e => setLinkForm({ ...linkForm, course_id: e.target.value })}
-                  style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
+                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
                 >
                   <option value="">Select Course...</option>
                   {editCourses.map(c => (
@@ -929,7 +930,7 @@ const AdminPanel = ({ user }) => {
                 <select 
                   value={linkForm.category_id}
                   onChange={e => setLinkForm({ ...linkForm, category_id: e.target.value })}
-                  style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
+                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
                 >
                   <option value="">Select Category...</option>
                   {categories.map(c => (
@@ -944,7 +945,7 @@ const AdminPanel = ({ user }) => {
                   value={linkForm.custom_title} 
                   onChange={e => setLinkForm({ ...linkForm, custom_title: e.target.value })}
                   placeholder="Override the display title for this course..."
-                  style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
+                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
                 />
               </div>
               <button onClick={submitLink} style={{ width: '100%', padding: '10px', background: '#6366F1', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>
@@ -974,7 +975,7 @@ const AdminPanel = ({ user }) => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
-              <button onClick={() => setLinkModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Close</button>
+              <button onClick={() => setLinkModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Close</button>
             </div>
           </div>
         </div>
@@ -991,24 +992,24 @@ const AdminPanel = ({ user }) => {
             </p>
             <textarea value={noteText} onChange={e => setNoteText(e.target.value)}
               placeholder="e.g. 'Question 3 in this assignment contains an error — ignore it.'"
-              rows={5} style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              rows={5} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'space-between' }}>
               <div>
                 {noteModal.admin_note && (
-                  <button onClick={deleteNote} style={{ padding: '10px 16px', border: '2px solid #EF4444', borderRadius: '8px', background: 'var(--bg-white)', color: '#EF4444', cursor: 'pointer', fontWeight: 700 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Remove Note</button>
+                  <button onClick={deleteNote} style={{ padding: '10px 16px', border: '1px solid #EF4444', borderRadius: '8px', background: 'var(--bg-white)', color: '#EF4444', cursor: 'pointer', fontWeight: 700 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Remove Note</button>
                 )}
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
-                <button onClick={() => setNoteModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-                <button onClick={saveNote} disabled={!noteText.trim()} style={{ padding: '10px 20px', border: '2px solid #F59E0B', borderRadius: '8px', background: '#F59E0B', color: 'white', cursor: 'pointer', fontWeight: 700, opacity: noteText.trim() ? 1 : 0.5 }}>Save Note</button>
+                <button onClick={() => setNoteModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+                <button onClick={saveNote} disabled={!noteText.trim()} style={{ padding: '10px 20px', border: '1px solid #F59E0B', borderRadius: '8px', background: '#F59E0B', color: 'white', cursor: 'pointer', fontWeight: 700, opacity: noteText.trim() ? 1 : 0.5 }}>Save Note</button>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      <div className="page-container">
+
         {/* Header */}
         <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
@@ -1035,9 +1036,9 @@ const AdminPanel = ({ user }) => {
                 key={s.label} 
                 onClick={() => setTab(s.key)}
                 style={{ 
-                  background: 'var(--bg-white)', border: `1px solid var(--border)`, 
+                  background: 'var(--bg-card)', border: `1px solid var(--border)`, 
                   borderRadius: '14px', padding: '20px', textAlign: 'center',
-                  boxShadow: `0 4px 12px rgba(0,0,0,0.05)`, cursor: 'pointer',
+                  boxShadow: `0 8px 32px rgba(0,0,0,0.06)`, cursor: 'pointer',
                   transition: 'transform 0.1s'
                 }}
                 onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
@@ -1062,9 +1063,9 @@ const AdminPanel = ({ user }) => {
                 padding: '10px 18px', borderRadius: '100px',
                 fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
                 border: '1px solid var(--border)',
-                background: tab === t.key ? 'var(--text)' : 'var(--bg-white)',
+                background: tab === t.key ? 'var(--text)' : 'var(--bg-card)',
                 color: tab === t.key ? 'var(--bg-hero)' : 'var(--text)',
-                boxShadow: tab === t.key ? 'none' : '2px 2px 0 var(--text)',
+                boxShadow: tab === t.key ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
                 transition: 'all 0.15s',
                 whiteSpace: 'nowrap'
               }}
@@ -1079,7 +1080,7 @@ const AdminPanel = ({ user }) => {
         {tab === 'pending' && (
           <div>
             {pending.length > 0 && (
-              <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', background: 'var(--bg-white)', padding: '12px 20px', borderRadius: '12px', border: '2px solid var(--border)', flexWrap: 'wrap' }}>
+              <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', background: 'var(--bg-card)', padding: '12px 20px', borderRadius: '12px', border: '1px solid var(--border)', flexWrap: 'wrap', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{selectedPending.size} selected</span>
                   <button 
@@ -1119,7 +1120,7 @@ const AdminPanel = ({ user }) => {
                 </div>
               </div>
             )}
-            <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : pending.length === 0 ? (
                 <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg="No files pending review — all caught up!" />
               ) : pending.map(f => (
@@ -1160,7 +1161,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Reports tab ── */}
         {tab === 'reports' && (
-          <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : reports.length === 0 ? (
               <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No active reports. The platform is clean!" />
             ) : reports.map(r => (
@@ -1196,7 +1197,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Issues tab ── */}
         {tab === 'issues' && (
-          <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : issues.length === 0 ? (
               <EmptyRow icon={<Sparkles size={48} color="var(--primary)" />} msg="No open issues reported. Everything is running smoothly!" />
             ) : issues.map(i => (
@@ -1237,7 +1238,7 @@ const AdminPanel = ({ user }) => {
                   setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });
                   setIsExistingCode(false);
                   setExistingProgramIds([]);
-                }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
+                }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
               </h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
@@ -1322,7 +1323,7 @@ const AdminPanel = ({ user }) => {
 
               {/* ── Bulk mode toggle (hidden when editing) ── */}
               {!editingCourse && (
-                <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '10px', border: '2px solid var(--border)' }}>
+                <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '10px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                     <div>
                       <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>
@@ -1342,7 +1343,7 @@ const AdminPanel = ({ user }) => {
                         border: '1px solid var(--border)', cursor: 'pointer',
                         background: bulkCourseMode ? 'var(--primary)' : 'var(--bg-white)',
                         color: bulkCourseMode ? 'white' : 'var(--text)',
-                        boxShadow: '2px 2px 0 var(--border)',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                       }}
                     >
                       {bulkCourseMode ? '✓ Enabled' : 'Enable'}
@@ -1456,7 +1457,7 @@ const AdminPanel = ({ user }) => {
                 {coursesTotalCount} course{coursesTotalCount !== 1 ? 's' : ''} · Page {coursesPage} of {coursesTotalPages}
               </span>
             </div>
-            <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : courses.map(c => (
                 <div key={c.course_id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
                   <span style={{ fontSize: '1.5rem' }}><IconMapper emoji={c.icon} size={28} /></span>
@@ -1478,13 +1479,13 @@ const AdminPanel = ({ user }) => {
                 <button
                   disabled={coursesPage <= 1}
                   onClick={() => setCoursesPage(p => p - 1)}
-                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage <= 1 ? 'not-allowed' : 'pointer', opacity: coursesPage <= 1 ? 0.4 : 1 }}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage <= 1 ? 'not-allowed' : 'pointer', opacity: coursesPage <= 1 ? 0.4 : 1, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
                 >← Prev</button>
                 <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {coursesPage} / {coursesTotalPages}</span>
                 <button
                   disabled={coursesPage >= coursesTotalPages}
                   onClick={() => setCoursesPage(p => p + 1)}
-                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage >= coursesTotalPages ? 'not-allowed' : 'pointer', opacity: coursesPage >= coursesTotalPages ? 0.4 : 1 }}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage >= coursesTotalPages ? 'not-allowed' : 'pointer', opacity: coursesPage >= coursesTotalPages ? 0.4 : 1, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
                 >Next →</button>
               </div>
             )}
@@ -1495,7 +1496,7 @@ const AdminPanel = ({ user }) => {
         {/* ── Instructors tab ── */}
         {tab === 'links' && (
           <div>
-            <form onSubmit={saveCourseLink} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
+            <form onSubmit={saveCourseLink} style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', padding: '28px', marginBottom: '32px', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Link size={16} /> Link Two Courses (Resource Sharing)
               </h3>
@@ -1515,7 +1516,7 @@ const AdminPanel = ({ user }) => {
               <button type="submit" style={{ ...btnStyle('var(--primary)'), marginTop: '20px' }}>Create Link</button>
             </form>
 
-            <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : courseLinks.length === 0 ? (
                 <EmptyRow icon={<Link size={48} color="var(--primary)" />} msg="No manual course links active." />
               ) : courseLinks.map(l => (
@@ -1535,7 +1536,7 @@ const AdminPanel = ({ user }) => {
 
         {tab === 'instructors' && (
           <div>
-            <form onSubmit={saveInstructor} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
+            <form onSubmit={saveInstructor} style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', padding: '28px', marginBottom: '32px', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               <h3 style={{ fontWeight: 900, marginBottom: '20px' }}><GraduationCap size={24} /> Add New Instructor</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                 <div className="form-group">
@@ -1560,7 +1561,7 @@ const AdminPanel = ({ user }) => {
               </button>
             </form>
 
-            <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div> : instructors.map(i => (
                 <div key={i.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
                   <div style={{ flex: 1 }}>
@@ -1655,12 +1656,12 @@ const AdminPanel = ({ user }) => {
                 value={fileFilter}
                 onChange={e => setFileFilter(e.target.value)}
                 placeholder="Filter by title or course code…"
-                style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+                style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
               />
               <select
                 value={filesStatusFilter}
                 onChange={e => { setFilesStatusFilter(e.target.value); setFilesPage(1); }}
-                style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+                style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
               >
                 <option value="">All Statuses</option>
                 <option value="approved"><CheckCircle size={14} /> Approved</option>
@@ -1670,7 +1671,7 @@ const AdminPanel = ({ user }) => {
               <select
                 value={filesCategoryFilter}
                 onChange={e => { setFilesCategoryFilter(e.target.value); setFilesPage(1); }}
-                style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+                style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
               >
                 <option value="">All Categories</option>
                 {categories.length > 0 && categories.map(c => (
@@ -1682,7 +1683,7 @@ const AdminPanel = ({ user }) => {
               </span>
             </div>
 
-            <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : filteredAll.length === 0 ? <EmptyRow icon={<Folder size={48} color="var(--primary)" />} msg="No files found." /> : filteredAll.map(f => (
                 <div key={f.file_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -1711,13 +1712,13 @@ const AdminPanel = ({ user }) => {
                 <button
                   disabled={filesPage <= 1}
                   onClick={() => setFilesPage(p => p - 1)}
-                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage <= 1 ? 'not-allowed' : 'pointer', opacity: filesPage <= 1 ? 0.4 : 1 }}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage <= 1 ? 'not-allowed' : 'pointer', opacity: filesPage <= 1 ? 0.4 : 1 }}
                 >← Prev</button>
                 <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {filesPage} / {filesTotalPages}</span>
                 <button
                   disabled={filesPage >= filesTotalPages}
                   onClick={() => setFilesPage(p => p + 1)}
-                  style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage >= filesTotalPages ? 'not-allowed' : 'pointer', opacity: filesPage >= filesTotalPages ? 0.4 : 1 }}
+                  style={{ padding: '8px 20px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage >= filesTotalPages ? 'not-allowed' : 'pointer', opacity: filesPage >= filesTotalPages ? 0.4 : 1 }}
                 >Next →</button>
               </div>
             )}
@@ -1727,7 +1728,7 @@ const AdminPanel = ({ user }) => {
         {/* ── Users tab ── */}
         {tab === 'users' && (
           <>
-          <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : users.length === 0 ? <EmptyRow icon={<Users size={48} color="var(--primary)" />} msg="No users yet." /> : users.map(u => (
               <div key={u.user_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>
@@ -1777,15 +1778,15 @@ const AdminPanel = ({ user }) => {
         {/* ── Admins tab ── */}
         {tab === 'admins' && (
           <div>
-            <form onSubmit={grantAdmin} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '24px', marginBottom: '20px' }}>
+            <form onSubmit={grantAdmin} style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', padding: '24px', marginBottom: '20px', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               <h3 style={{ fontWeight: 800, marginBottom: '16px' }}><Shield size={24} /> Grant Admin Access</h3>
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <input value={newAdminEmail} onChange={e => setNewAdminEmail(e.target.value)} type="email" placeholder="user@example.com" required style={{ flex: 2, minWidth: '200px', padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '8px', fontSize: '0.9rem' }} />
-                <input value={newAdminNotes} onChange={e => setNewAdminNotes(e.target.value)} placeholder="Role / notes (optional)" style={{ flex: 3, minWidth: '160px', padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '8px', fontSize: '0.9rem' }} />
+                <input value={newAdminEmail} onChange={e => setNewAdminEmail(e.target.value)} type="email" placeholder="user@example.com" required style={{ flex: 2, minWidth: '200px', padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.9rem' }} />
+                <input value={newAdminNotes} onChange={e => setNewAdminNotes(e.target.value)} placeholder="Role / notes (optional)" style={{ flex: 3, minWidth: '160px', padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '0.9rem' }} />
                 <button type="submit" style={btnStyle('#6366F1')}>Grant</button>
               </div>
             </form>
-            <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : admins.length === 0 ? <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No admins configured yet." /> : admins.map(a => (
                 <div key={a.email} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1 }}>
@@ -1801,7 +1802,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Activity Log tab ── */}
         {tab === 'logs' && (
-          <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : logs.length === 0 ? <EmptyRow icon={<Activity size={48} color="var(--primary)" />} msg="No admin activity yet." /> : logs.map(l => (
               <div key={l.log_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>{ACTION_ICONS[l.action] || '•'}</span>
@@ -1819,7 +1820,7 @@ const AdminPanel = ({ user }) => {
                   onClick={() => setLogsPage(p => Math.max(1, p - 1))}
                   disabled={logsPage <= 1}
                   style={{
-                    padding: '8px 16px', background: 'var(--bg-white)', border: '2px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+                    padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '10px', fontWeight: 700,
                     cursor: logsPage <= 1 ? 'not-allowed' : 'pointer', opacity: logsPage <= 1 ? 0.5 : 1
                   }}>Previous</button>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Page {logsPage} of {logsTotalPages}</span>
@@ -1827,7 +1828,7 @@ const AdminPanel = ({ user }) => {
                   onClick={() => setLogsPage(p => Math.min(logsTotalPages, p + 1))}
                   disabled={logsPage >= logsTotalPages}
                   style={{
-                    padding: '8px 16px', background: 'var(--bg-white)', border: '2px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+                    padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '10px', fontWeight: 700,
                     cursor: logsPage >= logsTotalPages ? 'not-allowed' : 'pointer', opacity: logsPage >= logsTotalPages ? 0.5 : 1
                   }}>Next</button>
               </div>
@@ -1855,21 +1856,21 @@ const EmptyRow = ({ icon, msg }) => (
 
 const btnStyle = (bg) => ({
   color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--tertiary)' || bg === 'var(--text)') ? 'var(--bg-hero)' : 'white', 
-  background: bg,  border: `2px solid ${bg}`,
+  background: bg,  border: `1px solid ${bg}`,
   borderRadius: '8px', padding: '7px 14px', fontWeight: 700,
   fontSize: '0.8rem', cursor: 'pointer', whiteSpace: 'nowrap',
 });
 
 const inputStyle = {
-  width: '100%', padding: '12px 14px', border: '2px solid var(--border)',
+  width: '100%', padding: '12px 14px', border: '1px solid var(--border)',
   borderRadius: '10px', fontSize: '0.9rem', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
   background: 'var(--bg-white)', color: 'var(--text)'
 };
 
 const cardStyle = {
-  background: 'var(--bg-white)', padding: '24px', borderRadius: '16px',
-  border: '2px solid var(--border)', boxShadow: '4px 4px 0 var(--border)'
+  background: 'var(--bg-card)', padding: '24px', borderRadius: '16px',
+  border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.06)'
 };
 
 const cardTitleStyle = { 

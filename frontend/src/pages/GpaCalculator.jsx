@@ -269,22 +269,24 @@ function GpaCalculator({ user }) {
 
 
   return (
-    <div className="container" style={{ padding: '120px 20px 100px', maxWidth: '900px', margin: '0 auto' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
       
-      {/* Header */}
-      <div style={{
-        background: 'color-mix(in srgb, var(--bg-card) 70%, var(--accent) 30%)',
-        border: '1px solid var(--border)',
-        borderRadius: '24px',
-        padding: '32px 40px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-        marginBottom: '40px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '24px',
-        color: 'var(--text)',
-        flexWrap: 'wrap'
-      }}>
+        {/* Header */}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
         <div style={{
           background: 'var(--bg-card)',
           padding: '20px',
@@ -748,6 +750,7 @@ function GpaCalculator({ user }) {
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+      </div>
     </div>
   );
 }

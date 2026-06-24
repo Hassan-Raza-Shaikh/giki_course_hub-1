@@ -31,22 +31,47 @@ const ReportIssue = ({ user }) => {
   };
 
   return (
-    <div style={{ paddingTop: '120px', minHeight: '100vh', background: 'var(--bg)', position: 'relative' }}>
-      <div className="grid-bg" />
+    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
       
-      <div className="page-container" style={{ maxWidth: '600px', position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, marginBottom: '8px', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-            <Flag size={36} color="var(--accent)" /> Report an <span className="gradient-text">Issue</span>
-          </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto', lineHeight: 1.5 }}>
-            Found a bug? UI looking weird? Let us know! Please report this issue so the developers can get on it—your reporting helps us improve the app experience!
-          </p>
+      <div className="page-container" style={{ maxWidth: '1000px' }}>
+        
+        {/* Header */}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px 40px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)',
+          marginBottom: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          color: 'var(--text)',
+          flexWrap: 'wrap',
+          animation: 'fadeUp 0.4s ease-out'
+        }}>
+          <div style={{
+            background: 'var(--bg-card)',
+            padding: '20px',
+            borderRadius: '20px',
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
+          }}>
+            <Flag size={40} strokeWidth={2.5} color="var(--accent)" />
+          </div>
+          <div>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
+              Report an Issue
+            </h1>
+            <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-muted)', fontWeight: 500, lineHeight: 1.5 }}>
+              Found a bug? UI looking weird? Let us know! Your reporting helps us improve the app experience.
+            </p>
+          </div>
         </div>
 
         <div className="report-issue-card" style={{ 
-          background: 'var(--bg-white)', borderRadius: '24px', border: '3px solid var(--text)',
-          boxShadow: '10px 10px 0 var(--text)', padding: '40px'
+          background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.04)', padding: '40px'
         }}>
           {success ? (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
