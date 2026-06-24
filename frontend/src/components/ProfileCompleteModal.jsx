@@ -272,6 +272,7 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
           >
             {saving ? 'Saving…' : (mode === 'edit' ? 'Save Changes' : 'Save & Continue')}
           </button>
+          </div>
         </form>
       </div>
       <style>{`
