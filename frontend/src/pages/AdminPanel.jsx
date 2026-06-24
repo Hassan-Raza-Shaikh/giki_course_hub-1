@@ -162,10 +162,10 @@ const AdminPanel = ({ user }) => {
 
   /* ── load stats ── */
   const loadStats = useCallback(() => {
-    api.get('/admin/stats').then(r => setStats(r.data.stats)).catch(() => {});
+    api.get('/admin/stats').then(r => setStats(r.data.stats)).catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); });
     // Eagerly fetch counts for tab labels so they show immediately
-    api.get('/admin/reports').then(r => setReportCounts(r.data.counts || {})).catch(() => {});
-    api.get('/admin/issues').then(r => setIssueCounts(r.data.counts || {})).catch(() => {});
+    api.get('/admin/reports').then(r => setReportCounts(r.data.counts || {})).catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); });
+    api.get('/admin/issues').then(r => setIssueCounts(r.data.counts || {})).catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); });
   }, []);
 
   /* ── load per-tab data ── */
@@ -194,7 +194,7 @@ const AdminPanel = ({ user }) => {
       logs:    () => api.get('/admin/logs', { params: { page: logsPage } }).then(r => { setLogs(r.data.logs || []); setLogsTotalPages(r.data.pages || 1); }),
     };
     const loader = loaders[tab];
-    if (loader) loader().catch(() => {}).finally(() => setLoading(false));
+    if (loader) loader().catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); }).finally(() => setLoading(false));
     else setLoading(false);
   }, [tab, isAdmin, loadStats]);
 
@@ -207,7 +207,7 @@ const AdminPanel = ({ user }) => {
         setUsers(r.data.users || []);
         setUsersTotalPages(r.data.pages || 1);
       })
-      .catch(() => {})
+      .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
       .finally(() => setLoading(false));
   }, [usersPage, tab, isAdmin]);
 
@@ -220,7 +220,7 @@ const AdminPanel = ({ user }) => {
         setLogs(r.data.logs || []);
         setLogsTotalPages(r.data.pages || 1);
       })
-      .catch(() => {})
+      .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
       .finally(() => setLoading(false));
   }, [logsPage, tab, isAdmin]);
 
@@ -234,7 +234,7 @@ const AdminPanel = ({ user }) => {
         setIssueCounts(r.data.counts || {});
         setIssuesTotalPages(r.data.pages || 1);
       })
-      .catch(() => {})
+      .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
       .finally(() => setLoading(false));
   }, [issuesPage, tab, isAdmin]);
 
@@ -248,7 +248,7 @@ const AdminPanel = ({ user }) => {
         setFilesTotalPages(r.data.pages || 1);
         setFilesTotalCount(r.data.total || 0);
       })
-      .catch(() => {})
+      .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
       .finally(() => setLoading(false));
   }, [filesPage, filesStatusFilter, filesCategoryFilter]);
   // Re-fetch courses when page or search changes
@@ -262,7 +262,7 @@ const AdminPanel = ({ user }) => {
           setCoursesTotalPages(r.data.pages || 1);
           setCoursesTotalCount(r.data.total || 0);
         })
-        .catch(() => {})
+        .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
         .finally(() => setLoading(false));
     }, courseSearch ? 400 : 0); // debounce search
     return () => clearTimeout(timer);
@@ -394,9 +394,9 @@ const AdminPanel = ({ user }) => {
       course_code: file.course_code || '',
     });
     // Load all course codes for the course picker (use dedicated unpaginated endpoint)
-    api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(() => {});
+    api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); });
     // Load instructors (only fetched normally on the instructors tab, so always refresh here)
-    api.get('/instructors').then(r => setInstructors(r.data.instructors || [])).catch(() => {});
+    api.get('/instructors').then(r => setInstructors(r.data.instructors || [])).catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); });
   };
 
   const saveEditFile = async () => {
@@ -429,7 +429,7 @@ const AdminPanel = ({ user }) => {
     setLinkForm({ course_id: '', category_id: '', custom_title: file.title });
     setExistingLinks([]);
     
-    api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(() => {});
+    api.get('/admin/courses/codes').then(r => setEditCourses(r.data.courses || [])).catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); });
     
     try {
       const res = await api.get(`/files/${file.file_id}/links`);
