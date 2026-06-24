@@ -185,3 +185,22 @@ CREATE TABLE manual_course_links (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(course_code_1, course_code_2)
 );
+
+-- =====================================
+-- 12. GPA RECORDS
+-- =====================================
+CREATE TABLE semester_gpas (
+    gpa_id        SERIAL PRIMARY KEY,
+    user_id       INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    faculty       TEXT NOT NULL,
+    program       TEXT NOT NULL,
+    semester      INT NOT NULL,
+    gpa           NUMERIC(3,2) NOT NULL,
+    total_credits INT NOT NULL,
+    courses_json  JSONB NOT NULL,
+    created_at    TIMESTAMPTZ DEFAULT NOW(),
+    updated_at    TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(user_id, faculty, program, semester)
+);
+
+CREATE INDEX idx_semester_gpas_user ON semester_gpas(user_id);

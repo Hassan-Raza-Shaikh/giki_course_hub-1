@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { User, Calendar, BookOpen, FileText, Download, Clock, ArrowLeft, Edit3 } from 'lucide-react';
+import { User, Calendar, BookOpen, FileText, Download, Clock, ArrowLeft, Edit3, Calculator } from 'lucide-react';
 import api from '../services/api';
 import ProfileCompleteModal from '../components/ProfileCompleteModal';
 
@@ -15,6 +15,10 @@ const UserProfile = ({ user, setUser }) => {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingFiles, setLoadingFiles] = useState(true);
   const [error, setError] = useState(null);
+
+  // GPA state
+  const [gpaData, setGpaData] = useState(null);
+  const [loadingGpa, setLoadingGpa] = useState(true);
 
   // Pagination for files
   const [page, setPage] = useState(1);
@@ -53,6 +57,22 @@ const UserProfile = ({ user, setUser }) => {
       })
       .catch(() => {
         setLoadingFiles(false);
+      });
+
+    // Fetch GPA records
+    setLoadingGpa(true);
+    api.get(`/gpa/user/${username}`)
+      .then(res => {
+        if (res.data.success && res.data.records.length > 0) {
+          setGpaData(res.data);
+        } else {
+          setGpaData(null);
+        }
+        setLoadingGpa(false);
+      })
+      .catch(() => {
+        setGpaData(null);
+        setLoadingGpa(false);
       });
   }, [username, page, error]);
 
@@ -170,6 +190,60 @@ const UserProfile = ({ user, setUser }) => {
             )}
           </div>
         </div>
+
+        {/* GPA Section */}
+        {gpaData && gpaData.records && gpaData.records.length > 0 && (
+          <div style={{ marginBottom: '40px', animation: 'fadeUp 0.4s ease-out' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <Calculator size={28} color="var(--accent)" />
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: 'var(--text)' }}>
+                Academic Performance
+              </h2>
+              {gpaData.cgpa && (
+                <div style={{ marginLeft: 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
+                  CGPA: {gpaData.cgpa}
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+              {gpaData.records.map(r => (
+                <div key={r.gpa_id} style={{
+                  background: 'var(--bg-white)',
+                  border: '2px solid var(--text)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  boxShadow: '4px 4px 0px var(--text)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div>
+                      <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '2px' }}>Semester {r.semester}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{r.program}</div>
+                    </div>
+                    <div style={{
+                      background: 'var(--bg-subtle)',
+                      border: '2px solid var(--text)',
+                      borderRadius: '10px',
+                      padding: '8px 12px',
+                      fontWeight: 900,
+                      fontSize: '1.2rem',
+                      color: 'var(--text)'
+                    }}>
+                      {r.gpa}
+                    </div>
+                  </div>
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                    <span>{r.total_credits} Credits</span>
+                    <span>{r.faculty}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Uploads Section */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
