@@ -48,7 +48,7 @@ def firebase_auth():
     id_token     = data.get('idToken')
     uid_fallback = data.get('uid')
     email        = (data.get('email', '') or '').strip().lower()
-    display_name = (data.get('displayName', '') or '').strip() or (email.split('@')[0] if email else 'user')
+    display_name = (data.get('displayName', '') or '').strip()
     photo_url    = (data.get('photoURL', '') or '').strip()
 
     # Optional profile fields — only sent during native email/password sign-up
@@ -85,12 +85,12 @@ def firebase_auth():
         cur = conn.cursor()
 
         # 1. Existing user by Firebase UID
-        cur.execute("SELECT user_id, username, role FROM users WHERE firebase_uid = %s;", (uid,))
+        cur.execute("SELECT user_id, username, role, display_name FROM users WHERE firebase_uid = %s;", (uid,))
         user = cur.fetchone()
 
         if not user:
             # 2. Existing user linked by email
-            cur.execute("SELECT user_id, username, role FROM users WHERE email = %s;", (email,))
+            cur.execute("SELECT user_id, username, role, display_name FROM users WHERE email = %s;", (email,))
             user = cur.fetchone()
             if user:
                 cur.execute("UPDATE users SET firebase_uid = %s WHERE user_id = %s;", (uid, user[0]))
@@ -101,15 +101,16 @@ def firebase_auth():
                 if cur.fetchone():
                     username = f"{username}_{uid[:4]}"
                 cur.execute(
-                    """INSERT INTO users (username, email, firebase_uid, role)
-                       VALUES (%s, %s, %s, 'user')
-                       RETURNING user_id, username, role;""",
-                    (username, email, uid)
+                    """INSERT INTO users (username, email, firebase_uid, role, display_name)
+                       VALUES (%s, %s, %s, 'user', %s)
+                       RETURNING user_id, username, role, display_name;""",
+                    (username, email, uid, display_name or username)
                 )
                 user = cur.fetchone()
 
         user_id = user[0]
         role    = user[2]
+        existing_display_name = user[3]
 
         # 4. Check if user is an admin to sync role
         cur.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
@@ -122,25 +123,28 @@ def firebase_auth():
             cur.execute("UPDATE users SET role = 'user' WHERE user_id = %s;", (user_id,))
             role = 'user'
 
-        # Update display_name / photo_url on users row
-        cur.execute(
-            "UPDATE users SET display_name = %s, photo_url = %s WHERE user_id = %s;",
-            (display_name, photo_url, user_id)
-        )
-
-        # If profile fields were sent (native sign-up), upsert user_profiles
-        if display_name or student_id or batch_year or program:
+        # Update display_name / photo_url on users row gracefully
+        if display_name or photo_url:
             cur.execute(
-                """INSERT INTO user_profiles (user_id, display_name, student_id, batch_year, program)
-                   VALUES (%s, %s, %s, %s, %s)
-                   ON CONFLICT (user_id) DO UPDATE
-                     SET display_name = EXCLUDED.display_name,
-                         student_id   = COALESCE(EXCLUDED.student_id,   user_profiles.student_id),
-                         batch_year   = COALESCE(EXCLUDED.batch_year,   user_profiles.batch_year),
-                         program      = COALESCE(EXCLUDED.program,      user_profiles.program),
-                         updated_at   = CURRENT_TIMESTAMP;""",
-                (user_id, display_name or user[1], student_id, batch_year, program)
+                """UPDATE users 
+                   SET display_name = COALESCE(NULLIF(%s, ''), display_name), 
+                       photo_url = COALESCE(NULLIF(%s, ''), photo_url) 
+                   WHERE user_id = %s;""",
+                (display_name, photo_url, user_id)
             )
+
+        # Upsert user_profiles gracefully
+        cur.execute(
+            """INSERT INTO user_profiles (user_id, display_name, student_id, batch_year, program)
+               VALUES (%s, COALESCE(NULLIF(%s, ''), %s), %s, %s, %s)
+               ON CONFLICT (user_id) DO UPDATE
+                 SET display_name = COALESCE(NULLIF(EXCLUDED.display_name, ''), user_profiles.display_name),
+                     student_id   = COALESCE(EXCLUDED.student_id,   user_profiles.student_id),
+                     batch_year   = COALESCE(EXCLUDED.batch_year,   user_profiles.batch_year),
+                     program      = COALESCE(EXCLUDED.program,      user_profiles.program),
+                     updated_at   = CURRENT_TIMESTAMP;""",
+            (user_id, display_name, user[1], student_id, batch_year, program)
+        )
 
         # Fetch latest profile data to return complete state
         cur.execute("SELECT student_id, batch_year, program, user_type FROM user_profiles WHERE user_id = %s;", (user_id,))

@@ -1,6 +1,6 @@
 import { BookOpen, PartyPopper } from 'lucide-react';
 import React, { useState } from 'react';
-import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, googleProvider } from '../services/firebase';
 import api from '../services/api';
 
@@ -161,6 +161,12 @@ const LoginModal = ({ onClose, onSuccess }) => {
       // 1. Create the Firebase account (catches duplicate email)
       const result = await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
       const fbUser = result.user;
+      
+      // Update Firebase Profile natively so displayName is available on future logins
+      if (signupName) {
+        await updateProfile(fbUser, { displayName: signupName }).catch(console.error);
+      }
+      
       const idToken = await fbUser.getIdToken();
 
       // 2. Register in our DB — profile fields included in the same call
