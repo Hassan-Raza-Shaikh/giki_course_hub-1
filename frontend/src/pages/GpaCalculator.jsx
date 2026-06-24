@@ -212,7 +212,7 @@ export default function GpaCalculator({ user }) {
 
 
   return (
-    <div className="container" style={{ padding: '30px 20px 100px', maxWidth: '900px' }}>
+    <div className="container" style={{ padding: '120px 20px 100px', maxWidth: '900px', margin: '0 auto' }}>
       
       {/* Header */}
       <div style={{

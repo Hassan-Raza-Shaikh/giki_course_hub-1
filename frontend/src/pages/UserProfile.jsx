@@ -191,57 +191,68 @@ const UserProfile = ({ user, setUser }) => {
           </div>
         </div>
 
-        {/* GPA Section */}
-        {gpaData && gpaData.records && gpaData.records.length > 0 && (
+        {/* GPA Section - Show if there is data, OR if viewing own profile */}
+        {((user && user.username === profile.username) || (gpaData && gpaData.records && gpaData.records.length > 0)) && (
           <div style={{ marginBottom: '40px', animation: 'fadeUp 0.4s ease-out' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
               <Calculator size={28} color="var(--accent)" />
               <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: 'var(--text)' }}>
                 Academic Performance
               </h2>
-              {gpaData.cgpa && (
+              {gpaData && gpaData.cgpa && (
                 <div style={{ marginLeft: 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
                   CGPA: {gpaData.cgpa}
                 </div>
               )}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-              {gpaData.records.map(r => (
-                <div key={r.gpa_id} style={{
-                  background: 'var(--bg-white)',
-                  border: '2px solid var(--text)',
-                  borderRadius: '16px',
-                  padding: '20px',
-                  boxShadow: '4px 4px 0px var(--text)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
-                      <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '2px' }}>Semester {r.semester}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{r.program}</div>
+            {gpaData && gpaData.records && gpaData.records.length > 0 ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+                {gpaData.records.map(r => (
+                  <div key={r.gpa_id} style={{
+                    background: 'var(--bg-white)',
+                    border: '2px solid var(--text)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    boxShadow: '4px 4px 0px var(--text)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '2px' }}>Semester {r.semester}</div>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{r.program}</div>
+                      </div>
+                      <div style={{
+                        background: 'var(--bg-subtle)',
+                        border: '2px solid var(--text)',
+                        borderRadius: '10px',
+                        padding: '8px 12px',
+                        fontWeight: 900,
+                        fontSize: '1.2rem',
+                        color: 'var(--text)'
+                      }}>
+                        {r.gpa}
+                      </div>
                     </div>
-                    <div style={{
-                      background: 'var(--bg-subtle)',
-                      border: '2px solid var(--text)',
-                      borderRadius: '10px',
-                      padding: '8px 12px',
-                      fontWeight: 900,
-                      fontSize: '1.2rem',
-                      color: 'var(--text)'
-                    }}>
-                      {r.gpa}
+                    <div style={{ borderTop: '1px solid var(--border)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                      <span>{r.total_credits} Credits</span>
+                      <span>{r.faculty}</span>
                     </div>
                   </div>
-                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                    <span>{r.total_credits} Credits</span>
-                    <span>{r.faculty}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '40px 20px', background: 'var(--bg-card)', borderRadius: '16px', border: '2px dashed var(--border)' }}>
+                <Calculator size={48} style={{ color: 'var(--border)', margin: '0 auto 16px' }} />
+                <h3 style={{ margin: '0 0 8px', fontSize: '1.2rem', color: 'var(--text)' }}>No GPA Records</h3>
+                <p style={{ color: 'var(--text-muted)', margin: '0 0 24px' }}>Start tracking your academic performance semester by semester.</p>
+                <Link to="/calculator" className="btn-nav" style={{ textDecoration: 'none', background: 'var(--primary)', color: 'var(--bg-white)', padding: '10px 24px', borderRadius: '100px', fontWeight: 800, fontSize: '0.95rem', display: 'inline-block' }}>
+                  Open Calculator
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

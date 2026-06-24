@@ -111,6 +111,14 @@ def get_my_gpa_records():
                 total_weighted += gpa_val * credits_val
                 total_credits_all += credits_val
 
+                # r[6] (courses_json) could be a string if psycopg2 doesn't auto-parse jsonb
+                courses_val = r[6]
+                if isinstance(courses_val, str):
+                    try:
+                        courses_val = json.loads(courses_val)
+                    except:
+                        courses_val = []
+
                 records.append({
                     "gpa_id": r[0],
                     "faculty": r[1],
@@ -118,7 +126,7 @@ def get_my_gpa_records():
                     "semester": r[3],
                     "gpa": gpa_val,
                     "total_credits": credits_val,
-                    "courses": r[6],
+                    "courses": courses_val,
                     "created_at": r[7].isoformat() if r[7] else None,
                     "updated_at": r[8].isoformat() if r[8] else None,
                 })
