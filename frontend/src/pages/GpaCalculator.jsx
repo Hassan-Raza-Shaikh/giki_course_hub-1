@@ -321,14 +321,9 @@ function GpaCalculator({ user }) {
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Faculty</label>
           <select 
+            className="custom-select"
             value={faculty} 
             onChange={(e) => { setFaculty(e.target.value); setProgram(''); setSemester(''); }}
-            style={{ 
-              width: '100%', cursor: 'pointer', padding: '14px 16px', borderRadius: '12px', 
-              border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'var(--text)', 
-              fontSize: '0.95rem', fontWeight: 700, outline: 'none', transition: 'all 0.2s', appearance: 'auto',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}
           >
             <option value="">Select Faculty...</option>
             {coursesData.faculties.map(f => (
@@ -340,15 +335,10 @@ function GpaCalculator({ user }) {
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Program</label>
           <select 
+            className="custom-select"
             value={program} 
             onChange={(e) => { setProgram(e.target.value); setSemester(''); }}
             disabled={!faculty}
-            style={{ 
-              width: '100%', cursor: !faculty ? 'not-allowed' : 'pointer', opacity: !faculty ? 0.6 : 1, 
-              padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
-              background: 'var(--bg-card)', color: 'var(--text)', fontSize: '0.95rem', fontWeight: 700, outline: 'none', 
-              transition: 'all 0.2s', appearance: 'auto', boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}
           >
             <option value="">Select Program...</option>
             {availablePrograms.map(p => (
@@ -360,15 +350,10 @@ function GpaCalculator({ user }) {
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Semester</label>
           <select 
+            className="custom-select"
             value={semester} 
             onChange={(e) => setSemester(e.target.value)}
             disabled={!program}
-            style={{ 
-              width: '100%', cursor: !program ? 'not-allowed' : 'pointer', opacity: !program ? 0.6 : 1, 
-              padding: '14px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
-              background: 'var(--bg-card)', color: 'var(--text)', fontSize: '0.95rem', fontWeight: 700, outline: 'none', 
-              transition: 'all 0.2s', appearance: 'auto', boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}
           >
             <option value="">Select Semester...</option>
             {availableSemesters.map(s => (
@@ -456,13 +441,10 @@ function GpaCalculator({ user }) {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Credits</label>
                       <select 
+                        className="custom-select"
                         value={course.creditHours}
                         onChange={(e) => handleCHChange(course.id, e.target.value)}
-                        style={{ 
-                          padding: '10px 12px', borderRadius: '12px', border: '1px solid var(--border)', 
-                          background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer', width: '80px', outline: 'none',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.05)', transition: 'all 0.2s'
-                        }}
+                        style={{ fontSize: '0.85rem', width: '90px' }}
                       >
                         {[1, 2, 3, 4, 5, 6].map(num => (
                           <option key={num} value={num}>{num} CH</option>
@@ -473,13 +455,10 @@ function GpaCalculator({ user }) {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                       <label style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Grade</label>
                       <select 
+                        className="custom-select"
                         value={course.grade}
                         onChange={(e) => handleGradeChange(course.id, e.target.value)}
-                        style={{ 
-                          padding: '10px 12px', borderRadius: '12px', border: '1px solid var(--primary)', 
-                          background: 'var(--primary)', color: 'var(--nav-btn-text)', fontWeight: 700, cursor: 'pointer', width: '100px', outline: 'none',
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)', transition: 'all 0.2s'
-                        }}
+                        style={{ fontSize: '0.85rem', width: '100px', background: 'var(--primary)', color: 'var(--bg-white)' }}
                       >
                         {GRADING_SCALE.map(scale => (
                           <option key={scale.grade} value={scale.grade}>{scale.grade} ({scale.points})</option>
@@ -562,14 +541,9 @@ function GpaCalculator({ user }) {
                   <div style={{ flex: '0 0 100px' }}>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, marginBottom: '6px' }}>Credits</label>
                     <select 
+                      className="custom-select"
                       value={newCourseCH} 
                       onChange={e => setNewCourseCH(Number(e.target.value))} 
-                      style={{ 
-                        width: '100%', padding: '12px 16px', cursor: 'pointer', borderRadius: '12px', 
-                        border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'var(--text)', 
-                        fontSize: '0.95rem', fontWeight: 700, outline: 'none', appearance: 'auto',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.05)', transition: 'all 0.2s'
-                      }}
                     >
                       {[1, 2, 3, 4, 5, 6].map(num => (
                         <option key={num} value={num}>{num} CH</option>

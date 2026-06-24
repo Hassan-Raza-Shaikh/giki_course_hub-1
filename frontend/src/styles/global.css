@@ -883,6 +883,7 @@ input::placeholder, textarea::placeholder {
   align-items: center;
   justify-content: center;
   gap: 6px;
+  line-height: 1;
 }
 .btn-nav:hover {
   transform: translate(-1.5px, -1.5px);

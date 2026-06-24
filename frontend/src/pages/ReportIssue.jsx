@@ -91,9 +91,10 @@ const ReportIssue = ({ user }) => {
               <div style={{ marginBottom: '24px' }}>
                 <label style={{ display: 'block', fontWeight: 900, fontSize: '0.9rem', marginBottom: '8px', color: 'var(--text)' }}>What's the issue about?</label>
                 <select 
+                  className="custom-select"
                   value={formData.type}
                   onChange={e => setFormData({...formData, type: e.target.value})}
-                  style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '2px solid var(--text)', fontSize: '1rem', fontWeight: 600, outline: 'none', background: 'var(--bg-subtle)' }}
+                  style={{ border: '2px solid var(--text)', background: 'var(--bg-subtle)' }}
                 >
                   <option value="ui">UI / Design Glitch</option>
                   <option value="material">Course Material Issue</option>

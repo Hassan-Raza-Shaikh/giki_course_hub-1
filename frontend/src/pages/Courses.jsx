@@ -6,7 +6,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
 import {
   FileText, FileEdit, Presentation, HelpCircle,
-  ClipboardList, FlaskConical, Terminal, Library, Search
+  ClipboardList, FlaskConical, Terminal, Library, Search, ChevronDown
 } from 'lucide-react';
 
 const RESOURCE_TYPES = [
@@ -106,7 +106,7 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
             </span>
           </div>
         </div>
-        <span style={{ transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none', color: 'var(--electric)' }}>⌄</span>
+        <span style={{ transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none', color: 'var(--electric)', display: 'flex', alignItems: 'center' }}><ChevronDown size={20} strokeWidth={2.5} /></span>
       </div>
 
       {open && (
@@ -184,7 +184,7 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
           }}>
             {open ? 'Collapse' : 'Expand'}
           </span>
-          <span style={{ color: 'var(--tertiary)', transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none' }}>⌄</span>
+          <span style={{ color: open ? 'white' : 'var(--electric)', transition: 'transform 0.3s', transform: open ? 'rotate(180deg)' : 'none', display: 'flex', alignItems: 'center' }}><ChevronDown size={20} strokeWidth={2.5} /></span>
         </div>
       </div>
 

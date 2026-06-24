@@ -167,26 +167,18 @@ const GlobalSearch = ({ user, onSignIn }) => {
               </div>
 
               <select 
+                className="custom-select"
                 value={facultyId}
                 onChange={(e) => updateFilters('faculty_id', e.target.value)}
-                style={{
-                  padding: '14px 12px', borderRadius: '12px', border: '1px solid var(--border)',
-                  background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)', outline: 'none', appearance: 'auto', transition: 'all 0.2s'
-                }}
               >
                 <option value="">All Faculties</option>
                 {faculties.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
               </select>
 
               <select 
+                className="custom-select"
                 value={categoryId}
                 onChange={(e) => updateFilters('category_id', e.target.value)}
-                style={{
-                  padding: '14px 12px', borderRadius: '12px', border: '1px solid var(--border)',
-                  background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)', outline: 'none', appearance: 'auto', transition: 'all 0.2s'
-                }}
               >
                 <option value="">All Categories</option>
                 {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}

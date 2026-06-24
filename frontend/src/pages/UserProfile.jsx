@@ -344,18 +344,18 @@ const UserProfile = ({ user, setUser }) => {
                     </div>
                   </div>
                   
-                  <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
-                    <div style={{ display: 'flex', gap: '12px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={14}/> {fmtSize(f.file_size)}</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Clock size={14}/> {fmtDate(f.upload_date)}</span>
+                  <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', paddingTop: '16px', borderTop: '1px dashed var(--border)' }}>
+                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Download size={12}/> {fmtSize(f.file_size)}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Clock size={12}/> {fmtDate(f.upload_date)}</span>
                     </div>
                     
                     <button
                       onClick={() => handleDownload(f)}
                       className="btn-nav"
-                      style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)', padding: '6px 14px', fontSize: '0.85rem' }}
+                      style={{ background: 'var(--electric)', color: 'var(--bg-white)', padding: '5px 12px', fontSize: '0.75rem', gap: '4px' }}
                     >
-                      <Download size={14} /> Open
+                      <Download size={12} strokeWidth={2.5} /> Open
                     </button>
                   </div>
                 </div>

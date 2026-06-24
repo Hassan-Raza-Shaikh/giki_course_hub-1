@@ -179,23 +179,11 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
         <button
           className="hide-mobile btn-nav"
+          title="Shortcut: /"
           onClick={() => navigate('/search')}
           style={{ background: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))', color: 'var(--nav-btn-text)' }}
         >
           <Search size={16} strokeWidth={2.5} /> Search
-          <kbd style={{
-            background: 'var(--bg-subtle)',
-            border: '1.5px solid var(--border)',
-            borderRadius: '5px',
-            padding: '1px 6px',
-            fontSize: '0.72rem',
-            fontFamily: 'monospace',
-            fontWeight: 700,
-            color: 'var(--text-muted)',
-            letterSpacing: 0,
-            lineHeight: 1.6,
-            marginLeft: '2px',
-          }}>/</kbd>
         </button>
 
         <button
