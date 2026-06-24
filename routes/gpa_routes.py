@@ -178,13 +178,32 @@ def get_user_gpa(username):
         conn = get_connection()
         try:
             cur = conn.cursor()
-            # First resolve username to user_id
-            cur.execute("SELECT user_id FROM users WHERE username = %s;", (username,))
+            # First resolve username to user_id and get gpa_public
+            cur.execute("""
+                SELECT u.user_id, COALESCE(up.gpa_public, false)
+                FROM users u
+                LEFT JOIN user_profiles up ON u.user_id = up.user_id
+                WHERE LOWER(u.username) = LOWER(%s);
+            """, (username,))
             user_row = cur.fetchone()
             if not user_row:
                 return jsonify({"success": False, "message": "User not found"}), 404
 
             target_uid = user_row[0]
+            gpa_public = user_row[1]
+
+            from flask import session
+            session_uid = session.get('user_id')
+
+            if not gpa_public and target_uid != session_uid:
+                return jsonify({
+                    "success": True,
+                    "records": [],
+                    "cgpa": None,
+                    "total_credits": 0,
+                    "total_semesters": 0,
+                    "is_private": True
+                })
 
             cur.execute("""
                 SELECT gpa_id, faculty, program, semester, gpa, total_credits, created_at, updated_at

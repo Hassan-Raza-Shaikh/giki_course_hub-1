@@ -356,7 +356,7 @@ def get_me():
             # Join users with user_profiles (LEFT JOIN — Google users won't have a profile row)
             cur.execute(
                 """SELECT u.email, u.photo_url, u.display_name,
-                          up.display_name, up.student_id, up.batch_year, up.program, up.user_type
+                          up.display_name, up.student_id, up.batch_year, up.program, up.user_type, up.gpa_public
                    FROM users u
                    LEFT JOIN user_profiles up ON u.user_id = up.user_id
                    WHERE u.user_id = %s;""",
@@ -371,6 +371,7 @@ def get_me():
             batch_year  = row[5] if row else None
             program     = row[6] if row else None
             user_type   = row[7] if row else None
+            gpa_public  = row[8] if row else False
 
             # profileComplete = user has set program AND
             # (batch_year is set if they're a student/graduate, or user_type is faculty/external)
@@ -396,6 +397,7 @@ def get_me():
                     "batchYear":       batch_year,
                     "program":         program,
                     "userType":        user_type,
+                    "gpaPublic":       gpa_public,
                     "profileComplete": profile_complete,
                 }
             })

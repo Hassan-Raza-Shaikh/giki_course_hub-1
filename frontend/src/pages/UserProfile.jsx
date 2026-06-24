@@ -191,8 +191,8 @@ const UserProfile = ({ user, setUser }) => {
           </div>
         </div>
 
-        {/* GPA Section - Show if there is data, OR if viewing own profile */}
-        {((user && user.username === profile.username) || (gpaData && gpaData.records && gpaData.records.length > 0)) && (
+        {/* GPA Section - Show if there is data, OR if viewing own profile, OR if it's private */}
+        {((user && user.username === profile.username) || (gpaData && gpaData.is_private) || (gpaData && gpaData.records && gpaData.records.length > 0)) && (
           <div style={{ marginBottom: '40px', animation: 'fadeUp 0.4s ease-out' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
               <Calculator size={28} color="var(--accent)" />
@@ -206,7 +206,13 @@ const UserProfile = ({ user, setUser }) => {
               )}
             </div>
 
-            {gpaData && gpaData.records && gpaData.records.length > 0 ? (
+            {gpaData && gpaData.is_private ? (
+              <div style={{ background: 'var(--bg-subtle)', padding: '24px', borderRadius: '16px', border: '2px dashed var(--border)', textAlign: 'center' }}>
+                <Calculator size={32} style={{ color: 'var(--text-muted)', marginBottom: '12px', opacity: 0.5 }} />
+                <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: '4px' }}>Academic Records are Private</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>This user has chosen to keep their GPA private.</div>
+              </div>
+            ) : gpaData && gpaData.records && gpaData.records.length > 0 ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                 {gpaData.records.map(r => (
                   <div key={r.gpa_id} style={{

@@ -78,6 +78,12 @@ function GpaCalculator({ user }) {
   const [savedRecords, setSavedRecords] = useState([]);
   const [cgpaData, setCgpaData] = useState(null);
   const [loadingRecords, setLoadingRecords] = useState(false);
+  const [gpaPublic, setGpaPublic] = useState(user?.gpaPublic || false);
+
+  // Sync gpaPublic state if user object updates
+  useEffect(() => {
+    if (user && user.gpaPublic !== undefined) setGpaPublic(user.gpaPublic);
+  }, [user]);
 
   const fetchRecords = () => {
     if (!user) return;
@@ -219,6 +225,10 @@ function GpaCalculator({ user }) {
 
     setIsSaving(true);
     try {
+      // 1. First ensure the privacy preference is saved
+      await api.patch('/me/profile', { gpaPublic });
+
+      // 2. Save the GPA record
       const payload = {
         faculty,
         program,
@@ -562,37 +572,67 @@ function GpaCalculator({ user }) {
               </div>
             </div>
 
-            <button 
-              onClick={saveRecord}
-              disabled={isSaving || !user || courses.length === 0}
-              style={{
-                background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
-                color: 'white',
-                border: '2px solid white',
-                borderRadius: '12px',
-                padding: '16px 32px',
-                fontSize: '1.1rem',
-                fontWeight: 900,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                cursor: (isSaving || courses.length === 0) ? 'not-allowed' : 'pointer',
-                opacity: (isSaving || courses.length === 0) ? 0.7 : 1,
-                boxShadow: (isSaving || courses.length === 0) ? 'none' : '4px 4px 0px rgba(255,255,255,0.4)',
-                transition: 'all 0.2s',
-              }}
-              onMouseOver={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'translate(-2px, -2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px rgba(255,255,255,0.4)'; } }}
-              onMouseOut={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px rgba(255,255,255,0.4)'; } }}
-            >
-              {isSaving ? (
-                <><Loader2 className="animate-spin" size={24} /> SAVING...</>
-              ) : (
-                <>
-                  <Save size={24} strokeWidth={2.5} /> 
-                  {!user ? 'LOGIN TO SAVE' : 'SAVE TO PROFILE'}
-                </>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              {user && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.1)', padding: '10px 16px', borderRadius: '12px' }}>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Public GPA</div>
+                    <div style={{ fontSize: '0.7rem', opacity: 0.7 }}>Show on profile</div>
+                  </div>
+                  <label style={{ position: 'relative', display: 'inline-block', width: '40px', height: '22px' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={gpaPublic} 
+                      onChange={(e) => setGpaPublic(e.target.checked)} 
+                      style={{ opacity: 0, width: 0, height: 0 }} 
+                    />
+                    <span style={{
+                      position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                      backgroundColor: gpaPublic ? 'var(--primary)' : 'rgba(255,255,255,0.2)',
+                      transition: '.3s', borderRadius: '34px'
+                    }}>
+                      <span style={{
+                        position: 'absolute', content: '""', height: '16px', width: '16px', left: '3px', bottom: '3px',
+                        backgroundColor: 'white', transition: '.3s', borderRadius: '50%',
+                        transform: gpaPublic ? 'translateX(18px)' : 'none'
+                      }}/>
+                    </span>
+                  </label>
+                </div>
               )}
-            </button>
+
+              <button 
+                onClick={saveRecord}
+                disabled={isSaving || !user || courses.length === 0}
+                style={{
+                  background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
+                  color: 'white',
+                  border: '2px solid white',
+                  borderRadius: '12px',
+                  padding: '16px 32px',
+                  fontSize: '1.1rem',
+                  fontWeight: 900,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  cursor: (isSaving || courses.length === 0) ? 'not-allowed' : 'pointer',
+                  opacity: (isSaving || courses.length === 0) ? 0.7 : 1,
+                  boxShadow: (isSaving || courses.length === 0) ? 'none' : '4px 4px 0px rgba(255,255,255,0.4)',
+                  transition: 'all 0.2s',
+                }}
+                onMouseOver={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'translate(-2px, -2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px rgba(255,255,255,0.4)'; } }}
+                onMouseOut={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px rgba(255,255,255,0.4)'; } }}
+              >
+                {isSaving ? (
+                  <><Loader2 className="animate-spin" size={24} /> SAVING...</>
+                ) : (
+                  <>
+                    <Save size={24} strokeWidth={2.5} /> 
+                    {!user ? 'LOGIN TO SAVE' : 'SAVE TO PROFILE'}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
         </div>

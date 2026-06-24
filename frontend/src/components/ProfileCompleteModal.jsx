@@ -18,6 +18,7 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
   const [userType, setUserType]   = useState(user?.userType || 'student');
   const [program,  setProgram]    = useState(user?.program || '');
   const [batchYear, setBatchYear] = useState(user?.batchYear || '');
+  const [gpaPublic, setGpaPublic] = useState(user?.gpaPublic || false);
   const [saving, setSaving]       = useState(false);
   const [error, setError]         = useState('');
 
@@ -54,8 +55,9 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
         userType,
         program,
         batchYear: needsBatch ? parseInt(batchYear, 10) : null,
+        gpaPublic,
       });
-      onComplete({ userType, program, batchYear: needsBatch ? parseInt(batchYear, 10) : null });
+      onComplete({ userType, program, batchYear: needsBatch ? parseInt(batchYear, 10) : null, gpaPublic });
     } catch (err) {
       setError(err?.response?.data?.message || 'Failed to save. Please try again.');
     } finally {
@@ -213,6 +215,35 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
             </div>
           )}
 
+          {mode === 'edit' && (
+            <div style={{ padding: '16px', background: 'var(--bg-subtle)', borderRadius: '12px', border: '1.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+              <div>
+                <div style={{ fontWeight: 800, color: 'var(--text)', marginBottom: '4px' }}>Public GPA</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Allow others to see your academic performance on your public profile.</div>
+              </div>
+              <label style={{ position: 'relative', display: 'inline-block', width: '48px', height: '26px' }}>
+                <input 
+                  type="checkbox" 
+                  checked={gpaPublic} 
+                  onChange={(e) => setGpaPublic(e.target.checked)} 
+                  style={{ opacity: 0, width: 0, height: 0 }} 
+                />
+                <span style={{
+                  position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                  backgroundColor: gpaPublic ? 'var(--primary)' : 'var(--border)',
+                  transition: '.3s', borderRadius: '34px'
+                }}>
+                  <span style={{
+                    position: 'absolute', content: '""', height: '20px', width: '20px', left: '3px', bottom: '3px',
+                    backgroundColor: 'white', transition: '.3s', borderRadius: '50%',
+                    transform: gpaPublic ? 'translateX(22px)' : 'none'
+                  }}/>
+                </span>
+              </label>
+            </div>
+          )}
+
+          <div style={{ marginTop: '32px' }}>
           {/* Error */}
           {error && (
             <div style={{

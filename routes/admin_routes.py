@@ -470,7 +470,12 @@ def admin_list_users():
         cur = conn.cursor()
         cur.execute("""
             SELECT u.user_id, u.username, u.email, u.role, u.created_at,
-                   EXISTS(SELECT 1 FROM admins a WHERE a.email = u.email) AS is_admin
+                   EXISTS(SELECT 1 FROM admins a WHERE a.email = u.email) AS is_admin,
+                   (
+                       SELECT ROUND(SUM(gpa * total_credits) / SUM(total_credits), 2)
+                       FROM semester_gpas
+                       WHERE user_id = u.user_id AND total_credits > 0
+                   ) AS cgpa
             FROM users u
             ORDER BY u.created_at DESC
             LIMIT %s OFFSET %s;

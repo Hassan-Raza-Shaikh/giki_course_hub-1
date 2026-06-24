@@ -1737,6 +1737,12 @@ const AdminPanel = ({ user }) => {
                   <div style={{ fontWeight: 700 }}>{u.username} {u.is_admin && <span style={{ marginLeft: '6px', fontSize: '0.7rem', background: '#EDE9FE', color: '#5B21B6', padding: '2px 8px', borderRadius: '100px', fontWeight: 700 }}><Shield size={10} /> admin</span>}</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{u.email} · joined {fmtDate(u.created_at)}</div>
                 </div>
+                {u.cgpa != null && (
+                  <div style={{ background: 'var(--bg-hero)', padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>CGPA</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 900, color: 'var(--accent)' }}>{u.cgpa}</span>
+                  </div>
+                )}
               </div>
             ))}
           </div>

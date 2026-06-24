@@ -44,7 +44,7 @@ def get_user_profile(username):
         query = """
             SELECT u.user_id, u.username, 
                    COALESCE(up.display_name, u.display_name, u.username) AS display_name,
-                   u.photo_url, up.batch_year, up.program, u.role,
+                   u.photo_url, up.batch_year, up.program, u.role, up.gpa_public,
                    (SELECT COUNT(*) FROM files WHERE uploaded_by = u.user_id AND status = 'approved') AS upload_count
             FROM users u
             LEFT JOIN user_profiles up ON u.user_id = up.user_id
@@ -144,6 +144,9 @@ def update_my_profile():
     user_type  = (data.get('userType')  or '').strip() or None
     program    = (data.get('program')   or '').strip() or None
     batch_year = data.get('batchYear')
+    gpa_public = data.get('gpaPublic')
+    if gpa_public is not None:
+        gpa_public = bool(gpa_public)
 
     # Validate user_type
     allowed_types = ('student', 'faculty', 'graduate', 'external')
@@ -179,15 +182,16 @@ def update_my_profile():
         # Upsert user_profiles
         cur.execute(
             """
-            INSERT INTO user_profiles (user_id, display_name, batch_year, program, user_type)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO user_profiles (user_id, display_name, batch_year, program, user_type, gpa_public)
+            VALUES (%s, %s, %s, %s, %s, %s)
             ON CONFLICT (user_id) DO UPDATE
                 SET batch_year = COALESCE(EXCLUDED.batch_year, user_profiles.batch_year),
                     program    = COALESCE(EXCLUDED.program,    user_profiles.program),
                     user_type  = COALESCE(EXCLUDED.user_type,  user_profiles.user_type),
+                    gpa_public = COALESCE(EXCLUDED.gpa_public, user_profiles.gpa_public),
                     updated_at = CURRENT_TIMESTAMP;
             """,
-            (session['user_id'], display_name, batch_year, program, user_type)
+            (session['user_id'], display_name, batch_year, program, user_type, gpa_public)
         )
         conn.commit()
         return jsonify({"success": True, "message": "Profile updated"})
