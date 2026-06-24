@@ -110,7 +110,12 @@ const App = () => {
 
   const handleSignIn = () => setShowLogin(true);
   const handleSignOut = async () => {
-    try { await signOut(auth); } catch (e) { console.error(e); }
+    try { 
+      await api.post('/logout');
+      await signOut(auth); 
+    } catch (e) { 
+      console.error(e); 
+    }
     setUser(null);
   };
 

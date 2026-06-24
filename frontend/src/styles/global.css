@@ -22,6 +22,7 @@ body { overflow-x: hidden; }
   --bg-dark:    #111827;
   --bg-subtle:  #F9FAFB;
   --bg-white:   #FFFFFF;
+  --bg-card:    var(--bg-white);
   --bg-body:    #F5F0FF;
 
   --text:       #0F172A;
@@ -589,9 +590,8 @@ input::placeholder, textarea::placeholder {
   top: 0; left: 0; right: 0;
   z-index: 1000;
   height: 70px;
-  backdrop-filter: blur(16px);
-  background: var(--bg-nav, rgba(255, 255, 255, 0.3));
-  border-bottom: 1px solid transparent;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -599,7 +599,7 @@ input::placeholder, textarea::placeholder {
   transition: var(--transition);
 }
 [data-theme='dark'] .navbar {
-  --bg-nav: rgba(10, 10, 11, 0.4);
+  background: var(--bg-card);
 }
 
 @media (max-width: 768px) {
@@ -984,13 +984,11 @@ input::placeholder, textarea::placeholder {
     transform: translateX(-50%);
     z-index: 9990;
     padding: 8px 10px;
-    background: var(--bg-white);
-    border: 2px solid var(--text);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 100px;
-    /* layered shadow gives that floating off-the-page feeling */
-    box-shadow:
-      4px 4px 0px var(--text),
-      0 12px 40px rgba(0,0,0,0.20);
+    /* Clean, soft shadow for uniformity */
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     width: max-content;
     max-width: calc(100vw - 32px);
   }

@@ -422,9 +422,9 @@ const MobileTabBar = ({ user, onSignIn }) => {
             onClick={() => navigate(tab.path)}
             className="mob-tab-btn"
             style={{
-              background: active ? 'var(--primary)' : 'var(--bg-card)',
+              background: active ? tab.color : 'var(--bg-card)',
               color: active ? 'var(--nav-btn-text)' : 'var(--text-muted)',
-              border: active ? '1px solid var(--primary)' : '1px solid var(--border)',
+              border: active ? '1px solid transparent' : '1px solid var(--border)',
               boxShadow: active ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
               transform: active ? 'translateY(-2px)' : 'none',
               opacity: active ? 1 : 0.82,
