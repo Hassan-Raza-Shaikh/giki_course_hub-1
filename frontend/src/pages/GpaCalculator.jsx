@@ -319,10 +319,13 @@ function GpaCalculator({ user }) {
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Faculty</label>
           <select 
-            className="input-base" 
             value={faculty} 
             onChange={(e) => { setFaculty(e.target.value); setProgram(''); setSemester(''); }}
-            style={{ width: '100%', cursor: 'pointer' }}
+            style={{ 
+              width: '100%', cursor: 'pointer', padding: '12px 16px', borderRadius: '12px', 
+              border: '1px solid var(--border)', background: 'var(--bg-body)', color: 'var(--text)', 
+              fontSize: '0.95rem', outline: 'none', transition: 'border-color 0.2s', appearance: 'auto'
+            }}
           >
             <option value="">Select Faculty...</option>
             {coursesData.faculties.map(f => (
@@ -334,11 +337,15 @@ function GpaCalculator({ user }) {
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Program</label>
           <select 
-            className="input-base" 
             value={program} 
             onChange={(e) => { setProgram(e.target.value); setSemester(''); }}
             disabled={!faculty}
-            style={{ width: '100%', cursor: !faculty ? 'not-allowed' : 'pointer', opacity: !faculty ? 0.6 : 1 }}
+            style={{ 
+              width: '100%', cursor: !faculty ? 'not-allowed' : 'pointer', opacity: !faculty ? 0.6 : 1, 
+              padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
+              background: 'var(--bg-body)', color: 'var(--text)', fontSize: '0.95rem', outline: 'none', 
+              transition: 'all 0.2s', appearance: 'auto'
+            }}
           >
             <option value="">Select Program...</option>
             {availablePrograms.map(p => (
@@ -350,11 +357,15 @@ function GpaCalculator({ user }) {
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Semester</label>
           <select 
-            className="input-base" 
             value={semester} 
             onChange={(e) => setSemester(e.target.value)}
             disabled={!program}
-            style={{ width: '100%', cursor: !program ? 'not-allowed' : 'pointer', opacity: !program ? 0.6 : 1 }}
+            style={{ 
+              width: '100%', cursor: !program ? 'not-allowed' : 'pointer', opacity: !program ? 0.6 : 1, 
+              padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
+              background: 'var(--bg-body)', color: 'var(--text)', fontSize: '0.95rem', outline: 'none', 
+              transition: 'all 0.2s', appearance: 'auto'
+            }}
           >
             <option value="">Select Semester...</option>
             {availableSemesters.map(s => (
@@ -520,15 +531,40 @@ function GpaCalculator({ user }) {
                 <form onSubmit={addCourse} style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end' }}>
                   <div style={{ flex: '1 1 120px' }}>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, marginBottom: '6px' }}>Code</label>
-                    <input className="input-base" placeholder="e.g. CS101" value={newCourseCode} onChange={e => setNewCourseCode(e.target.value)} style={{ width: '100%', padding: '10px' }} />
+                    <input 
+                      placeholder="e.g. CS101" 
+                      value={newCourseCode} 
+                      onChange={e => setNewCourseCode(e.target.value)} 
+                      style={{ 
+                        width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
+                        background: 'var(--bg-card)', color: 'var(--text)', fontSize: '0.95rem', outline: 'none' 
+                      }} 
+                    />
                   </div>
                   <div style={{ flex: '2 1 200px' }}>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, marginBottom: '6px' }}>Name *</label>
-                    <input className="input-base" placeholder="e.g. Advanced AI" value={newCourseName} onChange={e => setNewCourseName(e.target.value)} required style={{ width: '100%', padding: '10px' }} />
+                    <input 
+                      placeholder="e.g. Advanced AI" 
+                      value={newCourseName} 
+                      onChange={e => setNewCourseName(e.target.value)} 
+                      required 
+                      style={{ 
+                        width: '100%', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--border)', 
+                        background: 'var(--bg-card)', color: 'var(--text)', fontSize: '0.95rem', outline: 'none' 
+                      }} 
+                    />
                   </div>
                   <div style={{ flex: '0 0 100px' }}>
                     <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, marginBottom: '6px' }}>Credits</label>
-                    <select className="input-base" value={newCourseCH} onChange={e => setNewCourseCH(Number(e.target.value))} style={{ width: '100%', padding: '10px', cursor: 'pointer' }}>
+                    <select 
+                      value={newCourseCH} 
+                      onChange={e => setNewCourseCH(Number(e.target.value))} 
+                      style={{ 
+                        width: '100%', padding: '12px 16px', cursor: 'pointer', borderRadius: '12px', 
+                        border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'var(--text)', 
+                        fontSize: '0.95rem', outline: 'none', appearance: 'auto' 
+                      }}
+                    >
                       {[1, 2, 3, 4, 5, 6].map(num => (
                         <option key={num} value={num}>{num} CH</option>
                       ))}
