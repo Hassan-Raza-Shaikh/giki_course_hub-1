@@ -137,7 +137,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
 
             <div className="search-filters" style={{ marginBottom: '40px' }}>
               <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
-                <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}><Search size={20} color="var(--text-muted)" /></div>
+                <div style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', display: 'flex', pointerEvents: 'none' }}><Search size={20} color="var(--text-muted)" /></div>
                 <input 
                   id="global-search-input"
                   ref={searchInputRef}
@@ -146,7 +146,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                   value={query}
                   onChange={(e) => updateFilters('q', e.target.value)}
                   style={{
-                    width: '100%', padding: '16px 56px 16px 48px',
+                    width: '100%', padding: '16px 56px 16px 52px',
                     borderRadius: '16px', border: '1px solid var(--border)',
                     fontSize: '1rem', boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
                     outline: 'none', background: 'var(--bg-card)', color: 'var(--text)', transition: 'all 0.3s'

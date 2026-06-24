@@ -402,14 +402,14 @@ const Courses = () => {
           </div>
         </div>
             <div style={{ position: 'relative', maxWidth: '480px' }}>
-              <span style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}><Search size={18} /></span>
+              <span style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-muted)' }}><Search size={18} /></span>
               <input
                 type="text"
                 placeholder="Search by course name or code…"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 style={{
-                  width: '100%', padding: '16px 16px 16px 48px',
+                  width: '100%', padding: '16px 16px 16px 52px',
                   borderRadius: '16px', border: '1px solid var(--border)', outline: 'none',
                   fontSize: '0.95rem', background: 'var(--bg-card)',
                   color: 'var(--text)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)', transition: 'all 0.3s',
