@@ -81,6 +81,20 @@ const UserProfile = ({ user, setUser }) => {
     window.open(file.file_url, '_blank');
   };
 
+  const togglePublicGpa = async (checked) => {
+    try {
+      await api.patch('/me/profile', { gpaPublic: checked });
+      // Update global user
+      setUser(u => ({ ...u, gpaPublic: checked }));
+      // Update local profile if viewing own
+      if (user && user.username === username) {
+        setProfile(p => ({ ...p, gpa_public: checked }));
+      }
+    } catch (err) {
+      console.error("Failed to update GPA visibility", err);
+    }
+  };
+
   if (loadingProfile) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -199,8 +213,34 @@ const UserProfile = ({ user, setUser }) => {
               <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: 'var(--text)' }}>
                 Academic Performance
               </h2>
+              
+              {user && user.username === profile.username && (
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-subtle)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--border)' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text)' }}>Public GPA</span>
+                  <label style={{ position: 'relative', display: 'inline-block', width: '32px', height: '18px' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={profile.gpa_public || false} 
+                      onChange={(e) => togglePublicGpa(e.target.checked)} 
+                      style={{ opacity: 0, width: 0, height: 0 }} 
+                    />
+                    <span style={{
+                      position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                      backgroundColor: profile.gpa_public ? 'var(--primary)' : 'var(--border)',
+                      transition: '.3s', borderRadius: '34px'
+                    }}>
+                      <span style={{
+                        position: 'absolute', content: '""', height: '14px', width: '14px', left: '2px', bottom: '2px',
+                        backgroundColor: 'white', transition: '.3s', borderRadius: '50%',
+                        transform: profile.gpa_public ? 'translateX(14px)' : 'none'
+                      }}/>
+                    </span>
+                  </label>
+                </div>
+              )}
+
               {gpaData && gpaData.cgpa && (
-                <div style={{ marginLeft: 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
+                <div style={{ marginLeft: user && user.username === profile.username ? '0' : 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
                   CGPA: {gpaData.cgpa}
                 </div>
               )}
