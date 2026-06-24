@@ -249,8 +249,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 width: 'min(280px, calc(100vw - 24px))',
                 maxHeight: 'calc(100dvh - 160px)',
                 overflowY: 'auto',
-                zIndex: 9999,
-                overflow: 'hidden'
+                zIndex: 9999
               }}>
                 {/* Top accent */}
                 <div style={{ height: '5px', background: 'linear-gradient(90deg, var(--primary), var(--electric))' }} />
