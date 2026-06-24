@@ -546,8 +546,7 @@ function GpaCalculator({ user }) {
 
           {/* Sticky/Fixed GPA Bottom Bar inside the container */}
           <div style={{
-            background: 'color-mix(in srgb, var(--bg-card) 95%, transparent)',
-            backdropFilter: 'blur(12px)',
+            background: 'var(--bg-card)',
             border: '1px solid var(--border)',
             color: 'var(--text)',
             borderRadius: '24px',
