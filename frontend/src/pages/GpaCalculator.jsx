@@ -601,7 +601,7 @@ function GpaCalculator({ user }) {
       {/* Render Saved Records and CGPA below the calculator */}
       {cgpaData && cgpaData.records && cgpaData.records.length > 0 && (
         <div style={{ marginTop: '60px', animation: 'fadeUp 0.4s ease-out' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
             <Calculator size={28} color="var(--accent)" />
             <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 900, color: 'var(--text)' }}>
               Your Saved Records

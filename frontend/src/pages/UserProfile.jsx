@@ -194,7 +194,7 @@ const UserProfile = ({ user, setUser }) => {
         {/* GPA Section - Show if there is data, OR if viewing own profile */}
         {((user && user.username === profile.username) || (gpaData && gpaData.records && gpaData.records.length > 0)) && (
           <div style={{ marginBottom: '40px', animation: 'fadeUp 0.4s ease-out' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
               <Calculator size={28} color="var(--accent)" />
               <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: 'var(--text)' }}>
                 Academic Performance
