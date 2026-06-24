@@ -273,23 +273,24 @@ function GpaCalculator({ user }) {
       
       {/* Header */}
       <div style={{
-        background: 'var(--accent)',
-        border: '3px solid var(--text)',
-        borderRadius: '16px',
-        padding: '24px 32px',
-        boxShadow: '6px 6px 0px var(--text)',
+        background: 'color-mix(in srgb, var(--bg-card) 70%, var(--accent) 30%)',
+        border: '1px solid var(--border)',
+        borderRadius: '24px',
+        padding: '32px 40px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
         marginBottom: '40px',
         display: 'flex',
         alignItems: 'center',
-        gap: '20px',
-        color: 'var(--text)'
+        gap: '24px',
+        color: 'var(--text)',
+        flexWrap: 'wrap'
       }}>
         <div style={{
-          background: 'var(--bg-white)',
-          padding: '16px',
-          borderRadius: '12px',
-          border: '2px solid var(--text)',
-          boxShadow: '4px 4px 0px rgba(0,0,0,0.1)'
+          background: 'var(--bg-card)',
+          padding: '20px',
+          borderRadius: '20px',
+          border: '1px solid var(--border)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.05)'
         }}>
           <Calculator size={40} strokeWidth={2.5} color="var(--primary)" />
         </div>
@@ -305,15 +306,15 @@ function GpaCalculator({ user }) {
 
       {/* Selection Area */}
       <div style={{
-        background: 'var(--bg-white)',
-        border: '3px solid var(--text)',
-        borderRadius: '16px',
-        padding: '24px',
-        boxShadow: '6px 6px 0px var(--text)',
-        marginBottom: '30px',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border)',
+        borderRadius: '24px',
+        padding: '32px',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
+        marginBottom: '40px',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '20px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '24px'
       }}>
         <div>
           <label style={{ display: 'block', fontWeight: 800, marginBottom: '8px', fontSize: '0.9rem' }}>Faculty</label>
@@ -366,12 +367,12 @@ function GpaCalculator({ user }) {
       {/* Courses Area */}
       {faculty && program && semester && (
         <div style={{
-          background: 'var(--bg-white)',
-          border: '3px solid var(--text)',
-          borderRadius: '16px',
-          padding: '24px',
-          boxShadow: '6px 6px 0px var(--text)',
-          animation: 'slideUp 0.4s ease-out'
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
+          borderRadius: '24px',
+          padding: '32px',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
+          animation: 'fadeUp 0.4s ease-out'
         }}>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '2px solid var(--border)', paddingBottom: '16px' }}>
@@ -393,15 +394,16 @@ function GpaCalculator({ user }) {
                   key={course.id} 
                   onMouseLeave={() => setVisibleNames(prev => ({ ...prev, [course.id]: false }))}
                   style={{
-                    background: 'var(--bg-subtle)',
-                    border: '2px solid var(--text)',
-                    borderRadius: '12px',
-                    padding: '16px',
+                    background: 'var(--bg-body)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '16px',
+                    padding: '20px',
                     display: 'flex',
                     flexWrap: 'wrap',
                     alignItems: 'center',
                     gap: '16px',
-                    position: 'relative'
+                    position: 'relative',
+                    transition: 'border-color 0.2s',
                   }}
                 >
                   <div style={{ flex: '1 1 200px' }}>
@@ -443,8 +445,8 @@ function GpaCalculator({ user }) {
                         value={course.creditHours}
                         onChange={(e) => handleCHChange(course.id, e.target.value)}
                         style={{ 
-                          padding: '8px', borderRadius: '8px', border: '2px solid var(--text)', 
-                          background: 'var(--bg-white)', fontWeight: 800, cursor: 'pointer', width: '70px'
+                          padding: '10px 12px', borderRadius: '12px', border: '1px solid var(--border)', 
+                          background: 'var(--bg-card)', color: 'var(--text)', fontWeight: 700, cursor: 'pointer', width: '80px', outline: 'none'
                         }}
                       >
                         {[1, 2, 3, 4, 5, 6].map(num => (
@@ -459,8 +461,8 @@ function GpaCalculator({ user }) {
                         value={course.grade}
                         onChange={(e) => handleGradeChange(course.id, e.target.value)}
                         style={{ 
-                          padding: '8px', borderRadius: '8px', border: '2px solid var(--text)', 
-                          background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', fontWeight: 800, cursor: 'pointer', width: '90px'
+                          padding: '10px 12px', borderRadius: '12px', border: '1px solid var(--primary)', 
+                          background: 'var(--primary)', color: 'var(--nav-btn-text)', fontWeight: 700, cursor: 'pointer', width: '100px', outline: 'none'
                         }}
                       >
                         {GRADING_SCALE.map(scale => (
@@ -496,18 +498,18 @@ function GpaCalculator({ user }) {
               <button 
                 onClick={() => setShowAddForm(true)}
                 style={{
-                  width: '100%', background: 'none', border: '2px dashed var(--text-muted)',
-                  borderRadius: '12px', padding: '20px', color: 'var(--text)', fontWeight: 800,
+                  width: '100%', background: 'var(--bg-body)', border: '2px dashed var(--border)',
+                  borderRadius: '16px', padding: '24px', color: 'var(--text-muted)', fontWeight: 700,
                   fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                   transition: 'all 0.2s'
                 }}
-                onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--text)'; }}
-                onMouseOut={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.borderColor = 'var(--text-muted)'; }}
+                onMouseOver={e => { e.currentTarget.style.background = 'var(--bg-card)'; e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
+                onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-body)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
               >
                 <Plus size={20} strokeWidth={3} /> ADD EXTRA COURSE
               </button>
             ) : (
-              <div style={{ background: 'var(--bg-subtle)', border: '2px solid var(--text)', borderRadius: '12px', padding: '20px' }}>
+              <div style={{ background: 'var(--bg-body)', border: '1px solid var(--border)', borderRadius: '16px', padding: '24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h3 style={{ margin: 0, fontWeight: 800, fontSize: '1.1rem' }}>Add Custom Course</h3>
                   <button onClick={() => setShowAddForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
@@ -544,30 +546,32 @@ function GpaCalculator({ user }) {
 
           {/* Sticky/Fixed GPA Bottom Bar inside the container */}
           <div style={{
-            background: 'var(--text)',
-            color: 'var(--bg-white)',
-            borderRadius: '16px',
-            padding: '24px',
+            background: 'color-mix(in srgb, var(--bg-card) 95%, transparent)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid var(--border)',
+            color: 'var(--text)',
+            borderRadius: '24px',
+            padding: '32px',
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignItems: 'center',
-            gap: '20px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
+            gap: '24px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.06)'
           }}>
             <div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 800, opacity: 0.8, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
                 Estimated GPA
               </div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 1, color: 'var(--accent)' }}>
+                <span style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1, color: 'var(--primary)', letterSpacing: '-0.02em' }}>
                   {gpa}
                 </span>
-                <span style={{ fontSize: '1rem', fontWeight: 600, opacity: 0.8 }}>
+                <span style={{ fontSize: '1.2rem', fontWeight: 600, opacity: 0.6 }}>
                   / 4.00
                 </span>
               </div>
-              <div style={{ fontSize: '0.85rem', fontWeight: 600, marginTop: '4px', opacity: 0.8 }}>
+              <div style={{ fontSize: '0.9rem', fontWeight: 600, marginTop: '8px', opacity: 0.7 }}>
                 Total Credits: {totalCH}
               </div>
             </div>
@@ -608,23 +612,23 @@ function GpaCalculator({ user }) {
                 onClick={saveRecord}
                 disabled={isSaving || !user || courses.length === 0}
                 style={{
-                  background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
-                  color: 'white',
-                  border: '2px solid white',
-                  borderRadius: '12px',
+                  background: 'var(--primary)',
+                  color: 'var(--nav-btn-text)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '16px',
                   padding: '16px 32px',
                   fontSize: '1.1rem',
-                  fontWeight: 900,
+                  fontWeight: 800,
                   display: 'flex',
                   alignItems: 'center',
                   gap: '12px',
                   cursor: (isSaving || courses.length === 0) ? 'not-allowed' : 'pointer',
                   opacity: (isSaving || courses.length === 0) ? 0.7 : 1,
-                  boxShadow: (isSaving || courses.length === 0) ? 'none' : '4px 4px 0px rgba(255,255,255,0.4)',
+                  boxShadow: (isSaving || courses.length === 0) ? 'none' : '0 8px 24px rgba(0,0,0,0.1)',
                   transition: 'all 0.2s',
                 }}
-                onMouseOver={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'translate(-2px, -2px)'; e.currentTarget.style.boxShadow = '6px 6px 0px rgba(255,255,255,0.4)'; } }}
-                onMouseOut={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '4px 4px 0px rgba(255,255,255,0.4)'; } }}
+                onMouseOver={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.15)'; } }}
+                onMouseOut={e => { if(!isSaving && courses.length > 0) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)'; } }}
               >
                 {isSaving ? (
                   <><Loader2 className="animate-spin" size={24} /> SAVING...</>
