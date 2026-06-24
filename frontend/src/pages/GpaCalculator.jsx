@@ -68,7 +68,15 @@ export default function GpaCalculator({ user }) {
     );
 
     if (savedRecord) {
-      setCourses(savedRecord.courses);
+      try {
+        const parsedCourses = typeof savedRecord.courses === 'string' 
+          ? JSON.parse(savedRecord.courses) 
+          : savedRecord.courses;
+        setCourses(Array.isArray(parsedCourses) ? parsedCourses : []);
+      } catch (e) {
+        console.error("Failed to parse courses", e);
+        setCourses([]);
+      }
       return;
     }
 
