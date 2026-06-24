@@ -1107,6 +1107,39 @@ input::placeholder, textarea::placeholder {
   .search-filters select { min-width: 0; flex: 1 1 calc(50% - 5px); }
 }
 
+/* ── Admin Dashboard Layout ───────────────────────────── */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.admin-sidebar {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-mobile-nav {
+  display: none;
+}
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .admin-sidebar {
+    display: none;
+  }
+  .admin-mobile-nav {
+    display: flex;
+  }
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
 /* ── Signup form: stack 2-col grids on mobile ─────────── */
 .signup-grid-2 {
   display: grid;

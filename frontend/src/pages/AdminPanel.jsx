@@ -718,7 +718,7 @@ const AdminPanel = ({ user }) => {
 
   return (
     <div style={{ paddingTop: '80px', minHeight: '100vh', background: 'var(--bg-hero)' }}>
-      <div className="page-container" style={{ maxWidth: '1200px' }}>
+      <div className="page-container" style={{ maxWidth: '1400px' }}>
 
       {/* Toast */}
       {toast && (
@@ -1009,72 +1009,113 @@ const AdminPanel = ({ user }) => {
         </div>
       )}
 
-
-        {/* Header */}
-        <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)' }}>
+      <div className="admin-layout">
+        {/* Sidebar (Desktop) */}
+        <aside className="admin-sidebar">
+          <div style={{ marginBottom: '24px', paddingLeft: '8px' }}>
+            <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)' }}>
               Admin <span className="gradient-text">Panel</span>
             </h1>
-            <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.9rem' }}>Command center for GIKI Hub.</p>
+            <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.85rem' }}>Command center.</p>
           </div>
-          <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer' }}>
-            <RefreshCw size={20} />
-          </button>
-        </div>
-
-        {/* Stats bar */}
-        {stats && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px', marginBottom: '32px' }}>
-            {[
-              { label: 'Pending',   value: stats.pending_files,  emoji: <Clock size={32} />, accent: '#F59E0B', key: 'pending' },
-              { label: 'Flags',     value: reportCounts.pending ?? 0, emoji: <Flag size={32} />, accent: '#DC2626', key: 'reports' },
-              { label: 'Issues',    value: issueCounts.open ?? 0, emoji: <Wrench size={32} />, accent: '#6366F1', key: 'issues' },
-              { label: 'Admins',    value: stats.total_admins,   emoji: <Shield size={32} />, accent: '#8B5CF6', key: 'admins' },
-            ].map(s => (
-              <div 
-                key={s.label} 
-                onClick={() => setTab(s.key)}
-                style={{ 
-                  background: 'var(--bg-card)', border: `1px solid var(--border)`, 
-                  borderRadius: '14px', padding: '20px', textAlign: 'center',
-                  boxShadow: `0 8px 32px rgba(0,0,0,0.06)`, cursor: 'pointer',
-                  transition: 'transform 0.1s'
+          
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {TABS.map(t => (
+              <button
+                key={t.key}
+                onClick={() => { setTab(t.key); setSelectedPending(new Set()); }}
+                style={{
+                  padding: '12px 16px', borderRadius: '12px',
+                  fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
+                  background: tab === t.key ? 'var(--text)' : 'transparent',
+                  color: tab === t.key ? 'var(--bg-hero)' : 'var(--text-muted)',
+                  border: 'none', textAlign: 'left',
+                  transition: 'all 0.15s',
+                  display: 'flex', alignItems: 'center', gap: '10px'
                 }}
-                onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
-                onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
               >
-                <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{s.emoji}</div>
-                <div style={{ fontSize: '2.2rem', fontWeight: 950, color: 'var(--text)', fontFamily: 'var(--font-primary)' }}>{s.value}</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
-              </div>
+                {t.label}
+              </button>
             ))}
-          </div>
-        )}
+          </nav>
+        </aside>
 
-        {/* Tab bar */}
-        <div className="scroll-x-wrap" style={{ marginBottom: '24px' }}>
-          <div className="scroll-x" style={{ paddingBottom: '12px' }}>
-          {TABS.map(t => (
-            <button
-              key={t.key}
-              onClick={() => { setTab(t.key); setSelectedPending(new Set()); }}
-              style={{
-                padding: '10px 18px', borderRadius: '100px',
-                fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
-                border: '1px solid var(--border)',
-                background: tab === t.key ? 'var(--text)' : 'var(--bg-card)',
-                color: tab === t.key ? 'var(--bg-hero)' : 'var(--text)',
-                boxShadow: tab === t.key ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
-                transition: 'all 0.15s',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {t.label}
-            </button>
-          ))}
+        {/* Main Content */}
+        <main>
+          {/* Mobile Header + Nav */}
+          <div className="admin-mobile-nav" style={{ flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)' }}>
+                  Admin <span className="gradient-text">Panel</span>
+                </h1>
+              </div>
+              <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer' }}>
+                <RefreshCw size={20} />
+              </button>
+            </div>
+
+            <div className="scroll-x-wrap">
+              <div className="scroll-x" style={{ paddingBottom: '12px' }}>
+              {TABS.map(t => (
+                <button
+                  key={t.key}
+                  onClick={() => { setTab(t.key); setSelectedPending(new Set()); }}
+                  style={{
+                    padding: '10px 18px', borderRadius: '100px',
+                    fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
+                    border: '1px solid var(--border)',
+                    background: tab === t.key ? 'var(--text)' : 'var(--bg-card)',
+                    color: tab === t.key ? 'var(--bg-hero)' : 'var(--text)',
+                    boxShadow: tab === t.key ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
+                    transition: 'all 0.15s',
+                    whiteSpace: 'nowrap',
+                    display: 'flex', alignItems: 'center', gap: '8px'
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+              </div>
+            </div>
           </div>
-        </div>
+
+          {/* Desktop Refresh Button & Quick Stats */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }} className="hide-mobile">
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--text)' }}>Overview</h2>
+            <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>
+              <RefreshCw size={16} /> Refresh
+            </button>
+          </div>
+
+          {/* Stats bar */}
+          {stats && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+              {[
+                { label: 'Pending',   value: stats.pending_files,  emoji: <Clock size={28} />, accent: '#F59E0B', key: 'pending' },
+                { label: 'Flags',     value: reportCounts.pending ?? 0, emoji: <Flag size={28} />, accent: '#DC2626', key: 'reports' },
+                { label: 'Issues',    value: issueCounts.open ?? 0, emoji: <Wrench size={28} />, accent: '#6366F1', key: 'issues' },
+                { label: 'Admins',    value: stats.total_admins,   emoji: <Shield size={28} />, accent: '#8B5CF6', key: 'admins' },
+              ].map(s => (
+                <div 
+                  key={s.label} 
+                  onClick={() => setTab(s.key)}
+                  style={{ 
+                    background: 'var(--bg-card)', border: `1px solid var(--border)`, 
+                    borderRadius: '14px', padding: '16px', textAlign: 'center',
+                    boxShadow: `0 8px 32px rgba(0,0,0,0.04)`, cursor: 'pointer',
+                    transition: 'transform 0.1s'
+                  }}
+                  onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
+                  onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>{s.emoji}</div>
+                  <div style={{ fontSize: '1.8rem', fontWeight: 950, color: 'var(--text)', fontFamily: 'var(--font-primary)' }}>{s.value}</div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
 
         {/* ── Pending tab (with Bulk Actions) ── */}
         {tab === 'pending' && (
@@ -1837,6 +1878,8 @@ const AdminPanel = ({ user }) => {
         )}
 
         <div style={{ height: '80px' }} />
+        </main>
+      </div>
 
       </div>
     </div>
