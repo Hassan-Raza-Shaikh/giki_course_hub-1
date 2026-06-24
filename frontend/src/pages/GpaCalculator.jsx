@@ -574,10 +574,10 @@ function GpaCalculator({ user }) {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
               {user && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.1)', padding: '10px 16px', borderRadius: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'var(--bg-subtle)', padding: '10px 16px', borderRadius: '12px', border: '1px solid var(--border)' }}>
                   <div>
-                    <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Public GPA</div>
-                    <div style={{ fontSize: '0.7rem', opacity: 0.7 }}>Show on profile</div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text)' }}>Public GPA</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Show on profile</div>
                   </div>
                   <label style={{ position: 'relative', display: 'inline-block', width: '40px', height: '22px' }}>
                     <input 
@@ -588,7 +588,7 @@ function GpaCalculator({ user }) {
                     />
                     <span style={{
                       position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
-                      backgroundColor: gpaPublic ? 'var(--primary)' : 'rgba(255,255,255,0.2)',
+                      backgroundColor: gpaPublic ? 'var(--primary)' : 'var(--border)',
                       transition: '.3s', borderRadius: '34px'
                     }}>
                       <span style={{
