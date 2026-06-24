@@ -56,7 +56,7 @@ export default function GpaCalculatorWrapper(props) {
 }
 
 function GpaCalculator({ user }) {
-  const { addToast } = useToast();
+  const toast = useToast();
 
   // Selection state
   const [faculty, setFaculty] = useState('');
@@ -203,11 +203,11 @@ function GpaCalculator({ user }) {
 
   const saveRecord = async () => {
     if (!user) {
-      addToast("You must be logged in to save GPA records.", "error");
+      toast.error("You must be logged in to save GPA records.");
       return;
     }
     if (!faculty || !program || !semester || courses.length === 0) {
-      addToast("Incomplete plan. Select faculty, program, semester and add courses.", "error");
+      toast.error("Incomplete plan. Select faculty, program, semester and add courses.");
       return;
     }
 
@@ -224,17 +224,17 @@ function GpaCalculator({ user }) {
       
       const res = await api.post('/gpa/save', payload);
       if (res.data.success) {
-        addToast("GPA Record saved successfully to your profile!", "success");
+        toast.success("GPA Record saved successfully to your profile!");
         // Update local saved records state
         setSavedRecords(prev => {
           const filtered = prev.filter(r => !(r.faculty === faculty && r.program === program && r.semester === parseInt(semester)));
           return [...filtered, { ...payload, gpa_id: res.data.gpa_id }];
         });
       } else {
-        addToast(res.data.message || "Failed to save record.", "error");
+        toast.error(res.data.message || "Failed to save record.");
       }
     } catch (err) {
-      addToast(err.response?.data?.message || "An error occurred while saving.", "error");
+      toast.error(err.response?.data?.message || "An error occurred while saving.");
     } finally {
       setIsSaving(false);
     }
