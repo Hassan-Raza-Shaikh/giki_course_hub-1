@@ -579,7 +579,7 @@ function GpaCalculator({ user }) {
                     <div style={{ fontSize: '0.8rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text)' }}>Public GPA</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Show on profile</div>
                   </div>
-                  <label style={{ position: 'relative', display: 'inline-block', width: '40px', height: '22px' }}>
+                  <label style={{ position: 'relative', display: 'inline-block', width: '48px', height: '22px' }}>
                     <input 
                       type="checkbox" 
                       checked={gpaPublic} 
@@ -589,12 +589,15 @@ function GpaCalculator({ user }) {
                     <span style={{
                       position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
                       backgroundColor: gpaPublic ? 'var(--primary)' : 'var(--border)',
-                      transition: '.3s', borderRadius: '34px'
+                      transition: '.3s', borderRadius: '34px',
+                      display: 'flex', alignItems: 'center', justifyContent: gpaPublic ? 'flex-start' : 'flex-end',
+                      padding: '0 6px', fontSize: '0.65rem', fontWeight: 900, color: 'white', letterSpacing: '0.5px'
                     }}>
+                      {gpaPublic ? 'ON' : 'OFF'}
                       <span style={{
                         position: 'absolute', content: '""', height: '16px', width: '16px', left: '3px', bottom: '3px',
                         backgroundColor: 'white', transition: '.3s', borderRadius: '50%',
-                        transform: gpaPublic ? 'translateX(18px)' : 'none'
+                        transform: gpaPublic ? 'translateX(26px)' : 'none'
                       }}/>
                     </span>
                   </label>

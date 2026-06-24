@@ -101,7 +101,7 @@ def get_user_uploads(username):
             SELECT f.file_id, f.title, f.file_url, f.upload_date, f.course_code,
                    c.name AS course_name, cat.name AS category, m.file_size
             FROM files f
-            LEFT JOIN courses c ON c.code = f.course_code OR c.name = f.course_code
+            LEFT JOIN courses c ON c.code = f.course_code
             LEFT JOIN categories cat ON cat.category_id = f.category_id
             LEFT JOIN file_metadata m ON m.file_id = f.file_id
             WHERE f.uploaded_by = %s AND f.status = 'approved'

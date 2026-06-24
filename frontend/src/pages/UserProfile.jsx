@@ -217,7 +217,7 @@ const UserProfile = ({ user, setUser }) => {
               {user && user.username === profile.username && (
                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-subtle)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--border)' }}>
                   <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text)' }}>Public GPA</span>
-                  <label style={{ position: 'relative', display: 'inline-block', width: '32px', height: '18px' }}>
+                  <label style={{ position: 'relative', display: 'inline-block', width: '48px', height: '22px' }}>
                     <input 
                       type="checkbox" 
                       checked={profile.gpa_public || false} 
@@ -227,12 +227,15 @@ const UserProfile = ({ user, setUser }) => {
                     <span style={{
                       position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
                       backgroundColor: profile.gpa_public ? 'var(--primary)' : 'var(--border)',
-                      transition: '.3s', borderRadius: '34px'
+                      transition: '.3s', borderRadius: '34px',
+                      display: 'flex', alignItems: 'center', justifyContent: profile.gpa_public ? 'flex-start' : 'flex-end',
+                      padding: '0 6px', fontSize: '0.65rem', fontWeight: 900, color: 'white', letterSpacing: '0.5px'
                     }}>
+                      {profile.gpa_public ? 'ON' : 'OFF'}
                       <span style={{
-                        position: 'absolute', content: '""', height: '14px', width: '14px', left: '2px', bottom: '2px',
+                        position: 'absolute', content: '""', height: '16px', width: '16px', left: '3px', bottom: '3px',
                         backgroundColor: 'white', transition: '.3s', borderRadius: '50%',
-                        transform: profile.gpa_public ? 'translateX(14px)' : 'none'
+                        transform: profile.gpa_public ? 'translateX(26px)' : 'none'
                       }}/>
                     </span>
                   </label>

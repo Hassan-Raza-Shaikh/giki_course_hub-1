@@ -221,7 +221,7 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
                 <div style={{ fontWeight: 800, color: 'var(--text)', marginBottom: '4px' }}>Public GPA</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Allow others to see your academic performance on your public profile.</div>
               </div>
-              <label style={{ position: 'relative', display: 'inline-block', width: '48px', height: '26px' }}>
+              <label style={{ position: 'relative', display: 'inline-block', width: '56px', height: '26px' }}>
                 <input 
                   type="checkbox" 
                   checked={gpaPublic} 
@@ -231,12 +231,15 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
                 <span style={{
                   position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
                   backgroundColor: gpaPublic ? 'var(--primary)' : 'var(--border)',
-                  transition: '.3s', borderRadius: '34px'
+                  transition: '.3s', borderRadius: '34px',
+                  display: 'flex', alignItems: 'center', justifyContent: gpaPublic ? 'flex-start' : 'flex-end',
+                  padding: '0 8px', fontSize: '0.75rem', fontWeight: 900, color: 'white', letterSpacing: '0.5px'
                 }}>
+                  {gpaPublic ? 'ON' : 'OFF'}
                   <span style={{
                     position: 'absolute', content: '""', height: '20px', width: '20px', left: '3px', bottom: '3px',
                     backgroundColor: 'white', transition: '.3s', borderRadius: '50%',
-                    transform: gpaPublic ? 'translateX(22px)' : 'none'
+                    transform: gpaPublic ? 'translateX(30px)' : 'none'
                   }}/>
                 </span>
               </label>
