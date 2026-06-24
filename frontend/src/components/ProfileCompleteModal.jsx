@@ -233,7 +233,7 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
                   backgroundColor: gpaPublic ? 'var(--primary)' : 'var(--border)',
                   transition: '.3s', borderRadius: '34px',
                   display: 'flex', alignItems: 'center', justifyContent: gpaPublic ? 'flex-start' : 'flex-end',
-                  padding: '0 8px', fontSize: '0.75rem', fontWeight: 900, color: 'white', letterSpacing: '0.5px'
+                  padding: '0 8px', color: 'white', fontSize: '0.65rem', fontWeight: 800
                 }}>
                   {gpaPublic ? 'ON' : 'OFF'}
                   <span style={{
