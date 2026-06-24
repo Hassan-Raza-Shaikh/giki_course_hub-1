@@ -130,9 +130,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
               background: 'var(--bg-card)', border: '1px solid var(--border)',
               borderRadius: '20px', 
               boxShadow: '0 16px 48px rgba(0,0,0,0.18), 0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent)',
-              width: '180px', maxHeight: '75vh', overflowY: 'auto',
-              zIndex: 9999, display: 'flex', flexDirection: 'column',
-              overflow: 'hidden'
+              width: '180px', maxHeight: '75vh', overflowY: 'auto', overflowX: 'hidden',
+              zIndex: 9999, display: 'flex', flexDirection: 'column'
             }}>
               {/* Top accent */}
               <div style={{ height: '4px', background: 'var(--accent)', flexShrink: 0 }} />
