@@ -213,9 +213,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/calculator')}
-          style={{ background: 'var(--text)', color: 'var(--bg-white)' }}
+          style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)' }}
         >
-          <Calculator size={16} strokeWidth={2.5} /> GPA Calc
+          <Calculator size={16} strokeWidth={2.5} /> GPA Calculator
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

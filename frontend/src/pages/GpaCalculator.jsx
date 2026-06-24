@@ -1,8 +1,37 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Component } from 'react';
 import { Plus, X, Save, Info, Loader2, Trash2, ArrowRight, Calculator } from 'lucide-react';
 import api from '../services/api';
 import coursesData from '../data/giki_courses_with_codes.json';
 import { useToast } from '../components/Toast';
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, info: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, info) {
+    console.error("ErrorBoundary caught an error", error, info);
+    this.setState({ info });
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '120px 20px', maxWidth: '900px', margin: '0 auto', color: 'red' }}>
+          <h2>Something went wrong in GPA Calculator.</h2>
+          <details style={{ whiteSpace: 'pre-wrap' }}>
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {this.state.info && this.state.info.componentStack}
+          </details>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const GRADING_SCALE = [
   { grade: 'A', points: 4.00 },
@@ -18,7 +47,15 @@ const GRADING_SCALE = [
   { grade: 'F', points: 0.00 },
 ];
 
-export default function GpaCalculator({ user }) {
+export default function GpaCalculatorWrapper(props) {
+  return (
+    <ErrorBoundary>
+      <GpaCalculator {...props} />
+    </ErrorBoundary>
+  );
+}
+
+function GpaCalculator({ user }) {
   const { addToast } = useToast();
 
   // Selection state
