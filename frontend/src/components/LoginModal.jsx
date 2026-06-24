@@ -208,7 +208,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
     <div className="modal-overlay" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="modal-box" style={{ position: 'relative', overflow: 'hidden', padding: '0', maxWidth: '520px', width: '95%', maxHeight: '92vh', overflowY: 'auto' }}>
         {/* Top accent strip */}
-        <div style={{ height: '8px', background: 'var(--primary)', width: '100%', borderBottom: '2px solid var(--text)' }} />
+        <div style={{ height: '8px', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', width: '100%', borderBottom: '2px solid var(--text)' }} />
 
         {/* Close button */}
         <button
@@ -223,7 +223,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: 'var(--text)', fontWeight: 900, transition: 'all 0.15s',
           }}
-          onMouseOver={e => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.color = 'var(--bg-hero)'; e.currentTarget.style.boxShadow = 'none'; }}
+          onMouseOver={e => { e.currentTarget.style.background = 'color-mix(in srgb, var(--primary) 85%, var(--accent))'; e.currentTarget.style.color = 'var(--bg-hero)'; e.currentTarget.style.boxShadow = 'none'; }}
           onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-white)'; e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.boxShadow = '2px 2px 0px var(--text)'; }}
         >
           ✕
@@ -253,7 +253,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
                 <button key={t} onClick={() => { setTab(t); setError(''); }}
                   style={{
                     flex: 1, padding: '10px', fontWeight: 800, fontSize: '0.88rem',
-                    background: tab === t ? 'var(--primary)' : 'var(--bg-white)',
+                    background: tab === t ? 'color-mix(in srgb, var(--primary) 85%, var(--accent))' : 'var(--bg-white)',
                     color: tab === t ? 'var(--bg-hero)' : 'var(--text)',
                     border: 'none', cursor: 'pointer', transition: 'all 0.2s',
                     textTransform: 'capitalize',

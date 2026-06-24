@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, Component } from 'react';
-import { Plus, X, Save, Info, Loader2, Trash2, ArrowRight, Calculator } from 'lucide-react';
+import { Plus, X, Save, Info, Loader2, Trash2, ArrowRight, Calculator, BookOpen } from 'lucide-react';
 import api from '../services/api';
 import coursesData from '../data/giki_courses_with_codes.json';
 import { useToast } from '../components/Toast';
@@ -448,7 +448,7 @@ function GpaCalculator({ user }) {
                         onChange={(e) => handleGradeChange(course.id, e.target.value)}
                         style={{ 
                           padding: '8px', borderRadius: '8px', border: '2px solid var(--text)', 
-                          background: 'var(--primary)', color: 'white', fontWeight: 800, cursor: 'pointer', width: '90px'
+                          background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', fontWeight: 800, cursor: 'pointer', width: '90px'
                         }}
                       >
                         {GRADING_SCALE.map(scale => (
@@ -564,7 +564,7 @@ function GpaCalculator({ user }) {
               onClick={saveRecord}
               disabled={isSaving || !user || courses.length === 0}
               style={{
-                background: 'var(--primary)',
+                background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
                 color: 'white',
                 border: '2px solid white',
                 borderRadius: '12px',

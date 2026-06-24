@@ -248,7 +248,7 @@ const UserProfile = ({ user, setUser }) => {
                 <Calculator size={48} style={{ color: 'var(--border)', margin: '0 auto 16px' }} />
                 <h3 style={{ margin: '0 0 8px', fontSize: '1.2rem', color: 'var(--text)' }}>No GPA Records</h3>
                 <p style={{ color: 'var(--text-muted)', margin: '0 0 24px' }}>Start tracking your academic performance semester by semester.</p>
-                <Link to="/calculator" className="btn-nav" style={{ textDecoration: 'none', background: 'var(--primary)', color: 'var(--bg-white)', padding: '10px 24px', borderRadius: '100px', fontWeight: 800, fontSize: '0.95rem', display: 'inline-block' }}>
+                <Link to="/calculator" className="btn-nav" style={{ textDecoration: 'none', background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'var(--bg-white)', padding: '10px 24px', borderRadius: '100px', fontWeight: 800, fontSize: '0.95rem', display: 'inline-block' }}>
                   Open Calculator
                 </Link>
               </div>

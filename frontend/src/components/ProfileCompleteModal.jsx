@@ -130,7 +130,7 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
           <div style={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             width: '52px', height: '52px', borderRadius: '50%',
-            background: 'var(--primary)', color: 'var(--nav-btn-text)',
+            background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'var(--nav-btn-text)',
             marginBottom: '14px',
             border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)',
           }}>
@@ -229,7 +229,7 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
             disabled={saving}
             className="btn-nav"
             style={{
-              background: 'var(--primary)',
+              background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
               color: 'var(--nav-btn-text)',
               padding: '12px 24px',
               fontSize: '1rem',

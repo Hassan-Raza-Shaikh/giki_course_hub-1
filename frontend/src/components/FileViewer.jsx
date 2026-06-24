@@ -128,7 +128,7 @@ const FileViewer = ({ file, onClose }) => {
           href={url}
           download={title}
           style={{
-            background: 'var(--primary)', color: 'white',
+            background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'white',
             padding: '12px 28px', borderRadius: '100px',
             fontWeight: 800, fontSize: '0.9rem',
             border: '2px solid var(--text)', boxShadow: '3px 3px 0 var(--text)',
@@ -181,7 +181,7 @@ const FileViewer = ({ file, onClose }) => {
               href={url}
               download={title}
               style={{
-                padding: '6px 12px', background: 'var(--primary)', color: 'white',
+                padding: '6px 12px', background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'white',
                 borderRadius: '8px', fontWeight: 700, fontSize: '0.78rem',
                 border: '2px solid var(--text)', boxShadow: '2px 2px 0 var(--text)',
                 textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px',
@@ -475,14 +475,14 @@ const CsvPreview = ({ url }) => {
           <thead>
             <tr>
               <th style={{
-                padding: '10px 14px', background: 'var(--primary)', color: 'white',
+                padding: '10px 14px', background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'white',
                 fontWeight: 800, fontSize: '0.78rem', textAlign: 'left',
                 borderBottom: '2px solid var(--text)', position: 'sticky', top: 0, zIndex: 1,
                 whiteSpace: 'nowrap',
               }}>#</th>
               {header.map((h, i) => (
                 <th key={i} style={{
-                  padding: '10px 14px', background: 'var(--primary)', color: 'white',
+                  padding: '10px 14px', background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'white',
                   fontWeight: 800, fontSize: '0.78rem', textAlign: 'left',
                   borderBottom: '2px solid var(--text)', position: 'sticky', top: 0, zIndex: 1,
                   whiteSpace: 'nowrap',

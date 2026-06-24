@@ -160,7 +160,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/upload')}
-          style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)' }}
+          style={{ background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'var(--nav-btn-text)' }}
         >
           <Upload size={16} strokeWidth={2.5} /> Upload
         </button>
@@ -168,7 +168,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/courses')}
-          style={{ background: 'var(--secondary)', color: 'var(--nav-btn-text)' }}
+          style={{ background: 'color-mix(in srgb, var(--secondary) 85%, var(--primary))', color: 'var(--nav-btn-text)' }}
         >
           <BookOpen size={16} strokeWidth={2.5} /> Courses
         </button>
@@ -176,7 +176,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/search')}
-          style={{ background: 'var(--electric)', color: 'var(--nav-btn-text)' }}
+          style={{ background: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))', color: 'var(--nav-btn-text)' }}
         >
           <Search size={16} strokeWidth={2.5} /> Search
           <kbd style={{
@@ -197,7 +197,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/bookmarks')}
-          style={{ background: 'var(--tertiary)', color: 'var(--nav-btn-text)' }}
+          style={{ background: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))', color: 'var(--nav-btn-text)' }}
         >
           <Bookmark size={16} strokeWidth={2.5} /> Bookmarks
         </button>
@@ -205,7 +205,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/leaderboard')}
-          style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)' }}
+          style={{ background: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))', color: 'var(--nav-btn-text)' }}
         >
           <Trophy size={16} strokeWidth={2.5} /> Leaderboard
         </button>
@@ -213,7 +213,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         <button
           className="hide-mobile btn-nav"
           onClick={() => navigate('/calculator')}
-          style={{ background: 'var(--primary)', color: 'var(--nav-btn-text)' }}
+          style={{ background: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))', color: 'var(--nav-btn-text)' }}
         >
           <Calculator size={16} strokeWidth={2.5} /> GPA Calculator
         </button>
@@ -403,12 +403,12 @@ const MobileTabBar = ({ user, onSignIn }) => {
   const p = location.pathname;
 
   const tabs = [
-    { label: 'Upload',      icon: <Upload size={20} strokeWidth={2} />,    path: '/upload',      color: 'var(--primary)'   },
-    { label: 'Courses',     icon: <BookOpen size={20} strokeWidth={2} />,  path: '/courses',     color: 'var(--secondary)' },
-    { label: 'Search',      icon: <Search size={20} strokeWidth={2} />,    path: '/search',      color: 'var(--electric)'  },
-    { label: 'Bookmarks',   icon: <Bookmark size={20} strokeWidth={2} />,  path: '/bookmarks',   color: 'var(--tertiary)'  },
-    { label: 'Leaderboard', icon: <Trophy size={20} strokeWidth={2} />,    path: '/leaderboard', color: 'var(--accent)'    },
-    { label: 'GPA Calc',    icon: <Calculator size={20} strokeWidth={2} />,path: '/calculator',  color: 'var(--text)'      },
+    { label: 'Upload',      icon: <Upload size={20} strokeWidth={2} />,    path: '/upload',      color: 'color-mix(in srgb, var(--primary) 85%, var(--electric))' },
+    { label: 'Courses',     icon: <BookOpen size={20} strokeWidth={2} />,  path: '/courses',     color: 'color-mix(in srgb, var(--secondary) 85%, var(--primary))' },
+    { label: 'Search',      icon: <Search size={20} strokeWidth={2} />,    path: '/search',      color: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))' },
+    { label: 'Bookmarks',   icon: <Bookmark size={20} strokeWidth={2} />,  path: '/bookmarks',   color: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))' },
+    { label: 'Leaderboard', icon: <Trophy size={20} strokeWidth={2} />,    path: '/leaderboard', color: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))' },
+    { label: 'GPA Calc',    icon: <Calculator size={20} strokeWidth={2} />,path: '/calculator',  color: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))' },
   ];
 
   return (

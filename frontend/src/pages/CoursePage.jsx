@@ -597,7 +597,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         onClick={() => openEditFile(file)}
                         title="Edit file (Admin only)"
                         style={{
-                          background: 'var(--primary)',
+                          background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
                           color: 'var(--bg-hero)',
                           border: '2px solid var(--text)',
                           borderRadius: '8px',
@@ -652,7 +652,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           if (user) api.post(`/files/${file.file_id ?? file.id}/download`).catch(() => {});
                         }}
                         style={{
-                          background: 'var(--primary)', color: 'white',
+                          background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white',
                           padding: '8px 14px', borderRadius: 8,
                           fontWeight: 700, fontSize: '0.82rem',
                           border: '2px solid var(--text)', boxShadow: '2px 2px 0px var(--text)',
@@ -823,7 +823,7 @@ const CoursePage = ({ user, onSignIn }) => {
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
             <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-            <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'var(--primary)', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
+            <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
           </div>
         </div>
       </div>
@@ -840,7 +840,7 @@ const CoursePage = ({ user, onSignIn }) => {
               <div style={{ color: 'var(--primary)', marginBottom: '12px', display: 'flex', justifyContent: 'center' }}><CheckCircle size={48} strokeWidth={1.5} /></div>
               <h3 style={{ fontWeight: 800, marginBottom: '8px' }}>Report submitted</h3>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Thank you for helping keep the platform safe. An admin will review it.</p>
-              <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '10px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
+              <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '10px 24px', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
             </div>
           ) : (
             <>

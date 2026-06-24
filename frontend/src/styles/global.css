@@ -829,7 +829,7 @@ input::placeholder, textarea::placeholder {
 
 /* ── Primary Button ──────────────────────────────────── */
 .btn-primary {
-  background: var(--primary);
+  background: color-mix(in srgb, var(--primary) 90%, var(--accent));
   color: var(--bg-hero);
   padding: 14px 32px;
   border-radius: var(--radius-md);

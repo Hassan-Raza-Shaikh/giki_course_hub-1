@@ -20,7 +20,7 @@ const LoadingSpinner = ({
         {[0, 1, 2].map(i => (
           <div key={i} style={{
             width: 10, height: 10, borderRadius: '50%',
-            background: 'var(--primary)',
+            background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))',
             animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
           }} />
         ))}

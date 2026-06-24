@@ -72,7 +72,10 @@ const ReportIssue = ({ user }) => {
                 >
                   <option value="ui">UI / Design Glitch</option>
                   <option value="material">Course Material Issue</option>
-                  <option value="bug">Functional Bug</option>
+                  <option value="gpa_calculator">GPA Calculator Issue</option>
+                  <option value="profile">User Profile / Bookmarks</option>
+                  <option value="leaderboard">Leaderboard / Points</option>
+                  <option value="bug">General Functional Bug</option>
                   <option value="feature">Feature Request</option>
                   <option value="other">Other</option>
                 </select>
@@ -84,7 +87,7 @@ const ReportIssue = ({ user }) => {
                   type="text"
                   value={formData.title}
                   onChange={e => setFormData({...formData, title: e.target.value})}
-                  placeholder="e.g. Search button not working on mobile"
+                  placeholder="e.g. GPA Calculator crashes or Search broken"
                   required
                   style={{ width: '100%', padding: '14px', borderRadius: '12px', border: '2px solid var(--text)', fontSize: '1rem', fontWeight: 600, outline: 'none', boxSizing: 'border-box' }}
                 />
@@ -107,7 +110,7 @@ const ReportIssue = ({ user }) => {
                 disabled={loading}
                 style={{ 
                   width: '100%', padding: '18px', borderRadius: '14px', border: '3px solid var(--text)',
-                  background: 'var(--primary)', color: 'white', fontWeight: 900, fontSize: '1.1rem',
+                  background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', fontWeight: 900, fontSize: '1.1rem',
                   boxShadow: '4px 4px 0 var(--text)', cursor: 'pointer', transition: 'all 0.1s'
                 }}
                 onMouseDown={e => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}
