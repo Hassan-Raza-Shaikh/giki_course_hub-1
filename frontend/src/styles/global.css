@@ -1140,6 +1140,18 @@ input::placeholder, textarea::placeholder {
   }
 }
 
+@media (max-width: 640px) {
+  .theme-btn-mobile {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 8px !important;
+  }
+  .theme-btn-mobile:hover {
+    background: var(--bg-subtle) !important;
+  }
+}
+
 /* ── Signup form: stack 2-col grids on mobile ─────────── */
 .signup-grid-2 {
   display: grid;

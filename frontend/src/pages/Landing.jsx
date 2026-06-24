@@ -196,7 +196,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: '28px' }}>
               {randomCourses.map((course, i) => (
                 <ScrollReveal key={course.id} delay={`reveal-delay-${i+1}`}>
-                  <div className="course-card" onClick={() => navigate(`/course/${course.id}`)}>
+                  <div className="course-card" onClick={() => navigate(`/course/${course.course_id || course.id || course.code}`)}>
                     <div style={{
                       position: 'absolute', top: 0, left: 0, right: 0, height: '4px',
                       background: ['var(--primary)', 'var(--secondary)', 'var(--accent)'][i % 3],

@@ -213,8 +213,8 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                   {results.courses.map(course => (
                     <div 
-                      key={course.id} 
-                      onClick={() => navigate(`/course/${course.id}`)}
+                      key={course.course_id || course.id || course.code} 
+                      onClick={() => navigate(`/course/${course.course_id || course.id || course.code}`)}
                       style={{
                         background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)',
                         padding: '20px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer',

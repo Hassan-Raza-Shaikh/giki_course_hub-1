@@ -114,7 +114,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         {/* Creative Theme Toggle */}
         <div ref={themeMenuRef} style={{ position: 'relative' }}>
           <button
-            className="btn-nav"
+            className="btn-nav theme-btn-mobile"
             onClick={() => setThemeMenuOpen(o => !o)}
             style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', display: 'flex', gap: '8px', alignItems: 'center' }}
           >

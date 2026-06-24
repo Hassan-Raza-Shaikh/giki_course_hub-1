@@ -25,7 +25,7 @@ const YEAR_LABELS = { 1: 'Year 1', 2: 'Year 2', 3: 'Year 3', 4: 'Year 4' };
 // ── Single course row inside a year ──────────────────────────────────────────
 const CourseRow = ({ course, onClick }) => (
   <div
-    onClick={() => onClick(course.id)}
+    onClick={() => onClick(course.course_id || course.id || course.code)}
     style={{
       display: 'flex',
       alignItems: 'center',
@@ -124,7 +124,7 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
                 <div style={{ height: 1, flex: 1, background: 'rgba(124,58,237,0.15)' }} />
               </div>
               {sem.courses.map(course => (
-                <CourseRow key={course.id} course={course} onClick={onCourseClick} />
+                <CourseRow key={course.course_id || course.id || course.code} course={course} onClick={onCourseClick} />
               ))}
             </div>
           ))}
@@ -464,7 +464,7 @@ const Courses = () => {
               <div style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>No courses found.</div>
             ) : (
               searchResults.map(course => (
-                <div key={`${course.id}-${course.program}`} style={{ borderBottom: '1px solid var(--border)', padding: '16px 24px' }}>
+                <div key={`${course.course_id || course.id || course.code}-${course.program}`} style={{ borderBottom: '1px solid var(--border)', padding: '16px 24px' }}>
                   <CourseRow course={course} onClick={handleCourseClick} />
                   <div style={{ paddingLeft: '62px', fontSize: '0.75rem', color: 'var(--tertiary)', fontWeight: 600, marginTop: '-6px', marginBottom: '4px' }}>
                     {course.faculty} · {course.program}
