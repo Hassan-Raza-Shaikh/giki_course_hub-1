@@ -76,20 +76,26 @@ function GpaCalculator({ user }) {
   // Network state
   const [isSaving, setIsSaving] = useState(false);
   const [savedRecords, setSavedRecords] = useState([]);
+  const [cgpaData, setCgpaData] = useState(null);
   const [loadingRecords, setLoadingRecords] = useState(false);
 
-  // Load user's saved records on mount
-  useEffect(() => {
+  const fetchRecords = () => {
     if (!user) return;
     setLoadingRecords(true);
     api.get('/gpa/records')
       .then(res => {
         if (res.data.success) {
           setSavedRecords(res.data.records);
+          setCgpaData(res.data);
         }
       })
       .catch(err => console.error("Failed to load GPA records", err))
       .finally(() => setLoadingRecords(false));
+  };
+
+  // Load user's saved records on mount
+  useEffect(() => {
+    fetchRecords();
   }, [user]);
 
   // When faculty/program/semester changes, load courses
@@ -225,11 +231,7 @@ function GpaCalculator({ user }) {
       const res = await api.post('/gpa/save', payload);
       if (res.data.success) {
         toast.success("GPA Record saved successfully to your profile!");
-        // Update local saved records state
-        setSavedRecords(prev => {
-          const filtered = prev.filter(r => !(r.faculty === faculty && r.program === program && r.semester === parseInt(semester)));
-          return [...filtered, { ...payload, gpa_id: res.data.gpa_id }];
-        });
+        fetchRecords();
       } else {
         toast.error(res.data.message || "Failed to save record.");
       }
@@ -593,6 +595,60 @@ function GpaCalculator({ user }) {
             </button>
           </div>
 
+        </div>
+      )}
+
+      {/* Render Saved Records and CGPA below the calculator */}
+      {cgpaData && cgpaData.records && cgpaData.records.length > 0 && (
+        <div style={{ marginTop: '60px', animation: 'fadeUp 0.4s ease-out' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+            <Calculator size={28} color="var(--accent)" />
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 900, color: 'var(--text)' }}>
+              Your Saved Records
+            </h2>
+            {cgpaData.cgpa && (
+              <div style={{ marginLeft: 'auto', background: 'var(--accent)', color: 'var(--text)', padding: '6px 16px', borderRadius: '100px', fontWeight: 900, border: '2px solid var(--text)', boxShadow: '3px 3px 0px var(--text)' }}>
+                CGPA: {cgpaData.cgpa}
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+            {cgpaData.records.map(r => (
+              <div key={r.gpa_id} style={{
+                background: 'var(--bg-white)',
+                border: '2px solid var(--text)',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '4px 4px 0px var(--text)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <div style={{ fontWeight: 900, fontSize: '1.1rem', color: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', marginBottom: '2px' }}>Semester {r.semester}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{r.program}</div>
+                  </div>
+                  <div style={{
+                    background: 'var(--bg-subtle)',
+                    border: '2px solid var(--text)',
+                    borderRadius: '10px',
+                    padding: '8px 12px',
+                    fontWeight: 900,
+                    fontSize: '1.2rem',
+                    color: 'var(--text)'
+                  }}>
+                    {r.gpa}
+                  </div>
+                </div>
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+                  <span>{r.total_credits} Credits</span>
+                  <span>{r.faculty}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
