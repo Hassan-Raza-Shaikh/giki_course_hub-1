@@ -156,7 +156,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                 />
                 {/* '/' shortcut hint — hides when user has typed something */}
                 {!query && (
-                  <kbd style={{
+                  <kbd className="hide-on-touch" style={{
                     position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)',
                     background: 'var(--bg-subtle)', border: '1.5px solid var(--border)',
                     borderRadius: '6px', padding: '2px 8px', fontSize: '0.8rem',

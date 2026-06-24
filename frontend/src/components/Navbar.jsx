@@ -179,7 +179,6 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
         <button
           className="hide-mobile btn-nav"
-          title="Shortcut: /"
           onClick={() => navigate('/search')}
           style={{ background: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))', color: 'var(--nav-btn-text)' }}
         >

@@ -1477,6 +1477,13 @@ input::placeholder, textarea::placeholder {
   background: var(--bg-subtle);
 }
 
+/* ── Utility Classes ────────────────────────────── */
+@media (pointer: coarse) {
+  .hide-on-touch {
+    display: none !important;
+  }
+}
+
 /* ── Form Controls & Selects ────────────────────────────── */
 .custom-select {
   width: 100%;
