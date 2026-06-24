@@ -14,6 +14,7 @@ const currentYear = new Date().getFullYear();
 const BATCH_YEARS = Array.from({ length: currentYear - 1999 + 1 }, (_, i) => currentYear + 1 - i);
 
 const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) => {
+  const [displayName, setDisplayName] = useState(user?.displayName || user?.display_name || '');
   const [faculties, setFaculties] = useState([]);
   const [userType, setUserType]   = useState(user?.userType || 'student');
   const [program,  setProgram]    = useState(user?.program || '');
@@ -52,12 +53,13 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
     setSaving(true);
     try {
       await api.patch('/me/profile', {
+        displayName,
         userType,
         program,
         batchYear: needsBatch ? parseInt(batchYear, 10) : null,
         gpaPublic,
       });
-      onComplete({ userType, program, batchYear: needsBatch ? parseInt(batchYear, 10) : null, gpaPublic });
+      onComplete({ displayName, userType, program, batchYear: needsBatch ? parseInt(batchYear, 10) : null, gpaPublic });
     } catch (err) {
       setError(err?.response?.data?.message || 'Failed to save. Please try again.');
     } finally {
@@ -149,6 +151,19 @@ const ProfileCompleteModal = ({ user, onComplete, onClose, mode = 'complete' }) 
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+          {/* Display Name */}
+          <div>
+            <label style={label}>Display Name</label>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your Full Name"
+              style={{ ...selectStyle, borderRadius: '12px' }}
+              required
+            />
+          </div>
 
           {/* Who are you? */}
           <div>

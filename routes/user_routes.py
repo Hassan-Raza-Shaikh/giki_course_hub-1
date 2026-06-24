@@ -145,6 +145,8 @@ def update_my_profile():
     program    = (data.get('program')   or '').strip() or None
     batch_year = data.get('batchYear')
     gpa_public = data.get('gpaPublic')
+    req_display_name = data.get('displayName')
+
     if gpa_public is not None:
         gpa_public = bool(gpa_public)
 
@@ -177,7 +179,9 @@ def update_my_profile():
             (session['user_id'],)
         )
         row = cur.fetchone()
-        display_name = row[0] if row else session.get('username', 'User')
+        
+        # Determine the display name to save
+        final_display_name = req_display_name if req_display_name is not None and req_display_name.strip() != "" else (row[0] if row else session.get('username', 'User'))
 
         # Upsert user_profiles
         cur.execute(
@@ -189,10 +193,15 @@ def update_my_profile():
                     program    = COALESCE(EXCLUDED.program,    user_profiles.program),
                     user_type  = COALESCE(EXCLUDED.user_type,  user_profiles.user_type),
                     gpa_public = COALESCE(EXCLUDED.gpa_public, user_profiles.gpa_public),
+                    display_name = EXCLUDED.display_name,
                     updated_at = CURRENT_TIMESTAMP;
             """,
-            (session['user_id'], display_name, batch_year, program, user_type, gpa_public)
+            (session['user_id'], final_display_name, batch_year, program, user_type, gpa_public)
         )
+        
+        # Also update users table to keep it fully synced
+        cur.execute("UPDATE users SET display_name = %s WHERE user_id = %s;", (final_display_name, session['user_id']))
+
         conn.commit()
         return jsonify({"success": True, "message": "Profile updated"})
     except Exception as e:

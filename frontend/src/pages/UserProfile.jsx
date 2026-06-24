@@ -406,7 +406,7 @@ const UserProfile = ({ user, setUser }) => {
             // Update global user state
             setUser(u => ({ ...u, ...updatedFields }));
             // Update local profile view
-            setProfile(p => ({ ...p, batch_year: updatedFields.batchYear, program: updatedFields.program, user_type: updatedFields.userType }));
+            setProfile(p => ({ ...p, batch_year: updatedFields.batchYear, program: updatedFields.program, user_type: updatedFields.userType, display_name: updatedFields.displayName }));
             setIsEditing(false);
           }}
         />
