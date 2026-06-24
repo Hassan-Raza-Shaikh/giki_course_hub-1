@@ -137,18 +137,18 @@ const GlobalSearch = ({ user, onSignIn }) => {
 
             <div className="search-filters" style={{ marginBottom: '40px' }}>
               <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
-                <div style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', display: 'flex', pointerEvents: 'none' }}><Search size={20} color="var(--text-muted)" /></div>
+                <div style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', display: 'flex', pointerEvents: 'none' }}><Search size={20} color="var(--text-muted)" /></div>
                 <input 
-                  id="global-search-input"
+                  autoFocus
                   ref={searchInputRef}
                   type="text" 
-                  placeholder="Search for courses, file titles, or codes..."
+                  placeholder="Search GIKI HUB..."
                   value={query}
                   onChange={(e) => updateFilters('q', e.target.value)}
                   style={{
-                    width: '100%', padding: '16px 56px 16px 52px',
-                    borderRadius: '16px', border: '1px solid var(--border)',
-                    fontSize: '1rem', boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+                    width: '100%', padding: '18px 24px 18px 56px',
+                    borderRadius: '20px', border: '1px solid var(--border)',
+                    fontSize: '1.2rem', fontWeight: 600, boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
                     outline: 'none', background: 'var(--bg-card)', color: 'var(--text)', transition: 'all 0.3s'
                   }}
                   onFocus={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}

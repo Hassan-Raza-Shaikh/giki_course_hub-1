@@ -1090,7 +1090,7 @@ const AdminPanel = ({ user }) => {
 
           {/* Stats bar */}
           {stats && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+            <div className="hide-mobile" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '32px' }}>
               {[
                 { label: 'Pending',   value: stats.pending_files,  emoji: <Clock size={28} />, accent: '#F59E0B', key: 'pending' },
                 { label: 'Flags',     value: reportCounts.pending ?? 0, emoji: <Flag size={28} />, accent: '#DC2626', key: 'reports' },

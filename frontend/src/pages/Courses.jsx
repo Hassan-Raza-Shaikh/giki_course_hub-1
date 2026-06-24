@@ -97,11 +97,11 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
           }}>
             Y{year}
           </div>
-          <div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: '8px' }}>
             <span style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.95rem' }}>
-              {YEAR_LABELS[year]} &mdash; Semesters {semesters[0].semester} & {semesters[semesters.length - 1].semester}
+              {YEAR_LABELS[year]} &mdash; <span style={{ whiteSpace: 'nowrap' }}>Semesters {semesters[0].semester} & {semesters[semesters.length - 1].semester}</span>
             </span>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: '12px' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
               {allCourses.length} courses
             </span>
           </div>
@@ -175,9 +175,9 @@ const ProgramAccordion = ({ program, onCourseClick }) => {
             {program.years.length} years · {totalCourses} courses
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <span style={{
-            fontSize: '0.75rem', fontWeight: 700,
+            fontSize: '0.75rem', fontWeight: 700, whiteSpace: 'nowrap',
             color: open ? 'white' : 'var(--text)',
             background: open ? 'var(--primary)' : 'var(--bg-white)', border: '1px solid var(--border)',
             padding: '4px 12px', borderRadius: '100px', transition: 'all 0.2s',
@@ -402,14 +402,14 @@ const Courses = () => {
           </div>
         </div>
             <div style={{ position: 'relative', maxWidth: '480px' }}>
-              <span style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-muted)' }}><Search size={18} /></span>
+              <span style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-muted)' }}><Search size={18} /></span>
               <input
                 type="text"
                 placeholder="Search by course name or code…"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 style={{
-                  width: '100%', padding: '16px 16px 16px 52px',
+                  width: '100%', padding: '16px 16px 16px 56px',
                   borderRadius: '16px', border: '1px solid var(--border)', outline: 'none',
                   fontSize: '0.95rem', background: 'var(--bg-card)',
                   color: 'var(--text)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)', transition: 'all 0.3s',
