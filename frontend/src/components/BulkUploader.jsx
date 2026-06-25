@@ -57,7 +57,8 @@ const BulkUploader = ({
         setUploadError(`"${f.name}" — .${ext} files are not allowed.`);
         continue;
       }
-      const title = f.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ').trim();
+      const baseTitle = f.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ').trim();
+      const title = baseTitle.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       validated.push({
         file: f,
         title,
@@ -452,7 +453,10 @@ const BulkUploader = ({
                     <input
                       type="text"
                       value={item.title}
-                      onChange={e => updateQueueItem(idx, { title: e.target.value })}
+                      onChange={e => {
+                        const capitalized = e.target.value.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        updateQueueItem(idx, { title: capitalized });
+                      }}
                       placeholder="File title"
                       style={{ flex: '2 1 140px', padding: '8px 10px', borderRadius: '6px', border: '1.5px solid var(--border)', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-subtle)', color: 'var(--text)', minWidth: 0 }}
                       onFocus={e => e.target.style.borderColor = 'var(--primary)'}

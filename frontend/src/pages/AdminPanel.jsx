@@ -837,7 +837,10 @@ const AdminPanel = ({ user }) => {
               <input 
                 type="text" 
                 value={editFileForm.title} 
-                onChange={e => setEditFileForm({ ...editFileForm, title: e.target.value })}
+                onChange={e => {
+                  const capitalized = e.target.value.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                  setEditFileForm({ ...editFileForm, title: capitalized });
+                }}
                 style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               />
             </div>
@@ -942,7 +945,10 @@ const AdminPanel = ({ user }) => {
                 <input 
                   type="text" 
                   value={linkForm.custom_title} 
-                  onChange={e => setLinkForm({ ...linkForm, custom_title: e.target.value })}
+                  onChange={e => {
+                    const capitalized = e.target.value.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    setLinkForm({ ...linkForm, custom_title: capitalized });
+                  }}
                   placeholder="Override the display title for this course..."
                   style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
                 />
