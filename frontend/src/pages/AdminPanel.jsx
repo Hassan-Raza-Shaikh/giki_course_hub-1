@@ -697,19 +697,19 @@ const AdminPanel = ({ user }) => {
   );
 
   const TABS = [
-    { key: 'pending', label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Clock size={16} /> Pending ({stats?.pending_files ?? '…'})</div> },
-    { key: 'reports', label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Flag size={16} /> Content Flags ({reportCounts.pending ?? 0})</div> },
-    { key: 'issues',  label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Wrench size={16} /> Platform Issues ({issueCounts.open ?? 0})</div> },
+    { key: 'pending', icon: <Clock size={18} strokeWidth={2.5} />, label: 'Pending', count: stats?.pending_files, color: 'var(--primary)' },
+    { key: 'reports', icon: <Flag size={18} strokeWidth={2.5} />, label: 'Flags', count: reportCounts.pending, color: 'var(--secondary)' },
+    { key: 'issues',  icon: <Wrench size={18} strokeWidth={2.5} />, label: 'Issues', count: issueCounts.open, color: 'var(--accent)' },
     
-    { key: 'courses', label: <><BookOpen size={16} /> Courses</> },
-    { key: 'links',   label: <><Link size={16} /> Shared Links</> },
+    { key: 'courses', icon: <BookOpen size={18} strokeWidth={2.5} />, label: 'Courses', color: 'var(--electric)' },
+    { key: 'links',   icon: <Link size={18} strokeWidth={2.5} />, label: 'Shared Links', color: 'var(--tertiary)' },
 
-    { key: 'instructors', label: <><GraduationCap size={16} /> Instructors</> },
-    { key: 'stats_detailed', label: <><BarChart3 size={16} /> Stats</> },
-    { key: 'files',   label: <><Folder size={16} /> All Files</> },
-    { key: 'users',   label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Users size={16} /> Users ({stats?.total_users ?? '…'})</div> },
-    { key: 'admins',  label: <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}><Shield size={16} /> Admins ({stats?.total_admins ?? '…'})</div> },
-    { key: 'logs',    label: <><Activity size={16} /> Activity</> },
+    { key: 'instructors', icon: <GraduationCap size={18} strokeWidth={2.5} />, label: 'Instructors', color: 'var(--primary)' },
+    { key: 'stats_detailed', icon: <BarChart3 size={18} strokeWidth={2.5} />, label: 'Stats', color: 'var(--secondary)' },
+    { key: 'files',   icon: <Folder size={18} strokeWidth={2.5} />, label: 'All Files', color: 'var(--accent)' },
+    { key: 'users',   icon: <Users size={18} strokeWidth={2.5} />, label: 'Users', count: stats?.total_users, color: 'var(--electric)' },
+    { key: 'admins',  icon: <Shield size={18} strokeWidth={2.5} />, label: 'Admins', count: stats?.total_admins, color: 'var(--tertiary)' },
+    { key: 'logs',    icon: <Activity size={18} strokeWidth={2.5} />, label: 'Activity', color: 'var(--primary)' },
   ];
 
   const filteredAll = allFiles;
@@ -1024,22 +1024,50 @@ const AdminPanel = ({ user }) => {
             </div>
           </div>
           
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {TABS.map(t => (
               <button
                 key={t.key}
                 onClick={() => { setTab(t.key); setSelectedPending(new Set()); }}
+                onMouseOver={e => {
+                  if (tab !== t.key) {
+                    e.currentTarget.style.background = `color-mix(in srgb, ${t.color} 10%, transparent)`;
+                  }
+                }}
+                onMouseOut={e => {
+                  if (tab !== t.key) {
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
                 style={{
-                  padding: '12px 16px', borderRadius: '12px',
-                  fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
-                  background: tab === t.key ? 'var(--text)' : 'transparent',
-                  color: tab === t.key ? 'var(--bg-hero)' : 'var(--text-muted)',
-                  border: 'none', textAlign: 'left',
-                  transition: 'all 0.15s',
-                  display: 'flex', alignItems: 'center', gap: '10px'
+                  padding: '12px 16px', borderRadius: '100px',
+                  fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer',
+                  background: tab === t.key ? `color-mix(in srgb, ${t.color} 15%, transparent)` : 'transparent',
+                  color: tab === t.key ? t.color : 'var(--text-muted)',
+                  border: tab === t.key ? `2px solid ${t.color}` : '2px solid transparent',
+                  textAlign: 'left',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between'
                 }}
               >
-                {t.label}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ color: t.color }}>{t.icon}</span> 
+                  {t.label}
+                </div>
+                {t.count != null && (
+                  <span style={{
+                    background: tab === t.key ? t.color : `color-mix(in srgb, ${t.color} 10%, var(--bg-subtle))`,
+                    color: tab === t.key ? 'var(--bg-hero)' : t.color,
+                    padding: '2px 10px',
+                    borderRadius: '100px',
+                    fontSize: '0.75rem',
+                    fontWeight: 900,
+                    border: tab !== t.key ? `1px solid color-mix(in srgb, ${t.color} 20%, transparent)` : 'none',
+                    boxShadow: tab === t.key ? `0 4px 12px color-mix(in srgb, ${t.color} 40%, transparent)` : 'none'
+                  }}>
+                    {t.count ?? '…'}
+                  </span>
+                )}
               </button>
             ))}
           </nav>
@@ -1075,17 +1103,27 @@ const AdminPanel = ({ user }) => {
                   onClick={() => { setTab(t.key); setSelectedPending(new Set()); }}
                   style={{
                     padding: '10px 18px', borderRadius: '100px',
-                    fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer',
-                    border: '1px solid var(--border)',
-                    background: tab === t.key ? 'var(--text)' : 'var(--bg-card)',
-                    color: tab === t.key ? 'var(--bg-hero)' : 'var(--text)',
-                    boxShadow: tab === t.key ? '0 4px 12px rgba(0,0,0,0.1)' : 'none',
+                    fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer',
+                    border: `2px solid ${tab === t.key ? t.color : 'var(--border)'}`,
+                    background: tab === t.key ? `color-mix(in srgb, ${t.color} 15%, var(--bg-card))` : 'var(--bg-card)',
+                    color: tab === t.key ? t.color : 'var(--text-muted)',
+                    boxShadow: tab === t.key ? `0 4px 12px color-mix(in srgb, ${t.color} 20%, transparent)` : 'none',
                     transition: 'all 0.15s',
                     whiteSpace: 'nowrap',
                     display: 'flex', alignItems: 'center', gap: '8px'
                   }}
                 >
+                  <span style={{ color: t.color }}>{t.icon}</span>
                   {t.label}
+                  {t.count != null && (
+                    <span style={{
+                      background: tab === t.key ? t.color : `color-mix(in srgb, ${t.color} 10%, var(--bg-subtle))`,
+                      color: tab === t.key ? 'var(--bg-hero)' : t.color,
+                      padding: '2px 8px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900
+                    }}>
+                      {t.count ?? '…'}
+                    </span>
+                  )}
                 </button>
               ))}
               </div>
@@ -1639,7 +1677,14 @@ const AdminPanel = ({ user }) => {
                     <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{f.title}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{f.course_code}</div>
                   </div>
-                  <div style={{ fontWeight: 900, color: 'var(--primary)' }}>{f.count} <Download size={14} style={{ marginLeft: '4px' }} /></div>
+                  <div style={{
+                    fontSize: '0.8rem', fontWeight: 800,
+                    color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '4px',
+                    background: 'color-mix(in srgb, var(--primary) 15%, transparent)',
+                    padding: '4px 12px', borderRadius: '100px',
+                  }}>
+                    {f.count} <Download size={14} />
+                  </div>
                 </div>
               ))}
               {Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) > 1 && (
@@ -1660,7 +1705,14 @@ const AdminPanel = ({ user }) => {
                     <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{f.title}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{f.course_code}</div>
                   </div>
-                  <div style={{ fontWeight: 900, color: '#EC4899' }}>{f.count} <Bookmark size={14} /></div>
+                  <div style={{
+                    fontSize: '0.8rem', fontWeight: 800,
+                    color: '#EC4899', display: 'flex', alignItems: 'center', gap: '4px',
+                    background: 'color-mix(in srgb, #EC4899 15%, transparent)',
+                    padding: '4px 12px', borderRadius: '100px',
+                  }}>
+                    {f.count} <Bookmark size={14} />
+                  </div>
                 </div>
               ))}
               {Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) > 1 && (
@@ -1674,12 +1726,22 @@ const AdminPanel = ({ user }) => {
 
             <div style={cardStyle}>
               <h3 style={cardTitleStyle}><Folder size={20} /> Top Courses</h3>
-              {detailedStats.per_course.slice((pageC - 1) * STATS_PER_PAGE, pageC * STATS_PER_PAGE).map((c, i) => (
-                <div key={c.course_code} style={statRowStyle}>
-                  <div style={{ flex: 1, fontWeight: 700 }}>{c.course_code}</div>
-                  <div style={{ fontWeight: 900 }}>{c.count} files</div>
-                </div>
-              ))}
+              {detailedStats.per_course.slice((pageC - 1) * STATS_PER_PAGE, pageC * STATS_PER_PAGE).map((c, i) => {
+                const color = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--electric)', 'var(--tertiary)'][i % 5];
+                return (
+                  <div key={c.course_code} style={statRowStyle}>
+                    <div style={{ flex: 1, fontWeight: 700 }}>{c.course_code}</div>
+                    <div style={{
+                      fontSize: '0.8rem', fontWeight: 800,
+                      color: color,
+                      background: `color-mix(in srgb, ${color} 15%, transparent)`,
+                      padding: '4px 12px', borderRadius: '100px',
+                    }}>
+                      {c.count} Files
+                    </div>
+                  </div>
+                );
+              })}
               {Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) > 1 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '100px', border: '1.5px solid var(--border)' }}>
                   <button onClick={() => setPageC(p => Math.max(1, p - 1))} disabled={pageC === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === 1 ? 'not-allowed' : 'pointer', opacity: pageC === 1 ? 0.5 : 1 }}>Prev</button>
@@ -1690,12 +1752,22 @@ const AdminPanel = ({ user }) => {
             </div>
             <div style={cardStyle}>
               <h3 style={cardTitleStyle}><PieChart size={20} /> Content Breakdown</h3>
-              {detailedStats.per_category.map((c) => (
-                <div key={c.category} style={statRowStyle}>
-                  <div style={{ flex: 1, fontWeight: 700 }}>{c.category}</div>
-                  <div style={{ fontWeight: 900, color: 'var(--text-muted)' }}>{c.count}</div>
-                </div>
-              ))}
+              {detailedStats.per_category.map((c, i) => {
+                const color = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--electric)', 'var(--tertiary)'][i % 5];
+                return (
+                  <div key={c.category} style={statRowStyle}>
+                    <div style={{ flex: 1, fontWeight: 700 }}>{c.category}</div>
+                    <div style={{
+                      fontSize: '0.8rem', fontWeight: 800,
+                      color: color,
+                      background: `color-mix(in srgb, ${color} 15%, transparent)`,
+                      padding: '4px 12px', borderRadius: '100px',
+                    }}>
+                      {c.count} Files
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
