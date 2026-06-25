@@ -659,10 +659,12 @@ input::placeholder, textarea::placeholder {
 @media (max-width: 640px) {
   .course-card { padding: 24px 20px; }
 }
-.course-card:hover {
-  transform: translateY(-4px) translateX(-4px);
-  box-shadow: 8px 8px 0px var(--accent);
-  border-color: var(--text);
+@media (hover: hover) {
+  .course-card:hover {
+    transform: translateY(-4px) translateX(-4px);
+    box-shadow: 8px 8px 0px var(--accent);
+    border-color: var(--text);
+  }
 }
 .course-card::before {
   content: '';
@@ -674,7 +676,9 @@ input::placeholder, textarea::placeholder {
   transform-origin: left;
   transition: transform 0.3s ease;
 }
-.course-card:hover::before { transform: scaleX(1); }
+@media (hover: hover) {
+  .course-card:hover::before { transform: scaleX(1); }
+}
 
 /* ── Accordion ───────────────────────────────────────── */
 .accordion-header {
@@ -690,10 +694,12 @@ input::placeholder, textarea::placeholder {
   user-select: none;
   box-shadow: var(--shadow-sm);
 }
-.accordion-header:hover {
-  transform: translateY(-2px) translateX(-2px);
-  box-shadow: 6px 6px 0px var(--secondary);
-  border-color: var(--text);
+@media (hover: hover) {
+  .accordion-header:hover {
+    transform: translateY(-2px) translateX(-2px);
+    box-shadow: 6px 6px 0px var(--secondary);
+    border-color: var(--text);
+  }
 }
 .accordion-header.open {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -752,7 +758,9 @@ input::placeholder, textarea::placeholder {
   flex-wrap: wrap;
 }
 .file-item:last-child { border-bottom: none; }
-.file-item:hover { background: var(--bg-subtle); }
+@media (hover: hover) {
+  .file-item:hover { background: var(--bg-subtle); }
+}
 
 .category-tabs-container {
   overflow-x: auto;
@@ -792,9 +800,15 @@ input::placeholder, textarea::placeholder {
   transition: var(--transition);
   background: var(--bg-subtle);
 }
-.upload-zone:hover, .upload-zone.dragover {
+.upload-zone.dragover {
   border-color: var(--primary);
   background: rgba(124,58,237,0.05);
+}
+@media (hover: hover) {
+  .upload-zone:hover {
+    border-color: var(--primary);
+    background: rgba(124,58,237,0.05);
+  }
 }
 
 /* ── Modal ───────────────────────────────────────────── */
@@ -852,9 +866,11 @@ input::placeholder, textarea::placeholder {
 @media (max-width: 640px) {
   .btn-primary { padding: 12px 24px; font-size: 0.95rem; }
 }
-.btn-primary:hover {
-  transform: translateY(-2px) translateX(-2px);
-  box-shadow: 6px 6px 0px var(--accent);
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px) translateX(-2px);
+    box-shadow: 6px 6px 0px var(--accent);
+  }
 }
 .btn-outline {
   background: var(--bg-white);
@@ -867,10 +883,12 @@ input::placeholder, textarea::placeholder {
   box-shadow: 4px 4px 0px var(--secondary);
   transition: all 0.2s ease;
 }
-.btn-outline:hover {
-  background: var(--bg-subtle);
-  transform: translateY(-2px) translateX(-2px);
-  box-shadow: 6px 6px 0px var(--secondary);
+@media (hover: hover) {
+  .btn-outline:hover {
+    background: var(--bg-subtle);
+    transform: translateY(-2px) translateX(-2px);
+    box-shadow: 6px 6px 0px var(--secondary);
+  }
 }
 
 /* ── Navbar Button ───────────────────────────────────── */
@@ -891,9 +909,11 @@ input::placeholder, textarea::placeholder {
   gap: 6px;
   line-height: 1;
 }
-.btn-nav:hover {
-  transform: translate(-1.5px, -1.5px);
-  box-shadow: 3.5px 3.5px 0px var(--text);
+@media (hover: hover) {
+  .btn-nav:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 3.5px 3.5px 0px var(--text);
+  }
 }
 
 /* ── Utility ─────────────────────────────────────────── */
@@ -1159,8 +1179,10 @@ input::placeholder, textarea::placeholder {
     width: 22px !important;
     height: 22px !important;
   }
-  .theme-btn-mobile:hover {
-    background: var(--bg-subtle) !important;
+  @media (hover: hover) {
+    .theme-btn-mobile:hover {
+      background: var(--bg-subtle) !important;
+    }
   }
 }
 
