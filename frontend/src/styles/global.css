@@ -714,14 +714,14 @@ input::placeholder, textarea::placeholder {
   gap: 4px;
   background: var(--bg-subtle);
   padding: 6px;
-  border-radius: var(--radius-md);
+  border-radius: 100px;
   width: fit-content;
   flex-wrap: wrap;
   border: 1px solid var(--border);
 }
 .tab-btn {
   padding: 10px 22px;
-  border-radius: var(--radius-sm);
+  border-radius: 100px;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-muted);
@@ -832,7 +832,7 @@ input::placeholder, textarea::placeholder {
   background: color-mix(in srgb, var(--primary) 90%, var(--accent));
   color: var(--bg-hero);
   padding: 14px 32px;
-  border-radius: var(--radius-md);
+  border-radius: 100px;
   font-weight: 800;
   font-size: 1rem;
   border: 2px solid var(--text);
@@ -854,7 +854,7 @@ input::placeholder, textarea::placeholder {
   background: var(--bg-white);
   color: var(--text);
   padding: 14px 32px;
-  border-radius: var(--radius-md);
+  border-radius: 100px;
   font-weight: 800;
   font-size: 1rem;
   border: 2px solid var(--text);
@@ -1489,7 +1489,7 @@ input::placeholder, textarea::placeholder {
   width: 100%;
   cursor: pointer;
   padding: 14px 40px 14px 16px !important;
-  border-radius: 12px;
+  border-radius: 100px;
   border: 1px solid var(--border);
   background-color: var(--bg-card);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");

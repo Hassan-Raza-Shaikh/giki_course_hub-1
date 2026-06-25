@@ -747,11 +747,11 @@ const AdminPanel = ({ user }) => {
               onChange={e => setRejectReason(e.target.value)}
               placeholder="Reason for rejection (optional)…"
               rows={4}
-              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '1px solid #DC2626', borderRadius: '8px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
+              <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '1px solid #DC2626', borderRadius: '100px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
             </div>
           </div>
         </div>
@@ -769,13 +769,13 @@ const AdminPanel = ({ user }) => {
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution Notes <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(internal, not shown to users)</span></label>
             <textarea value={resolveNotes} onChange={e => setResolveNotes(e.target.value)}
               placeholder="What action was taken? e.g. 'Content verified — no issue found'"
-              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}><Pin size={14} /> Leave a note on this file <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(visible to all users)</span></label>
             <textarea value={resolveLeaveNote} onChange={e => setResolveLeaveNote(e.target.value)}
               placeholder="Optional: e.g. 'Question 3 contains an error — please ignore it.'"
-              rows={3} style={{ width: '100%', border: '1px solid #FCD34D', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid #FCD34D', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 700, color: '#DC2626' }}>
@@ -783,8 +783,8 @@ const AdminPanel = ({ user }) => {
               Also permanently delete the flagged file
             </label>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '1px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
+              <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '1px solid #10B981', borderRadius: '100px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
             </div>
           </div>
         </div>
@@ -804,11 +804,11 @@ const AdminPanel = ({ user }) => {
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution notes</label>
             <textarea value={issueResolveNotes} onChange={e => setIssueResolveNotes(e.target.value)}
               placeholder="e.g. 'Fixed in latest deploy — search button now works on mobile.'"
-              rows={4} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              rows={4} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setIssueResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '1px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
+              <button onClick={() => setIssueResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '1px solid #10B981', borderRadius: '100px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
             </div>
           </div>
         </div>
@@ -821,8 +821,8 @@ const AdminPanel = ({ user }) => {
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>{confirmModal.title}</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>{confirmModal.body}</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setConfirmModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmModal.onConfirm} style={{ padding: '10px 20px', border: `1px solid ${confirmModal.danger ? '#DC2626' : '#10B981'}`, borderRadius: '8px', background: confirmModal.danger ? '#DC2626' : '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm</button>
+              <button onClick={() => setConfirmModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmModal.onConfirm} style={{ padding: '10px 20px', border: `1px solid ${confirmModal.danger ? '#DC2626' : '#10B981'}`, borderRadius: '100px', background: confirmModal.danger ? '#DC2626' : '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm</button>
             </div>
           </div>
         </div>
@@ -839,7 +839,7 @@ const AdminPanel = ({ user }) => {
                 type="text" 
                 value={editFileForm.title} 
                 onChange={e => setEditFileForm({ ...editFileForm, title: e.target.value })}
-                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               />
             </div>
 
@@ -848,7 +848,7 @@ const AdminPanel = ({ user }) => {
               <select 
                 value={editFileForm.category_id}
                 onChange={e => setEditFileForm({ ...editFileForm, category_id: e.target.value })}
-                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               >
                 <option value="">Select Category</option>
                 {categories.length > 0 && categories.map(c => (
@@ -862,7 +862,7 @@ const AdminPanel = ({ user }) => {
               <select 
                 value={editFileForm.instructor_id}
                 onChange={e => setEditFileForm({ ...editFileForm, instructor_id: e.target.value })}
-                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box' }}
               >
                 <option value="">None / General</option>
                 {instructors.map(i => (
@@ -880,7 +880,7 @@ const AdminPanel = ({ user }) => {
                 value={editFileForm.course_code}
                 onChange={e => setEditFileForm({ ...editFileForm, course_code: e.target.value.toUpperCase() })}
                 placeholder={`Current: ${editFileModal?.course_code || '—'}`}
-                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+                style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
               />
               <datalist id="edit-course-list">
                 {editCourses.map(c => (
@@ -891,8 +891,8 @@ const AdminPanel = ({ user }) => {
             </div>
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '1px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Save Changes</button>
+              <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '1px solid var(--primary)', background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', borderRadius: '100px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Save Changes</button>
             </div>
           </div>
         </div>
@@ -917,7 +917,7 @@ const AdminPanel = ({ user }) => {
                 <select 
                   value={linkForm.course_id}
                   onChange={e => setLinkForm({ ...linkForm, course_id: e.target.value })}
-                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
+                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
                 >
                   <option value="">Select Course...</option>
                   {editCourses.map(c => (
@@ -930,7 +930,7 @@ const AdminPanel = ({ user }) => {
                 <select 
                   value={linkForm.category_id}
                   onChange={e => setLinkForm({ ...linkForm, category_id: e.target.value })}
-                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
+                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)' }}
                 >
                   <option value="">Select Category...</option>
                   {categories.map(c => (
@@ -945,10 +945,10 @@ const AdminPanel = ({ user }) => {
                   value={linkForm.custom_title} 
                   onChange={e => setLinkForm({ ...linkForm, custom_title: e.target.value })}
                   placeholder="Override the display title for this course..."
-                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
+                  style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
                 />
               </div>
-              <button onClick={submitLink} style={{ width: '100%', padding: '10px', background: '#6366F1', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer' }}>
+              <button onClick={submitLink} style={{ width: '100%', padding: '10px', background: '#6366F1', color: 'white', border: 'none', borderRadius: '100px', fontWeight: 700, cursor: 'pointer' }}>
                 Add Link
               </button>
             </div>
@@ -960,7 +960,7 @@ const AdminPanel = ({ user }) => {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {existingLinks.map(l => (
-                    <div key={l.link_id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', border: '1px solid var(--border)', borderRadius: '8px' }}>
+                    <div key={l.link_id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', border: '1px solid var(--border)', borderRadius: '100px' }}>
                       <div>
                         <div style={{ fontWeight: 700 }}>{l.course_code} - {l.course_name}</div>
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>As "{l.custom_title || linkModal.title}" in {l.category}</div>
@@ -975,7 +975,7 @@ const AdminPanel = ({ user }) => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
-              <button onClick={() => setLinkModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Close</button>
+              <button onClick={() => setLinkModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Close</button>
             </div>
           </div>
         </div>
@@ -992,17 +992,17 @@ const AdminPanel = ({ user }) => {
             </p>
             <textarea value={noteText} onChange={e => setNoteText(e.target.value)}
               placeholder="e.g. 'Question 3 in this assignment contains an error — ignore it.'"
-              rows={5} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              rows={5} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'space-between' }}>
               <div>
                 {noteModal.admin_note && (
-                  <button onClick={deleteNote} style={{ padding: '10px 16px', border: '1px solid #EF4444', borderRadius: '8px', background: 'var(--bg-white)', color: '#EF4444', cursor: 'pointer', fontWeight: 700 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Remove Note</button>
+                  <button onClick={deleteNote} style={{ padding: '10px 16px', border: '1px solid #EF4444', borderRadius: '100px', background: 'var(--bg-white)', color: '#EF4444', cursor: 'pointer', fontWeight: 700 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Remove Note</button>
                 )}
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
-                <button onClick={() => setNoteModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-                <button onClick={saveNote} disabled={!noteText.trim()} style={{ padding: '10px 20px', border: '1px solid #F59E0B', borderRadius: '8px', background: '#F59E0B', color: 'white', cursor: 'pointer', fontWeight: 700, opacity: noteText.trim() ? 1 : 0.5 }}>Save Note</button>
+                <button onClick={() => setNoteModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+                <button onClick={saveNote} disabled={!noteText.trim()} style={{ padding: '10px 20px', border: '1px solid #F59E0B', borderRadius: '100px', background: '#F59E0B', color: 'white', cursor: 'pointer', fontWeight: 700, opacity: noteText.trim() ? 1 : 0.5 }}>Save Note</button>
               </div>
             </div>
           </div>

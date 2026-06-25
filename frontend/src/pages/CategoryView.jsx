@@ -152,7 +152,7 @@ const CategoryView = () => {
               onChange={e => setSearch(e.target.value)}
               style={{
                 width: '100%', padding: '16px 16px 16px 56px', margin: 0,
-                borderRadius: '16px', border: '1px solid var(--border)', outline: 'none',
+                borderRadius: '100px', border: '1px solid var(--border)', outline: 'none',
                 fontSize: '0.95rem', background: 'var(--bg-card)',
                 color: 'var(--text)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)', transition: 'all 0.3s',
                 fontFamily: 'inherit', boxSizing: 'border-box', WebkitAppearance: 'none'
