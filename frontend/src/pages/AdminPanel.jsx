@@ -760,7 +760,7 @@ const AdminPanel = ({ user }) => {
       {/* Resolve Content Flag modal */}
       {resolveModal && (
         <div onClick={() => setResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Flag size={24} color="var(--accent)" /> Resolve Content Flag</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Flagged file: <strong>{resolveModal.file_title}</strong>
@@ -793,7 +793,7 @@ const AdminPanel = ({ user }) => {
       {/* Platform Issue Resolve modal */}
       {issueResolveModal && (
         <div onClick={() => setIssueResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><CheckCircle size={24} color="#10B981" /> Resolve Platform Issue</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.9rem' }}>
               <strong>{issueResolveModal.title}</strong>
@@ -817,7 +817,7 @@ const AdminPanel = ({ user }) => {
       {/* Generic Confirm modal */}
       {confirmModal && (
         <div onClick={() => setConfirmModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: `1px solid var(--border)`, boxShadow: `0 10px 40px rgba(0,0,0,0.1)`, padding: '28px', width: '100%', maxWidth: '440px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: `1px solid var(--border)`, boxShadow: `0 10px 40px rgba(0,0,0,0.1)`, padding: '28px', width: '100%', maxWidth: '440px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}>{confirmModal.title}</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>{confirmModal.body}</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
@@ -830,7 +830,7 @@ const AdminPanel = ({ user }) => {
       {/* Edit File Modal */}
       {editFileModal && (
         <div onClick={() => setEditFileModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '12px' }}><Edit3 size={24} /> Edit File Details</h3>
             
             <div style={{ marginBottom: '16px' }}>
@@ -901,7 +901,7 @@ const AdminPanel = ({ user }) => {
       {/* Cross-Link File Modal */}
       {linkModal && (
         <div onClick={() => setLinkModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '32px', width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
               <div>
                 <h3 style={{ fontWeight: 900, fontSize: '1.4rem' }}><Link size={24} /> Cross-Link File</h3>
@@ -984,7 +984,7 @@ const AdminPanel = ({ user }) => {
       {/* File Note modal */}
       {noteModal && (
         <div onClick={() => setNoteModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Pin size={24} /> Admin Note</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               File: <strong>{noteModal.title}</strong><br/>
@@ -1041,7 +1041,7 @@ const AdminPanel = ({ user }) => {
         </aside>
 
         {/* Main Content */}
-        <main>
+        <main style={{ minWidth: 0 }}>
           {/* Mobile Header + Nav */}
           <div className="admin-mobile-nav" style={{ flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1050,7 +1050,7 @@ const AdminPanel = ({ user }) => {
                   Admin <span className="gradient-text">Panel</span>
                 </h1>
               </div>
-              <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer' }}>
+              <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '100px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer' }}>
                 <RefreshCw size={20} />
               </button>
             </div>
@@ -1083,7 +1083,7 @@ const AdminPanel = ({ user }) => {
           {/* Desktop Refresh Button & Quick Stats */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }} className="hide-mobile">
             <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--text)' }}>Overview</h2>
-            <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '10px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>
+            <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '100px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-muted)' }}>
               <RefreshCw size={16} /> Refresh
             </button>
           </div>
@@ -1161,7 +1161,7 @@ const AdminPanel = ({ user }) => {
                 </div>
               </div>
             )}
-            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : pending.length === 0 ? (
                 <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg="No files pending review — all caught up!" />
               ) : pending.map(f => (
@@ -1202,7 +1202,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Reports tab ── */}
         {tab === 'reports' && (
-          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : reports.length === 0 ? (
               <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No active reports. The platform is clean!" />
             ) : reports.map(r => (
@@ -1238,7 +1238,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Issues tab ── */}
         {tab === 'issues' && (
-          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : issues.length === 0 ? (
               <EmptyRow icon={<Sparkles size={48} color="var(--primary)" />} msg="No open issues reported. Everything is running smoothly!" />
             ) : issues.map(i => (
@@ -1348,7 +1348,7 @@ const AdminPanel = ({ user }) => {
                 <div style={{
                   marginTop: '16px', padding: '12px 16px',
                   background: 'rgba(124,58,237,0.07)', border: '2px solid var(--primary)',
-                  borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '10px',
+                  borderRadius: '100px', display: 'flex', alignItems: 'flex-start', gap: '10px',
                 }}>
                   <span style={{ fontSize: '1.1rem', flexShrink: 0 }}><Info size={16} /></span>
                   <div style={{ fontSize: '0.83rem', lineHeight: 1.5, color: 'var(--text)' }}>
@@ -1364,7 +1364,7 @@ const AdminPanel = ({ user }) => {
 
               {/* ── Bulk mode toggle (hidden when editing) ── */}
               {!editingCourse && (
-                <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '100px', border: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
                     <div>
                       <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>
@@ -1498,7 +1498,7 @@ const AdminPanel = ({ user }) => {
                 {coursesTotalCount} course{coursesTotalCount !== 1 ? 's' : ''} · Page {coursesPage} of {coursesTotalPages}
               </span>
             </div>
-            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : courses.map(c => (
                 <div key={c.course_id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
                   <span style={{ fontSize: '1.5rem' }}><IconMapper emoji={c.icon} size={28} /></span>
@@ -1557,7 +1557,7 @@ const AdminPanel = ({ user }) => {
               <button type="submit" style={{ ...btnStyle('var(--primary)'), marginTop: '20px' }}>Create Link</button>
             </form>
 
-            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : courseLinks.length === 0 ? (
                 <EmptyRow icon={<Link size={48} color="var(--primary)" />} msg="No manual course links active." />
               ) : courseLinks.map(l => (
@@ -1602,7 +1602,7 @@ const AdminPanel = ({ user }) => {
               </button>
             </form>
 
-            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div> : instructors.map(i => (
                 <div key={i.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
                   <div style={{ flex: 1 }}>
@@ -1631,7 +1631,7 @@ const AdminPanel = ({ user }) => {
                 </div>
               ))}
               {Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) > 1 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '10px', border: '1.5px solid var(--border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '100px', border: '1.5px solid var(--border)' }}>
                   <button onClick={() => setPageDL(p => Math.max(1, p - 1))} disabled={pageDL === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageDL === 1 ? 'not-allowed' : 'pointer', opacity: pageDL === 1 ? 0.5 : 1 }}>Prev</button>
                   <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>Page {pageDL} of {Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE)}</span>
                   <button onClick={() => setPageDL(p => Math.min(Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE), p + 1))} disabled={pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
@@ -1652,7 +1652,7 @@ const AdminPanel = ({ user }) => {
                 </div>
               ))}
               {Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) > 1 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '10px', border: '1.5px solid var(--border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '100px', border: '1.5px solid var(--border)' }}>
                   <button onClick={() => setPageBM(p => Math.max(1, p - 1))} disabled={pageBM === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageBM === 1 ? 'not-allowed' : 'pointer', opacity: pageBM === 1 ? 0.5 : 1 }}>Prev</button>
                   <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>Page {pageBM} of {Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE)}</span>
                   <button onClick={() => setPageBM(p => Math.min(Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE), p + 1))} disabled={pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
@@ -1669,7 +1669,7 @@ const AdminPanel = ({ user }) => {
                 </div>
               ))}
               {Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) > 1 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '10px', border: '1.5px solid var(--border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '100px', border: '1.5px solid var(--border)' }}>
                   <button onClick={() => setPageC(p => Math.max(1, p - 1))} disabled={pageC === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === 1 ? 'not-allowed' : 'pointer', opacity: pageC === 1 ? 0.5 : 1 }}>Prev</button>
                   <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>Page {pageC} of {Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE)}</span>
                   <button onClick={() => setPageC(p => Math.min(Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE), p + 1))} disabled={pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
@@ -1697,12 +1697,12 @@ const AdminPanel = ({ user }) => {
                 value={fileFilter}
                 onChange={e => setFileFilter(e.target.value)}
                 placeholder="Filter by title or course code…"
-                style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+                style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '1px solid var(--border)', borderRadius: '100px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
               />
               <select
                 value={filesStatusFilter}
                 onChange={e => { setFilesStatusFilter(e.target.value); setFilesPage(1); }}
-                style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+                style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '100px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
               >
                 <option value="">All Statuses</option>
                 <option value="approved"><CheckCircle size={14} /> Approved</option>
@@ -1712,7 +1712,7 @@ const AdminPanel = ({ user }) => {
               <select
                 value={filesCategoryFilter}
                 onChange={e => { setFilesCategoryFilter(e.target.value); setFilesPage(1); }}
-                style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+                style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '100px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
               >
                 <option value="">All Categories</option>
                 {categories.length > 0 && categories.map(c => (
@@ -1724,7 +1724,7 @@ const AdminPanel = ({ user }) => {
               </span>
             </div>
 
-            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : filteredAll.length === 0 ? <EmptyRow icon={<Folder size={48} color="var(--primary)" />} msg="No files found." /> : filteredAll.map(f => (
                 <div key={f.file_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -1769,7 +1769,7 @@ const AdminPanel = ({ user }) => {
         {/* ── Users tab ── */}
         {tab === 'users' && (
           <>
-          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : users.length === 0 ? <EmptyRow icon={<Users size={48} color="var(--primary)" />} msg="No users yet." /> : users.map(u => (
               <div key={u.user_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>
@@ -1827,7 +1827,7 @@ const AdminPanel = ({ user }) => {
                 <button type="submit" style={btnStyle('#6366F1')}>Grant</button>
               </div>
             </form>
-            <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+            <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
               {loading ? <LoadingRow /> : admins.length === 0 ? <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No admins configured yet." /> : admins.map(a => (
                 <div key={a.email} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1 }}>
@@ -1843,7 +1843,7 @@ const AdminPanel = ({ user }) => {
 
         {/* ── Activity Log tab ── */}
         {tab === 'logs' && (
-          <div style={{ background: 'var(--bg-card)', borderRadius: '14px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
+          <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', overflowX: 'auto', overflowY: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
             {loading ? <LoadingRow /> : logs.length === 0 ? <EmptyRow icon={<Activity size={48} color="var(--primary)" />} msg="No admin activity yet." /> : logs.map(l => (
               <div key={l.log_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>{ACTION_ICONS[l.action] || '•'}</span>
@@ -1861,7 +1861,7 @@ const AdminPanel = ({ user }) => {
                   onClick={() => setLogsPage(p => Math.max(1, p - 1))}
                   disabled={logsPage <= 1}
                   style={{
-                    padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+                    padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '100px', fontWeight: 700,
                     cursor: logsPage <= 1 ? 'not-allowed' : 'pointer', opacity: logsPage <= 1 ? 0.5 : 1
                   }}>Previous</button>
                 <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Page {logsPage} of {logsTotalPages}</span>
@@ -1869,7 +1869,7 @@ const AdminPanel = ({ user }) => {
                   onClick={() => setLogsPage(p => Math.min(logsTotalPages, p + 1))}
                   disabled={logsPage >= logsTotalPages}
                   style={{
-                    padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+                    padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '100px', fontWeight: 700,
                     cursor: logsPage >= logsTotalPages ? 'not-allowed' : 'pointer', opacity: logsPage >= logsTotalPages ? 0.5 : 1
                   }}>Next</button>
               </div>
@@ -1900,19 +1900,19 @@ const EmptyRow = ({ icon, msg }) => (
 const btnStyle = (bg) => ({
   color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--tertiary)' || bg === 'var(--text)') ? 'var(--bg-hero)' : 'white', 
   background: bg,  border: `1px solid ${bg}`,
-  borderRadius: '8px', padding: '7px 14px', fontWeight: 700,
+  borderRadius: '100px', padding: '7px 14px', fontWeight: 700,
   fontSize: '0.8rem', cursor: 'pointer', whiteSpace: 'nowrap',
 });
 
 const inputStyle = {
   width: '100%', padding: '12px 14px', border: '1px solid var(--border)',
-  borderRadius: '10px', fontSize: '0.9rem', outline: 'none',
+  borderRadius: '16px', fontSize: '0.9rem', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
   background: 'var(--bg-white)', color: 'var(--text)'
 };
 
 const cardStyle = {
-  background: 'var(--bg-card)', padding: '24px', borderRadius: '16px',
+  background: 'var(--bg-card)', padding: '24px', borderRadius: '24px',
   border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.06)'
 };
 

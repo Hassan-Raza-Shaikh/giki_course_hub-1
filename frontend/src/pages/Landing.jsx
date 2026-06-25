@@ -129,7 +129,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                   style={{ 
                     fontSize: '1.1rem', 
                     padding: '16px 36px',
-                    borderRadius: '14px',
+                    borderRadius: '100px',
                     flex: '1 1 200px'
                   }}>
                   <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Explore Courses <ArrowRight size={18} style={{ marginLeft: '6px' }} /></span>
@@ -138,7 +138,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                   <button className="btn-outline" onClick={onSignIn} 
                     style={{ 
                       padding: '16px 36px',
-                      borderRadius: '14px',
+                      borderRadius: '100px',
                       fontSize: '1.1rem',
                       flex: '1 1 120px'
                     }}>
@@ -272,7 +272,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                   <div key={s.label} style={{
                     background: 'var(--bg-white)',
                     border: '1px solid var(--border)',
-                    borderRadius: 'var(--radius-lg)',
+                    borderRadius: '24px',
                     padding: '32px 20px',
                     textAlign: 'center',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
