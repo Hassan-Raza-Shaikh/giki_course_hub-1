@@ -137,7 +137,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
 
             <div className="search-filters" style={{ marginBottom: '40px' }}>
               <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
-                <div style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', display: 'flex', pointerEvents: 'none' }}><Search size={20} color="var(--text-muted)" /></div>
+                <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', display: 'flex', pointerEvents: 'none' }}><Search size={20} color="var(--text-muted)" /></div>
                 <input 
                   autoFocus
                   ref={searchInputRef}
@@ -146,10 +146,11 @@ const GlobalSearch = ({ user, onSignIn }) => {
                   value={query}
                   onChange={(e) => updateFilters('q', e.target.value)}
                   style={{
-                    width: '100%', padding: '18px 24px 18px 56px',
+                    width: '100%', padding: '14px 20px 14px 48px',
                     borderRadius: '100px', border: '1px solid var(--border)',
-                    fontSize: '1.2rem', fontWeight: 600, boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
-                    outline: 'none', background: 'var(--bg-card)', color: 'var(--text)', transition: 'all 0.3s'
+                    fontSize: '1rem', fontWeight: 600, boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
+                    outline: 'none', background: 'var(--bg-card)', color: 'var(--text)', transition: 'all 0.3s',
+                    boxSizing: 'border-box'
                   }}
                   onFocus={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.08)'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.05)'; }}

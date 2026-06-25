@@ -334,7 +334,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                     {link.label}
                     <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       {link.badge && (
-                        <kbd style={{
+                        <kbd className="hide-on-touch" style={{
                           background: 'var(--bg-subtle)', border: '1.5px solid var(--border)',
                           borderRadius: '5px', padding: '1px 6px', fontSize: '0.72rem',
                           fontFamily: 'monospace', fontWeight: 700, color: 'var(--text-muted)', lineHeight: 1.6
