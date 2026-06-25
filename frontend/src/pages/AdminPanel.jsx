@@ -238,19 +238,22 @@ const AdminPanel = ({ user }) => {
       .finally(() => setLoading(false));
   }, [issuesPage, tab, isAdmin]);
 
-  // Re-fetch files when page or status filter changes
+  // Re-fetch files when page or filters change
   useEffect(() => {
     if (tab !== 'files' || !isAdmin) return;
-    setLoading(true);
-    api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter } })
-      .then(r => {
-        setAllFiles(r.data.files || []);
-        setFilesTotalPages(r.data.pages || 1);
-        setFilesTotalCount(r.data.total || 0);
-      })
-      .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
-      .finally(() => setLoading(false));
-  }, [filesPage, filesStatusFilter, filesCategoryFilter]);
+    const timer = setTimeout(() => {
+      setLoading(true);
+      api.get('/admin/files/all', { params: { page: filesPage, status: filesStatusFilter, category: filesCategoryFilter, q: fileFilter } })
+        .then(r => {
+          setAllFiles(r.data.files || []);
+          setFilesTotalPages(r.data.pages || 1);
+          setFilesTotalCount(r.data.total || 0);
+        })
+        .catch(e => { console.error('API Error:', e); toast.error('Request failed. Please try again.'); })
+        .finally(() => setLoading(false));
+    }, fileFilter ? 400 : 0);
+    return () => clearTimeout(timer);
+  }, [filesPage, filesStatusFilter, filesCategoryFilter, fileFilter, tab, isAdmin]);
   // Re-fetch courses when page or search changes
   useEffect(() => {
     if (tab !== 'courses' || !isAdmin) return;
@@ -709,11 +712,7 @@ const AdminPanel = ({ user }) => {
     { key: 'logs',    label: <><Activity size={16} /> Activity</> },
   ];
 
-  const filteredAll = allFiles.filter(f =>
-    !fileFilter ||
-    f.title?.toLowerCase().includes(fileFilter.toLowerCase()) ||
-    f.course_code?.toLowerCase().includes(fileFilter.toLowerCase())
-  );
+  const filteredAll = allFiles;
 
 
   return (
@@ -1012,11 +1011,17 @@ const AdminPanel = ({ user }) => {
       <div className="admin-layout">
         {/* Sidebar (Desktop) */}
         <aside className="admin-sidebar">
-          <div style={{ marginBottom: '24px', paddingLeft: '8px' }}>
-            <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)' }}>
-              Admin <span className="gradient-text">Panel</span>
+          <div style={{
+            marginBottom: '32px', background: 'var(--bg-card)', border: '1px solid var(--border)',
+            borderRadius: '100px', padding: '16px 24px', boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px'
+          }}>
+            <h1 style={{ fontSize: '1.6rem', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)', margin: 0 }}>
+              Admin<span className="gradient-text">Panel</span>
             </h1>
-            <p style={{ color: 'var(--text-muted)', marginTop: '4px', fontSize: '0.85rem' }}>Command center.</p>
+            <div style={{ padding: '8px', background: 'var(--bg-subtle)', borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Shield size={20} className="gradient-text" style={{ color: 'var(--primary)' }} />
+            </div>
           </div>
           
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -1044,14 +1049,21 @@ const AdminPanel = ({ user }) => {
         <main style={{ minWidth: 0 }}>
           {/* Mobile Header + Nav */}
           <div className="admin-mobile-nav" style={{ flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)' }}>
-                  Admin <span className="gradient-text">Panel</span>
+            <div style={{
+              background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '100px',
+              padding: '12px 20px', boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ padding: '6px', background: 'var(--bg-subtle)', borderRadius: '50%', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Shield size={16} className="gradient-text" style={{ color: 'var(--primary)' }} />
+                </div>
+                <h1 style={{ fontSize: '1.4rem', fontWeight: 950, letterSpacing: '-0.03em', fontFamily: 'var(--font-primary)', margin: 0 }}>
+                  Admin<span className="gradient-text">Panel</span>
                 </h1>
               </div>
-              <button onClick={loadStats} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '8px 12px', borderRadius: '100px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', cursor: 'pointer' }}>
-                <RefreshCw size={20} />
+              <button onClick={loadStats} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px', display: 'flex' }}>
+                <RefreshCw size={18} />
               </button>
             </div>
 
@@ -1695,7 +1707,7 @@ const AdminPanel = ({ user }) => {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
               <input
                 value={fileFilter}
-                onChange={e => setFileFilter(e.target.value)}
+                onChange={e => { setFileFilter(e.target.value); setFilesPage(1); }}
                 placeholder="Filter by title or course code…"
                 style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '1px solid var(--border)', borderRadius: '100px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
               />

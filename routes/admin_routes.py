@@ -169,6 +169,7 @@ def admin_all_files():
 
     status_filter = request.args.get('status', '')  # '' = all
     category_filter = request.args.get('category', '')
+    q_filter = request.args.get('q', '').strip().lower()
     page          = request.args.get('page', 1, type=int)
     per_page      = 30
     offset        = (page - 1) * per_page
@@ -185,6 +186,10 @@ def admin_all_files():
         if category_filter:
             conditions.append("cat.name = %s")
             params.append(category_filter)
+        if q_filter:
+            conditions.append("(LOWER(f.title) LIKE %s OR LOWER(f.course_code) LIKE %s)")
+            like_val = f"%{q_filter}%"
+            params.extend([like_val, like_val])
             
         where = "WHERE " + " AND ".join(conditions) if conditions else ""
 
