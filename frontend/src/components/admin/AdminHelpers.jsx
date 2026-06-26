@@ -32,21 +32,21 @@ export const EmptyRow = ({ icon, msg }) => (
 
 export const btnStyle = (bg) => ({
   color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--tertiary)' || bg === 'var(--text)') ? 'var(--bg-hero)' : 'white', 
-  background: bg,  border: `2px solid ${bg}`,
-  borderRadius: '8px', padding: '7px 14px', fontWeight: 700,
+  background: bg,  border: `1px solid ${bg}`,
+  borderRadius: '100px', padding: '7px 14px', fontWeight: 700,
   fontSize: '0.8rem', cursor: 'pointer', whiteSpace: 'nowrap',
 });
 
 export const inputStyle = {
-  width: '100%', padding: '12px 14px', border: '2px solid var(--border)',
-  borderRadius: '10px', fontSize: '0.9rem', outline: 'none',
+  width: '100%', padding: '12px 14px', border: '1px solid var(--border)',
+  borderRadius: '16px', fontSize: '0.9rem', outline: 'none',
   boxSizing: 'border-box', fontFamily: 'inherit',
   background: 'var(--bg-white)', color: 'var(--text)'
 };
 
 export const cardStyle = {
-  background: 'var(--bg-white)', padding: '24px', borderRadius: '16px',
-  border: '2px solid var(--border)', boxShadow: '4px 4px 0 var(--border)'
+  background: 'var(--bg-card)', padding: '24px', borderRadius: '24px',
+  border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.06)'
 };
 
 export const cardTitleStyle = { 

@@ -68,7 +68,7 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
 
   return (
     <div>
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : reports.length === 0 ? (
           <EmptyRow icon={<Shield size={48} color="var(--primary)" />} msg="No active reports. The platform is clean!" />
         ) : reports.map(r => (
@@ -104,7 +104,7 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
       {/* Resolve Content Flag modal */}
       {resolveModal && (
         <div onClick={() => setResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '540px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><Flag size={24} color="var(--accent)" /> Resolve Content Flag</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Flagged file: <strong>{resolveModal.file_title}</strong>
@@ -113,13 +113,13 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution Notes <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(internal, not shown to users)</span></label>
             <textarea value={resolveNotes} onChange={e => setResolveNotes(e.target.value)}
               placeholder="What action was taken? e.g. 'Content verified — no issue found'"
-              rows={3} style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}><Pin size={14} /> Leave a note on this file <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(visible to all users)</span></label>
             <textarea value={resolveLeaveNote} onChange={e => setResolveLeaveNote(e.target.value)}
               placeholder="Optional: e.g. 'Question 3 contains an error — please ignore it.'"
-              rows={3} style={{ width: '100%', border: '2px solid #FCD34D', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 700, color: '#DC2626' }}>
@@ -127,8 +127,8 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
               Also permanently delete the flagged file
             </label>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '8px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
+              <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '100px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
             </div>
           </div>
         </div>

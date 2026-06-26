@@ -139,7 +139,7 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
   return (
     <div>
       {/* Course Form */}
-      <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--text)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
+      <form onSubmit={saveCourse} style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', padding: '28px', marginBottom: '32px', boxShadow: '6px 6px 0 var(--border)' }}>
         <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'var(--font-primary)' }}>
           {editingCourse ? <><Edit3 size={14} /> Edit Course</> : <><BookOpen size={16} /> Add New Course</>}
           {editingCourse && <button type="button" onClick={() => {
@@ -147,7 +147,7 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
             setCourseForm({ name: '', code: '', year: '', semester: '', is_lab: false, icon: '', faculty_id: '', program_id: '' });
             setIsExistingCode(false);
             setExistingProgramIds([]);
-          }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '2px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
+          }} style={{ marginLeft: 'auto', fontSize: '0.8rem', background: 'none', border: '1px solid var(--border)', padding: '4px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 800 }}>Cancel</button>}
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
           <div className="form-group">
@@ -230,7 +230,7 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
 
         {/* ── Bulk mode toggle (hidden when editing) ── */}
         {!editingCourse && (
-          <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '10px', border: '2px solid var(--border)' }}>
+          <div style={{ marginTop: '20px', padding: '16px', background: 'var(--bg-subtle)', borderRadius: '10px', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
               <div>
                 <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>
@@ -246,11 +246,11 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
                 type="button"
                 onClick={() => { setBulkCourseMode(b => !b); setSelectedPrograms([]); }}
                 style={{
-                  padding: '7px 16px', borderRadius: '8px', fontWeight: 800, fontSize: '0.82rem',
-                  border: '2px solid var(--text)', cursor: 'pointer',
+                  padding: '7px 16px', borderRadius: '100px', fontWeight: 800, fontSize: '0.82rem',
+                  border: '1px solid var(--border)', cursor: 'pointer',
                   background: bulkCourseMode ? 'var(--primary)' : 'var(--bg-white)',
                   color: bulkCourseMode ? 'white' : 'var(--text)',
-                  boxShadow: '2px 2px 0 var(--border)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                 }}
               >
                 {bulkCourseMode ? '✓ Enabled' : 'Enable'}
@@ -342,7 +342,7 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
         )}
 
         {/* Submit */}
-        <button type="submit" style={{ ...btnStyle('var(--primary)'), width: '100%', marginTop: '24px', padding: '16px', fontSize: '1rem', boxShadow: '4px 4px 0 var(--text)' }}>
+        <button type="submit" style={{ ...btnStyle('var(--primary)'), width: '100%', marginTop: '24px', padding: '16px', fontSize: '1rem', boxShadow: '0 8px 32px rgba(0,0,0,0.06)' }}>
           {editingCourse
             ? 'Update Course Details'
             : bulkCourseMode
@@ -363,7 +363,7 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
           {coursesTotalCount} course{coursesTotalCount !== 1 ? 's' : ''} · Page {coursesPage} of {coursesTotalPages}
         </span>
       </div>
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : courses.map(c => (
           <div key={c.course_id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
             <span style={{ fontSize: '1.5rem' }}><IconMapper emoji={c.icon} size={28} /></span>
@@ -385,13 +385,13 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
           <button
             disabled={coursesPage <= 1}
             onClick={() => setCoursesPage(p => p - 1)}
-            style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage <= 1 ? 'not-allowed' : 'pointer', opacity: coursesPage <= 1 ? 0.4 : 1 }}
+            style={{ padding: '8px 20px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage <= 1 ? 'not-allowed' : 'pointer', opacity: coursesPage <= 1 ? 0.4 : 1 }}
           >← Prev</button>
           <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {coursesPage} / {coursesTotalPages}</span>
           <button
             disabled={coursesPage >= coursesTotalPages}
             onClick={() => setCoursesPage(p => p + 1)}
-            style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage >= coursesTotalPages ? 'not-allowed' : 'pointer', opacity: coursesPage >= coursesTotalPages ? 0.4 : 1 }}
+            style={{ padding: '8px 20px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: coursesPage >= coursesTotalPages ? 'not-allowed' : 'pointer', opacity: coursesPage >= coursesTotalPages ? 0.4 : 1 }}
           >Next →</button>
         </div>
       )}

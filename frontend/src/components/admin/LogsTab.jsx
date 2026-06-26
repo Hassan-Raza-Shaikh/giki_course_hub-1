@@ -22,7 +22,7 @@ export const LogsTab = ({ isAdmin }) => {
   }, [logsPage, isAdmin]);
 
   return (
-    <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+    <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
       {loading ? <LoadingRow /> : logs.length === 0 ? <EmptyRow icon={<Activity size={48} color="var(--primary)" />} msg="No admin activity yet." /> : logs.map(l => (
         <div key={l.log_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>{ACTION_ICONS[l.action] || '•'}</span>
@@ -40,7 +40,7 @@ export const LogsTab = ({ isAdmin }) => {
             onClick={() => setLogsPage(p => Math.max(1, p - 1))}
             disabled={logsPage <= 1}
             style={{
-              padding: '8px 16px', background: 'var(--bg-white)', border: '2px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+              padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '10px', fontWeight: 700,
               cursor: logsPage <= 1 ? 'not-allowed' : 'pointer', opacity: logsPage <= 1 ? 0.5 : 1
             }}>Previous</button>
           <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Page {logsPage} of {logsTotalPages}</span>
@@ -48,7 +48,7 @@ export const LogsTab = ({ isAdmin }) => {
             onClick={() => setLogsPage(p => Math.min(logsTotalPages, p + 1))}
             disabled={logsPage >= logsTotalPages}
             style={{
-              padding: '8px 16px', background: 'var(--bg-white)', border: '2px solid var(--border)', borderRadius: '10px', fontWeight: 700,
+              padding: '8px 16px', background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: '10px', fontWeight: 700,
               cursor: logsPage >= logsTotalPages ? 'not-allowed' : 'pointer', opacity: logsPage >= logsTotalPages ? 0.5 : 1
             }}>Next</button>
         </div>

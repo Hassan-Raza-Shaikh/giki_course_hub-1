@@ -23,7 +23,7 @@ export const UsersTab = ({ isAdmin }) => {
 
   return (
     <>
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : users.length === 0 ? <EmptyRow icon={<Users size={48} color="var(--primary)" />} msg="No users yet." /> : users.map(u => (
           <div key={u.user_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
             <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'var(--primary)', flexShrink: 0 }}>
@@ -42,7 +42,7 @@ export const UsersTab = ({ isAdmin }) => {
             disabled={usersPage <= 1}
             onClick={() => setUsersPage(p => p - 1)}
             style={{
-              padding: '6px 12px', borderRadius: '8px', background: 'var(--card-bg)', border: '1px solid var(--border)',
+              padding: '6px 12px', borderRadius: '100px', background: 'var(--card-bg)', border: '1px solid var(--border)',
               cursor: usersPage <= 1 ? 'not-allowed' : 'pointer', opacity: usersPage <= 1 ? 0.5 : 1
             }}
           >
@@ -53,7 +53,7 @@ export const UsersTab = ({ isAdmin }) => {
             disabled={usersPage >= usersTotalPages}
             onClick={() => setUsersPage(p => p + 1)}
             style={{
-              padding: '6px 12px', borderRadius: '8px', background: 'var(--card-bg)', border: '1px solid var(--border)',
+              padding: '6px 12px', borderRadius: '100px', background: 'var(--card-bg)', border: '1px solid var(--border)',
               cursor: usersPage >= usersTotalPages ? 'not-allowed' : 'pointer', opacity: usersPage >= usersTotalPages ? 0.5 : 1
             }}
           >

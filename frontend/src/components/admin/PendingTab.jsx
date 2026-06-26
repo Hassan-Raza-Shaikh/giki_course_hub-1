@@ -76,7 +76,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
   return (
     <div>
       {pending.length > 0 && (
-        <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', background: 'var(--bg-white)', padding: '12px 20px', borderRadius: '12px', border: '2px solid var(--border)', flexWrap: 'wrap' }}>
+        <div style={{ marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center', background: 'var(--bg-white)', padding: '12px 20px', borderRadius: '100px', border: '1px solid var(--border)', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{selectedPending.size} selected</span>
             <button 
@@ -116,7 +116,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
           </div>
         </div>
       )}
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : pending.length === 0 ? (
           <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg="No files pending review — all caught up!" />
         ) : pending.map(f => (
@@ -156,7 +156,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
       {/* Reject modal */}
       {rejectTarget && (
         <div onClick={() => setRejectTarget(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', color: 'var(--text)', borderRadius: '14px', border: '2px solid var(--text)', boxShadow: '6px 6px 0 var(--text)', padding: '28px', width: '100%', maxWidth: '480px', maxHeight: '90dvh', overflowY: 'auto' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', color: 'var(--text)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '480px', maxHeight: '90dvh', overflowY: 'auto' }}>
             <h3 style={{ fontWeight: 800, marginBottom: '8px', color: 'var(--text)' }}>Reject File</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               Rejecting: <strong>{rejectTarget.title}</strong>
@@ -166,11 +166,11 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
               onChange={e => setRejectReason(e.target.value)}
               placeholder="Reason for rejection (optional)…"
               rows={4}
-              style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
-              <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '2px solid #DC2626', borderRadius: '8px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
+              <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '1px solid #DC2626', borderRadius: '100px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
             </div>
           </div>
         </div>

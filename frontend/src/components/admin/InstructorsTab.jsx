@@ -31,12 +31,12 @@ export const InstructorsTab = ({ isAdmin, showToast, faculties }) => {
 
   return (
     <div>
-      <form onSubmit={saveInstructor} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
+      <form onSubmit={saveInstructor} style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
         <h3 style={{ fontWeight: 900, marginBottom: '20px' }}><GraduationCap size={24} /> Add New Instructor</h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
           <div className="form-group">
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Full Name *</label>
-            <input value={instructorForm.name} onChange={e => setInstructorForm({...instructorForm, name: e.target.value})} placeholder="e.g. Dr. Ali" required style={{ width: '100%', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)' }} />
+            <input value={instructorForm.name} onChange={e => setInstructorForm({...instructorForm, name: e.target.value})} placeholder="e.g. Dr. Ali" required style={{ width: '100%', padding: '14px', borderRadius: '100px', border: '1px solid var(--border)' }} />
           </div>
           <div className="form-group">
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' }}>Faculty *</label>
@@ -44,19 +44,19 @@ export const InstructorsTab = ({ isAdmin, showToast, faculties }) => {
               value={instructorForm.faculty_name} 
               onChange={e => setInstructorForm({...instructorForm, faculty_name: e.target.value})} 
               required
-              style={{ width: '100%', padding: '14px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-white)' }}
+              style={{ width: '100%', padding: '14px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-white)' }}
             >
               <option value="">Select Faculty</option>
               {faculties.map(f => <option key={f.id} value={f.name}>{f.name}</option>)}
             </select>
           </div>
         </div>
-        <button type="submit" style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, width: '100%', padding: '14px', marginTop: '24px', cursor: 'pointer' }}>
+        <button type="submit" style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '100px', fontWeight: 700, width: '100%', padding: '14px', marginTop: '24px', cursor: 'pointer' }}>
           Create Instructor
         </button>
       </form>
 
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div> : instructors.map(i => (
           <div key={i.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 24px', borderBottom: '1px solid var(--border)' }}>
             <div style={{ flex: 1 }}>

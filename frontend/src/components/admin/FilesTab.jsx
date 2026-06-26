@@ -44,12 +44,12 @@ export const FilesTab = ({ isAdmin, showToast, categories, openLinkModal, openEd
           value={fileFilter}
           onChange={e => setFileFilter(e.target.value)}
           placeholder="Filter by title or course code…"
-          style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
+          style={{ flex: 1, minWidth: '200px', maxWidth: '360px', padding: '10px 16px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', boxSizing: 'border-box', background: 'var(--bg-white)', color: 'var(--text)' }}
         />
         <select
           value={filesStatusFilter}
           onChange={e => { setFilesStatusFilter(e.target.value); setFilesPage(1); }}
-          style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+          style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
         >
           <option value="">All Statuses</option>
           <option value="approved"><CheckCircle size={14} /> Approved</option>
@@ -59,7 +59,7 @@ export const FilesTab = ({ isAdmin, showToast, categories, openLinkModal, openEd
         <select
           value={filesCategoryFilter}
           onChange={e => { setFilesCategoryFilter(e.target.value); setFilesPage(1); }}
-          style={{ padding: '10px 14px', border: '2px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
+          style={{ padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '10px', fontSize: '0.9rem', fontWeight: 700, background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer' }}
         >
           <option value="">All Categories</option>
           {categories.length > 0 && categories.map(c => (
@@ -71,7 +71,7 @@ export const FilesTab = ({ isAdmin, showToast, categories, openLinkModal, openEd
         </span>
       </div>
 
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : filteredAll.length === 0 ? <EmptyRow icon={<Folder size={48} color="var(--primary)" />} msg="No files found." /> : filteredAll.map(f => (
           <div key={f.file_id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px 24px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -100,13 +100,13 @@ export const FilesTab = ({ isAdmin, showToast, categories, openLinkModal, openEd
           <button
             disabled={filesPage <= 1}
             onClick={() => setFilesPage(p => p - 1)}
-            style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage <= 1 ? 'not-allowed' : 'pointer', opacity: filesPage <= 1 ? 0.4 : 1 }}
+            style={{ padding: '8px 20px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage <= 1 ? 'not-allowed' : 'pointer', opacity: filesPage <= 1 ? 0.4 : 1 }}
           >← Prev</button>
           <span style={{ fontWeight: 700, color: 'var(--text)' }}>Page {filesPage} / {filesTotalPages}</span>
           <button
             disabled={filesPage >= filesTotalPages}
             onClick={() => setFilesPage(p => p + 1)}
-            style={{ padding: '8px 20px', borderRadius: '8px', border: '2px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage >= filesTotalPages ? 'not-allowed' : 'pointer', opacity: filesPage >= filesTotalPages ? 0.4 : 1 }}
+            style={{ padding: '8px 20px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-white)', color: 'var(--text)', fontWeight: 700, cursor: filesPage >= filesTotalPages ? 'not-allowed' : 'pointer', opacity: filesPage >= filesTotalPages ? 0.4 : 1 }}
           >Next →</button>
         </div>
       )}

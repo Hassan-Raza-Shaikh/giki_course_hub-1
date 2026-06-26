@@ -5,7 +5,7 @@ import { LoadingRow } from './AdminHelpers';
 
 const cardStyle = {
   background: 'var(--bg-white)', padding: '24px', borderRadius: '16px',
-  border: '2px solid var(--border)', boxShadow: '4px 4px 0 var(--border)'
+  border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.06)'
 };
 
 const cardTitleStyle = { 
@@ -61,9 +61,9 @@ export const StatsTab = ({ isAdmin }) => {
         ))}
         {Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) > 1 && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '10px', border: '1.5px solid var(--border)' }}>
-            <button onClick={() => setPageDL(p => Math.max(1, p - 1))} disabled={pageDL === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageDL === 1 ? 'not-allowed' : 'pointer', opacity: pageDL === 1 ? 0.5 : 1 }}>Prev</button>
+            <button onClick={() => setPageDL(p => Math.max(1, p - 1))} disabled={pageDL === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '100px', fontWeight: 700, fontSize: '0.8rem', cursor: pageDL === 1 ? 'not-allowed' : 'pointer', opacity: pageDL === 1 ? 0.5 : 1 }}>Prev</button>
             <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>Page {pageDL} of {Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE)}</span>
-            <button onClick={() => setPageDL(p => Math.min(Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE), p + 1))} disabled={pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
+            <button onClick={() => setPageDL(p => Math.min(Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE), p + 1))} disabled={pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '100px', fontWeight: 700, fontSize: '0.8rem', cursor: pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageDL === Math.ceil(detailedStats.most_downloaded.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
           </div>
         )}
       </div>
@@ -82,9 +82,9 @@ export const StatsTab = ({ isAdmin }) => {
         ))}
         {Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) > 1 && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '10px', border: '1.5px solid var(--border)' }}>
-            <button onClick={() => setPageBM(p => Math.max(1, p - 1))} disabled={pageBM === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageBM === 1 ? 'not-allowed' : 'pointer', opacity: pageBM === 1 ? 0.5 : 1 }}>Prev</button>
+            <button onClick={() => setPageBM(p => Math.max(1, p - 1))} disabled={pageBM === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '100px', fontWeight: 700, fontSize: '0.8rem', cursor: pageBM === 1 ? 'not-allowed' : 'pointer', opacity: pageBM === 1 ? 0.5 : 1 }}>Prev</button>
             <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>Page {pageBM} of {Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE)}</span>
-            <button onClick={() => setPageBM(p => Math.min(Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE), p + 1))} disabled={pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
+            <button onClick={() => setPageBM(p => Math.min(Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE), p + 1))} disabled={pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '100px', fontWeight: 700, fontSize: '0.8rem', cursor: pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageBM === Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
           </div>
         )}
       </div>
@@ -99,9 +99,9 @@ export const StatsTab = ({ isAdmin }) => {
         ))}
         {Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) > 1 && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: '10px', border: '1.5px solid var(--border)' }}>
-            <button onClick={() => setPageC(p => Math.max(1, p - 1))} disabled={pageC === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === 1 ? 'not-allowed' : 'pointer', opacity: pageC === 1 ? 0.5 : 1 }}>Prev</button>
+            <button onClick={() => setPageC(p => Math.max(1, p - 1))} disabled={pageC === 1} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '100px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === 1 ? 'not-allowed' : 'pointer', opacity: pageC === 1 ? 0.5 : 1 }}>Prev</button>
             <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-muted)' }}>Page {pageC} of {Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE)}</span>
-            <button onClick={() => setPageC(p => Math.min(Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE), p + 1))} disabled={pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
+            <button onClick={() => setPageC(p => Math.min(Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE), p + 1))} disabled={pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE)} style={{ padding: '6px 12px', background: 'var(--bg-white)', border: '1.5px solid var(--border)', borderRadius: '100px', fontWeight: 700, fontSize: '0.8rem', cursor: pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) ? 'not-allowed' : 'pointer', opacity: pageC === Math.ceil(detailedStats.per_course.length / STATS_PER_PAGE) ? 0.5 : 1 }}>Next</button>
           </div>
         )}
       </div>

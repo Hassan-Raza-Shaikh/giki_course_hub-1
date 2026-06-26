@@ -43,7 +43,7 @@ export const CourseLinksTab = ({ isAdmin, showToast }) => {
 
   return (
     <div>
-      <form onSubmit={saveCourseLink} style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
+      <form onSubmit={saveCourseLink} style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', padding: '28px', marginBottom: '32px' }}>
         <h3 style={{ fontWeight: 950, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Link size={16} /> Link Two Courses (Resource Sharing)
         </h3>
@@ -63,7 +63,7 @@ export const CourseLinksTab = ({ isAdmin, showToast }) => {
         <button type="submit" style={{ ...btnStyle('var(--primary)'), marginTop: '20px' }}>Create Link</button>
       </form>
 
-      <div style={{ background: 'var(--bg-white)', borderRadius: '14px', border: '2px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : courseLinks.length === 0 ? (
           <EmptyRow icon={<Link size={48} color="var(--primary)" />} msg="No manual course links active." />
         ) : courseLinks.map(l => (
