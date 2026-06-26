@@ -393,14 +393,26 @@ def random_courses():
     conn = get_connection()
     try:
         cur = conn.cursor()
+        # Use TABLESAMPLE for fast random sampling on large tables
         cur.execute("""
             SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    f.icon AS faculty_icon, f.name AS faculty_name
-            FROM courses c
+            FROM courses TABLESAMPLE SYSTEM (10) c
             JOIN faculties f ON c.faculty_id = f.faculty_id
             ORDER BY RANDOM() LIMIT %s;
         """, (n,))
         rows = cur.fetchall()
+
+        # Fallback if the 10% sample didn't return enough rows (e.g., table is very small)
+        if len(rows) < n:
+            cur.execute("""
+                SELECT c.course_id, c.name, c.code, c.year, c.semester,
+                       f.icon AS faculty_icon, f.name AS faculty_name
+                FROM courses c
+                JOIN faculties f ON c.faculty_id = f.faculty_id
+                ORDER BY RANDOM() LIMIT %s;
+            """, (n,))
+            rows = cur.fetchall()
         cur.close()
         courses = [{
             "id": r[0], "name": r[1], "code": r[2], 
@@ -862,8 +874,8 @@ def report_file(file_id):
         )
         row = cur.fetchone()
         conn.commit()
-        cur.close()
         if not row:
+            cur.close()
             return jsonify({"success": False, "message": "You have already reported this file."}), 409
 
         # Notify all admins
@@ -900,6 +912,7 @@ def report_file(file_id):
         except Exception as e:
             print(f"Failed to send report notification email: {e}")
 
+        cur.close()
         return jsonify({"success": True, "message": "Report submitted. Thank you for keeping the platform safe."})
     except Exception as e:
         conn.rollback()
