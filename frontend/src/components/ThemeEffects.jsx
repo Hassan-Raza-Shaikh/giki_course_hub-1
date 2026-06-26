@@ -334,38 +334,39 @@ const CoffeeSteam = () => Array.from({ length: 15 }).map((_, i) => (
   }}></div>
 ));
 
-const SpongeBobSprites = () => Array.from({ length: 6 }).map((_, i) => (
-  <img key={i} src="/spongebob.svg" className="spongebob-sprite" alt="spongebob" style={{
+const SpongeBobSprites = () => Array.from({ length: 12 }).map((_, i) => (
+  <img key={i} src={`/sb-flower-${(i % 4) + 1}.svg`} className="spongebob-sprite" alt="spongebob-flower" style={{
     position: 'absolute',
-    left: `${10 + Math.random() * 80}vw`,
-    top: `${10 + Math.random() * 80}vh`,
-    animation: `floatNavi ${6 + Math.random() * 6}s ease-in-out infinite alternate`,
-    animationDelay: `-${Math.random() * 6}s`,
-    width: `${40 + Math.random() * 40}px`,
-    filter: 'drop-shadow(0 0 5px rgba(56, 189, 248, 0.5))'
+    left: `${Math.random() * 100}vw`,
+    top: `${Math.random() * 100}vh`,
+    animation: `floatSlow ${15 + Math.random() * 20}s ease-in-out infinite alternate`,
+    animationDelay: `-${Math.random() * 10}s`,
+    width: `${60 + Math.random() * 80}px`,
+    opacity: 0.8
   }} />
 ));
 
 const DragonBallSprites = () => Array.from({ length: 7 }).map((_, i) => (
-  <img key={i} src="/dragonball.svg" className="dragonball-sprite" alt="dragonball" style={{
+  <img key={i} src={`/dragonball-${i + 1}.svg`} className="dragonball-sprite" alt={`dragonball-${i + 1}`} style={{
     position: 'absolute',
-    left: `${Math.random() * 100}vw`,
-    top: `${Math.random() * 100}vh`,
+    left: `${10 + Math.random() * 80}vw`,
+    top: `${10 + Math.random() * 80}vh`,
     animation: `floatSlow ${10 + Math.random() * 10}s linear infinite alternate`,
     animationDelay: `-${Math.random() * 10}s`,
-    width: `${30 + Math.random() * 30}px`,
+    width: `${40 + Math.random() * 30}px`,
     filter: 'drop-shadow(0 0 10px #FFD700)'
   }} />
 ));
 
-const ScoobySprites = () => Array.from({ length: 3 }).map((_, i) => (
-  <img key={i} src="/scooby.svg" className="scooby-sprite" alt="mystery-machine" style={{
+const ScoobySprites = () => Array.from({ length: 8 }).map((_, i) => (
+  <img key={i} src={i % 2 === 0 ? "/scooby-tag.svg" : "/scooby-snack.svg"} className="scooby-sprite" alt="scooby-item" style={{
     position: 'absolute',
-    bottom: '10px',
-    animation: `pokemonWalk ${10 + Math.random() * 15}s linear infinite`,
-    animationDelay: `-${Math.random() * 10}s`,
-    width: `${80 + Math.random() * 40}px`,
-    filter: 'drop-shadow(0 0 10px #39FF14)'
+    left: `${Math.random() * 100}vw`,
+    top: `${Math.random() * 100}vh`,
+    animation: `fall ${10 + Math.random() * 15}s linear infinite`,
+    animationDelay: `-${Math.random() * 15}s`,
+    width: `${40 + Math.random() * 30}px`,
+    filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.5))'
   }} />
 ));
 
