@@ -88,3 +88,28 @@ export const KatanaIcon = ({ size = 14, ...props }) => (
     <path d="M18 10l-4-4" />
   </svg>
 );
+export const SpongebobIcon = ({ size = 14, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M5 8c0-3 3-4 7-4s7 1 7 4v8c0 3-3 4-7 4s-7-1-7-4z" />
+    <circle cx="9" cy="10" r="1.5" />
+    <circle cx="15" cy="10" r="1.5" />
+    <path d="M10 16c1 1 3 1 4 0" />
+  </svg>
+);
+
+export const DragonBallIcon = ({ size = 14, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 7v1M12 16v1M8.5 10l-1-1M15.5 10l1-1M8.5 14l-1 1M15.5 14l1 1" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+export const ScoobyIcon = ({ size = 14, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M15 10.5a3 3 0 1 0-6 0v3a3 3 0 1 0 6 0v-3z" />
+    <circle cx="8" cy="8" r="2" />
+    <circle cx="16" cy="8" r="2" />
+    <circle cx="8" cy="16" r="2" />
+    <circle cx="16" cy="16" r="2" />
+  </svg>
+);

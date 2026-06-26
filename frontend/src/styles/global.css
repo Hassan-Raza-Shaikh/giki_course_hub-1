@@ -1257,7 +1257,8 @@ input::placeholder, textarea::placeholder {
   --nav-btn-text: #023E8A;
 }
 
-/* ── Fire ── */
+/* ── Fire (Disabled) ── */
+/*
 [data-theme='fire'] {
   --font-primary: 'Syne Mono', monospace;
   --primary:      #FFB703;
@@ -1280,6 +1281,31 @@ input::placeholder, textarea::placeholder {
   --shadow-md:    8px 8px 0px #370617;
   --shadow-lg:    12px 12px 0px #03071E;
   --nav-btn-text: #6A040F;
+}
+*/
+
+/* ── Dragon Ball ── */
+[data-theme='dragonball'] {
+  --primary:      #FF8C00;
+  --primary-dark: #E65C00;
+  --primary-mid:  #FFB347;
+  --secondary:    #0000FF;
+  --accent:       #FFD700;
+  --tertiary:     #FFD700;
+  --electric:     #FFA500;
+  --bg-hero:      #1A0F00;
+  --bg-dark:      #0D0700;
+  --bg-subtle:    #261600;
+  --bg-white:     #331E00;
+  --bg-body:      #1A0F00;
+  --text:         #FFF8DC;
+  --text-muted:   #FFDAB9;
+  --text-light:   #FFE4B5;
+  --border:       #FF8C00;
+  --shadow-sm:    4px 4px 0px #0000FF;
+  --shadow-md:    8px 8px 0px #FFD700;
+  --shadow-lg:    12px 12px 0px #E65C00;
+  --nav-btn-text: #1A0F00;
 }
 
 /* ── LOTR ── */
@@ -1429,23 +1455,24 @@ input::placeholder, textarea::placeholder {
   --nav-btn-text: #FFFFFF;
 }
 
-/* ── Forest ── */
+/* ── Forest (Disabled) ── */
+/*
 [data-theme='forest'] {
-  --primary:      #22C55E;   /* Bright leaf green */
+  --primary:      #22C55E;
   --primary-dark: #16A34A;
   --primary-mid:  #4ADE80;
-  --secondary:    #8B5A2B;   /* Tree bark brown */
-  --accent:       #FBBF24;   /* Firefly yellow/gold */
-  --tertiary:     #D97706;   /* Amber */
-  --electric:     #A3E635;   /* Moss green */
+  --secondary:    #8B5A2B;
+  --accent:       #FBBF24;
+  --tertiary:     #D97706;
+  --electric:     #A3E635;
   
-  --bg-hero:      #064E3B;   /* Very dark emerald/pine */
-  --bg-dark:      #022C22;   /* Pure dark green */
+  --bg-hero:      #064E3B;
+  --bg-dark:      #022C22;
   --bg-subtle:    #065F46;   
-  --bg-white:     #0F3F31;   /* Card background */
-  --bg-body:      #022C22;   /* Deep forest */
+  --bg-white:     #0F3F31;
+  --bg-body:      #022C22;
   
-  --text:         #ECFDF5;   /* Off white/green tint */
+  --text:         #ECFDF5;
   --text-muted:   #A7F3D0;   
   --text-light:   #6EE7B7;
   
@@ -1454,6 +1481,31 @@ input::placeholder, textarea::placeholder {
   --shadow-md:    8px 8px 0px #8B5A2B;
   --shadow-lg:    12px 12px 0px #22C55E;
   --nav-btn-text: #FFFFFF;
+}
+*/
+
+/* ── Scooby-Doo ── */
+[data-theme='scooby'] {
+  --primary:      #40E0D0;
+  --primary-dark: #00CED1;
+  --primary-mid:  #48D1CC;
+  --secondary:    #FF8C00;
+  --accent:       #39FF14;
+  --tertiary:     #39FF14;
+  --electric:     #40E0D0;
+  --bg-hero:      #1E2C3A;
+  --bg-dark:      #0F161D;
+  --bg-subtle:    #2A3C4D;
+  --bg-white:     #354B5F;
+  --bg-body:      #1E2C3A;
+  --text:         #F0F8FF;
+  --text-muted:   #B0C4DE;
+  --text-light:   #87CEFA;
+  --border:       #FF8C00;
+  --shadow-sm:    4px 4px 0px #00CED1;
+  --shadow-md:    8px 8px 0px #39FF14;
+  --shadow-lg:    12px 12px 0px #FF8C00;
+  --nav-btn-text: #1E2C3A;
 }
 
 /* ── Ocean ── */
@@ -1504,7 +1556,8 @@ input::placeholder, textarea::placeholder {
   --nav-btn-text: #F1FAEE;
 }
 
-/* ── Coffee ── */
+/* ── Coffee (Disabled) ── */
+/*
 [data-theme='coffee'] {
   --primary:      #A67C00;
   --primary-dark: #805E00;
@@ -1526,6 +1579,31 @@ input::placeholder, textarea::placeholder {
   --shadow-md:    8px 8px 0px #FAEDCD;
   --shadow-lg:    12px 12px 0px #CCD5AE;
   --nav-btn-text: #3C2F2F;
+}
+*/
+
+/* ── SpongeBob ── */
+[data-theme='spongebob'] {
+  --primary:      #FDE047;
+  --primary-dark: #EAB308;
+  --primary-mid:  #FEF08A;
+  --secondary:    #F472B6;
+  --accent:       #38BDF8;
+  --tertiary:     #F472B6;
+  --electric:     #FDE047;
+  --bg-hero:      #0284C7;
+  --bg-dark:      #0369A1;
+  --bg-subtle:    #0EA5E9;
+  --bg-white:     #BAE6FD;
+  --bg-body:      #0284C7;
+  --text:         #082F49;
+  --text-muted:   #0C4A6E;
+  --text-light:   #075985;
+  --border:       #EAB308;
+  --shadow-sm:    4px 4px 0px #F472B6;
+  --shadow-md:    8px 8px 0px #38BDF8;
+  --shadow-lg:    12px 12px 0px #EAB308;
+  --nav-btn-text: #082F49;
 }
 
 /* Jupyter Notebook HTML Output Tables */

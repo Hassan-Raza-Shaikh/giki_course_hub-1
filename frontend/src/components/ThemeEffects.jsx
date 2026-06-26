@@ -334,6 +334,37 @@ const CoffeeSteam = () => Array.from({ length: 15 }).map((_, i) => (
   }}></div>
 ));
 
+const SpongeBobBubbles = () => Array.from({ length: 20 }).map((_, i) => (
+  <div key={i} className="spongebob-bubble" style={{
+    left: `${Math.random() * 100}vw`,
+    animationDuration: `${5 + Math.random() * 10}s`,
+    animationDelay: `-${Math.random() * 10}s`,
+    width: `${10 + Math.random() * 30}px`,
+    height: `${10 + Math.random() * 30}px`
+  }}></div>
+));
+
+const DragonBallAura = () => Array.from({ length: 30 }).map((_, i) => (
+  <div key={i} className="dragonball-aura" style={{
+    left: `${Math.random() * 100}vw`,
+    animationDuration: `${2 + Math.random() * 3}s`,
+    animationDelay: `-${Math.random() * 3}s`,
+    width: `${5 + Math.random() * 10}px`,
+    height: `${10 + Math.random() * 20}px`
+  }}></div>
+));
+
+const ScoobyEyes = () => Array.from({ length: 10 }).map((_, i) => (
+  <div key={i} className="scooby-eyes" style={{
+    left: `${10 + Math.random() * 80}vw`,
+    top: `${10 + Math.random() * 80}vh`,
+    animationDuration: `${4 + Math.random() * 6}s`,
+    animationDelay: `-${Math.random() * 6}s`
+  }}>
+    <div className="eye"></div><div className="eye"></div>
+  </div>
+));
+
 
 export default function ThemeEffects() {
   const [theme, setTheme] = useState(document.documentElement.getAttribute('data-theme') || 'light');
@@ -370,12 +401,15 @@ export default function ThemeEffects() {
       case 'pacman': return <PacmanChase />;
       case 'minecraft': return <MinecraftBlocks />;
       case 'cyberpunk': return <CyberpunkScanlines />;
-      case 'fire': return <FireSparks />;
+      // case 'fire': return <FireSparks />;
+      case 'dragonball': return <DragonBallAura />;
       case 'barbie': return <BarbieSparkles />;
-      case 'forest': return <ForestLeaves />;
+      // case 'forest': return <ForestLeaves />;
+      case 'scooby': return <ScoobyEyes />;
       case 'pokemon': return <PokemonSprites />;
       case 'samurai': return <SakuraPetals />;
-      case 'coffee': return <CoffeeSteam />;
+      // case 'coffee': return <CoffeeSteam />;
+      case 'spongebob': return <SpongeBobBubbles />;
       default: return null;
     }
   };
