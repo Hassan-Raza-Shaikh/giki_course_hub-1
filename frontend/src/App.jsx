@@ -32,7 +32,6 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [loading, setLoading]     = useState(true);
 
-  // Restore session on mount
   useEffect(() => {
     let mountTime = Date.now();
     let hiddenTime = 0;
@@ -60,6 +59,11 @@ const App = () => {
       }
     };
     document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [loading]);
+
+  // Restore session on mount
+  useEffect(() => {
 
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
@@ -125,7 +129,6 @@ const App = () => {
 
     return () => {
       unsubscribe();
-      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 
