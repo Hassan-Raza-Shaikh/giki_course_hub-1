@@ -257,18 +257,18 @@ const PacmanChase = () => {
         }}>
           {chase.isPowerPellet ? (
              <>
-               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
-               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
-               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
                <img src="/pacman.png" alt="pacman" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="scared-ghost" style={{width:'40px', filter: 'hue-rotate(180deg) brightness(1.5)', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
              </>
           ) : (
              <>
+               <img src="/ghost.png" alt="ghost-red" className="ghost-red" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-pink" className="ghost-pink" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-cyan" className="ghost-cyan" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
+               <img src="/ghost.png" alt="ghost-orange" className="ghost-orange" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
                <img src="/pacman.png" alt="pacman" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? 1 : -1})`, imageRendering: 'pixelated'}} />
-               <img src="/ghost.png" alt="ghost-red" className="ghost-red" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
-               <img src="/ghost.png" alt="ghost-pink" className="ghost-pink" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
-               <img src="/ghost.png" alt="ghost-cyan" className="ghost-cyan" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
-               <img src="/ghost.png" alt="ghost-orange" className="ghost-orange" style={{width:'40px', transform: `scaleX(${chase.direction === 1 ? -1 : 1})`, imageRendering: 'pixelated'}} />
              </>
           )}
         </div>
