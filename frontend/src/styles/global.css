@@ -1480,6 +1480,54 @@ input::placeholder, textarea::placeholder {
   --nav-btn-text: #083344;
 }
 
+/* ── Samurai ── */
+[data-theme='samurai'] {
+  --primary:      #E63946;
+  --primary-dark: #D62828;
+  --primary-mid:  #FF4D6D;
+  --secondary:    #F1FAEE;
+  --accent:       #A8DADC;
+  --tertiary:     #457B9D;
+  --electric:     #1D3557;
+  --bg-hero:      #111111;
+  --bg-dark:      #080808;
+  --bg-subtle:    #1A1A1A;
+  --bg-white:     #222222;
+  --bg-body:      #111111;
+  --text:         #F8F9FA;
+  --text-muted:   #CED4DA;
+  --text-light:   #ADB5BD;
+  --border:       #E63946;
+  --shadow-sm:    4px 4px 0px #D62828;
+  --shadow-md:    8px 8px 0px #FF4D6D;
+  --shadow-lg:    12px 12px 0px #1D3557;
+  --nav-btn-text: #F1FAEE;
+}
+
+/* ── Coffee ── */
+[data-theme='coffee'] {
+  --primary:      #A67C00;
+  --primary-dark: #805E00;
+  --primary-mid:  #D4A373;
+  --secondary:    #E9EDC9;
+  --accent:       #FEFAE0;
+  --tertiary:     #FAEDCD;
+  --electric:     #CCD5AE;
+  --bg-hero:      #3C2F2F;
+  --bg-dark:      #2C2222;
+  --bg-subtle:    #4A3B3B;
+  --bg-white:     #5C4D4D;
+  --bg-body:      #3C2F2F;
+  --text:         #FEFAE0;
+  --text-muted:   #E9EDC9;
+  --text-light:   #D4A373;
+  --border:       #A67C00;
+  --shadow-sm:    4px 4px 0px #805E00;
+  --shadow-md:    8px 8px 0px #FAEDCD;
+  --shadow-lg:    12px 12px 0px #CCD5AE;
+  --nav-btn-text: #3C2F2F;
+}
+
 /* Jupyter Notebook HTML Output Tables */
 .ipynb-html-output table {
   border-collapse: collapse;

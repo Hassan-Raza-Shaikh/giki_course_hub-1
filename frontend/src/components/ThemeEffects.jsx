@@ -305,13 +305,34 @@ const PokemonSprites = () => (
     {Array.from({ length: 10 }).map((_, i) => (
       <img key={`ball-${i}`} src="/pokeball.png" className="pokeball-bounce" alt="pokeball" style={{ left: `${Math.random() * 100}vw`, animationDuration: `${3 + Math.random() * 5}s`, animationDelay: `-${Math.random() * 5}s`, width: `${30 + Math.random() * 20}px`, imageRendering: 'pixelated' }} />
     ))}
-    {/* Pokemon walking */}
     <img src="/pikachu.png" className="pokemon-sprite" alt="pikachu" style={{ animationDuration: '25s', animationDelay: '-2s', width: '60px' }} />
     <img src="/charmander.png" className="pokemon-sprite" alt="charmander" style={{ animationDuration: '28s', animationDelay: '-12s', width: '60px' }} />
     <img src="/bulbasaur.png" className="pokemon-sprite" alt="bulbasaur" style={{ animationDuration: '32s', animationDelay: '-20s', width: '60px' }} />
     <img src="/squirtle.png" className="pokemon-sprite" alt="squirtle" style={{ animationDuration: '30s', animationDelay: '-5s', width: '60px' }} />
   </>
 );
+
+const SakuraPetals = () => Array.from({ length: 40 }).map((_, i) => (
+  <div key={i} className="sakura-petal" style={{
+    left: `${Math.random() * 100}vw`,
+    animationDuration: `${8 + Math.random() * 12}s`,
+    animationDelay: `-${Math.random() * 12}s`,
+    width: `${8 + Math.random() * 8}px`,
+    height: `${12 + Math.random() * 12}px`,
+    opacity: 0.6 + Math.random() * 0.4
+  }}></div>
+));
+
+const CoffeeSteam = () => Array.from({ length: 15 }).map((_, i) => (
+  <div key={i} className="coffee-steam" style={{
+    left: `${Math.random() * 100}vw`,
+    animationDuration: `${15 + Math.random() * 15}s`,
+    animationDelay: `-${Math.random() * 15}s`,
+    width: `${40 + Math.random() * 60}px`,
+    height: `${40 + Math.random() * 60}px`,
+    opacity: 0.05 + Math.random() * 0.1
+  }}></div>
+));
 
 
 export default function ThemeEffects() {
@@ -353,6 +374,8 @@ export default function ThemeEffects() {
       case 'barbie': return <BarbieSparkles />;
       case 'forest': return <ForestLeaves />;
       case 'pokemon': return <PokemonSprites />;
+      case 'samurai': return <SakuraPetals />;
+      case 'coffee': return <CoffeeSteam />;
       default: return null;
     }
   };

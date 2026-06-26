@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator } from 'lucide-react';
-import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon } from './ThemeIcons';
+import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon, KatanaIcon, CoffeeIcon } from './ThemeIcons';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
@@ -90,7 +90,9 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
     { id: 'barbie', name: 'Barbie', icon: <Heart size={14} /> },
     { id: 'forest', name: 'Forest', icon: <TreePine size={14} /> },
     { id: 'ocean', name: 'Ocean', icon: <Waves size={14} /> },
-    { id: 'pokemon', name: 'Pokémon', icon: <PokeballIcon size={14} /> }
+    { id: 'pokemon', name: 'Pokémon', icon: <PokeballIcon size={14} /> },
+    { id: 'samurai', name: 'Samurai', icon: <KatanaIcon size={14} /> },
+    { id: 'coffee', name: 'Coffee', icon: <CoffeeIcon size={14} /> }
   ];
 
   const currentThemeObj = themes.find(t => t.id === theme) || themes[0];

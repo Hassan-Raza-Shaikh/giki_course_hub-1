@@ -495,3 +495,42 @@
   0% { transform: translateX(0); }
   100% { transform: translateX(calc(-100vw - 600px)); }
 }
+
+/* =====================
+   SAKURA PETALS
+===================== */
+.sakura-petal {
+  position: absolute;
+  top: -10vh;
+  background: #FFB7B2;
+  border-radius: 15px 0 15px 0;
+  animation: sakuraFall linear infinite;
+  box-shadow: 0 0 5px rgba(255, 183, 178, 0.4);
+}
+
+@keyframes sakuraFall {
+  0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0; }
+  10% { opacity: 0.8; }
+  50% { transform: translateY(55vh) rotate(180deg) translateX(50px); }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(110vh) rotate(360deg) translateX(-50px); opacity: 0; }
+}
+
+/* =====================
+   COFFEE STEAM
+===================== */
+.coffee-steam {
+  position: absolute;
+  bottom: -10vh;
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 60%);
+  border-radius: 50%;
+  animation: steamRise ease-in infinite;
+  filter: blur(8px);
+}
+
+@keyframes steamRise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 0.4; }
+  50% { transform: translateY(-50vh) scale(1.5) translateX(20px); opacity: 0.2; }
+  100% { transform: translateY(-110vh) scale(2.5) translateX(-30px); opacity: 0; }
+}
