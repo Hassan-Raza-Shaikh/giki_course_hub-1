@@ -334,35 +334,39 @@ const CoffeeSteam = () => Array.from({ length: 15 }).map((_, i) => (
   }}></div>
 ));
 
-const SpongeBobBubbles = () => Array.from({ length: 20 }).map((_, i) => (
-  <div key={i} className="spongebob-bubble" style={{
-    left: `${Math.random() * 100}vw`,
-    animationDuration: `${5 + Math.random() * 10}s`,
-    animationDelay: `-${Math.random() * 10}s`,
-    width: `${10 + Math.random() * 30}px`,
-    height: `${10 + Math.random() * 30}px`
-  }}></div>
-));
-
-const DragonBallAura = () => Array.from({ length: 30 }).map((_, i) => (
-  <div key={i} className="dragonball-aura" style={{
-    left: `${Math.random() * 100}vw`,
-    animationDuration: `${2 + Math.random() * 3}s`,
-    animationDelay: `-${Math.random() * 3}s`,
-    width: `${5 + Math.random() * 10}px`,
-    height: `${10 + Math.random() * 20}px`
-  }}></div>
-));
-
-const ScoobyEyes = () => Array.from({ length: 10 }).map((_, i) => (
-  <div key={i} className="scooby-eyes" style={{
+const SpongeBobSprites = () => Array.from({ length: 6 }).map((_, i) => (
+  <img key={i} src="/spongebob.svg" className="spongebob-sprite" alt="spongebob" style={{
+    position: 'absolute',
     left: `${10 + Math.random() * 80}vw`,
     top: `${10 + Math.random() * 80}vh`,
-    animationDuration: `${4 + Math.random() * 6}s`,
-    animationDelay: `-${Math.random() * 6}s`
-  }}>
-    <div className="eye"></div><div className="eye"></div>
-  </div>
+    animation: `floatNavi ${6 + Math.random() * 6}s ease-in-out infinite alternate`,
+    animationDelay: `-${Math.random() * 6}s`,
+    width: `${40 + Math.random() * 40}px`,
+    filter: 'drop-shadow(0 0 5px rgba(56, 189, 248, 0.5))'
+  }} />
+));
+
+const DragonBallSprites = () => Array.from({ length: 7 }).map((_, i) => (
+  <img key={i} src="/dragonball.svg" className="dragonball-sprite" alt="dragonball" style={{
+    position: 'absolute',
+    left: `${Math.random() * 100}vw`,
+    top: `${Math.random() * 100}vh`,
+    animation: `floatSlow ${10 + Math.random() * 10}s linear infinite alternate`,
+    animationDelay: `-${Math.random() * 10}s`,
+    width: `${30 + Math.random() * 30}px`,
+    filter: 'drop-shadow(0 0 10px #FFD700)'
+  }} />
+));
+
+const ScoobySprites = () => Array.from({ length: 3 }).map((_, i) => (
+  <img key={i} src="/scooby.svg" className="scooby-sprite" alt="mystery-machine" style={{
+    position: 'absolute',
+    bottom: '10px',
+    animation: `pokemonWalk ${10 + Math.random() * 15}s linear infinite`,
+    animationDelay: `-${Math.random() * 10}s`,
+    width: `${80 + Math.random() * 40}px`,
+    filter: 'drop-shadow(0 0 10px #39FF14)'
+  }} />
 ));
 
 
@@ -402,14 +406,14 @@ export default function ThemeEffects() {
       case 'minecraft': return <MinecraftBlocks />;
       case 'cyberpunk': return <CyberpunkScanlines />;
       // case 'fire': return <FireSparks />;
-      case 'dragonball': return <DragonBallAura />;
+      case 'dragonball': return <DragonBallSprites />;
       case 'barbie': return <BarbieSparkles />;
       // case 'forest': return <ForestLeaves />;
-      case 'scooby': return <ScoobyEyes />;
+      case 'scooby': return <ScoobySprites />;
       case 'pokemon': return <PokemonSprites />;
       case 'samurai': return <SakuraPetals />;
       // case 'coffee': return <CoffeeSteam />;
-      case 'spongebob': return <SpongeBobBubbles />;
+      case 'spongebob': return <SpongeBobSprites />;
       default: return null;
     }
   };
