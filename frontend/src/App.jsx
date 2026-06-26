@@ -42,11 +42,11 @@ const App = () => {
       } else if (document.visibilityState === 'visible') {
         // If coming back from background and we're stuck in loading state
         if (loading) {
-          // If we were hidden for more than 60 seconds, or it's been loading for >60s total, force reload
+          // If we were hidden for more than 5 seconds, or it's been loading for >15s total, force reload
           const timeSinceHidden = hiddenTime ? Date.now() - hiddenTime : 0;
           const totalLoadTime = Date.now() - mountTime;
           
-          if (timeSinceHidden > 60000 || totalLoadTime > 60000) {
+          if (timeSinceHidden > 5000 || totalLoadTime > 15000) {
             console.log("App focused while stuck loading, forcing reload to prevent hang...");
             window.location.reload();
           }
