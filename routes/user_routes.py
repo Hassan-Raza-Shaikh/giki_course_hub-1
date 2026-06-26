@@ -30,7 +30,8 @@ def get_leaderboard():
         
         return jsonify({"success": True, "leaderboard": users})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -61,7 +62,8 @@ def get_user_profile(username):
         
         return jsonify({"success": True, "user": user_data})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -125,7 +127,8 @@ def get_user_uploads(username):
             "total_count": total_count
         })
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -206,7 +209,8 @@ def update_my_profile():
         return jsonify({"success": True, "message": "Profile updated"})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -236,6 +240,7 @@ def get_faculties_programs():
 
         return jsonify({"success": True, "faculties": list(faculties.values())})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

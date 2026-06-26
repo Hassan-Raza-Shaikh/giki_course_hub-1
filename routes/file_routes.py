@@ -22,16 +22,26 @@ file_bp = Blueprint('files', __name__)
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
+# boto3 singleton — created once at module load time, not per-request.
+# boto3 clients are thread-safe for read operations and creation is expensive.
+_s3_client = None
+_s3_client_lock = threading.Lock()
+
 def get_s3_client():
+    global _s3_client
     if not R2_ENDPOINT_URL or not R2_ACCESS_KEY or not R2_SECRET_KEY:
         return None
-    return boto3.client(
-        's3',
-        endpoint_url=R2_ENDPOINT_URL,
-        aws_access_key_id=R2_ACCESS_KEY,
-        aws_secret_access_key=R2_SECRET_KEY,
-        region_name='auto'  # R2 requires this or similar
-    )
+    if _s3_client is None:
+        with _s3_client_lock:
+            if _s3_client is None:  # double-checked locking
+                _s3_client = boto3.client(
+                    's3',
+                    endpoint_url=R2_ENDPOINT_URL,
+                    aws_access_key_id=R2_ACCESS_KEY,
+                    aws_secret_access_key=R2_SECRET_KEY,
+                    region_name='auto'
+                )
+    return _s3_client
 
 
 def allowed_file(filename):
@@ -149,7 +159,8 @@ def search_all():
         cur.close()
         return jsonify({"success": True, "files": files, "courses": courses})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -197,7 +208,8 @@ def my_uploads():
             "total": total_count
         })
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -208,26 +220,28 @@ def get_public_stats():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT COUNT(*) FROM courses;")
-        courses = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM faculties;")
-        faculties = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM programs;")
-        programs = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'approved';")
-        materials = cur.fetchone()[0]
+        # Single query replaces 4 sequential COUNT(*) round-trips.
+        cur.execute("""
+            SELECT
+                (SELECT COUNT(*) FROM courses)  AS courses,
+                (SELECT COUNT(*) FROM faculties) AS faculties,
+                (SELECT COUNT(*) FROM programs)  AS programs,
+                (SELECT COUNT(*) FROM files WHERE status = 'approved') AS materials;
+        """)
+        row = cur.fetchone()
         cur.close()
         return jsonify({
             "success": True,
             "stats": {
-                "courses": courses,
-                "faculties": faculties,
-                "programs": programs,
-                "materials": materials
+                "courses":   row[0],
+                "faculties": row[1],
+                "programs":  row[2],
+                "materials": row[3],
             }
         })
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "Failed to load stats."}), 500
     finally:
         conn.close()
 
@@ -243,7 +257,8 @@ def list_categories():
         cur.close()
         return jsonify({"success": True, "categories": categories})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -323,7 +338,8 @@ def get_category_files(slug):
             "total": total_count
         })
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -342,7 +358,8 @@ def list_courses():
         cur.close()
         return jsonify({"success": True, "faculties": result})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -363,7 +380,8 @@ def list_courses_flat():
         courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘'} for r in rows]
         return jsonify({"success": True, "courses": courses})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -390,7 +408,8 @@ def random_courses():
         } for r in rows]
         return jsonify({"success": True, "courses": courses})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -481,7 +500,8 @@ def course_detail(course_id):
             "all_instructors": all_instructors
         })
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -634,7 +654,8 @@ def upload_to_course(course_id):
             )
         except Exception as e:
             cur.close()
-            return jsonify({"success": False, "message": f"Failed to upload to storage: {str(e)}"}), 500
+            import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
         
         # R2 Public URL
         if R2_PUBLIC_URL_PREFIX:
@@ -700,7 +721,8 @@ def upload_to_course(course_id):
         err_msg = str(e)
         if "unique_file" in err_msg:
             return jsonify({"success": False, "message": "A file with this title already exists in this category for this course."}), 400
-        return jsonify({"success": False, "message": f"Database error during upload: {err_msg}"}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "Upload failed due to a server error. Please try again."}), 500
     finally:
         if conn:
             conn.close()
@@ -739,7 +761,8 @@ def get_bookmarks():
         cur.close()
         return jsonify({"success": True, "bookmarks": [dict(zip(cols, r)) for r in rows]})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -764,7 +787,8 @@ def add_bookmark(file_id):
         return jsonify({"success": True, "message": "Bookmarked."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -787,7 +811,8 @@ def remove_bookmark(file_id):
         return jsonify({"success": True, "message": "Bookmark removed."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -878,7 +903,8 @@ def report_file(file_id):
         return jsonify({"success": True, "message": "Report submitted. Thank you for keeping the platform safe."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -914,15 +940,8 @@ def bulk_upload_init(course_id):
     Initialize a bulk upload session.
     Accepts a manifest of files to upload, pre-validates them, and returns a
     batch_id for the sequential upload pipeline.
-    Rate limited to 3 per hour per user.
+    The batch_id is signed into the user's session so fabricated IDs are rejected.
     """
-    # Rate limiting — accessed via current_app.limiter set up in app.py
-    try:
-        limiter = current_app.limiter
-        limiter.check()  # Uses the global limit; we add a specific decorator-free check below
-    except Exception:
-        pass  # If limiter not configured, allow through
-
     uploader = session.get('user_id')
     if not uploader:
         return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
@@ -1025,8 +1044,14 @@ def bulk_upload_init(course_id):
             "rejected": rejected,
         }), 400
 
-    # Generate unique batch ID
+    # Generate unique batch ID and register it in the session so the
+    # individual file upload endpoint can verify it was legitimately issued.
     batch_id = f"bulk_{uuid.uuid4().hex[:12]}"
+    active_batches = session.get('_bulk_batches', [])
+    # Keep at most last 5 active batches to avoid bloating the session cookie
+    active_batches = active_batches[-4:] + [batch_id]
+    session['_bulk_batches'] = active_batches
+    session.modified = True
 
     return jsonify({
         "success": True,
@@ -1043,10 +1068,16 @@ def bulk_upload_file(course_id, batch_id):
     """
     Upload a single file within a bulk upload batch.
     Called sequentially for each file — server only holds one file in memory at a time.
+    The batch_id is validated against the session to prevent fabricated batch IDs.
     """
     uploader = session.get('user_id')
     if not uploader:
         return jsonify({"success": False, "message": "You must be logged in."}), 401
+
+    # Validate that this batch_id was legitimately issued by /bulk-upload/init
+    active_batches = session.get('_bulk_batches', [])
+    if batch_id not in active_batches:
+        return jsonify({"success": False, "message": "Invalid or expired batch session. Please restart the upload."}), 403
 
     file = request.files.get('file')
     file_index = request.form.get('file_index', type=int)
@@ -1172,7 +1203,8 @@ def bulk_upload_file(course_id, batch_id):
             )
         except Exception as e:
             cur.close()
-            return jsonify({"success": False, "message": f"Storage upload failed: {str(e)}"}), 500
+            import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
 
         # R2 Public URL
         if R2_PUBLIC_URL_PREFIX:
@@ -1225,7 +1257,8 @@ def bulk_upload_file(course_id, batch_id):
         err_msg = str(e)
         if "unique_file" in err_msg:
             return jsonify({"success": False, "message": "A file with this title already exists in this category.", "file_index": file_index}), 400
-        return jsonify({"success": False, "message": f"Upload error: {err_msg}", "file_index": file_index}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "Upload failed due to a server error.", "file_index": file_index}), 500
     finally:
         conn.close()
 
@@ -1341,14 +1374,17 @@ def get_file_links(file_id):
         } for r in rows]
         return jsonify({"success": True, "links": links})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
 
 @file_bp.route('/api/files/<int:file_id>/links', methods=['POST'])
 def add_file_link(file_id):
-    """Manually cross-link a file to another course (admin or any logged-in user)."""
+    """Manually cross-link a file to another course.
+    Requires the user to own the file or be an admin.
+    """
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({"success": False, "message": "Login required."}), 401
@@ -1365,11 +1401,18 @@ def add_file_link(file_id):
     try:
         cur = conn.cursor()
         # Verify file exists and is approved
-        cur.execute("SELECT title, course_code FROM files WHERE file_id = %s AND status = 'approved';", (file_id,))
+        cur.execute("SELECT title, course_code, uploaded_by FROM files WHERE file_id = %s AND status = 'approved';", (file_id,))
         file_row = cur.fetchone()
         if not file_row:
             cur.close()
             return jsonify({"success": False, "message": "File not found or not yet approved."}), 404
+
+        # Only the file owner or an admin may create cross-links
+        is_admin = session.get('role') == 'admin'
+        file_owner = file_row[2]
+        if not is_admin and file_owner != user_id:
+            cur.close()
+            return jsonify({"success": False, "message": "You can only cross-link your own files."}), 403
 
         # Verify target course exists
         cur.execute("SELECT name, code FROM courses WHERE course_id = %s;", (target_course_id,))
@@ -1394,7 +1437,8 @@ def add_file_link(file_id):
         return jsonify({"success": True, "message": f'📌 File linked to {course_row[0]} successfully!'})
     except Exception as e:
         if conn: conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "Failed to create cross-link."}), 500
     finally:
         conn.close()
 
@@ -1420,6 +1464,7 @@ def remove_file_link(file_id, course_id):
         return jsonify({"success": True, "message": "Link removed."})
     except Exception as e:
         if conn: conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

@@ -23,7 +23,8 @@ def get_course_instructors(course_id):
         instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in rows]
         return jsonify({"success": True, "instructors": instructors})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -40,7 +41,8 @@ def get_all_instructors():
         instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in rows]
         return jsonify({"success": True, "instructors": instructors})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -75,6 +77,7 @@ def add_instructor():
         return jsonify({"success": True, "message": "Instructor added.", "id": row[0]})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
