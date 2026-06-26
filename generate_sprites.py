@@ -1,138 +1,85 @@
-import sys
-from PIL import Image
+import os
+import math
 
-def make_sprite(pixel_array, colors, filename, scale=4):
-    height = len(pixel_array)
-    width = max(len(row) for row in pixel_array)
+out_dir = 'frontend/public'
+os.makedirs(out_dir, exist_ok=True)
+
+# Generate Dragon Balls (1 to 7 stars)
+def get_stars_svg(count):
+    # Stars arranged in a circle or pattern
+    # 1 star: center
+    # 2 stars: left, right
+    # 3 stars: triangle
+    # 4 stars: square
+    # 5 stars: pentagon
+    # 6 stars: hexagon
+    # 7 stars: hexagon + center
+    stars_str = ""
+    def star(cx, cy):
+        # 5-pointed star path centered at cx, cy, radius roughly 10
+        return f'<polygon points="{cx},{cy-10} {cx+2.5},{cy-2.5} {cx+10},{cy-2.5} {cx+4},{cy+2.5} {cx+6},{cy+10} {cx},{cy+5} {cx-6},{cy+10} {cx-4},{cy+2.5} {cx-10},{cy-2.5} {cx-2.5},{cy-2.5}" fill="#EF4444" />'
     
-    # Pad rows
-    padded_array = [row.ljust(width) for row in pixel_array]
-    
-    img = Image.new('RGBA', (width * scale, height * scale), (0, 0, 0, 0))
-    pixels = img.load()
-    
-    for y, row in enumerate(padded_array):
-        for x, char in enumerate(row):
-            if char in colors:
-                color = colors[char]
-                for dy in range(scale):
-                    for dx in range(scale):
-                        pixels[x * scale + dx, y * scale + dy] = color
-                        
-    img.save(filename)
-    print(f"Generated {filename}")
+    positions = []
+    if count == 1: positions = [(50, 50)]
+    elif count == 2: positions = [(35, 50), (65, 50)]
+    elif count == 3: positions = [(50, 35), (35, 60), (65, 60)]
+    elif count == 4: positions = [(35, 35), (65, 35), (35, 65), (65, 65)]
+    elif count == 5: positions = [(50, 30), (30, 45), (70, 45), (40, 65), (60, 65)]
+    elif count == 6: positions = [(50, 25), (25, 45), (75, 45), (35, 70), (65, 70), (50, 85)]
+    elif count == 7: positions = [(50, 25), (25, 45), (75, 45), (35, 70), (65, 70), (50, 50), (50, 85)]
 
-mario_pixels = [
-    "    RRRRR   ",
-    "   RRRRRRRRR",
-    "   BBBpppkp ",
-    "  BpBpppKppp",
-    "  BpBBpppKpp",
-    "  BBppppKKKK",
-    "    ppppppp ",
-    "  BBRBB     ",
-    " BBBRBBRBBB ",
-    "BBBBRRRRBBBB",
-    "pp BRpRB pp ",
-    "pppRRRRRRppp",
-    "pp RRRRRR pp",
-    "   BBB  BBB ",
-    "  KKK    KKK",
-    " KKKK    KKKK"
-]
-mario_colors = {
-    'R': (255, 0, 0, 255),
-    'B': (139, 69, 19, 255),
-    'p': (255, 204, 153, 255),
-    'k': (0, 0, 0, 255),
-    'K': (0, 0, 0, 255),
-}
-make_sprite(mario_pixels, mario_colors, 'frontend/public/mario.png', scale=8)
+    for p in positions:
+        stars_str += star(p[0], p[1])
+    return stars_str
 
-goomba_pixels = [
-    "    BBBB    ",
-    "   BBBBBB   ",
-    "  BBBBBBBB  ",
-    " BpkBBBBkpB ",
-    "BpkkpBBpkkpB",
-    "pkkkkppkkkkp",
-    "pkkkkppkkkkp",
-    "BpkkpBBpkkpB",
-    " BpkBBBBkpB ",
-    "   BBBBBB   ",
-    "  KKKKKKKK  ",
-    " KKKKKKKKKK ",
-    "KKKK    KKKK",
-    "KKK      KKK"
-]
-goomba_colors = {
-    'B': (139, 69, 19, 255),
-    'p': (255, 204, 153, 255),
-    'k': (0, 0, 0, 255),
-    'K': (0, 0, 0, 255),
-}
-make_sprite(goomba_pixels, goomba_colors, 'frontend/public/goomba.png', scale=8)
+for i in range(1, 8):
+    db_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="45" fill="#F97316"/>
+  <circle cx="45" cy="45" r="40" fill="#FB923C"/>
+  {get_stars_svg(i)}
+  <path d="M 25 25 Q 50 10 75 25 Q 50 20 25 25" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="30" cy="30" r="5" fill="#FFFFFF" opacity="0.8"/>
+</svg>"""
+    with open(f"{out_dir}/dragonball-{i}.svg", "w") as f:
+        f.write(db_svg)
 
-pacman_pixels = [
-    "  YYYYYYYY  ",
-    " YYYYYYYYYY ",
-    "YYYYYYYYYYYY",
-    "YYYYYYYY    ",
-    "YYYYYY      ",
-    "YYYYYY      ",
-    "YYYYYYYY    ",
-    "YYYYYYYYYYYY",
-    " YYYYYYYYYY ",
-    "  YYYYYYYY  "
-]
-pacman_colors = {'Y': (255, 255, 0, 255)}
-make_sprite(pacman_pixels, pacman_colors, 'frontend/public/pacman.png', scale=8)
+# Spongebob Sky Flowers
+colors = ['#38BDF8', '#A7F3D0', '#F472B6', '#C084FC']
+for i, c in enumerate(colors):
+    flower_svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="20" r="15" fill="{c}"/>
+  <circle cx="80" cy="40" r="15" fill="{c}"/>
+  <circle cx="70" cy="75" r="15" fill="{c}"/>
+  <circle cx="30" cy="75" r="15" fill="{c}"/>
+  <circle cx="20" cy="40" r="15" fill="{c}"/>
+  <circle cx="50" cy="50" r="20" fill="{c}"/>
+</svg>"""
+    with open(f"{out_dir}/sb-flower-{i+1}.svg", "w") as f:
+        f.write(flower_svg)
 
-ghost_pixels = [
-    "   RRRRRR   ",
-    "  RRRRRRRR  ",
-    " RRRRRRRRRR ",
-    " RWWWRRRWWWR",
-    " RWBWWRRWBWW",
-    " RRRRRRRRRR ",
-    " RRRRRRRRRR ",
-    " RRRRRRRRRR ",
-    " RR  RR  RR ",
-    " R   R   R  "
-]
-ghost_colors = {'R': (255, 0, 0, 255), 'W': (255, 255, 255, 255), 'B': (0, 0, 255, 255)}
-make_sprite(ghost_pixels, ghost_colors, 'frontend/public/ghost.png', scale=8)
+# Scooby SD Tag
+sd_tag_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <path d="M 50 10 L 90 50 L 50 90 L 10 50 Z" fill="#FDE047" stroke="#EAB308" stroke-width="4"/>
+  <circle cx="50" cy="50" r="30" fill="#38BDF8"/>
+  <text x="50" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#FDE047" text-anchor="middle">SD</text>
+  <circle cx="50" cy="15" r="5" fill="#000" opacity="0.5"/>
+</svg>"""
+with open(f"{out_dir}/scooby-tag.svg", "w") as f:
+    f.write(sd_tag_svg)
 
-navi_pixels = [
-    "    W  W    ",
-    "   WW  WW   ",
-    "  WW    WW  ",
-    "   W BB W   ",
-    "    BBBB    ",
-    "    BBBB    ",
-    "   W BB W   ",
-    "  WW    WW  ",
-    "   WW  WW   ",
-    "    W  W    "
-]
-navi_colors = {'B': (100, 200, 255, 255), 'W': (255, 255, 255, 200)}
-make_sprite(navi_pixels, navi_colors, 'frontend/public/navi.png', scale=8)
+# Scooby Snack
+snack_svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="20" y="30" width="60" height="40" rx="10" fill="#A16207"/>
+  <circle cx="20" cy="30" r="15" fill="#A16207"/>
+  <circle cx="80" cy="30" r="15" fill="#A16207"/>
+  <circle cx="20" cy="70" r="15" fill="#A16207"/>
+  <circle cx="80" cy="70" r="15" fill="#A16207"/>
+  <rect x="25" y="35" width="50" height="30" rx="5" fill="#CA8A04"/>
+  <circle cx="25" cy="35" r="10" fill="#CA8A04"/>
+  <circle cx="75" cy="35" r="10" fill="#CA8A04"/>
+  <circle cx="25" cy="65" r="10" fill="#CA8A04"/>
+  <circle cx="75" cy="65" r="10" fill="#CA8A04"/>
+</svg>"""
+with open(f"{out_dir}/scooby-snack.svg", "w") as f:
+    f.write(snack_svg)
 
-snake_head_pixels = [
-    "GGGGGGGGGG",
-    "GGGBBGGBBG",
-    "GGGGGGGGGG",
-    "GGGGGGGGGG",
-    "GGGGGGGGGG"
-]
-snake_colors = {'G': (57, 255, 20, 255), 'B': (0, 0, 0, 255)}
-make_sprite(snake_head_pixels, snake_colors, 'frontend/public/snake-head.png', scale=6)
-
-snake_body_pixels = [
-    "GGGGGGGGGG",
-    "GGGGGGGGGG",
-    "GGGGGGGGGG",
-    "GGGGGGGGGG",
-    "GGGGGGGGGG"
-]
-make_sprite(snake_body_pixels, snake_colors, 'frontend/public/snake-body.png', scale=6)
