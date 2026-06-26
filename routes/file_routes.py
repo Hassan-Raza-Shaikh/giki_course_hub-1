@@ -397,7 +397,7 @@ def random_courses():
         cur.execute("""
             SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    f.icon AS faculty_icon, f.name AS faculty_name
-            FROM courses TABLESAMPLE SYSTEM (10) c
+            FROM courses c TABLESAMPLE SYSTEM (10)
             JOIN faculties f ON c.faculty_id = f.faculty_id
             ORDER BY RANDOM() LIMIT %s;
         """, (n,))
