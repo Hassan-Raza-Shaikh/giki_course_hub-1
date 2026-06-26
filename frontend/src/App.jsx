@@ -34,13 +34,29 @@ const App = () => {
 
   // Restore session on mount
   useEffect(() => {
+    let mountTime = Date.now();
+    let hiddenTime = 0;
+
     const handleVisibility = () => {
-      // If user comes back to a stuck loading screen, give it a nudge
-      if (document.visibilityState === 'visible' && loading) {
-        // We don't want to force-reload the whole app, but we want to ensure 
-        // the auth listener is active. Firebase should handle this, but 
-        // just in case, we can log the event.
-        console.log("App focused, checking status...");
+      if (document.visibilityState === 'hidden') {
+        hiddenTime = Date.now();
+      } else if (document.visibilityState === 'visible') {
+        // If coming back from background and we're stuck in loading state
+        if (loading) {
+          // If we were hidden for more than 5 seconds, or it's been loading for >15s total, force reload
+          const timeSinceHidden = hiddenTime ? Date.now() - hiddenTime : 0;
+          const totalLoadTime = Date.now() - mountTime;
+          
+          if (timeSinceHidden > 5000 || totalLoadTime > 15000) {
+            console.log("App focused while stuck loading, forcing reload to prevent hang...");
+            window.location.reload();
+          }
+        } else {
+          // Normal background return, just ping auth to ensure session is active
+          if (auth.currentUser) {
+            auth.currentUser.getIdToken(true).catch(() => {}); // silent refresh
+          }
+        }
       }
     };
     document.addEventListener('visibilitychange', handleVisibility);
@@ -48,9 +64,14 @@ const App = () => {
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
         try {
-          const idToken = await fbUser.getIdToken();
+          // Wrap getIdToken in a timeout so it doesn't hang indefinitely on bad mobile connections
+          const idToken = await Promise.race([
+            fbUser.getIdToken(),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Token timeout")), 10000))
+          ]);
+          
           let attempts = 0;
-          const maxAttempts = 20;
+          const maxAttempts = 15; // Max ~45 seconds of retries
 
           const syncAuth = async () => {
             try {
@@ -89,7 +110,7 @@ const App = () => {
           setLoading(false);
         }
       } else {
-        api.get('/me')
+        api.get('/me', { timeout: 15000 }) // Faster timeout for unauthenticated check
           .then(res => {
             if (res.data.is_logged_in) {
               setUser(res.data.user);
