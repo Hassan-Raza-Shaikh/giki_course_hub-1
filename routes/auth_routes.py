@@ -434,7 +434,8 @@ def get_me_stats():
         resp.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
         return resp
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 

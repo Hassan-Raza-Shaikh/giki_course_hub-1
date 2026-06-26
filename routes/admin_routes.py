@@ -100,32 +100,36 @@ def admin_stats():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'pending';")
-        pending = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'approved';")
-        approved = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM files WHERE status = 'rejected';")
-        rejected = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM users;")
-        users = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM bookmarks;")
-        bookmarks = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM admins;")
-        admins = cur.fetchone()[0]
+        # Single query: file counts by status + users + bookmarks + admins
+        cur.execute("""
+            SELECT
+                COUNT(*) FILTER (WHERE status = 'pending')  AS pending,
+                COUNT(*) FILTER (WHERE status = 'approved') AS approved,
+                COUNT(*) FILTER (WHERE status = 'rejected') AS rejected,
+                (SELECT COUNT(*) FROM users)     AS users,
+                (SELECT COUNT(*) FROM bookmarks) AS bookmarks,
+                (SELECT COUNT(*) FROM admins)    AS admins
+            FROM files;
+        """)
+        row = cur.fetchone()
         cur.close()
         return jsonify({
             "success": True,
             "stats": {
-                "pending_files": pending,
-                "approved_files": approved,
-                "rejected_files": rejected,
-                "total_users": users,
-                "total_bookmarks": bookmarks,
-                "total_admins": admins,
+                "pending_files":   row[0],
+                "approved_files":  row[1],
+                "rejected_files":  row[2],
+                "total_users":     row[3],
+                "total_bookmarks": row[4],
+                "total_admins":    row[5],
             }
         })
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "Failed to load stats."}), 500
     finally:
         conn.close()
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -273,7 +277,8 @@ def admin_approve_file(file_id):
         return jsonify({"success": True, "message": f"'{file_title}' approved."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -335,7 +340,8 @@ def admin_reject_file(file_id):
         return jsonify({"success": True, "message": f"'{file_title}' rejected."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -395,7 +401,8 @@ def admin_update_file(file_id):
         return jsonify({"success": True, "message": "File details updated successfully."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -448,7 +455,8 @@ def admin_delete_file(file_id):
         return jsonify({"success": True, "message": f"'{title}' deleted."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -539,7 +547,8 @@ def admin_grant():
         return jsonify({"success": True, "message": f"Admin access granted to {email}."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -562,7 +571,8 @@ def admin_revoke(target_email):
         return jsonify({"success": True, "message": f"Admin access revoked from {target_email}."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -692,7 +702,8 @@ def admin_resolve_report(report_id):
         _log(admin_email, 'resolve_report', report_id)
         return jsonify({"success": True, "message": "Report resolved."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -744,7 +755,8 @@ def admin_dismiss_report(report_id):
         _log(admin_email, 'dismiss_report', report_id)
         return jsonify({"success": True, "message": "Report dismissed."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -772,7 +784,8 @@ def admin_bulk_approve():
             _log(admin_email, 'approve_file', fid, title)
         return jsonify({"success": True, "approved": len(updated), "message": f"{len(updated)} file(s) approved."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -798,7 +811,8 @@ def admin_bulk_reject():
             _log(admin_email, 'reject_file', fid, title)
         return jsonify({"success": True, "rejected": len(updated), "message": f"{len(updated)} file(s) rejected."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -958,7 +972,8 @@ def admin_create_course():
         _log(admin_email, 'create_course', new_id, name)
         return jsonify({"success": True, "course_id": new_id, "message": f"Course '{name}' created."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1043,7 +1058,8 @@ def admin_bulk_create_courses():
         })
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1083,7 +1099,8 @@ def admin_update_course(course_id):
         _log(admin_email, 'update_course', course_id, row[0])
         return jsonify({"success": True, "message": f"Course '{row[0]}' updated and synced across programs."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1130,7 +1147,8 @@ def admin_delete_course(course_id):
             
         return jsonify({"success": True, "message": msg.strip()})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1253,7 +1271,8 @@ def admin_resolve_issue(issue_id):
         _log(admin_email, 'resolve_issue', issue_id)
         return jsonify({"success": True, "message": "Issue marked as resolved."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1270,7 +1289,8 @@ def admin_delete_issue(issue_id):
         _log(admin_email, 'delete_issue', issue_id)
         return jsonify({"success": True, "message": "Issue deleted."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1301,7 +1321,8 @@ def admin_set_note(file_id):
         _log(admin_email, 'set_note', file_id)
         return jsonify({"success": True, "message": "Note saved."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1318,7 +1339,8 @@ def admin_delete_note(file_id):
         _log(admin_email, 'remove_note', file_id)
         return jsonify({"success": True, "message": "Note removed."})
     except Exception as e:
-        conn.rollback(); return jsonify({"success": False, "message": str(e)}), 500
+        conn.rollback(); import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1341,7 +1363,8 @@ def get_manual_course_links():
         links = [{"link_id": r[0], "course_code_1": r[1], "course_code_2": r[2], "created_at": r[3]} for r in cur.fetchall()]
         return jsonify({"success": True, "links": links})
     except Exception as e:
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1372,7 +1395,8 @@ def add_manual_course_link():
         return jsonify({"success": False, "message": "This link already exists."}), 400
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1388,6 +1412,7 @@ def delete_manual_course_link(link_id):
         return jsonify({"success": True, "message": "Link removed."})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

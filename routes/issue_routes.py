@@ -29,6 +29,7 @@ def submit_issue():
         return jsonify({"success": True, "issue_id": new_id, "message": "Issue reported. We'll look into it!"})
     except Exception as e:
         conn.rollback()
-        return jsonify({"success": False, "message": str(e)}), 500
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

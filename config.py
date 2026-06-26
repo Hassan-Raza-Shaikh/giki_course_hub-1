@@ -9,7 +9,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Flask
-SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-123')
+_secret = os.environ.get('SECRET_KEY')
+if not _secret:
+    raise RuntimeError(
+        "SECRET_KEY environment variable is not set. "
+        "Generate one with: python3 -c \"import secrets; print(secrets.token_hex(32))\""
+    )
+SECRET_KEY = _secret
 
 # PostgreSQL
 # Note: db.py now handles DATABASE_URL connection logic
@@ -51,6 +57,7 @@ R2_SECRET_KEY = os.environ.get('R2_SECRET_KEY', '')
 R2_PUBLIC_URL_PREFIX = os.environ.get('R2_PUBLIC_URL_PREFIX', '')
 
 # Bootstrap admins — comma-separated list of emails that are always admin,
-# regardless of the admins table. Set via env var in production.
-_raw_admins = os.environ.get('BOOTSTRAP_ADMIN_EMAILS', 'ammarbatman9@gmail.com,hassan.raza.shaikh.hrs@gmail.com')
+# regardless of the admins table. Set via BOOTSTRAP_ADMIN_EMAILS env var.
+# No default — never hardcode emails in source code.
+_raw_admins = os.environ.get('BOOTSTRAP_ADMIN_EMAILS', '')
 BOOTSTRAP_ADMIN_EMAILS = {e.strip().lower() for e in _raw_admins.split(',') if e.strip()}
