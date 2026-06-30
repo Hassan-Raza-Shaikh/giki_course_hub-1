@@ -1217,7 +1217,7 @@ def bulk_upload_file(course_id, batch_id):
         except Exception as e:
             cur.close()
             import traceback; traceback.print_exc()
-        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+            return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
 
         # R2 Public URL
         if R2_PUBLIC_URL_PREFIX:
