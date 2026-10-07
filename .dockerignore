@@ -16,3 +16,4 @@ static/uploads
 firebase/
 Dockerfile
 .dockerignore
+scripts/
