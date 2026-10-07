@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Backend Server
-        # Replace the URL with the actual production Render URL if different.
+        # Must match the production Render URL (also the default baseURL in frontend/src/services/api.js).
+        # -f fails the run on 4xx/5xx so a wrong URL shows up as a red run instead of a silent success.
+        # --max-time 120 gives a sleeping backend time to cold-start.
         run: |
-          curl -sS https://giki-course-hub.onrender.com/api/courses/list > /dev/null
+          curl -fsS --max-time 120 https://giki-course-hub-backend.onrender.com/api/courses/list > /dev/null
           echo "Successfully pinged the server to keep it awake."
