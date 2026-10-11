@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Mail } from 'lucide-react';
 import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon, KatanaIcon, CoffeeIcon, SpongebobIcon, DragonBallIcon, ScoobyIcon } from './ThemeIcons';
 import api from '../services/api';
 import { useTheme } from '../context/ThemeContext';
@@ -325,6 +325,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   { icon: <Calculator size={16}/>, label: 'GPA Calculator',  action: () => { setMenuOpen(false); navigate('/calculator'); } },
                   { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
                   { icon: <BookOpen size={16}/>, label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
+                  { icon: <Mail size={16}/>, label: 'Email Settings', action: () => { setMenuOpen(false); navigate('/email-settings'); } },
                   { icon: <Flag size={16}/>, label: 'Report an Issue', action: () => { setMenuOpen(false); navigate('/report-issue'); } },
                 ].map(link => (
                   <button key={link.label} onClick={link.action}
