@@ -74,7 +74,7 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
         ) : reports.map(r => (
           <div key={r.report_id} style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
             <div>
-              <div style={{ color: '#DC2626', fontWeight: 800, fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '4px' }}>
+              <div style={{ color: 'var(--danger)', fontWeight: 800, fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: '4px' }}>
                 Flagged: {r.file_title} ({r.course_code})
               </div>
               <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '4px' }}>Reason: "{r.reason}"</div>
@@ -85,16 +85,16 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <a href={r.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}><Eye size={16} style={{ marginRight: '4px' }} /> View File</a>
               <button onClick={() => openResolveModal(r)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><Flag size={14} /> Resolve</button>
-              <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('#9CA3AF'), flex: 1 }}><Archive size={14} /> Dismiss</button>
+              <button onClick={() => dismissReport(r.report_id)} style={{ ...btnStyle('neutral'), flex: 1 }}><Archive size={14} /> Dismiss</button>
             </div>
             
             <div style={{ marginTop: '4px', paddingTop: '16px', borderTop: '1px dashed var(--border)' }}>
               <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quick File Actions</div>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <button onClick={() => openLinkModal({ file_id: r.file_id, title: r.file_title, course_code: r.course_code })} style={btnStyle('#8B5CF6')}><Link size={14} /> Link</button>
+                <button onClick={() => openLinkModal({ file_id: r.file_id, title: r.file_title, course_code: r.course_code })} style={btnStyle('var(--tertiary)')}><Link size={14} /> Link</button>
                 <button onClick={() => openEditFile({ file_id: r.file_id, title: r.file_title, course_code: r.course_code, category_id: r.category_id, instructor_id: r.instructor_id, status: r.file_status })} style={btnStyle('var(--text)')}><Edit3 size={14} /> Edit</button>
-                <button onClick={() => openNoteModal({ file_id: r.file_id, title: r.file_title, admin_note: r.file_admin_note })} style={{ ...btnStyle(r.file_admin_note ? '#D97706' : '#9CA3AF') }}><Pin size={14} /> {r.file_admin_note ? 'Edit Note' : 'Add Note'}</button>
-                <button onClick={() => deleteFile(r.file_id, r.file_title)} style={btnStyle('#EF4444')}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
+                <button onClick={() => openNoteModal({ file_id: r.file_id, title: r.file_title, admin_note: r.file_admin_note })} style={{ ...btnStyle(r.file_admin_note ? 'var(--warning)' : 'neutral') }}><Pin size={14} /> {r.file_admin_note ? 'Edit Note' : 'Add Note'}</button>
+                <button onClick={() => deleteFile(r.file_id, r.file_title)} style={btnStyle('var(--danger)')}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
               </div>
             </div>
           </div>
@@ -113,22 +113,22 @@ export const ReportsTab = ({ isAdmin, showToast, loadStats, openLinkModal, openE
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution Notes <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(internal, not shown to users)</span></label>
             <textarea value={resolveNotes} onChange={e => setResolveNotes(e.target.value)}
               placeholder="What action was taken? e.g. 'Content verified — no issue found'"
-              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', marginBottom: '16px' }}
             />
 
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}><Pin size={14} /> Leave a note on this file <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(visible to all users)</span></label>
             <textarea value={resolveLeaveNote} onChange={e => setResolveLeaveNote(e.target.value)}
               placeholder="Optional: e.g. 'Question 3 contains an error — please ignore it.'"
-              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: '#FFFBEB', marginBottom: '16px' }}
+              rows={3} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', background: 'var(--warning-soft)', marginBottom: '16px' }}
             />
 
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 700, color: '#DC2626' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontWeight: 700, color: 'var(--danger)' }}>
               <input type="checkbox" checked={resolveDeleteFile} onChange={e => setResolveDeleteFile(e.target.checked)} style={{ width: '18px', height: '18px' }} />
               Also permanently delete the flagged file
             </label>
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
               <button onClick={() => setResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '100px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
+              <button onClick={confirmResolveReport} style={{ padding: '10px 20px', border: '2px solid var(--success-fill)', borderRadius: '100px', background: 'var(--success-fill)', color: 'var(--on-status)', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Confirm Resolve</button>
             </div>
           </div>
         </div>

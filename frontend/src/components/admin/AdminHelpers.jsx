@@ -4,12 +4,13 @@ import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play,
 export const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
 export const fmtSize = (b) => b ? `${(b / (1024 * 1024)).toFixed(2)} MB` : '—';
 
+// Theme-aware status pill colours (tokens from styles/ui.css).
 export const STATUS_COLORS = {
-  approved: { bg: '#D1FAE5', color: '#065F46' },
-  pending:  { bg: '#FEF3C7', color: '#92400E' },
-  rejected: { bg: '#FEE2E2', color: '#991B1B' },
-  resolved: { bg: '#DBEAFE', color: '#1E40AF' },
-  dismissed: { bg: '#F3F4F6', color: '#374151' },
+  approved: { background: 'var(--success-soft)', color: 'var(--success)' },
+  pending:  { background: 'var(--warning-soft)', color: 'var(--warning)' },
+  rejected: { background: 'var(--danger-soft)',  color: 'var(--danger)' },
+  resolved: { background: 'var(--info-soft)',    color: 'var(--info)' },
+  dismissed: { background: 'var(--neutral-soft)', color: 'var(--text-muted)' },
 };
 
 export const ACTION_ICONS = {
@@ -30,9 +31,18 @@ export const EmptyRow = ({ icon, msg }) => (
   </div>
 );
 
+// Text colour to use on each fill. 'neutral' is a quiet grey button.
+const BTN_TEXT = {
+  'var(--primary)': 'var(--on-primary)',
+  'var(--electric)': 'var(--bg-hero)', 'var(--tertiary)': 'var(--bg-hero)', 'var(--text)': 'var(--bg-hero)',
+};
+// Status names map to solid fills that keep white text readable in every theme.
+const BTN_FILL = { 'var(--success)': 'var(--success-fill)', 'var(--danger)': 'var(--danger-fill)', 'var(--warning)': 'var(--warning-fill)' };
+
 export const btnStyle = (bg) => ({
-  color: (bg === 'var(--electric)' || bg === 'var(--primary)' || bg === 'var(--tertiary)' || bg === 'var(--text)') ? 'var(--bg-hero)' : 'white', 
-  background: bg,  border: `1px solid ${bg}`,
+  ...(bg === 'neutral'
+    ? { color: 'var(--text)', background: 'var(--bg-subtle)', border: '1px solid var(--border)' }
+    : { color: BTN_TEXT[bg] || 'white', background: BTN_FILL[bg] || bg, border: `1px solid ${BTN_FILL[bg] || bg}` }),
   borderRadius: '100px', padding: '7px 14px', fontWeight: 700,
   fontSize: '0.8rem', cursor: 'pointer', whiteSpace: 'nowrap',
 });

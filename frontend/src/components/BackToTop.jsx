@@ -28,7 +28,7 @@ const BackToTop = () => {
         height: '44px',
         borderRadius: '12px',
         background: 'var(--primary)',
-        color: 'white',
+        color: 'var(--on-primary)',
         border: '2px solid var(--text)',
         boxShadow: '3px 3px 0 var(--text)',
         cursor: 'pointer',
