@@ -72,7 +72,7 @@ export const IssuesTab = ({ isAdmin, showToast, setConfirmModal }) => {
           <div key={i.issue_id} style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
             <div>
               <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, background: '#EDE9FE', color: '#5B21B6', textTransform: 'uppercase' }}>
+                <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, background: 'var(--primary-soft)', color: 'var(--primary)', textTransform: 'uppercase' }}>
                   {i.type}
                 </span>
                 <span style={{ padding: '3px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 900, ...(STATUS_COLORS[i.status] || STATUS_COLORS.pending), textTransform: 'uppercase' }}>
@@ -86,8 +86,8 @@ export const IssuesTab = ({ isAdmin, showToast, setConfirmModal }) => {
               </div>
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <button onClick={() => openIssueResolveModal(i)} style={{ ...btnStyle('#10B981'), flex: 1 }}><CheckCircle size={16} /> Mark Resolved</button>
-              <button onClick={() => deleteIssue(i.issue_id, i.title)} style={{ ...btnStyle('#EF4444'), flex: 1 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
+              <button onClick={() => openIssueResolveModal(i)} style={{ ...btnStyle('var(--success)'), flex: 1 }}><CheckCircle size={16} /> Mark Resolved</button>
+              <button onClick={() => deleteIssue(i.issue_id, i.title)} style={{ ...btnStyle('var(--danger)'), flex: 1 }}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
             </div>
           </div>
         ))}
@@ -117,7 +117,7 @@ export const IssuesTab = ({ isAdmin, showToast, setConfirmModal }) => {
       {issueResolveModal && (
         <div onClick={() => setIssueResolveModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '16px', border: '1px solid var(--border)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '500px', maxHeight: '90dvh', overflowY: 'auto' }}>
-            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><CheckCircle size={24} color="#10B981" /> Resolve Platform Issue</h3>
+            <h3 style={{ fontWeight: 900, marginBottom: '6px' }}><CheckCircle size={24} color="var(--success)" /> Resolve Platform Issue</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.9rem' }}>
               <strong>{issueResolveModal.title}</strong>
             </p>
@@ -127,11 +127,11 @@ export const IssuesTab = ({ isAdmin, showToast, setConfirmModal }) => {
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.85rem', marginBottom: '6px' }}>Resolution notes</label>
             <textarea value={issueResolveNotes} onChange={e => setIssueResolveNotes(e.target.value)}
               placeholder="e.g. 'Fixed in latest deploy — search button now works on mobile.'"
-              rows={4} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+              rows={4} style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
               <button onClick={() => setIssueResolveModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '2px solid #10B981', borderRadius: '100px', background: '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
+              <button onClick={confirmResolveIssue} style={{ padding: '10px 20px', border: '2px solid var(--success-fill)', borderRadius: '100px', background: 'var(--success-fill)', color: 'var(--on-status)', cursor: 'pointer', fontWeight: 700 }}><CheckCircle size={16} /> Mark Resolved</button>
             </div>
           </div>
         </div>

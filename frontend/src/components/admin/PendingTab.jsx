@@ -99,7 +99,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
             <button 
               disabled={!selectedPending.size} 
               onClick={bulkApprove}
-              style={{ ...btnStyle('#10B981'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
+              style={{ ...btnStyle('var(--success)'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
             >
               Bulk Approve
             </button>
@@ -109,7 +109,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
                 setRejectTarget({ file_id: '__bulk__', title: `${selectedPending.size} selected file(s)` });
                 setRejectReason('');
               }}
-              style={{ ...btnStyle('#EF4444'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
+              style={{ ...btnStyle('var(--danger)'), opacity: selectedPending.size ? 1 : 0.5, flex: 1 }}
             >
               Bulk Reject
             </button>
@@ -120,7 +120,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
         {loading ? <LoadingRow /> : pending.length === 0 ? (
           <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg="No files pending review — all caught up!" />
         ) : pending.map(f => (
-          <div key={f.file_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--border)', background: selectedPending.has(f.file_id) ? '#F9FAFB' : 'transparent' }}>
+          <div key={f.file_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--border)', background: selectedPending.has(f.file_id) ? 'var(--primary-soft)' : 'transparent' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <input 
                 type="checkbox" 
@@ -144,10 +144,10 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
               by <strong>{f.uploader || f.uploader_email}</strong> · {fmtDate(f.upload_date)}
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('#6366F1'), flex: 1, textAlign: 'center' }}><Eye size={16} style={{ marginRight: '4px' }} /> Preview</a>
+              <a href={f.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}><Eye size={16} style={{ marginRight: '4px' }} /> Preview</a>
               <button onClick={() => openEditFile(f)} style={{ ...btnStyle('var(--text)'), flex: 1 }}><Edit3 size={14} /> Edit</button>
               <button onClick={() => approve(f.file_id)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><CheckCircle size={14} /> Approve</button>
-              <button onClick={() => openReject(f)} style={{ ...btnStyle('#EF4444'), flex: 1 }}><XCircle size={14} /> Reject</button>
+              <button onClick={() => openReject(f)} style={{ ...btnStyle('var(--danger)'), flex: 1 }}><XCircle size={14} /> Reject</button>
             </div>
           </div>
         ))}
@@ -166,11 +166,11 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
               onChange={e => setRejectReason(e.target.value)}
               placeholder="Reason for rejection (optional)…"
               rows={4}
-              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
               <button onClick={() => setRejectTarget(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '1px solid #DC2626', borderRadius: '100px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
+              <button onClick={confirmReject} style={{ padding: '10px 20px', border: '1px solid var(--danger-fill)', borderRadius: '100px', background: 'var(--danger-fill)', color: 'var(--on-status)', cursor: 'pointer', fontWeight: 700 }}>Reject</button>
             </div>
           </div>
         </div>

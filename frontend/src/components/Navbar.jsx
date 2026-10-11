@@ -293,7 +293,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                         </span>
                       )}
                       {user.studentId && (
-                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: 'var(--bg-subtle)', color: '#10B981', borderRadius: '100px', border: '1px solid var(--border)' }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: 'var(--bg-subtle)', color: 'var(--success)', borderRadius: '100px', border: '1px solid var(--border)' }}>
                           #{user.studentId}
                         </span>
                       )}
@@ -363,7 +363,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 {/* Sign out */}
                 <button
                   onClick={() => { setMenuOpen(false); onSignOut(); }}
-                  style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: '#dc2626', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
+                  style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: 'var(--danger)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
                   onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                   onMouseOut={e => e.currentTarget.style.background = 'none'}
                 >
