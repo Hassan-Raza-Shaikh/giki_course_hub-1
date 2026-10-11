@@ -413,6 +413,98 @@ def admin_update_file(file_id):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Helpers: file deletion
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _delete_stored_file(storage_path):
+    """Remove a file's bytes from local disk or R2. Never raises."""
+    import os
+    if not storage_path:
+        return
+    # Check if it's a local file path
+    if os.path.exists(storage_path):
+        try:
+            os.remove(storage_path)
+        except Exception as e:
+            print(f"Error deleting local file: {e}")
+        return
+    # Otherwise delete from R2 (storage_path is the unique_filename object key)
+    try:
+        from routes.file_routes import get_s3_client
+        from config import R2_BUCKET
+        s3_client = get_s3_client()
+        if s3_client:
+            s3_client.delete_object(Bucket=R2_BUCKET, Key=storage_path)
+    except Exception as e:
+        print(f"Error deleting from R2: {e}")
+
+
+def _safe_delete_file(file_id, cur, pending_storage_deletes):
+    """Remove a file from its origin course without losing cross-linked copies.
+
+    If the file is cross-linked to other courses, it is "promoted": the oldest
+    link becomes its new origin course and that link row is removed. Returns
+    'promoted'.
+
+    Otherwise the file's DB rows are deleted and its storage_path is appended
+    to pending_storage_deletes, so the caller can remove the bytes only after
+    the transaction commits. Returns 'deleted'.
+
+    Returns None if the file no longer exists.
+    """
+    cur.execute("SELECT title, category_id, storage_path FROM files WHERE file_id = %s;", (file_id,))
+    row = cur.fetchone()
+    if not row:
+        return None
+    title, category_id, storage_path = row
+
+    cur.execute("""
+        SELECT fcl.link_id, COALESCE(NULLIF(c.code, ''), c.name), fcl.category_id, fcl.custom_title
+        FROM file_course_links fcl
+        JOIN courses c ON c.course_id = fcl.course_id
+        WHERE fcl.file_id = %s
+        ORDER BY fcl.linked_at ASC, fcl.link_id ASC
+        LIMIT 1;
+    """, (file_id,))
+    link = cur.fetchone()
+
+    if link:
+        link_id, new_code, link_category_id, custom_title = link
+        new_category_id = link_category_id or category_id
+        new_title = custom_title or title
+
+        # Respect UNIQUE (title, course_code, category_id) by suffixing on clash
+        candidate, n = new_title, 2
+        while True:
+            cur.execute(
+                "SELECT 1 FROM files WHERE title = %s AND course_code = %s AND category_id IS NOT DISTINCT FROM %s AND file_id != %s;",
+                (candidate, new_code, new_category_id, file_id)
+            )
+            if not cur.fetchone():
+                break
+            candidate, n = f"{new_title} ({n})", n + 1
+
+        cur.execute(
+            "UPDATE files SET course_code = %s, category_id = %s, title = %s WHERE file_id = %s;",
+            (new_code, new_category_id, candidate, file_id)
+        )
+        cur.execute("DELETE FROM file_course_links WHERE link_id = %s;", (link_id,))
+        return 'promoted'
+
+    # No other course uses it: delete DB rows (bookmarks + metadata cascade via FK)
+    cur.execute("DELETE FROM bookmarks     WHERE file_id = %s;", (file_id,))
+    cur.execute("DELETE FROM file_metadata WHERE file_id = %s;", (file_id,))
+    cur.execute("DELETE FROM files         WHERE file_id = %s;", (file_id,))
+
+    if storage_path:
+        # Only remove the bytes if no other file row still points at them
+        cur.execute("SELECT 1 FROM files WHERE storage_path = %s LIMIT 1;", (storage_path,))
+        if not cur.fetchone():
+            pending_storage_deletes.append(storage_path)
+    return 'deleted'
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # DELETE /api/admin/files/<id>
 # ─────────────────────────────────────────────────────────────────────────────
 @admin_bp.route('/api/admin/files/<int:file_id>', methods=['DELETE'])
@@ -420,7 +512,6 @@ def admin_delete_file(file_id):
     admin_email, err = _require_admin()
     if err: return err
 
-    import os
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -438,23 +529,7 @@ def admin_delete_file(file_id):
         cur.close()
 
         # Remove physical file or R2 object
-        if storage_path:
-            # Check if it's a local file path
-            if os.path.exists(storage_path):
-                try:
-                    os.remove(storage_path)
-                except Exception as e:
-                    print(f"Error deleting local file: {e}")
-            else:
-                # Attempt to delete from R2 (storage_path is the unique_filename object key)
-                try:
-                    from routes.file_routes import get_s3_client
-                    from config import R2_BUCKET
-                    s3_client = get_s3_client()
-                    if s3_client:
-                        s3_client.delete_object(Bucket=R2_BUCKET, Key=storage_path)
-                except Exception as e:
-                    print(f"Error deleting from R2: {e}")
+        _delete_stored_file(storage_path)
 
         _log(admin_email, 'delete_file', file_id, title)
         return jsonify({"success": True, "message": f"'{title}' deleted."})
@@ -1128,15 +1203,26 @@ def admin_delete_course(course_id):
         name, code = row
         course_code_str = code if code else name
 
-        # Fetch all files natively owned by this course
-        cur.execute("SELECT file_id FROM files WHERE course_code = %s;", (course_code_str,))
-        native_files = [r[0] for r in cur.fetchall()]
-        
+        # Files are keyed by course code, which other programs may share.
+        # Only touch files when this is the last course row using the code.
+        cur.execute(
+            "SELECT 1 FROM courses WHERE COALESCE(NULLIF(code, ''), name) = %s AND course_id != %s LIMIT 1;",
+            (course_code_str, course_id)
+        )
+        code_still_used = cur.fetchone() is not None
+
+        native_files = []
+        if not code_still_used:
+            # Fetch all files natively owned by this course
+            cur.execute("SELECT file_id FROM files WHERE course_code = %s;", (course_code_str,))
+            native_files = [r[0] for r in cur.fetchall()]
+
         promoted_count = 0
         deleted_count = 0
-        
+        pending_storage_deletes = []
+
         for fid in native_files:
-            res = _safe_delete_file(fid, cur)
+            res = _safe_delete_file(fid, cur, pending_storage_deletes)
             if res == 'promoted':
                 promoted_count += 1
             elif res == 'deleted':
@@ -1146,6 +1232,10 @@ def admin_delete_course(course_id):
         cur.execute("DELETE FROM courses WHERE course_id = %s;", (course_id,))
         conn.commit()
         cur.close()
+
+        # Remove stored bytes only once the DB changes are committed
+        for path in pending_storage_deletes:
+            _delete_stored_file(path)
 
         _log(admin_email, 'delete_course', course_id, name)
         
