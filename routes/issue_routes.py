@@ -1,5 +1,8 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
+import logging
+
+logger = logging.getLogger(__name__)
 
 issue_bp = Blueprint('issues', __name__)
 
@@ -27,9 +30,9 @@ def submit_issue():
         conn.commit()
         cur.close()
         return jsonify({"success": True, "issue_id": new_id, "message": "Issue reported. We'll look into it!"})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

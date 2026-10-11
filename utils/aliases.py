@@ -1,4 +1,7 @@
 from db import get_connection
+import logging
+
+logger = logging.getLogger(__name__)
 
 def get_course_aliases(base_course_code):
     """
@@ -63,8 +66,8 @@ def get_course_aliases(base_course_code):
                 aliases.add(r[0].upper())
 
         return aliases
-    except Exception as e:
-        print(f"Error resolving course aliases: {e}")
+    except Exception:
+        logger.exception("Error resolving course aliases")
         return set([base_course_code])
     finally:
         conn.close()

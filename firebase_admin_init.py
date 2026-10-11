@@ -11,8 +11,11 @@ If the key file is NOT found, the app falls back to token-verification-disabled
 mode and prints a warning — useful during development before the key is added.
 """
 import os
+import logging
 import firebase_admin
 from firebase_admin import credentials
+
+logger = logging.getLogger(__name__)
 
 _initialized = False
 
@@ -51,8 +54,8 @@ def init_firebase_admin():
         _initialized = True
         print(f"✅ [Firebase Admin] Initialized with key: {key_path}")
         return True
-    except Exception as e:
-        print(f"⚠️  [Firebase Admin] Initialization failed: {e}")
+    except Exception:
+        logger.exception("[Firebase Admin] Initialization failed")
         return False
 
 

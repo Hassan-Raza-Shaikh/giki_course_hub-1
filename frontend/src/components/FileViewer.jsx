@@ -1,12 +1,29 @@
 import { Paperclip, FileText, Image, Film, Presentation, LineChart, Code, Book, ExternalLink, Loader, AlertTriangle, RefreshCw, Download, Copy, Check, Table2 } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
-import { renderAsync } from 'docx-preview';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
-import rehypeSanitize from 'rehype-sanitize';
 import DOMPurify from 'dompurify';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+
+// The syntax highlighter, markdown parser and docx renderer are large, so they
+// are only downloaded when a file that needs them is opened.
+const LazyCodeHighlighter = lazy(() => import('./viewer/CodeHighlighter'));
+const LazyMarkdownRenderer = lazy(() => import('./viewer/MarkdownRenderer'));
+
+const RendererFallback = () => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '16px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+    <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}><Loader size={18} /></span> Loading preview…
+  </div>
+);
+
+const SyntaxHighlighter = (props) => (
+  <Suspense fallback={<RendererFallback />}>
+    <LazyCodeHighlighter {...props} />
+  </Suspense>
+);
+
+const ReactMarkdown = ({ children }) => (
+  <Suspense fallback={<RendererFallback />}>
+    <LazyMarkdownRenderer>{children}</LazyMarkdownRenderer>
+  </Suspense>
+);
 
 const EXT_GROUPS = {
   pdf:  ['pdf'],
@@ -245,7 +262,9 @@ const DocxPreview = ({ url }) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.arrayBuffer();
       })
-      .then(buffer => renderAsync(
+      .then(async buffer => {
+        const { renderAsync } = await import('docx-preview');
+        return renderAsync(
         buffer,
         containerRef.current,
         undefined,          // styleContainer (use default)
@@ -255,7 +274,8 @@ const DocxPreview = ({ url }) => {
           ignoreHeight: true,
           breakPages: true,
         }
-      ))
+        );
+      })
       .then(() => setStatus('done'))
       .catch(err => {
         console.error('docx-preview error:', err);
@@ -370,7 +390,7 @@ const CodePreview = ({ url, extension }) => {
   const langMap = {
     py: 'python', js: 'javascript', jsx: 'jsx', ts: 'typescript', tsx: 'tsx',
     cpp: 'cpp', c: 'c', h: 'cpp', hpp: 'cpp', java: 'java', rs: 'rust',
-    go: 'go', rb: 'ruby', php: 'php', html: 'html', css: 'css',
+    go: 'go', rb: 'ruby', php: 'php', html: 'markup', css: 'css',
     json: 'json', yaml: 'yaml', yml: 'yaml', sh: 'bash', md: 'markdown'
   };
   const language = langMap[extension] || 'text';
@@ -400,7 +420,7 @@ const CodePreview = ({ url, extension }) => {
         {error ? (
           <div style={{ color: '#f87171', fontWeight: 'bold' }}>{code}</div>
         ) : (
-          <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, padding: 0, background: 'transparent', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }} showLineNumbers={true}>
+          <SyntaxHighlighter language={language} customStyle={{ margin: 0, padding: 0, background: 'transparent', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }} showLineNumbers={true}>
             {code}
           </SyntaxHighlighter>
         )}
@@ -575,7 +595,7 @@ const MarkdownPreview = ({ url }) => {
               color: 'var(--text)', lineHeight: 1.7, fontSize: '0.95rem',
             }}>
               <div style={{ maxWidth: '760px', margin: '0 auto' }}>
-                <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeSanitize]}>{md}</ReactMarkdown>
+                <ReactMarkdown>{md}</ReactMarkdown>
               </div>
             </div>
           ) : (
@@ -689,7 +709,7 @@ const IpynbPreview = ({ url }) => {
           if (cell.cell_type === 'markdown') {
             return (
               <div key={idx} style={{ padding: '16px 32px', color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>
-                <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeSanitize]}>{source}</ReactMarkdown>
+                <ReactMarkdown>{source}</ReactMarkdown>
               </div>
             );
           }
@@ -698,7 +718,7 @@ const IpynbPreview = ({ url }) => {
             return (
               <div key={idx} style={{ padding: 'clamp(12px, 3vw, 24px)', borderBottom: '1px solid var(--border)' }}>
                 <div style={{ background: '#1d1f21', borderRadius: '8px', border: '1px solid var(--border)', overflow: 'hidden', marginBottom: cell.outputs?.length ? '12px' : 0 }}>
-                  <SyntaxHighlighter language="python" style={atomDark} customStyle={{ margin: 0, padding: 'clamp(10px, 3vw, 16px)', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)', background: 'transparent' }}>
+                  <SyntaxHighlighter language="python" customStyle={{ margin: 0, padding: 'clamp(10px, 3vw, 16px)', fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)', background: 'transparent' }}>
                     {source}
                   </SyntaxHighlighter>
                 </div>

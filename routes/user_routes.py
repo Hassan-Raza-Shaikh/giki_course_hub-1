@@ -1,5 +1,8 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
+import logging
+
+logger = logging.getLogger(__name__)
 
 user_bp = Blueprint('user', __name__)
 
@@ -29,8 +32,8 @@ def get_leaderboard():
         users = [dict(zip(cols, r)) for r in rows]
         
         return jsonify({"success": True, "leaderboard": users})
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -61,8 +64,8 @@ def get_user_profile(username):
         user_data = dict(zip(cols, row))
         
         return jsonify({"success": True, "user": user_data})
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -126,8 +129,8 @@ def get_user_uploads(username):
             "total_pages": total_pages,
             "total_count": total_count
         })
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -207,9 +210,9 @@ def update_my_profile():
 
         conn.commit()
         return jsonify({"success": True, "message": "Profile updated"})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -239,8 +242,8 @@ def get_faculties_programs():
                 faculties[fid]["programs"].append({"id": pid, "name": pname})
 
         return jsonify({"success": True, "faculties": list(faculties.values())})
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
