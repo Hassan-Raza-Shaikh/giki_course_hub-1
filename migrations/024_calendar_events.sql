@@ -1,5 +1,5 @@
 -- =============================================
--- Migration 023: GIKI Calendar
+-- Migration 024: GIKI Calendar
 -- Admin-managed academic events (midterms, finals,
 -- holidays, deadlines…) shown on /calendar.
 -- =============================================
