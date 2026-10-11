@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Ping Backend Server
         # Replace the URL with the actual production Render URL if different.
+        # --max-time gives a sleeping server time to boot; -f marks the run red on a 4xx/5xx
+        # so a broken backend shows up in the Actions tab instead of passing silently.
         run: |
-          curl -sS https://giki-course-hub.onrender.com/api/courses/list > /dev/null
+          curl -fsS --max-time 120 --retry 2 --retry-delay 10 \
+            https://giki-course-hub.onrender.com/api/courses/list > /dev/null
           echo "Successfully pinged the server to keep it awake."

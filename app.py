@@ -1,3 +1,6 @@
+import logging
+import os
+
 from flask import Flask, jsonify, session, request
 from flask_cors import CORS
 from flask_compress import Compress
@@ -16,7 +19,12 @@ from routes.instructor_routes import instructor_bp
 from routes.gpa_routes import gpa_bp
 
 
-import os
+# Send application logs (with tracebacks) to stderr, where Render/gunicorn collect them
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
@@ -147,8 +155,8 @@ def create_app():
                     session['_fb_uid']  = uid   # mark as resolved
             finally:
                 conn.close()
-        except Exception as e:
-            print(f"Token verification failed in before_request: {e}")
+        except Exception:
+            logger.warning("Token verification failed in before_request", exc_info=True)
 
         # Purge stale session cookies where user_id is a string Firebase UID
         # instead of the expected integer (can happen after a schema migration).

@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Suspense, lazy } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
-import FileViewer from '../components/FileViewer';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -10,6 +9,9 @@ import IconMapper from '../components/IconMapper';
 import { useToast } from '../components/Toast';
 import { Modal, Button, EmptyState } from '../components/ui';
 import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud, AlertCircle, Edit3, BookmarkCheck, BookmarkPlus, Flag, Inbox, CheckCircle, AlertTriangle } from 'lucide-react';
+
+// Only needed once a file is opened, so keep it out of the course page bundle
+const FileViewer = lazy(() => import('../components/FileViewer'));
 
 const CATEGORY_ICONS = {
   'Outline':         <FileText size={18} strokeWidth={1.5} />,
@@ -770,7 +772,9 @@ const CoursePage = ({ user, onSignIn }) => {
 
     {/* File Viewer modal */}
     {viewerFile && (
-      <FileViewer file={viewerFile} onClose={() => setViewerFile(null)} />
+      <Suspense fallback={null}>
+        <FileViewer file={viewerFile} onClose={() => setViewerFile(null)} />
+      </Suspense>
     )}
 
     {/* Report modal */}
