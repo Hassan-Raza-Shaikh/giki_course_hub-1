@@ -3,14 +3,15 @@ import { CheckCircle, XCircle, Flag, FilePlus, CalendarDays, Megaphone, Bell } f
 import api from '../../services/api';
 
 // Icon + theme colour per notification type. Keep in sync with TYPES in notifications.py.
+// Semantic tokens (--success/--danger) come from ui.css; fallbacks keep this working without it.
 export const NOTIFICATION_META = {
-  upload_approved:  { icon: CheckCircle,  color: '#10B981' },
-  upload_rejected:  { icon: XCircle,      color: '#dc2626' },
-  report_resolved:  { icon: Flag,         color: '#10B981' },
+  upload_approved:  { icon: CheckCircle,  color: 'var(--success, #10B981)' },
+  upload_rejected:  { icon: XCircle,      color: 'var(--danger, #dc2626)' },
+  report_resolved:  { icon: Flag,         color: 'var(--success, #10B981)' },
   report_dismissed: { icon: Flag,         color: 'var(--text-muted)' },
   new_file:         { icon: FilePlus,     color: 'var(--primary)' },
   calendar_event:   { icon: CalendarDays, color: 'var(--electric)' },
-  announcement:     { icon: Megaphone,    color: 'var(--accent)' },
+  announcement:     { icon: Megaphone,    color: 'var(--tertiary)' },
 };
 
 export const NotificationIcon = ({ type, size = 18 }) => {

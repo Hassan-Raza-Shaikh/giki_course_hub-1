@@ -1692,7 +1692,7 @@ input::placeholder, textarea::placeholder {
   position: absolute; top: -6px; right: -6px;
   min-width: 20px; height: 20px; padding: 0 5px;
   border-radius: 100px;
-  background: #dc2626; color: #fff;
+  background: var(--danger-fill, #dc2626); color: var(--on-status, #fff);
   border: 2px solid var(--bg-card);
   font-size: 0.65rem; font-weight: 900; line-height: 16px;
   text-align: center;
@@ -1706,9 +1706,9 @@ input::placeholder, textarea::placeholder {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 24px;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.18), 0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent);
+  box-shadow: var(--shadow-pop, 0 16px 48px rgba(0,0,0,0.18)), 0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent);
   overflow: hidden;
-  z-index: 9999;
+  z-index: var(--z-dropdown, 9999);
   animation: fadeIn 0.15s ease-out;
 }
 @media (max-width: 768px) {
@@ -1788,7 +1788,7 @@ input::placeholder, textarea::placeholder {
   font-weight: 800; font-size: 0.85rem; cursor: pointer;
   transition: all 0.15s;
 }
-.notif-tab.active { background: var(--primary); color: var(--nav-btn-text); }
+.notif-tab.active { background: var(--primary); color: var(--on-primary, var(--nav-btn-text)); }
 .notif-page-list { display: flex; flex-direction: column; gap: 10px; }
 .notif-card {
   display: flex; align-items: stretch;
@@ -1817,5 +1817,5 @@ input::placeholder, textarea::placeholder {
 }
 @media (hover: hover) {
   .notif-card-main:hover { background: var(--bg-subtle); }
-  .notif-card-remove:hover { opacity: 1; color: #dc2626; background: var(--bg-subtle); }
+  .notif-card-remove:hover { opacity: 1; color: var(--danger, #dc2626); background: var(--bg-subtle); }
 }
