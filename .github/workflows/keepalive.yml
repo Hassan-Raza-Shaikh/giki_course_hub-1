@@ -8,8 +8,8 @@ name: Keep Render Server Awake
 # next run itself. The schedule below is only a safety net that restarts the chain
 # if it ever breaks. Public repos get Actions minutes for free.
 #
-# To stop it: cancel the running "Keep Render Server Awake" run (a cancelled run
-# does not start the next one) and disable the workflow in the Actions tab.
+# To stop it: disable the workflow in the Actions tab, then cancel the running
+# "Keep Render Server Awake" run (a cancelled run does not start the next one).
 
 on:
   schedule:
@@ -36,6 +36,16 @@ jobs:
     steps:
       - name: Ping the backend every 4 minutes
         run: |
+          # First ping may take a minute while a sleeping server boots. If it still
+          # fails, stop now: the URL is wrong or the backend is down.
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 120 "$BACKEND_URL/api/courses/list" || true)
+          if [ "$code" != "200" ]; then
+            echo "::error::$BACKEND_URL returned HTTP ${code:-000} on the first ping"
+            exit 1
+          fi
+          echo "$(date -u +%H:%M:%S) OK (first ping)"
+          sleep 240
+
           end=$(( $(date +%s) + 330 * 60 ))
           streak=0; worst=0
           while [ "$(date +%s)" -lt "$end" ]; do
@@ -55,8 +65,9 @@ jobs:
             exit 1
           fi
 
+      # Only chain after a healthy run. After a failure the schedule above restarts
+      # it, which avoids a tight loop of failing runs.
       - name: Start the next run
-        if: success() || failure()
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run keepalive.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
