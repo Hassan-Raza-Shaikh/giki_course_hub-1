@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Bell } from 'lucide-react';
 import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon, KatanaIcon, CoffeeIcon, SpongebobIcon, DragonBallIcon, ScoobyIcon } from './ThemeIcons';
 import api from '../services/api';
+import NotificationBell from './notifications/NotificationBell';
 import { useTheme } from '../context/ThemeContext';
 
 
@@ -213,6 +214,8 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
 
+          <NotificationBell user={user} />
+
           {user ? (
           <div ref={menuRef} style={{ position: 'relative' }}>
             {/* Trigger pill */}
@@ -321,6 +324,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   { icon: <Trophy size={16}/>, label: 'Leaderboard',   action: () => { setMenuOpen(false); navigate('/leaderboard'); } },
                   { icon: <Cloud size={16}/>, label: 'Global Upload',   action: () => { setMenuOpen(false); navigate('/upload'); } },
                   { icon: <UploadCloud size={16}/>, label: 'My Uploads', action: () => { setMenuOpen(false); navigate('/my-uploads'); } },
+                  { icon: <Bell size={16}/>, label: 'Notifications', action: () => { setMenuOpen(false); navigate('/notifications'); } },
                   { icon: <Bookmark size={16}/>, label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
                   { icon: <Calculator size={16}/>, label: 'GPA Calculator',  action: () => { setMenuOpen(false); navigate('/calculator'); } },
                   { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },

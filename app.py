@@ -14,6 +14,7 @@ from routes.user_routes import user_bp
 from routes.issue_routes import issue_bp
 from routes.instructor_routes import instructor_bp
 from routes.gpa_routes import gpa_bp
+from routes.notification_routes import notification_bp
 
 
 import os
@@ -89,6 +90,7 @@ def create_app():
     app.register_blueprint(issue_bp)
     app.register_blueprint(instructor_bp)
     app.register_blueprint(gpa_bp)
+    app.register_blueprint(notification_bp)
 
     # Apply strict rate limits to sensitive endpoints
     limiter.limit("5 per minute")(app.view_functions['auth.login'])

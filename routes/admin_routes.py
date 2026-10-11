@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
 from config import BOOTSTRAP_ADMIN_EMAILS
+from notifications import notify_many
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -52,6 +53,42 @@ def _log(admin_email, action, target_id=None, target_desc=None):
         cur.close()
     finally:
         conn.close()
+
+
+def _notify_review(conn, rows, approved, reason=None):
+    """In-app notifications for reviewed uploads. rows: (file_id, title, course_code, uploader_id)."""
+    codes = list({r[2] for r in rows if r[2]})
+    course_ids = {}
+    if approved and codes:
+        cur = conn.cursor()
+        try:
+            # Savepoint so a failed lookup can't abort the caller's review transaction
+            cur.execute("SAVEPOINT notify_lookup;")
+            cur.execute("SELECT code, MIN(course_id) FROM courses WHERE code = ANY(%s) GROUP BY code;", (codes,))
+            course_ids = dict(cur.fetchall())
+            cur.execute("RELEASE SAVEPOINT notify_lookup;")
+        except Exception as e:
+            cur.execute("ROLLBACK TO SAVEPOINT notify_lookup;")
+            print(f"Failed to look up courses for notifications: {e}")
+        finally:
+            cur.close()
+
+    for file_id, title, course_code, uploader_id in rows:
+        if not uploader_id:
+            continue
+        if approved:
+            cid = course_ids.get(course_code)
+            notify_many(
+                [uploader_id], 'upload_approved', "Your upload was approved",
+                body=f"'{title}' is now live in {course_code}.",
+                link=f"/course/{cid}" if cid else "/my-uploads",
+                data={"file_id": file_id, "course_code": course_code}, conn=conn)
+        else:
+            notify_many(
+                [uploader_id], 'upload_rejected', "Your upload was not approved",
+                body=f"'{title}' ({course_code}) was rejected. Reason: {reason or 'No reason provided.'}",
+                link="/my-uploads",
+                data={"file_id": file_id, "course_code": course_code, "reason": reason}, conn=conn)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -276,6 +313,7 @@ def admin_approve_file(file_id):
             except Exception as e:
                 print(f"Failed to send approval email: {e}")
 
+        _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=True)
         conn.commit()
         cur.close()
         _log(admin_email, 'approve_file', file_id, file_title)
@@ -339,6 +377,7 @@ def admin_reject_file(file_id):
             except Exception as e:
                 print(f"Failed to send rejection email: {e}")
 
+        _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=False, reason=reason)
         conn.commit()
         cur.close()
         _log(admin_email, 'reject_file', file_id, file_title)
@@ -861,11 +900,12 @@ def admin_bulk_approve():
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title;",
+            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title, course_code, uploaded_by;",
             (admin_email, file_ids))
         updated = cur.fetchall()
+        _notify_review(conn, updated, approved=True)
         conn.commit(); cur.close()
-        for fid, title in updated:
+        for fid, title, _, _ in updated:
             _log(admin_email, 'approve_file', fid, title)
         return jsonify({"success": True, "approved": len(updated), "message": f"{len(updated)} file(s) approved."})
     except Exception as e:
@@ -888,11 +928,12 @@ def admin_bulk_reject():
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title;",
+            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title, course_code, uploaded_by;",
             (reason, admin_email, file_ids))
         updated = cur.fetchall()
+        _notify_review(conn, updated, approved=False, reason=reason)
         conn.commit(); cur.close()
-        for fid, title in updated:
+        for fid, title, _, _ in updated:
             _log(admin_email, 'reject_file', fid, title)
         return jsonify({"success": True, "rejected": len(updated), "message": f"{len(updated)} file(s) rejected."})
     except Exception as e:
