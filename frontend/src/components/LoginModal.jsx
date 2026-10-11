@@ -273,7 +273,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
 
           {/* Error */}
           {error && (
-            <div style={{ padding: '10px 14px', background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '18px', fontWeight: 600, border: '1px solid rgba(185,28,28,0.3)' }}>
+            <div style={{ padding: '10px 14px', background: 'var(--danger-soft)', color: 'var(--danger)', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '18px', fontWeight: 600, border: '1px solid var(--danger)' }}>
               {error}
             </div>
           )}

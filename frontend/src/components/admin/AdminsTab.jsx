@@ -63,7 +63,7 @@ export const AdminsTab = ({ isAdmin, showToast, setConfirmModal }) => {
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <input value={newAdminEmail} onChange={e => setNewAdminEmail(e.target.value)} type="email" placeholder="user@example.com" required style={{ flex: 2, minWidth: '200px', padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '100px', fontSize: '0.9rem' }} />
           <input value={newAdminNotes} onChange={e => setNewAdminNotes(e.target.value)} placeholder="Role / notes (optional)" style={{ flex: 3, minWidth: '160px', padding: '10px 14px', border: '1px solid var(--border)', borderRadius: '100px', fontSize: '0.9rem' }} />
-          <button type="submit" style={btnStyle('#6366F1')}>Grant</button>
+          <button type="submit" style={btnStyle('var(--primary)')}>Grant</button>
         </div>
       </form>
       <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
@@ -73,7 +73,7 @@ export const AdminsTab = ({ isAdmin, showToast, setConfirmModal }) => {
               <div style={{ fontWeight: 700 }}>{a.email}</div>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{a.notes || 'No role specified'} · granted by <strong>{a.granted_by}</strong> · {fmtDate(a.granted_at)}</div>
             </div>
-            <button onClick={() => revokeAdmin(a.email)} style={btnStyle('#EF4444')}>Revoke</button>
+            <button onClick={() => revokeAdmin(a.email)} style={btnStyle('var(--danger)')}>Revoke</button>
           </div>
         ))}
       </div>

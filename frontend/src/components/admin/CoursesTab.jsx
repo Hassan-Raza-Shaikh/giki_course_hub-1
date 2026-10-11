@@ -215,7 +215,7 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
         {isExistingCode && !editingCourse && (
           <div style={{
             marginTop: '16px', padding: '12px 16px',
-            background: 'rgba(124,58,237,0.07)', border: '2px solid var(--primary)',
+            background: 'var(--primary-soft)', border: '2px solid var(--primary)',
             borderRadius: '10px', display: 'flex', alignItems: 'flex-start', gap: '10px',
           }}>
             <span style={{ fontSize: '1.1rem', flexShrink: 0 }}><Info size={16} /></span>
@@ -372,8 +372,8 @@ export const CoursesTab = ({ isAdmin, showToast, setConfirmModal, faculties, pro
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.faculty_name} · {c.program_name} · Year {c.year} Sem {c.semester} {c.is_lab && <span style={{display: 'inline-flex', alignItems: 'center', gap: '4px'}}>· <FlaskConical size={12} /> Lab</span>}</div>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <button onClick={() => editCourse(c)} style={btnStyle('#6366F1')}>Edit</button>
-              <button onClick={() => deleteCourse(c.course_id, c.name)} style={btnStyle('#EF4444')}>Delete</button>
+              <button onClick={() => editCourse(c)} style={btnStyle('var(--primary)')}>Edit</button>
+              <button onClick={() => deleteCourse(c.course_id, c.name)} style={btnStyle('var(--danger)')}>Delete</button>
             </div>
           </div>
         ))}

@@ -214,8 +214,8 @@ const AdminPanel = ({ user }) => {
       <div className="page-container" style={{ maxWidth: '1400px' }}>
       {toast && (
         <div className="admin-toast" style={{
-          background: toast.type === 'error' ? '#FEE2E2' : '#D1FAE5',
-          color: toast.type === 'error' ? '#991B1B' : '#065F46',
+          background: toast.type === 'error' ? 'var(--danger-soft)' : 'var(--success-soft)',
+          color: toast.type === 'error' ? 'var(--danger)' : 'var(--success)',
           padding: '14px 22px', borderRadius: '100px',
           border: '1px solid currentColor', fontWeight: 700, fontSize: '0.9rem',
           position: 'fixed', top: '100px', right: '24px', zIndex: 11000,
@@ -232,7 +232,7 @@ const AdminPanel = ({ user }) => {
             <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: 1.5 }}>{confirmModal.body}</p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
               <button onClick={() => setConfirmModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={confirmModal.onConfirm} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: confirmModal.danger ? '#DC2626' : '#10B981', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Confirm</button>
+              <button onClick={confirmModal.onConfirm} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: confirmModal.danger ? 'var(--danger-fill)' : 'var(--success-fill)', color: 'var(--on-status)', cursor: 'pointer', fontWeight: 700 }}>Confirm</button>
             </div>
           </div>
         </div>
@@ -301,7 +301,7 @@ const AdminPanel = ({ user }) => {
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button onClick={() => setEditFileModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'var(--primary)', color: 'white', borderRadius: '100px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
+              <button onClick={saveEditFile} style={{ padding: '10px 20px', border: '2px solid var(--primary)', background: 'var(--primary)', color: 'var(--on-primary)', borderRadius: '100px', cursor: 'pointer', fontWeight: 700, boxShadow: '3px 3px 0 var(--text)' }}>Save Changes</button>
             </div>
           </div>
         </div>
@@ -356,7 +356,7 @@ const AdminPanel = ({ user }) => {
                   style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px 12px', fontSize: '0.9rem', background: 'var(--bg-white)', boxSizing: 'border-box' }}
                 />
               </div>
-              <button onClick={submitLink} style={{ width: '100%', padding: '10px', background: '#6366F1', color: 'white', border: 'none', borderRadius: '100px', fontWeight: 700, cursor: 'pointer' }}>
+              <button onClick={submitLink} style={{ width: '100%', padding: '10px', background: 'var(--primary)', color: 'var(--on-primary)', border: 'none', borderRadius: '100px', fontWeight: 700, cursor: 'pointer' }}>
                 Add Link
               </button>
             </div>
@@ -373,7 +373,7 @@ const AdminPanel = ({ user }) => {
                         <div style={{ fontWeight: 700 }}>{l.course_code} - {l.course_name}</div>
                         <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>As "{l.custom_title || linkModal.title}" in {l.category}</div>
                       </div>
-                      <button onClick={() => removeLink(l.course_id)} style={{ padding: '6px 12px', border: '1px solid #EF4444', color: '#EF4444', borderRadius: '6px', background: 'transparent', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>
+                      <button onClick={() => removeLink(l.course_id)} style={{ padding: '6px 12px', border: '1px solid var(--danger)', color: 'var(--danger)', borderRadius: '100px', background: 'transparent', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 700 }}>
                         Remove
                       </button>
                     </div>
@@ -391,8 +391,8 @@ const AdminPanel = ({ user }) => {
 
       {noteModal && (
         <div onClick={() => setNoteModal(null)} style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid #D97706', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '440px' }}>
-            <h3 style={{ fontWeight: 900, marginBottom: '6px', color: '#B45309' }}><Pin size={24} /> Add Public Note</h3>
+          <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--warning)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)', padding: '28px', width: '100%', maxWidth: '440px' }}>
+            <h3 style={{ fontWeight: 900, marginBottom: '6px', color: 'var(--warning)' }}><Pin size={24} /> Add Public Note</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '20px', fontSize: '0.9rem' }}>
               This note will be visible to everyone viewing <strong>{noteModal.title}</strong>.
             </p>
@@ -401,14 +401,14 @@ const AdminPanel = ({ user }) => {
               onChange={e => setNoteText(e.target.value)}
               placeholder="e.g. 'Questions 4 and 5 are out of syllabus for 2024.'"
               rows={4}
-              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '100px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', background: '#FFFBEB' }}
+              style={{ width: '100%', border: '1px solid var(--border)', borderRadius: '16px', padding: '10px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', background: 'var(--warning-soft)' }}
             />
             <div style={{ display: 'flex', gap: '12px', marginTop: '20px', justifyContent: 'flex-end' }}>
               {(noteModal.note_text || noteModal.admin_note || noteModal.file_admin_note) && (
-                <button onClick={deleteNote} style={{ padding: '10px 20px', border: '1px solid #EF4444', borderRadius: '100px', background: 'white', color: '#EF4444', cursor: 'pointer', fontWeight: 700, marginRight: 'auto' }}>Remove Note</button>
+                <button onClick={deleteNote} style={{ padding: '10px 20px', border: '1px solid var(--danger)', borderRadius: '100px', background: 'transparent', color: 'var(--danger)', cursor: 'pointer', fontWeight: 700, marginRight: 'auto' }}>Remove Note</button>
               )}
               <button onClick={() => setNoteModal(null)} style={{ padding: '10px 20px', border: '1px solid var(--border)', borderRadius: '100px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-              <button onClick={saveNote} style={{ padding: '10px 20px', border: '1px solid #D97706', borderRadius: '100px', background: '#D97706', color: 'white', cursor: 'pointer', fontWeight: 700 }}>Save Note</button>
+              <button onClick={saveNote} style={{ padding: '10px 20px', border: '1px solid var(--warning-fill)', borderRadius: '100px', background: 'var(--warning-fill)', color: 'var(--on-status)', cursor: 'pointer', fontWeight: 700 }}>Save Note</button>
             </div>
           </div>
         </div>

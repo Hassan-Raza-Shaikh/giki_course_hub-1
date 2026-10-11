@@ -187,7 +187,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
             </div>
 
         {error && (
-          <div style={{ padding: '12px 16px', background: '#FEE2E2', border: '2px solid #EF4444', borderRadius: '12px', color: '#B91C1C', fontWeight: 700, fontSize: '0.9rem', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ padding: '12px 16px', background: 'var(--danger-soft)', border: '2px solid var(--danger)', borderRadius: '12px', color: 'var(--danger)', fontWeight: 700, fontSize: '0.9rem', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AlertTriangle size={18} /> {error}
           </div>
         )}

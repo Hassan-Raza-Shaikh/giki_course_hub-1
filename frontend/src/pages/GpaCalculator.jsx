@@ -470,11 +470,11 @@ function GpaCalculator({ user }) {
                       <button 
                         onClick={() => removeCourse(course.id)}
                         style={{ 
-                          background: 'none', border: 'none', color: '#ef4444', 
+                          background: 'none', border: 'none', color: 'var(--danger)', 
                           cursor: 'pointer', padding: '8px', borderRadius: '8px',
                           display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}
-                        onMouseOver={e => e.currentTarget.style.background = '#fee2e2'}
+                        onMouseOver={e => e.currentTarget.style.background = 'var(--danger-soft)'}
                         onMouseOut={e => e.currentTarget.style.background = 'none'}
                         title="Remove Course"
                       >
