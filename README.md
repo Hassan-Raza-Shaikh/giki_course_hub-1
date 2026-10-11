@@ -22,7 +22,10 @@ compare on a leaderboard, and calculate GPA. Uploads go through an admin approva
 
 ## Hosting
 
-**Pushing or merging to `main` deploys to production.** There is no CI gate.
+**Pushing or merging to `main` deploys to production.** The `CI` workflow
+(`.github/workflows/ci.yml`) runs on every PR and push to `main` — frontend build, plus a
+backend compile and ruff check for syntax errors and undefined names — but nothing blocks
+a merge if it fails.
 
 | What | Where | Deploys from |
 |---|---|---|
