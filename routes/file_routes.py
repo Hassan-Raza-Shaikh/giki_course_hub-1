@@ -14,7 +14,7 @@ from config import (
     DEFAULT_MAX_FILE_SIZE, REFERENCE_MAX_FILE_SIZE, REFERENCE_CATEGORY_NAME,
     BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
 )
-from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension
+from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension, safe_content_type
 
 file_bp = Blueprint('files', __name__)
 
@@ -654,7 +654,7 @@ def upload_to_course(course_id):
             cur.close()
             return jsonify({"success": False, "message": "Storage is not configured on the server."}), 500
 
-        file_type = file.content_type
+        file_type = safe_content_type(ext)
         unique_filename = f"course_{course_id}/{uuid.uuid4().hex}_{secure_filename(file.filename)}"
         
         try:
@@ -662,7 +662,7 @@ def upload_to_course(course_id):
                 file, 
                 R2_BUCKET, 
                 unique_filename,
-                ExtraArgs={"ContentType": file.content_type}
+                ExtraArgs={"ContentType": file_type}
             )
         except Exception as e:
             cur.close()
@@ -1206,7 +1206,7 @@ def bulk_upload_file(course_id, batch_id):
             cur.close()
             return jsonify({"success": False, "message": "Storage is not configured."}), 500
 
-        file_type = file.content_type
+        file_type = safe_content_type(ext)
         unique_filename = f"course_{course_id}/{uuid.uuid4().hex}_{secure_filename(file.filename)}"
 
         try:

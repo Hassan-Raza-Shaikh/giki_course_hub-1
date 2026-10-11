@@ -5,6 +5,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import DOMPurify from 'dompurify';
 
 const EXT_GROUPS = {
   pdf:  ['pdf'],
@@ -573,7 +575,7 @@ const MarkdownPreview = ({ url }) => {
               color: 'var(--text)', lineHeight: 1.7, fontSize: '0.95rem',
             }}>
               <div style={{ maxWidth: '760px', margin: '0 auto' }}>
-                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{md}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeSanitize]}>{md}</ReactMarkdown>
               </div>
             </div>
           ) : (
@@ -644,7 +646,9 @@ const HtmlPreview = ({ url }) => {
             <iframe
               srcDoc={html}
               title="HTML Preview"
-              sandbox="allow-scripts allow-same-origin"
+              // No allow-same-origin: uploaded scripts still run, but in an
+              // opaque origin with no access to the app, its cookies or API.
+              sandbox="allow-scripts"
               style={{ width: '100%', height: '100%', border: 'none', background: 'white' }}
             />
           ) : (
@@ -685,7 +689,7 @@ const IpynbPreview = ({ url }) => {
           if (cell.cell_type === 'markdown') {
             return (
               <div key={idx} style={{ padding: '16px 32px', color: 'var(--text)', borderBottom: '1px solid var(--border)' }}>
-                <ReactMarkdown rehypePlugins={[rehypeRaw]}>{source}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeSanitize]}>{source}</ReactMarkdown>
               </div>
             );
           }
@@ -711,7 +715,7 @@ const IpynbPreview = ({ url }) => {
                         const html = out.data?.['text/html'];
                         if (html) {
                           const htmlStr = Array.isArray(html) ? html.join('') : html;
-                          return <div key={oIdx} dangerouslySetInnerHTML={{ __html: htmlStr }} className="ipynb-html-output" style={{ margin: '8px 0', overflow: 'auto' }} />;
+                          return <div key={oIdx} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlStr) }} className="ipynb-html-output" style={{ margin: '8px 0', overflow: 'auto' }} />;
                         }
                         const img = out.data?.['image/png'];
                         if (img) {

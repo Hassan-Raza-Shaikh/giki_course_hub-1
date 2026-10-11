@@ -80,3 +80,38 @@ def get_file_extension(filename):
     if '.' not in filename:
         return ''
     return filename.rsplit('.', 1)[1].lower()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Content-Type used when storing uploads in R2
+# Derived from the (already validated) extension, never from the browser, so a
+# file can't be labelled text/html and render as a live page from its public URL.
+# Plain-text formats (including html/js/svg-like code) are served as text/plain.
+# ─────────────────────────────────────────────────────────────────────────────
+
+SAFE_CONTENT_TYPES = {
+    'pdf':  'application/pdf',
+    'doc':  'application/msword',
+    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'ppt':  'application/vnd.ms-powerpoint',
+    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'xls':  'application/vnd.ms-excel',
+    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'csv':  'text/csv; charset=utf-8',
+    'zip':  'application/zip',
+    'png':  'image/png',
+    'jpg':  'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif':  'image/gif',
+    'webp': 'image/webp',
+    'mp4':  'video/mp4',
+    'webm': 'video/webm',
+}
+
+
+def safe_content_type(extension):
+    """Return the Content-Type to store an upload with, based on its extension."""
+    extension = extension.lower()
+    if extension in PLAINTEXT_EXTENSIONS:
+        return 'text/plain; charset=utf-8'
+    return SAFE_CONTENT_TYPES.get(extension, 'application/octet-stream')
