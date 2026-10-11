@@ -26,6 +26,7 @@ const UploadPage   = lazy(() => import('./pages/UploadPage'));
 const MyUploads    = lazy(() => import('./pages/MyUploads'));
 const CategoryView = lazy(() => import('./pages/CategoryView'));
 const Calculator   = lazy(() => import('./pages/GpaCalculator'));
+const Calendar     = lazy(() => import('./pages/Calendar'));
 
 const App = () => {
   const [user, setUser]           = useState(null);
@@ -279,6 +280,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
           <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
           <Route path="/calculator" element={<Calculator user={user} />} />
+          <Route path="/calendar"   element={<Calendar user={user} />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/u/:username" element={<UserProfile user={user} setUser={setUser} />} />
           <Route path="/category/:categorySlug" element={<CategoryView />} />
