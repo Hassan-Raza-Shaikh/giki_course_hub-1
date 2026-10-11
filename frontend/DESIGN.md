@@ -126,3 +126,10 @@ Shared keyframes available globally: `fadeIn`, `fadeUp`, `scaleIn`, `slide`, `fl
 3. Uses `PageHeader` / `Card` / `Button` / `Modal` rather than hand-rolled copies.
 4. Works at 375px wide; the mobile dock covers the bottom 96px.
 5. Interactive elements are real `<button>`/`<a>` so keyboard focus rings show.
+
+## Navbar links
+
+Desktop links live in `NAV_LINKS` in `src/components/NavLinks.jsx`. Add an entry
+there instead of a new `<button>` in `Navbar.jsx`. Links without `primary: true`
+fold into a "More" menu between 769px and 1399px, so a new page never needs its
+own breakpoint hack. Mobile users reach pages via `MobileTabBar` and the user menu.

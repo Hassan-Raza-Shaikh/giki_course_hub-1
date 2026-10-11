@@ -342,3 +342,31 @@
   background: linear-gradient(90deg, var(--primary), var(--accent));
   transition: width 0.2s;
 }
+
+/* ── Navbar overflow ("More") menu ────────────────────────────────── */
+.nav-more { display: none; }
+@media (min-width: 769px) and (max-width: 1399px) {
+  .nav-link-secondary { display: none !important; }
+  .nav-more { display: block; }
+}
+.nav-more__menu {
+  position: absolute; top: calc(100% + 12px); right: 0;
+  width: 200px; padding: 8px;
+  display: flex; flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18), 0 0 0 1px color-mix(in srgb, var(--primary) 10%, transparent);
+  z-index: var(--z-dropdown);
+  animation: fadeUp 0.15s ease-out;
+}
+.nav-more__item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 12px;
+  border: none; border-radius: 8px;
+  background: transparent; color: var(--text);
+  font-weight: 700; font-size: 0.85rem; text-align: left;
+  cursor: pointer; transition: background 0.15s;
+}
+.nav-more__item svg { color: var(--primary); }
+.nav-more__item:hover, .nav-more__item.is-active { background: var(--bg-subtle); }
