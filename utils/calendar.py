@@ -57,30 +57,102 @@ def parse_event_time(value, all_day):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Notification centre hooks
+# Notification centre: announcements and reminders
 # ─────────────────────────────────────────────────────────────────────────────
 
-def on_event_changed(action, event):
+# How many days before an event each reminder goes out. Events pinned with
+# show_countdown get the exam schedule whatever their type.
+REMINDER_DAYS = {
+    'midterm': (7, 1),
+    'final': (7, 1),
+    'exam': (1,),
+    'holiday': (1,),
+    'deadline': (1,),
+    'registration': (1,),
+}
+PINNED_REMINDER_DAYS = (7, 1)
+
+
+def _when_label(start, now):
+    days = (start.astimezone(CAMPUS_TZ).date() - now.astimezone(CAMPUS_TZ).date()).days
+    if days <= 0:
+        return 'Today'
+    if days == 1:
+        return 'Tomorrow'
+    return f'In {days} days'
+
+
+def _date_label(ev):
+    fmt = lambda iso: datetime.fromisoformat(iso).astimezone(CAMPUS_TZ).strftime('%a %d %b')
+    start = fmt(ev['start_at'])
+    if ev['end_at'] and fmt(ev['end_at']) != start:
+        return f"{start} to {fmt(ev['end_at'])}"
+    if not ev['all_day']:
+        return datetime.fromisoformat(ev['start_at']).astimezone(CAMPUS_TZ).strftime('%a %d %b, %I:%M %p').replace(' 0', ' ')
+    return start
+
+
+def on_event_changed(action, event, announce=False):
     """Called after an admin creates, updates or deletes a calendar event.
 
     action: 'created' | 'updated' | 'deleted'; event: dict from row_to_event().
-    No-op for now. Once the notification centre (PR #19) lands, announce new
-    events here, e.g. notify_many(user_ids, 'calendar_event', f"New: {event['title']}", link="/calendar").
+    When the admin ticks "Notify everyone" on a new event, every user gets a
+    notification about it. Best-effort: never raises.
     """
-    return None
+    if action != 'created' or not announce:
+        return 0
+    from notifications import notify_all
+    return notify_all(
+        'calendar_event',
+        f"New on the GIKI calendar: {event['title']}",
+        body=_date_label(event),
+        link='/calendar',
+        data={'event_id': event['id']},
+    )
 
 
-def events_starting_between(cur, start, end):
-    """Events whose start falls in [start, end). For the notification centre's
-    reminder job, e.g. "Finals start tomorrow": call it with
-    (now + 24h, now + 24h + job interval) on each run.
+def send_due_reminders(conn, now=None):
+    """Send every calendar reminder that is due and hasn't gone out yet.
+
+    Safe to call as often as you like (the keep-awake ping calls it every few
+    minutes): each reminder is claimed in calendar_reminders first, so it is
+    sent once even if two calls overlap. If the job was down and several
+    reminders for one event are due at once, only the nearest is sent.
+    Returns a list of {"event_id", "kind", "title"} for what was sent.
     """
+    from notifications import notify_all
+    now = now or datetime.now(timezone.utc)
+    horizon = now + timedelta(days=max(PINNED_REMINDER_DAYS) + 1)
+    cur = conn.cursor()
     cur.execute(
         f"SELECT {EVENT_COLUMNS} FROM calendar_events "
-        "WHERE start_at >= %s AND start_at < %s ORDER BY start_at;",
-        (start, end)
+        "WHERE start_at > %s AND start_at <= %s ORDER BY start_at;",
+        (now, horizon)
     )
-    return [row_to_event(r) for r in cur.fetchall()]
+    events = [row_to_event(r) for r in cur.fetchall()]
+
+    sent = []
+    for ev in events:
+        offsets = PINNED_REMINDER_DAYS if ev['show_countdown'] else REMINDER_DAYS.get(ev['type'], ())
+        start = datetime.fromisoformat(ev['start_at'])
+        due = [d for d in offsets if now >= start - timedelta(days=d)]
+        if not due:
+            continue
+        nearest = f"{min(due)}d"
+        cur.execute(
+            "INSERT INTO calendar_reminders (event_id, kind) SELECT %s, k FROM unnest(%s::text[]) AS k "
+            "ON CONFLICT DO NOTHING RETURNING kind;",
+            (ev['id'], [f"{d}d" for d in due])
+        )
+        claimed = {r[0] for r in cur.fetchall()}
+        if nearest in claimed:
+            title = f"{_when_label(start, now)}: {ev['title']}"
+            notify_all('calendar_event', title, body=_date_label(ev), link='/calendar',
+                       data={'event_id': ev['id'], 'reminder': nearest}, conn=conn)
+            sent.append({"event_id": ev['id'], "kind": nearest, "title": title})
+        conn.commit()
+    cur.close()
+    return sent
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -109,6 +109,7 @@ def create_app():
     limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_init'])
     limiter.limit("10 per minute")(app.view_functions['gpa.save_gpa'])
     limiter.limit("20 per minute")(app.view_functions['files.track_bulk_download'])
+    limiter.limit("10 per minute")(app.view_functions['calendar.run_reminders'])
 
     @app.before_request
     def handle_mobile_auth():

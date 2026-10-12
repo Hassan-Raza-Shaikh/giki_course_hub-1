@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { CalendarDays, Edit3, Trash2, Hourglass, Plus } from 'lucide-react';
+import { CalendarDays, Edit3, Trash2, Hourglass, Plus, Bell } from 'lucide-react';
 import { LoadingRow, EmptyRow, btnStyle, inputStyle } from './AdminHelpers';
 import { EVENT_TYPES, typeMeta, fmtEventWhen, toInputValue, fromInputValue } from '../../utils/calendar';
 
 const EMPTY_FORM = {
   title: '', type: 'event', description: '', location: '',
-  all_day: true, start_at: '', end_at: '', show_countdown: false,
+  all_day: true, start_at: '', end_at: '', show_countdown: false, notify: false,
 };
 
 const labelStyle = { display: 'block', fontWeight: 700, fontSize: '0.8rem', marginBottom: '6px' };
@@ -65,7 +65,7 @@ export const CalendarTab = ({ isAdmin, showToast, setConfirmModal }) => {
         showToast('Event updated');
       } else {
         await api.post('/admin/calendar/events', payload);
-        showToast('Event added');
+        showToast(form.notify ? 'Event added and everyone notified' : 'Event added');
       }
       cancelEdit();
       load();
@@ -145,9 +145,15 @@ export const CalendarTab = ({ isAdmin, showToast, setConfirmModal }) => {
             <input type="checkbox" checked={form.show_countdown} onChange={set('show_countdown')} />
             <Hourglass size={14} /> Pin a countdown on the calendar page
           </label>
+          {!editingId && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer' }}>
+              <input type="checkbox" checked={form.notify} onChange={set('notify')} />
+              <Bell size={14} /> Notify everyone about this event
+            </label>
+          )}
         </div>
         <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '6px' }}>
-          Midterms and finals always get a countdown. Times are campus time (PKT).
+          Midterms and finals always get a countdown. Reminders go out automatically before exams, holidays and deadlines. Times are campus time (PKT).
         </p>
 
         <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
