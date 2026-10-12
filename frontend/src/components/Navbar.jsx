@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Bell, Mail } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Bell, CalendarDays, Mail } from 'lucide-react';
 import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon, KatanaIcon, CoffeeIcon, SpongebobIcon, DragonBallIcon, ScoobyIcon } from './ThemeIcons';
 import api from '../services/api';
 import NotificationBell from './notifications/NotificationBell';
@@ -282,6 +282,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   { icon: <Bell size={16}/>, label: 'Notifications', action: () => { setMenuOpen(false); navigate('/notifications'); } },
                   { icon: <Bookmark size={16}/>, label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
                   { icon: <Calculator size={16}/>, label: 'GPA Calculator',  action: () => { setMenuOpen(false); navigate('/calculator'); } },
+                  { icon: <CalendarDays size={16}/>, label: 'GIKI Calendar',  action: () => { setMenuOpen(false); navigate('/calendar'); } },
                   { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
                   { icon: <BookOpen size={16}/>, label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
                   { icon: <Mail size={16}/>, label: 'Email Settings', action: () => { setMenuOpen(false); navigate('/email-settings'); } },
@@ -360,6 +361,7 @@ const MobileTabBar = ({ user, onSignIn }) => {
     { label: 'Bookmarks',   icon: <Bookmark size={20} strokeWidth={2} />,  path: '/bookmarks',   color: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))' },
     { label: 'Leaderboard', icon: <Trophy size={20} strokeWidth={2} />,    path: '/leaderboard', color: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))' },
     { label: 'GPA Calc',    icon: <Calculator size={20} strokeWidth={2} />,path: '/calculator',  color: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))' },
+    { label: 'Calendar',    icon: <CalendarDays size={20} strokeWidth={2} />,path: '/calendar', color: 'color-mix(in srgb, var(--secondary) 80%, var(--accent))' },
   ];
 
   return (

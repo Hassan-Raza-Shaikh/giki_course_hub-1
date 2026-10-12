@@ -839,6 +839,34 @@ def track_download(file_id):
     return jsonify({"success": True})
 
 
+@file_bp.route('/api/files/downloads', methods=['POST'])
+def track_bulk_download():
+    """Record downloads for every file in a zip. Silent fail, like track_download."""
+    raw_ids = (request.get_json(silent=True) or {}).get('file_ids')
+    if not isinstance(raw_ids, list):
+        return jsonify({"success": False, "message": "file_ids must be a list."}), 400
+    file_ids = list({i for i in raw_ids if isinstance(i, int) and not isinstance(i, bool)})[:1000]
+    if not file_ids:
+        return jsonify({"success": True})
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            """INSERT INTO file_downloads (file_id, user_id)
+               SELECT file_id, %s FROM files
+               WHERE file_id = ANY(%s) AND status = 'approved';""",
+            (session.get('user_id'), file_ids)
+        )
+        conn.commit()
+        cur.close()
+    except Exception:
+        pass
+    finally:
+        conn.close()
+    return jsonify({"success": True})
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Report a file
 # ─────────────────────────────────────────────────────────────────────────────
