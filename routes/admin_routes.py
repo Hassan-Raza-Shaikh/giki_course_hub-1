@@ -113,7 +113,8 @@ def _notify_report(conn, report_id, resolved, notes=None):
     try:
         cur.execute("SAVEPOINT notify_lookup;")
         cur.execute("""
-            SELECT r.reporter_id, f.title, f.course_code
+            SELECT r.reporter_id, f.title, f.course_code,
+                   (SELECT MIN(c.course_id) FROM courses c WHERE c.code = f.course_code)
             FROM reports r JOIN files f ON f.file_id = r.file_id
             WHERE r.report_id = %s;
         """, (report_id,))
@@ -130,17 +131,18 @@ def _notify_report(conn, report_id, resolved, notes=None):
         cur.close()
     if not row or not row[0]:
         return
-    reporter_id, file_title, course_code = row
+    reporter_id, file_title, course_code, course_id = row
+    link = f"/course/{course_id}" if course_id else None
     if resolved:
         body = f"Your report on '{file_title}' ({course_code}) was resolved."
         if notes:
             body += f" Admin notes: {notes}"
         notify_many([reporter_id], 'report_resolved', "Your report was resolved", body=body,
-                    data={"report_id": report_id, "course_code": course_code}, conn=conn)
+                    link=link, data={"report_id": report_id, "course_code": course_code}, conn=conn)
     else:
         notify_many([reporter_id], 'report_dismissed', "Your report was reviewed",
                     body=f"Your report on '{file_title}' ({course_code}) was dismissed; the file was found to be within guidelines.",
-                    data={"report_id": report_id, "course_code": course_code}, conn=conn)
+                    link=link, data={"report_id": report_id, "course_code": course_code}, conn=conn)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
