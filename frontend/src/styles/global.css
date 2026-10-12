@@ -891,6 +891,63 @@ input::placeholder, textarea::placeholder {
   }
 }
 
+/* ── Zip Download Button ─────────────────────────────── */
+.zip-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.zip-download-btn .spin { animation: spin 1s linear infinite; }
+.zip-download-btn--primary {
+  background: color-mix(in srgb, var(--primary) 90%, var(--accent));
+  color: var(--bg-hero);
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-size: 0.95rem;
+  border: 2px solid var(--text);
+  box-shadow: 4px 4px 0px var(--accent);
+}
+.zip-download-btn--compact {
+  background: var(--bg-subtle);
+  color: var(--primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  border: 2px solid var(--border);
+}
+.zip-download-size {
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 100px;
+  border: 1px solid currentColor;
+  opacity: 0.75;
+}
+.zip-download-btn.is-busy { font-variant-numeric: tabular-nums; }
+@media (hover: hover) {
+  .zip-download-btn--primary:hover {
+    transform: translateY(-2px) translateX(-2px);
+    box-shadow: 6px 6px 0px var(--accent);
+  }
+  .zip-download-btn--compact:hover {
+    border-color: var(--primary);
+    background: var(--bg-card);
+  }
+}
+.zip-download-btn:focus-visible {
+  outline: 3px solid var(--electric);
+  outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .zip-download-btn--primary { width: 100%; }
+}
+
 /* ── Navbar Button ───────────────────────────────────── */
 .btn-nav {
   background: var(--bg-white);
