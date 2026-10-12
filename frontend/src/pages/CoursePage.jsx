@@ -1,14 +1,19 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Suspense, lazy } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
-import FileViewer from '../components/FileViewer';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
+import DownloadZipButton from '../components/DownloadZipButton';
+import { courseFolderName, sectionFolderName } from '../utils/zipDownload';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
 import { useToast } from '../components/Toast';
+import { Modal, Button, EmptyState } from '../components/ui';
 import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud, AlertCircle, Edit3, BookmarkCheck, BookmarkPlus, Flag, Inbox, CheckCircle, AlertTriangle } from 'lucide-react';
+
+// Only needed once a file is opened, so keep it out of the course page bundle
+const FileViewer = lazy(() => import('../components/FileViewer'));
 
 const CATEGORY_ICONS = {
   'Outline':         <FileText size={18} strokeWidth={1.5} />,
@@ -231,6 +236,15 @@ const CoursePage = ({ user, onSignIn }) => {
     });
   }, [filesByCategory, activeTab, instructorFilter, sortBy]);
 
+  // Every populated section, in tab order, for the course-wide zip
+  const allSections = React.useMemo(() => {
+    const order = categories.map(c => c.name);
+    const names = [...order, ...Object.keys(filesByCategory).filter(n => !order.includes(n))];
+    return names
+      .map(name => ({ name, files: filesByCategory[name] || [] }))
+      .filter(s => s.files.length > 0);
+  }, [categories, filesByCategory]);
+
   // Group instructors by faculty for organized dropdown
   const otherInstructorsGrouped = React.useMemo(() => {
     const grouped = instructors
@@ -344,6 +358,16 @@ const CoursePage = ({ user, onSignIn }) => {
               </div>
             )}
           </div>
+          {allSections.length > 0 && (
+            <DownloadZipButton
+              variant="primary"
+              label="Download course"
+              sections={allSections}
+              rootFolder={courseFolderName(course)}
+              zipName={`${courseFolderName(course)}.zip`}
+              user={user}
+            />
+          )}
         </div>
       </div>
 
@@ -486,7 +510,7 @@ const CoursePage = ({ user, onSignIn }) => {
               className="upload-trigger-btn"
               style={{
                 marginTop: '24px', background: 'var(--tertiary)', color: 'white', border: '1px solid color-mix(in srgb, var(--tertiary) 80%, black)',
-                boxShadow: '0 4px 16px rgba(124, 58, 237, 0.25)', padding: '16px 20px', borderRadius: '16px',
+                boxShadow: '0 4px 16px color-mix(in srgb, var(--primary) 25%, transparent)', padding: '16px 20px', borderRadius: '16px',
                 fontWeight: 900, fontSize: '0.95rem', cursor: 'pointer', textAlign: 'center',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
                 width: '100%', transition: 'all 0.2s'
@@ -505,7 +529,7 @@ const CoursePage = ({ user, onSignIn }) => {
               }}
               style={{
                 width: '100%', background: 'var(--tertiary)', color: 'white', border: '1px solid color-mix(in srgb, var(--tertiary) 80%, black)',
-                boxShadow: '0 4px 16px rgba(124, 58, 237, 0.25)', padding: '14px 20px', borderRadius: '16px',
+                boxShadow: '0 4px 16px color-mix(in srgb, var(--primary) 25%, transparent)', padding: '14px 20px', borderRadius: '16px',
                 fontWeight: 900, marginBottom: '24px', justifyContent: 'center', alignItems: 'center', gap: '12px'
               }}
             >
@@ -536,6 +560,14 @@ const CoursePage = ({ user, onSignIn }) => {
                     {fileInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                   </select>
                 )}
+                <DownloadZipButton
+                  key={activeTab}
+                  label="Download all"
+                  sections={[{ name: activeTab, files: currentFiles }]}
+                  rootFolder={courseFolderName(course)}
+                  zipName={`${courseFolderName(course)} - ${sectionFolderName(activeTab)}.zip`}
+                  user={user}
+                />
                 <select
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value)}
@@ -666,7 +698,7 @@ const CoursePage = ({ user, onSignIn }) => {
                           if (user) api.post(`/files/${file.file_id ?? file.id}/download`).catch(() => {});
                         }}
                         style={{
-                          background: 'var(--primary)', color: 'white',
+                          background: 'var(--primary)', color: 'var(--on-primary)',
                           padding: '8px 14px', borderRadius: 8,
                           fontWeight: 700, fontSize: '0.82rem',
                           border: '1px solid color-mix(in srgb, var(--primary) 80%, black)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -700,7 +732,7 @@ const CoursePage = ({ user, onSignIn }) => {
                         whiteSpace: 'nowrap',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}
-                      onMouseOver={e => { e.currentTarget.style.background = 'rgba(220, 38, 38, 0.05)'; e.currentTarget.style.borderColor = 'var(--danger, #DC2626)'; }}
+                      onMouseOver={e => { e.currentTarget.style.background = 'var(--danger-soft)'; e.currentTarget.style.borderColor = 'var(--danger, #DC2626)'; }}
                       onMouseOut={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                     >
                       <Flag size={14} /> Flag
@@ -769,7 +801,9 @@ const CoursePage = ({ user, onSignIn }) => {
 
     {/* File Viewer modal */}
     {viewerFile && (
-      <FileViewer file={viewerFile} onClose={() => setViewerFile(null)} />
+      <Suspense fallback={null}>
+        <FileViewer file={viewerFile} onClose={() => setViewerFile(null)} />
+      </Suspense>
     )}
 
     {/* Report modal */}
@@ -836,60 +870,56 @@ const CoursePage = ({ user, onSignIn }) => {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-            <button onClick={() => setEditFileModal(null)} style={{ padding: '12px 24px', border: 'none', borderRadius: '12px', background: 'var(--bg-subtle)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-            <button onClick={saveEditFile} style={{ padding: '12px 24px', border: 'none', background: 'var(--primary)', color: 'white', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>Save Changes</button>
+            <button onClick={() => setEditFileModal(null)} style={{ padding: '12px 24px', border: 'none', borderRadius: '100px', background: 'var(--bg-subtle)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
+            <button onClick={saveEditFile} style={{ padding: '12px 24px', border: 'none', background: 'var(--primary)', color: 'var(--on-primary)', borderRadius: '100px', cursor: 'pointer', fontWeight: 700, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>Save Changes</button>
           </div>
         </div>
       </div>
     )}
 
-    {reportModal && (
-      <div
-        onClick={() => setReportModal(null)}
-        style={{ position: 'fixed', inset: 0, zIndex: 10001, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
-      >
-        <div onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 12px 40px rgba(0,0,0,0.15)', padding: '28px', width: '100%', maxWidth: '460px', maxHeight: '90dvh', overflowY: 'auto' }}>
-          {reportSent ? (
-            <div style={{ textAlign: 'center', padding: '20px 0' }}>
-              <div style={{ color: 'var(--primary)', marginBottom: '12px', display: 'flex', justifyContent: 'center' }}><CheckCircle size={48} strokeWidth={1.5} /></div>
-              <h3 style={{ fontWeight: 800, marginBottom: '8px' }}>Report submitted</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Thank you for helping keep the platform safe. An admin will review it.</p>
-              <button onClick={() => setReportModal(null)} style={{ marginTop: '20px', padding: '12px 24px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}>Close</button>
-            </div>
-          ) : (
-            <>
-              <h3 style={{ fontWeight: 800, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}><Flag size={20} /> Report File</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '18px' }}>
-                Reporting: <strong>{reportModal.title}</strong>
-              </p>
-              <textarea
-                value={reportReason}
-                onChange={e => setReportReason(e.target.value)}
-                placeholder="Describe the issue (wrong content, inappropriate material, duplicate…)"
-                rows={4}
-                style={{ width: '100%', border: '2px solid var(--border)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.9rem', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
-              />
-              <div style={{ display: 'flex', gap: '10px', marginTop: '16px', justifyContent: 'flex-end' }}>
-                <button onClick={() => setReportModal(null)} style={{ padding: '10px 20px', border: '2px solid var(--border)', borderRadius: '8px', background: 'var(--bg-white)', color: 'var(--text)', cursor: 'pointer', fontWeight: 700 }}>Cancel</button>
-                <button
-                  onClick={async () => {
-                    if (!reportReason.trim()) return;
-                    try {
-                      await api.post(`/reports/${reportModal.file_id ?? reportModal.id}`, { reason: reportReason });
-                      setReportSent(true);
-                    } catch { /* ignore */ }
-                  }}
-                  disabled={!reportReason.trim()}
-                  style={{ padding: '10px 20px', border: '2px solid #DC2626', borderRadius: '8px', background: '#DC2626', color: 'white', cursor: 'pointer', fontWeight: 700, opacity: reportReason.trim() ? 1 : 0.5 }}
-                >
-                  Submit Report
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    )}
+    <Modal
+      open={!!reportModal}
+      onClose={() => setReportModal(null)}
+      title={reportSent ? null : 'Report File'}
+      icon={<Flag size={20} />}
+      subtitle={reportSent ? null : <>Reporting: <strong>{reportModal?.title}</strong></>}
+      footer={reportSent ? (
+        <Button variant="primary" onClick={() => setReportModal(null)}>Close</Button>
+      ) : (
+        <>
+          <Button onClick={() => setReportModal(null)}>Cancel</Button>
+          <Button
+            variant="danger"
+            disabled={!reportReason.trim()}
+            onClick={async () => {
+              if (!reportReason.trim()) return;
+              try {
+                await api.post(`/reports/${reportModal.file_id ?? reportModal.id}`, { reason: reportReason });
+                setReportSent(true);
+              } catch { /* ignore */ }
+            }}
+          >
+            Submit Report
+          </Button>
+        </>
+      )}
+    >
+      {reportSent ? (
+        <EmptyState
+          icon={<CheckCircle size={48} strokeWidth={1.5} color="var(--success)" />}
+          title="Report submitted"
+          text="Thank you for helping keep the platform safe. An admin will review it."
+        />
+      ) : (
+        <textarea
+          className="ui-textarea"
+          value={reportReason}
+          onChange={e => setReportReason(e.target.value)}
+          placeholder="Describe the issue (wrong content, inappropriate material, duplicate…)"
+          rows={4}
+        />
+      )}
+    </Modal>
     </>
   );
 };

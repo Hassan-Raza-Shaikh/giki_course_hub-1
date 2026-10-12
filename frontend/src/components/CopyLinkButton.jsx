@@ -60,7 +60,7 @@ const CopyLinkButton = ({ id, url, copyLink, copiedId, msg, style = {} }) => {
       title="Copy link"
       style={{
         position: 'relative',
-        background: isCopied ? 'var(--electric, #7C3AED)' : 'var(--bg-white)',
+        background: isCopied ? 'var(--electric)' : 'var(--bg-white)',
         border: '1px solid var(--border)',
         borderRadius: '8px',
         padding: '8px 12px',

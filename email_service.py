@@ -3,6 +3,9 @@ import json
 import threading
 import urllib.request
 import urllib.error
+import logging
+
+logger = logging.getLogger(__name__)
 
 RESEND_API_URL = "https://api.resend.com/emails"
 
@@ -32,12 +35,12 @@ def send_email_async(to_email, subject, body_html):
 
     try:
         with urllib.request.urlopen(req, timeout=10) as response:
-            print(f"[EmailService] Email successfully sent to {to_email} (status {response.status})")
+            logger.info("Email sent to %s (status %s)", to_email, response.status)
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
-        print(f"[EmailService] Failed to send email to {to_email}: HTTP {e.code} - {body}")
-    except Exception as e:
-        print(f"[EmailService] Failed to send email to {to_email}: {e}")
+        logger.error("Failed to send email to %s: HTTP %s - %s", to_email, e.code, body)
+    except Exception:
+        logger.exception("Failed to send email to %s", to_email)
 
 
 def send_email(to_email, subject, body_html):

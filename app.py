@@ -1,3 +1,6 @@
+import logging
+import os
+
 from flask import Flask, jsonify, session, request
 from flask_cors import CORS
 from flask_compress import Compress
@@ -15,9 +18,15 @@ from routes.issue_routes import issue_bp
 from routes.instructor_routes import instructor_bp
 from routes.gpa_routes import gpa_bp
 from routes.calendar_routes import calendar_bp
+from routes.notification_routes import notification_bp
 
 
-import os
+# Send application logs (with tracebacks) to stderr, where Render/gunicorn collect them
+logging.basicConfig(
+    level=os.environ.get("LOG_LEVEL", "INFO").upper(),
+    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+)
+logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
@@ -91,6 +100,7 @@ def create_app():
     app.register_blueprint(instructor_bp)
     app.register_blueprint(gpa_bp)
     app.register_blueprint(calendar_bp)
+    app.register_blueprint(notification_bp)
 
     # Apply strict rate limits to sensitive endpoints
     limiter.limit("5 per minute")(app.view_functions['auth.login'])
@@ -98,6 +108,7 @@ def create_app():
     limiter.limit("10 per minute")(app.view_functions['files.upload_to_course'])
     limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_init'])
     limiter.limit("10 per minute")(app.view_functions['gpa.save_gpa'])
+    limiter.limit("20 per minute")(app.view_functions['files.track_bulk_download'])
 
     @app.before_request
     def handle_mobile_auth():
@@ -149,8 +160,8 @@ def create_app():
                     session['_fb_uid']  = uid   # mark as resolved
             finally:
                 conn.close()
-        except Exception as e:
-            print(f"Token verification failed in before_request: {e}")
+        except Exception:
+            logger.warning("Token verification failed in before_request", exc_info=True)
 
         # Purge stale session cookies where user_id is a string Firebase UID
         # instead of the expected integer (can happen after a schema migration).

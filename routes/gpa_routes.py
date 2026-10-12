@@ -5,6 +5,9 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 gpa_bp = Blueprint('gpa', __name__)
 
@@ -78,8 +81,9 @@ def save_gpa():
             })
         finally:
             conn.close()
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Database error: {str(e)}"}), 500
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
 
 
 @gpa_bp.route('/api/gpa/records', methods=['GET'])
@@ -116,7 +120,8 @@ def get_my_gpa_records():
                 if isinstance(courses_val, str):
                     try:
                         courses_val = json.loads(courses_val)
-                    except:
+                    except ValueError:
+                        logger.warning("Invalid courses_json on GPA record %s", r[0])
                         courses_val = []
 
                 records.append({
@@ -142,8 +147,9 @@ def get_my_gpa_records():
             })
         finally:
             conn.close()
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Database error: {str(e)}"}), 500
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
 
 
 @gpa_bp.route('/api/gpa/records/<int:gpa_id>', methods=['DELETE'])
@@ -167,8 +173,9 @@ def delete_gpa_record(gpa_id):
             return jsonify({"success": True, "message": "GPA record deleted"})
         finally:
             conn.close()
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Database error: {str(e)}"}), 500
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
 
 
 @gpa_bp.route('/api/gpa/user/<username>', methods=['GET'])
@@ -245,5 +252,6 @@ def get_user_gpa(username):
             })
         finally:
             conn.close()
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Database error: {str(e)}"}), 500
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500

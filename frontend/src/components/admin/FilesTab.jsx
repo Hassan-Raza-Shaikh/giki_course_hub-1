@@ -84,11 +84,11 @@ export const FilesTab = ({ isAdmin, showToast, categories, openLinkModal, openEd
               {f.status}
             </span>
             <div className="admin-file-actions" style={{ display: 'flex', gap: '8px' }}>
-              <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('#6366F1')}><Eye size={16} style={{ marginRight: '4px' }} /> View</a>
-              <button onClick={() => openLinkModal(f)} style={btnStyle('#8B5CF6')}><Link size={14} /> Link</button>
+              <a href={f.file_url} target="_blank" rel="noreferrer" style={btnStyle('var(--primary)')}><Eye size={16} style={{ marginRight: '4px' }} /> View</a>
+              <button onClick={() => openLinkModal(f)} style={btnStyle('var(--tertiary)')}><Link size={14} /> Link</button>
               <button onClick={() => openEditFile(f)} style={btnStyle('var(--text)')}><Edit3 size={14} /> Edit</button>
-              <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? '#D97706' : '#9CA3AF') }}><Pin size={14} /> Note</button>
-              <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('#EF4444')}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
+              <button onClick={() => openNoteModal(f)} style={{ ...btnStyle(f.admin_note ? 'var(--warning)' : 'neutral') }}><Pin size={14} /> Note</button>
+              <button onClick={() => deleteFile(f.file_id, f.title)} style={btnStyle('var(--danger)')}><Trash2 size={16} style={{ marginRight: '4px' }} /> Delete</button>
             </div>
           </div>
         ))}

@@ -1,6 +1,10 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
 from config import BOOTSTRAP_ADMIN_EMAILS
+from notifications import notify_many, notify_all, notify_course_followers
+import logging
+
+logger = logging.getLogger(__name__)
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -52,6 +56,93 @@ def _log(admin_email, action, target_id=None, target_desc=None):
         cur.close()
     finally:
         conn.close()
+
+
+def _notify_review(conn, rows, approved, reason=None):
+    """In-app notifications for reviewed uploads. rows: (file_id, title, course_code, uploader_id)."""
+    codes = list({r[2] for r in rows if r[2]})
+    course_ids = {}
+    if approved and codes:
+        cur = conn.cursor()
+        try:
+            # Savepoint so a failed lookup can't abort the caller's review transaction
+            cur.execute("SAVEPOINT notify_lookup;")
+            cur.execute("SELECT code, MIN(course_id) FROM courses WHERE code = ANY(%s) GROUP BY code;", (codes,))
+            course_ids = dict(cur.fetchall())
+            cur.execute("RELEASE SAVEPOINT notify_lookup;")
+        except Exception as e:
+            try:
+                cur.execute("ROLLBACK TO SAVEPOINT notify_lookup;")
+            except Exception:
+                pass  # savepoint never opened: the caller's transaction was already aborted
+            logger.warning("Failed to look up courses for notifications: %s", e)
+        finally:
+            cur.close()
+
+    for file_id, title, course_code, uploader_id in rows:
+        if not uploader_id:
+            continue
+        if approved:
+            cid = course_ids.get(course_code)
+            notify_many(
+                [uploader_id], 'upload_approved', "Your upload was approved",
+                body=f"'{title}' is now live in {course_code}.",
+                link=f"/course/{cid}" if cid else "/my-uploads",
+                data={"file_id": file_id, "course_code": course_code}, conn=conn)
+        else:
+            notify_many(
+                [uploader_id], 'upload_rejected', "Your upload was not approved",
+                body=f"'{title}' ({course_code}) was rejected. Reason: {reason or 'No reason provided.'}",
+                link="/my-uploads",
+                data={"file_id": file_id, "course_code": course_code, "reason": reason}, conn=conn)
+
+    # Followers of each course hear about newly approved material (one notification per course)
+    if approved:
+        by_course = {}
+        for _, title, course_code, uploader_id in rows:
+            entry = by_course.setdefault(course_code, ([], set()))
+            entry[0].append(title)
+            entry[1].add(uploader_id)
+        for course_code, (titles, uploaders) in by_course.items():
+            notify_course_followers(course_code, titles, exclude_user_ids=uploaders, conn=conn)
+
+
+def _notify_report(conn, report_id, resolved, notes=None):
+    """In-app notification to whoever filed a report once an admin acts on it."""
+    cur = conn.cursor()
+    try:
+        cur.execute("SAVEPOINT notify_lookup;")
+        cur.execute("""
+            SELECT r.reporter_id, f.title, f.course_code,
+                   (SELECT MIN(c.course_id) FROM courses c WHERE c.code = f.course_code)
+            FROM reports r JOIN files f ON f.file_id = r.file_id
+            WHERE r.report_id = %s;
+        """, (report_id,))
+        row = cur.fetchone()
+        cur.execute("RELEASE SAVEPOINT notify_lookup;")
+    except Exception as e:
+        try:
+            cur.execute("ROLLBACK TO SAVEPOINT notify_lookup;")
+        except Exception:
+            pass  # savepoint never opened: the caller's transaction was already aborted
+        logger.warning("Failed to look up report %s for notifications: %s", report_id, e)
+        return
+    finally:
+        cur.close()
+    if not row or not row[0]:
+        return
+    reporter_id, file_title, course_code, course_id = row
+    link = f"/course/{course_id}" if course_id else None
+    if resolved:
+        body = f"Your report on '{file_title}' ({course_code}) was resolved."
+        if notes:
+            body += f" Admin notes: {notes}"
+        notify_many([reporter_id], 'report_resolved', "Your report was resolved", body=body,
+                    link=link, data={"report_id": report_id, "course_code": course_code}, conn=conn)
+    else:
+        notify_many([reporter_id], 'report_dismissed', "Your report was reviewed",
+                    body=f"Your report on '{file_title}' ({course_code}) was dismissed; the file was found to be within guidelines.",
+                    link=link, data={"report_id": report_id, "course_code": course_code}, conn=conn)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -124,8 +215,8 @@ def admin_stats():
                 "total_admins":    row[5],
             }
         })
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "Failed to load stats."}), 500
     finally:
         conn.close()
@@ -273,16 +364,17 @@ def admin_approve_file(file_id):
                     </div>
                     """
                     send_email(uploader_email, subject, body)
-            except Exception as e:
-                print(f"Failed to send approval email: {e}")
+            except Exception:
+                logger.exception("Failed to send approval email")
 
+        _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=True)
         conn.commit()
         cur.close()
         _log(admin_email, 'approve_file', file_id, file_title)
         return jsonify({"success": True, "message": f"'{file_title}' approved."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -336,16 +428,17 @@ def admin_reject_file(file_id):
                     </div>
                     """
                     send_email(uploader_email, subject, body)
-            except Exception as e:
-                print(f"Failed to send rejection email: {e}")
+            except Exception:
+                logger.exception("Failed to send rejection email")
 
+        _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=False, reason=reason)
         conn.commit()
         cur.close()
         _log(admin_email, 'reject_file', file_id, file_title)
         return jsonify({"success": True, "message": f"'{file_title}' rejected."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -404,9 +497,9 @@ def admin_update_file(file_id):
         if new_course_code and new_course_code != old_course: changes.append(f"course: '{old_course}'→'{new_course_code}'")
         _log(admin_email, 'update_file', file_id, '; '.join(changes) or 'minor edit')
         return jsonify({"success": True, "message": "File details updated successfully."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -425,8 +518,8 @@ def _delete_stored_file(storage_path):
     if os.path.exists(storage_path):
         try:
             os.remove(storage_path)
-        except Exception as e:
-            print(f"Error deleting local file: {e}")
+        except Exception:
+            logger.exception("Error deleting local file %s", storage_path)
         return
     # Otherwise delete from R2 (storage_path is the unique_filename object key)
     try:
@@ -435,8 +528,8 @@ def _delete_stored_file(storage_path):
         s3_client = get_s3_client()
         if s3_client:
             s3_client.delete_object(Bucket=R2_BUCKET, Key=storage_path)
-    except Exception as e:
-        print(f"Error deleting from R2: {e}")
+    except Exception:
+        logger.exception("Error deleting %s from R2", storage_path)
 
 
 def _safe_delete_file(file_id, cur, pending_storage_deletes):
@@ -533,9 +626,9 @@ def admin_delete_file(file_id):
 
         _log(admin_email, 'delete_file', file_id, title)
         return jsonify({"success": True, "message": f"'{title}' deleted."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -630,9 +723,9 @@ def admin_grant():
         cur.close()
         _log(admin_email, 'grant_admin', target_desc=email)
         return jsonify({"success": True, "message": f"Admin access granted to {email}."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -654,9 +747,9 @@ def admin_revoke(target_email):
         cur.close()
         _log(admin_email, 'revoke_admin', target_desc=target_email)
         return jsonify({"success": True, "message": f"Admin access revoked from {target_email}."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -780,14 +873,16 @@ def admin_resolve_report(report_id):
                     </div>
                     """
                 )
-        except Exception as e:
-            print(f"Failed to send resolve report email: {e}")
+        except Exception:
+            logger.exception("Failed to send resolve report email")
 
+        _notify_report(conn, report_id, resolved=True, notes=notes)
         conn.commit(); cur.close()
         _log(admin_email, 'resolve_report', report_id)
         return jsonify({"success": True, "message": "Report resolved."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -833,14 +928,17 @@ def admin_dismiss_report(report_id):
                     </div>
                     """
                 )
-        except Exception as e:
-            print(f"Failed to send dismiss report email: {e}")
+        except Exception:
+            logger.exception("Failed to send dismiss report email")
 
+        _notify_report(conn, report_id, resolved=False)
+        conn.commit()
         cur.close()
         _log(admin_email, 'dismiss_report', report_id)
         return jsonify({"success": True, "message": "Report dismissed."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -861,15 +959,17 @@ def admin_bulk_approve():
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title;",
+            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title, course_code, uploaded_by;",
             (admin_email, file_ids))
         updated = cur.fetchall()
+        _notify_review(conn, updated, approved=True)
         conn.commit(); cur.close()
-        for fid, title in updated:
+        for fid, title, _, _ in updated:
             _log(admin_email, 'approve_file', fid, title)
         return jsonify({"success": True, "approved": len(updated), "message": f"{len(updated)} file(s) approved."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -888,15 +988,17 @@ def admin_bulk_reject():
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title;",
+            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title, course_code, uploaded_by;",
             (reason, admin_email, file_ids))
         updated = cur.fetchall()
+        _notify_review(conn, updated, approved=False, reason=reason)
         conn.commit(); cur.close()
-        for fid, title in updated:
+        for fid, title, _, _ in updated:
             _log(admin_email, 'reject_file', fid, title)
         return jsonify({"success": True, "rejected": len(updated), "message": f"{len(updated)} file(s) rejected."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1056,8 +1158,9 @@ def admin_create_course():
         conn.commit(); cur.close()
         _log(admin_email, 'create_course', new_id, name)
         return jsonify({"success": True, "course_id": new_id, "message": f"Course '{name}' created."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1141,9 +1244,9 @@ def admin_bulk_create_courses():
             "skipped": len(skipped),
             "message": " · ".join(parts) + "."
         })
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1183,8 +1286,9 @@ def admin_update_course(course_id):
         conn.commit(); cur.close()
         _log(admin_email, 'update_course', course_id, row[0])
         return jsonify({"success": True, "message": f"Course '{row[0]}' updated and synced across programs."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1246,8 +1350,9 @@ def admin_delete_course(course_id):
             msg += f"{promoted_count} file(s) preserved in other courses. "
             
         return jsonify({"success": True, "message": msg.strip()})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1370,8 +1475,9 @@ def admin_resolve_issue(issue_id):
         conn.commit(); cur.close()
         _log(admin_email, 'resolve_issue', issue_id)
         return jsonify({"success": True, "message": "Issue marked as resolved."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1388,8 +1494,9 @@ def admin_delete_issue(issue_id):
         conn.commit(); cur.close()
         _log(admin_email, 'delete_issue', issue_id)
         return jsonify({"success": True, "message": "Issue deleted."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1420,8 +1527,9 @@ def admin_set_note(file_id):
         conn.commit(); cur.close()
         _log(admin_email, 'set_note', file_id)
         return jsonify({"success": True, "message": "Note saved."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1438,8 +1546,9 @@ def admin_delete_note(file_id):
         conn.commit(); cur.close()
         _log(admin_email, 'remove_note', file_id)
         return jsonify({"success": True, "message": "Note removed."})
-    except Exception as e:
-        conn.rollback(); import traceback; traceback.print_exc()
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1462,8 +1571,8 @@ def get_manual_course_links():
         """)
         links = [{"link_id": r[0], "course_code_1": r[1], "course_code_2": r[2], "created_at": r[3]} for r in cur.fetchall()]
         return jsonify({"success": True, "links": links})
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1493,9 +1602,9 @@ def add_manual_course_link():
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
         return jsonify({"success": False, "message": "This link already exists."}), 400
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -1510,9 +1619,38 @@ def delete_manual_course_link(link_id):
         cur.execute("DELETE FROM manual_course_links WHERE link_id = %s", (link_id,))
         conn.commit()
         return jsonify({"success": True, "message": "Link removed."})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# POST /api/admin/announcements — send a notification to every user
+# ─────────────────────────────────────────────────────────────────────────────
+@admin_bp.route('/api/admin/announcements', methods=['POST'])
+def admin_send_announcement():
+    admin_email, err = _require_admin()
+    if err: return err
+
+    data = request.get_json() or {}
+    title = (data.get('title') or '').strip()
+    body = (data.get('body') or '').strip() or None
+    link = (data.get('link') or '').strip() or None
+    if not title:
+        return jsonify({"success": False, "message": "A title is required."}), 400
+    if len(title) > 200:
+        return jsonify({"success": False, "message": "Title must be 200 characters or fewer."}), 400
+    if body and len(body) > 1000:
+        return jsonify({"success": False, "message": "Message must be 1000 characters or fewer."}), 400
+    # Only in-app paths, so an announcement can't send people off-site
+    if link and (not link.startswith('/') or link.startswith('//')):
+        return jsonify({"success": False, "message": "Link must be an in-app path like /courses."}), 400
+
+    sent = notify_all('announcement', title, body=body, link=link, data={"from": admin_email})
+    if not sent:
+        return jsonify({"success": False, "message": "Couldn't send the announcement. Please try again."}), 500
+    _log(admin_email, 'send_announcement', None, title)
+    return jsonify({"success": True, "sent": sent, "message": f"Announcement sent to {sent} user(s)."})
