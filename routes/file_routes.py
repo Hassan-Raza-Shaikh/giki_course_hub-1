@@ -15,6 +15,7 @@ from config import (
     DEFAULT_MAX_FILE_SIZE, REFERENCE_MAX_FILE_SIZE, REFERENCE_CATEGORY_NAME,
     BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
 )
+import email_events
 from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension, safe_content_type
 import logging
 
@@ -703,35 +704,14 @@ def upload_to_course(course_id):
             (new_file_id, file_size, file_type)
         )
 
-        # Notify admins if the file requires review
-        if initial_status == 'pending':
-            try:
-                from email_service import send_email
-                cur.execute("SELECT email FROM admins;")
-                admins = cur.fetchall()
-                for admin in admins:
-                    admin_email = admin[0]
-                    subject = "New Material Pending Review - GIKI Course Hub"
-                    body = f"""
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                        <h2 style="color: #2563EB;">New Material Uploaded</h2>
-                        <p>A student has uploaded a new material that is waiting for your review.</p>
-                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                            <li><strong>Title:</strong> {title}</li>
-                            <li><strong>Course:</strong> {course_code}</li>
-                        </ul>
-                        <p>Please log in to the <a href="https://gikicoursehub.app/admin" style="color: #F59E0B; font-weight: bold;">Admin Panel</a> to approve or reject it.</p>
-                    </div>
-                    """
-                    send_email(admin_email, subject, body)
-            except Exception:
-                logger.exception("Failed to trigger admin notification email")
-
         if initial_status == 'approved':
             notify_course_followers(course_code, [title], exclude_user_ids=[uploader], conn=conn)
 
         conn.commit()
         cur.close()
+        if initial_status == 'pending':
+            email_events.upload_received(uploader, [(title, course_code)])
+            email_events.admin_new_uploads(uploader, course_code, [title])
         msg = "Material published!" if initial_status == 'approved' else "Submitted for review — visible once an admin approves it."
         return jsonify({"success": True, "message": msg, "file_id": new_file_id, "status": initial_status})
     except Exception as e:
@@ -914,39 +894,10 @@ def report_file(file_id):
             cur.close()
             return jsonify({"success": False, "message": "You have already reported this file."}), 409
 
-        # Notify all admins
-        try:
-            from email_service import send_email
-            cur.execute("""
-                SELECT a.email, f.title, f.course_code, u.username
-                FROM admins a, files f, users u
-                WHERE f.file_id = %s AND u.user_id = %s;
-            """, (file_id, session['user_id']))
-            info = cur.fetchall()
-            if info:
-                file_title = info[0][1]
-                course_code = info[0][2]
-                reporter_name = info[0][3]
-                for row_info in info:
-                    send_email(
-                        row_info[0],
-                        "Content Report Filed - GIKI Course Hub",
-                        f"""
-                        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                            <h2 style="color: #DC2626;">⚠️ New Content Report</h2>
-                            <p>A user has flagged a file for review.</p>
-                            <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                                <li><strong>File:</strong> {file_title}</li>
-                                <li><strong>Course:</strong> {course_code}</li>
-                                <li><strong>Reported by:</strong> {reporter_name}</li>
-                                <li><strong>Reason:</strong> {reason}</li>
-                            </ul>
-                            <p>Please log in to the <a href="https://gikicoursehub.app/admin" style="color: #F59E0B; font-weight: bold;">Admin Panel</a> to review this report.</p>
-                        </div>
-                        """
-                    )
-        except Exception:
-            logger.exception("Failed to send report notification email")
+        cur.execute("SELECT title, course_code FROM files WHERE file_id = %s;", (file_id,))
+        file_row = cur.fetchone()
+        if file_row:
+            email_events.admin_new_report(session['user_id'], file_row[0], file_row[1], reason)
 
         cur.close()
         return jsonify({"success": True, "message": "Report submitted. Thank you for keeping the platform safe."})
@@ -1348,44 +1299,11 @@ def bulk_upload_done(course_id, batch_id):
     if approved_files:
         notify_course_followers(course_code, [f['title'] for f in approved_files], exclude_user_ids=[uploader])
 
-    # Send ONE consolidated email to admins if there are pending files
+    # ONE consolidated email per batch (not per file) to the uploader and to admins
     if pending_files:
-        try:
-            from email_service import send_email
-            conn = get_connection()
-            try:
-                cur = conn.cursor()
-                cur.execute("SELECT email FROM admins;")
-                admin_emails = [r[0] for r in cur.fetchall()]
-
-                # Get uploader name
-                cur.execute("SELECT username FROM users WHERE user_id = %s;", (uploader,))
-                uploader_name = cur.fetchone()
-                uploader_name = uploader_name[0] if uploader_name else 'Unknown'
-                cur.close()
-            finally:
-                conn.close()
-
-            file_list_html = ''.join(
-                f"<li>{f['title']}</li>" for f in pending_files
-            )
-
-            for admin_email in admin_emails:
-                subject = f"Bulk Upload: {len(pending_files)} files pending review - GIKI Course Hub"
-                body = f"""
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                    <h2 style="color: #2563EB;">📦 Bulk Upload — {len(pending_files)} Files Pending</h2>
-                    <p><strong>{uploader_name}</strong> uploaded {len(uploaded)} file(s) to <strong>{course_code}</strong>.</p>
-                    <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 16px 0;">
-                        <strong>Files awaiting review:</strong>
-                        <ol style="margin: 8px 0; padding-left: 20px;">{file_list_html}</ol>
-                    </div>
-                    <p>Please log in to the <a href="https://gikicoursehub.app/admin" style="color: #F59E0B; font-weight: bold;">Admin Panel</a> to review.</p>
-                </div>
-                """
-                send_email(admin_email, subject, body)
-        except Exception:
-            logger.exception("Failed to send bulk upload notification")
+        titles = [f['title'] for f in pending_files]
+        email_events.upload_received(uploader, [(t, course_code) for t in titles])
+        email_events.admin_new_uploads(uploader, course_code, titles)
 
     return jsonify({
         "success": True,

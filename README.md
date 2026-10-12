@@ -27,3 +27,13 @@ The backend REST API engine powering the GIKI Course Hub platform. Manages resou
    ```bash
    python app.py
    ```
+
+## Email notifications
+Branded emails go out when material is uploaded, approved or rejected, when reports and issues are filed or resolved, and to admins when something needs review. Templates live in `email_templates.py`, events in `email_events.py`.
+
+*   `RESEND_API_KEY` — required to send. Without it, emails are skipped.
+*   `EMAIL_DRY_RUN=1` — log instead of sending. Use this locally and on staging.
+*   `EMAIL_REDIRECT_TO=you@example.com` — send every email to one inbox for testing.
+*   `FRONTEND_URL` — base URL for links in emails (default `https://gikicoursehub.app`).
+*   Run `migrations/025_email_preferences.sql` so users can opt out at `/email-settings`.
+*   `python preview_emails.py` writes every template to `email_previews/` to look at in a browser.

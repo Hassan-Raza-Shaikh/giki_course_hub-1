@@ -17,6 +17,7 @@ from routes.user_routes import user_bp
 from routes.issue_routes import issue_bp
 from routes.instructor_routes import instructor_bp
 from routes.gpa_routes import gpa_bp
+from routes.email_routes import email_bp
 from routes.calendar_routes import calendar_bp
 from routes.notification_routes import notification_bp
 
@@ -99,6 +100,7 @@ def create_app():
     app.register_blueprint(issue_bp)
     app.register_blueprint(instructor_bp)
     app.register_blueprint(gpa_bp)
+    app.register_blueprint(email_bp)
     app.register_blueprint(calendar_bp)
     app.register_blueprint(notification_bp)
 

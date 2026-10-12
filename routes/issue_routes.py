@@ -1,5 +1,6 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
+import email_events
 import logging
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,7 @@ def submit_issue():
         new_id = cur.fetchone()[0]
         conn.commit()
         cur.close()
+        email_events.admin_new_issue(session['user_id'], itype, title, desc)
         return jsonify({"success": True, "issue_id": new_id, "message": "Issue reported. We'll look into it!"})
     except Exception:
         conn.rollback()

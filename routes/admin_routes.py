@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
 from config import BOOTSTRAP_ADMIN_EMAILS
+import email_events
 from notifications import notify_many, notify_all, notify_course_followers
 import logging
 
@@ -341,35 +342,12 @@ def admin_approve_file(file_id):
             return jsonify({"success": False, "message": "File not found."}), 404
         
         file_title, course_code, uploader_id = row
-        
-        # Send email to the submitter
-        if uploader_id:
-            try:
-                cur.execute("SELECT email, username FROM users WHERE user_id = %s;", (uploader_id,))
-                user_row = cur.fetchone()
-                if user_row:
-                    uploader_email, uploader_name = user_row
-                    from email_service import send_email
-                    subject = "Your Material was Approved! - GIKI Course Hub"
-                    body = f"""
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                        <h2 style="color: #059669;">Material Approved! 🎉</h2>
-                        <p>Hi {uploader_name},</p>
-                        <p>Great news! Your recent material submission has been reviewed and approved by an admin. It is now live and visible to all students on the GIKI Course Hub.</p>
-                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                            <li><strong>Title:</strong> {file_title}</li>
-                            <li><strong>Course:</strong> {course_code}</li>
-                        </ul>
-                        <p>Thank you for contributing to the community!</p>
-                    </div>
-                    """
-                    send_email(uploader_email, subject, body)
-            except Exception:
-                logger.exception("Failed to send approval email")
 
         _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=True)
         conn.commit()
         cur.close()
+        if uploader_id:
+            email_events.upload_approved(uploader_id, [(file_title, course_code)])
         _log(admin_email, 'approve_file', file_id, file_title)
         return jsonify({"success": True, "message": f"'{file_title}' approved."})
     except Exception:
@@ -401,39 +379,12 @@ def admin_reject_file(file_id):
             return jsonify({"success": False, "message": "File not found."}), 404
             
         file_title, course_code, uploader_id = row
-        
-        # Send email to the submitter
-        if uploader_id:
-            try:
-                cur.execute("SELECT email, username FROM users WHERE user_id = %s;", (uploader_id,))
-                user_row = cur.fetchone()
-                if user_row:
-                    uploader_email, uploader_name = user_row
-                    from email_service import send_email
-                    subject = "Update on Your Material Submission - GIKI Course Hub"
-                    body = f"""
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                        <h2 style="color: #DC2626;">Material Update</h2>
-                        <p>Hi {uploader_name},</p>
-                        <p>Your recent material submission has been reviewed by an admin and was unfortunately <strong>rejected</strong>.</p>
-                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                            <li><strong>Title:</strong> {file_title}</li>
-                            <li><strong>Course:</strong> {course_code}</li>
-                        </ul>
-                        <div style="background: #FEF2F2; color: #991B1B; padding: 16px; border-left: 4px solid #DC2626; margin-top: 20px;">
-                            <strong>Reason from Admin:</strong><br/>
-                            {reason}
-                        </div>
-                        <p>If you have any questions or wish to correct the material, feel free to upload a revised version.</p>
-                    </div>
-                    """
-                    send_email(uploader_email, subject, body)
-            except Exception:
-                logger.exception("Failed to send rejection email")
 
         _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=False, reason=reason)
         conn.commit()
         cur.close()
+        if uploader_id:
+            email_events.upload_rejected(uploader_id, [(file_title, course_code)], reason)
         _log(admin_email, 'reject_file', file_id, file_title)
         return jsonify({"success": True, "message": f"'{file_title}' rejected."})
     except Exception:
@@ -827,6 +778,16 @@ def admin_list_reports():
         conn.close()
 
 
+def _report_info(cur, report_id):
+    """(reporter user_id, file title, course code) for a report, used to email the reporter."""
+    cur.execute("""
+        SELECT r.reporter_id, f.title, f.course_code
+        FROM reports r JOIN files f ON f.file_id = r.file_id
+        WHERE r.report_id = %s;
+    """, (report_id,))
+    return cur.fetchone()
+
+
 @admin_bp.route('/api/admin/reports/<int:report_id>/resolve', methods=['POST'])
 def admin_resolve_report(report_id):
     admin_email, err = _require_admin()
@@ -841,43 +802,12 @@ def admin_resolve_report(report_id):
         row = cur.fetchone()
         if not row:
             return jsonify({"success": False, "message": "Report not found."}), 404
-
-        file_id = row[0]
-        # Notify the reporter
-        try:
-            from email_service import send_email
-            cur.execute("""
-                SELECT u.email, u.username, f.title, f.course_code
-                FROM reports r
-                JOIN users u ON u.user_id = r.reporter_id
-                JOIN files f ON f.file_id = r.file_id
-                WHERE r.report_id = %s;
-            """, (report_id,))
-            info = cur.fetchone()
-            if info:
-                reporter_email, reporter_name, file_title, course_code = info
-                send_email(
-                    reporter_email,
-                    "Your Report Has Been Resolved - GIKI Course Hub",
-                    f"""
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                        <h2 style="color: #059669;">✅ Report Resolved</h2>
-                        <p>Hi {reporter_name},</p>
-                        <p>Your content report has been reviewed and resolved by an admin.</p>
-                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                            <li><strong>File:</strong> {file_title}</li>
-                            <li><strong>Course:</strong> {course_code}</li>
-                        </ul>
-                        {f'<div style="background: #ECFDF5; color: #065F46; padding: 16px; border-left: 4px solid #059669; margin-top: 20px;"><strong>Admin notes:</strong><br/>{notes}</div>' if notes else ''}
-                        <p>Thank you for helping keep GIKI Course Hub safe and accurate!</p>
-                    </div>
-                    """
-                )
-        except Exception:
-            logger.exception("Failed to send resolve report email")
+        info = _report_info(cur, report_id)
 
         _notify_report(conn, report_id, resolved=True, notes=notes)
         conn.commit(); cur.close()
+        if info:
+            email_events.report_resolved(info[0], info[1], info[2], notes)
         _log(admin_email, 'resolve_report', report_id)
         return jsonify({"success": True, "message": "Report resolved."})
     except Exception:
@@ -897,42 +827,11 @@ def admin_dismiss_report(report_id):
         cur = conn.cursor()
         cur.execute("UPDATE reports SET status='dismissed', resolved_by=%s, resolved_at=NOW() WHERE report_id=%s;",
                     (admin_email, report_id))
-        conn.commit()
-
-        # Notify the reporter
-        try:
-            from email_service import send_email
-            cur.execute("""
-                SELECT u.email, u.username, f.title, f.course_code
-                FROM reports r
-                JOIN users u ON u.user_id = r.reporter_id
-                JOIN files f ON f.file_id = r.file_id
-                WHERE r.report_id = %s;
-            """, (report_id,))
-            info = cur.fetchone()
-            if info:
-                reporter_email, reporter_name, file_title, course_code = info
-                send_email(
-                    reporter_email,
-                    "Update on Your Report - GIKI Course Hub",
-                    f"""
-                    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                        <h2 style="color: #6B7280;">Report Update</h2>
-                        <p>Hi {reporter_name},</p>
-                        <p>Your content report has been reviewed by an admin and was <strong>dismissed</strong> — the flagged content was found to be within platform guidelines.</p>
-                        <ul style="background: #f3f4f6; padding: 20px; border-radius: 8px;">
-                            <li><strong>File:</strong> {file_title}</li>
-                            <li><strong>Course:</strong> {course_code}</li>
-                        </ul>
-                        <p>If you believe this was an error, please use the <a href="https://gikicoursehub.app/report-issue" style="color: #F59E0B;">Report an Issue</a> page to contact us.</p>
-                    </div>
-                    """
-                )
-        except Exception:
-            logger.exception("Failed to send dismiss report email")
-
+        info = _report_info(cur, report_id)
         _notify_report(conn, report_id, resolved=False)
         conn.commit()
+        if info:
+            email_events.report_dismissed(info[0], info[1], info[2])
         cur.close()
         _log(admin_email, 'dismiss_report', report_id)
         return jsonify({"success": True, "message": "Report dismissed."})
@@ -947,6 +846,16 @@ def admin_dismiss_report(report_id):
 # ─────────────────────────────────────────────────────────────────────────────
 # Bulk approve / reject
 # ─────────────────────────────────────────────────────────────────────────────
+
+def _group_by_uploader(rows):
+    """{uploader_id: [(title, course_code), ...]} from (file_id, title, course_code, uploaded_by) rows,
+    so each uploader gets one email per bulk action instead of one per file."""
+    grouped = {}
+    for _, title, course_code, uploader_id in rows:
+        if uploader_id:
+            grouped.setdefault(uploader_id, []).append((title, course_code))
+    return grouped
+
 
 @admin_bp.route('/api/admin/files/bulk-approve', methods=['POST'])
 def admin_bulk_approve():
@@ -964,6 +873,8 @@ def admin_bulk_approve():
         updated = cur.fetchall()
         _notify_review(conn, updated, approved=True)
         conn.commit(); cur.close()
+        for uploader_id, files in _group_by_uploader(updated).items():
+            email_events.upload_approved(uploader_id, files)
         for fid, title, _, _ in updated:
             _log(admin_email, 'approve_file', fid, title)
         return jsonify({"success": True, "approved": len(updated), "message": f"{len(updated)} file(s) approved."})
@@ -993,6 +904,8 @@ def admin_bulk_reject():
         updated = cur.fetchall()
         _notify_review(conn, updated, approved=False, reason=reason)
         conn.commit(); cur.close()
+        for uploader_id, files in _group_by_uploader(updated).items():
+            email_events.upload_rejected(uploader_id, files, reason)
         for fid, title, _, _ in updated:
             _log(admin_email, 'reject_file', fid, title)
         return jsonify({"success": True, "rejected": len(updated), "message": f"{len(updated)} file(s) rejected."})
@@ -1469,10 +1382,13 @@ def admin_resolve_issue(issue_id):
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE issues SET status='resolved', resolved_by=%s, updated_at=NOW(), admin_notes=%s WHERE issue_id=%s;",
+            "UPDATE issues SET status='resolved', resolved_by=%s, updated_at=NOW(), admin_notes=%s WHERE issue_id=%s RETURNING user_id, title;",
             (admin_email, notes, issue_id)
         )
+        row = cur.fetchone()
         conn.commit(); cur.close()
+        if row and row[0]:
+            email_events.issue_resolved(row[0], row[1], notes)
         _log(admin_email, 'resolve_issue', issue_id)
         return jsonify({"success": True, "message": "Issue marked as resolved."})
     except Exception:

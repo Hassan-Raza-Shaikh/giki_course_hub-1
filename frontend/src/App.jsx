@@ -26,6 +26,7 @@ const UploadPage   = lazy(() => import('./pages/UploadPage'));
 const MyUploads    = lazy(() => import('./pages/MyUploads'));
 const CategoryView = lazy(() => import('./pages/CategoryView'));
 const Calculator   = lazy(() => import('./pages/GpaCalculator'));
+const EmailSettings = lazy(() => import('./pages/EmailSettings'));
 const Calendar     = lazy(() => import('./pages/Calendar'));
 const Notifications = lazy(() => import('./pages/Notifications'));
 
@@ -288,6 +289,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/category/:categorySlug" element={<CategoryView />} />
           <Route path="/admin"      element={<AdminPanel user={user} />} />
           <Route path="/report-issue" element={<ReportIssue user={user} />} />
+          <Route path="/email-settings" element={<EmailSettings user={user} onSignIn={handleSignIn} />} />
           <Route path="*"           element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
