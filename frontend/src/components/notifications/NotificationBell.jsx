@@ -89,6 +89,7 @@ const NotificationBell = ({ user }) => {
     <div ref={ref} style={{ position: 'relative' }}>
       <button
         className={`notif-bell ${open ? 'open' : ''}`}
+        data-tour="notifications"
         onClick={() => setOpen(o => !o)}
         aria-label={unread ? `Notifications (${unread} unread)` : 'Notifications'}
         aria-expanded={open}

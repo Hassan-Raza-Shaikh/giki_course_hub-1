@@ -11,6 +11,7 @@ import ProfileCompleteModal from './components/ProfileCompleteModal';
 import { ToastProvider } from './components/Toast';
 import BackToTop from './components/BackToTop';
 import ThemeEffects from './components/ThemeEffects';
+import TourProvider from './components/tour/TourProvider';
 
 // Lazy loaded heavy routes to reduce initial bundle size
 const Landing      = lazy(() => import('./pages/Landing'));
@@ -245,7 +246,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
   }, [navigate]);
 
   return (
-    <>
+    <TourProvider user={user} blocked={showLogin || (!!user && user.profileComplete === false)}>
       <ThemeEffects />
       <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
       <BackToTop />
@@ -293,7 +294,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="*"           element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
-    </>
+    </TourProvider>
   );
 };
 

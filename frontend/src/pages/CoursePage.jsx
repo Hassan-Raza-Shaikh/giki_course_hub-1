@@ -362,6 +362,7 @@ const CoursePage = ({ user, onSignIn }) => {
             <DownloadZipButton
               variant="primary"
               label="Download course"
+              tourId="download-course"
               sections={allSections}
               rootFolder={courseFolderName(course)}
               zipName={`${courseFolderName(course)}.zip`}
@@ -460,7 +461,7 @@ const CoursePage = ({ user, onSignIn }) => {
         <div className="course-grid">
           {/* Left Sidebar */}
           <div className="sidebar-container">
-            <div className="category-tabs-container">
+            <div className="category-tabs-container" data-tour="course-sections">
               <div className="category-tabs-wrapper sidebar-tabs">
                 {allTabs.map(tab => {
                   const count = (filesByCategory[tab] || []).length;
@@ -538,7 +539,7 @@ const CoursePage = ({ user, onSignIn }) => {
             
             {/* File List */}
             <ScrollReveal>
-          <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
+          <div data-tour="course-files" style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden', marginBottom: '64px' }}>
             <div style={{ padding: '20px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--primary)', fontFamily: 'var(--font-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -563,6 +564,7 @@ const CoursePage = ({ user, onSignIn }) => {
                 <DownloadZipButton
                   key={activeTab}
                   label="Download all"
+                  tourId="download-section"
                   sections={[{ name: activeTab, files: currentFiles }]}
                   rootFolder={courseFolderName(course)}
                   zipName={`${courseFolderName(course)} - ${sectionFolderName(activeTab)}.zip`}
@@ -762,7 +764,7 @@ const CoursePage = ({ user, onSignIn }) => {
 
         {/* Upload Section */}
         <ScrollReveal>
-          <div ref={uploadRef} style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
+          <div ref={uploadRef} data-tour="course-upload" style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
             <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
               <h2 style={{ fontSize: '1.4rem', fontWeight: 900, fontFamily: 'var(--font-primary)', marginBottom: '8px', color: 'var(--text)', display: 'flex', alignItems: 'center' }}>
                 <UploadCloud size={22} style={{ marginRight: '8px' }} /> Contribute Materials
