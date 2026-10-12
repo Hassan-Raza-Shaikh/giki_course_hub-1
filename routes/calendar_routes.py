@@ -4,6 +4,7 @@ from db import get_connection
 from routes.admin_routes import _require_admin, _log
 from utils.calendar import (
     EVENT_COLUMNS, EVENT_TYPES, build_ics, on_event_changed, parse_event_time, row_to_event,
+    send_due_reminders,
 )
 
 calendar_bp = Blueprint('calendar', __name__)
@@ -161,7 +162,8 @@ def admin_create_event():
     admin_email, err = _require_admin()
     if err: return err
 
-    fields, msg = _validate_event(request.get_json() or {})
+    data = request.get_json() or {}
+    fields, msg = _validate_event(data)
     if msg:
         return jsonify({"success": False, "message": msg}), 400
 
@@ -186,7 +188,7 @@ def admin_create_event():
         conn.close()
 
     _log(admin_email, 'create_event', event['id'], event['title'])
-    on_event_changed('created', event)
+    on_event_changed('created', event, announce=bool(data.get('notify')))
     return jsonify({"success": True, "message": "Event added.", "event": event})
 
 
@@ -253,3 +255,23 @@ def admin_delete_event(event_id):
     _log(admin_email, 'delete_event', event_id, event['title'])
     on_event_changed('deleted', event)
     return jsonify({"success": True, "message": "Event deleted."})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Reminders (called by the keep-awake workflow every few minutes)
+# ─────────────────────────────────────────────────────────────────────────────
+
+@calendar_bp.route('/api/calendar/reminders/run', methods=['POST'])
+def run_reminders():
+    """Send any calendar reminders that are due. Idempotent and public: each
+    reminder is claimed once in calendar_reminders, so extra calls send nothing."""
+    conn = get_connection()
+    try:
+        sent = send_due_reminders(conn)
+    except Exception:
+        conn.rollback()
+        import traceback; traceback.print_exc()
+        return jsonify({"success": False, "message": ERROR_MSG}), 500
+    finally:
+        conn.close()
+    return jsonify({"success": True, "sent": sent})
