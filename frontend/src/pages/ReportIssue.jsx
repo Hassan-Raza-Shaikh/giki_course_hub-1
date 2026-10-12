@@ -83,7 +83,7 @@ const ReportIssue = ({ user }) => {
           ) : (
             <form onSubmit={handleSubmit}>
               {error && (
-                <div style={{ padding: '12px 16px', background: '#FEE2E2', border: '2px solid #EF4444', borderRadius: '12px', color: '#B91C1C', fontWeight: 700, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+                <div style={{ padding: '12px 16px', background: 'var(--danger-soft)', border: '2px solid var(--danger)', borderRadius: '12px', color: 'var(--danger)', fontWeight: 700, fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
                   <AlertTriangle size={18} /> {error}
                 </div>
               )}
@@ -136,7 +136,7 @@ const ReportIssue = ({ user }) => {
                 disabled={loading}
                 style={{ 
                   width: '100%', padding: '18px', borderRadius: '14px', border: '3px solid var(--text)',
-                  background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'white', fontWeight: 900, fontSize: '1.1rem',
+                  background: 'color-mix(in srgb, var(--primary) 85%, var(--accent))', color: 'var(--on-primary)', fontWeight: 900, fontSize: '1.1rem',
                   boxShadow: '4px 4px 0 var(--text)', cursor: 'pointer', transition: 'all 0.1s'
                 }}
                 onMouseDown={e => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = '2px 2px 0 var(--text)'; }}

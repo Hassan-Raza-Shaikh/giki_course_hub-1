@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, BellOff, CheckCheck, Lock, X } from 'lucide-react';
-import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { PageHeader, Card, Button, EmptyState } from '../components/ui';
 import {
   NotificationIcon, timeAgo, notificationsApi,
   emitNotificationsChanged, onNotificationsChanged,
@@ -81,38 +81,24 @@ const Notifications = ({ user, onSignIn }) => {
   const visible = filter === 'unread' ? items.filter(x => !x.is_read) : items;
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
+    <div className="ui-page">
       <div className="page-container" style={{ maxWidth: '800px' }}>
 
-        {/* Header */}
-        <div style={{
-          background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '24px',
-          padding: '32px 40px', boxShadow: '0 8px 32px rgba(0,0,0,0.04)', marginBottom: '32px',
-          display: 'flex', alignItems: 'center', gap: '24px', color: 'var(--text)', flexWrap: 'wrap',
-          animation: 'fadeUp 0.4s ease-out'
-        }}>
-          <div style={{ background: 'var(--bg-card)', padding: '20px', borderRadius: '20px', border: '1px solid var(--border)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)' }}>
-            <Bell size={40} strokeWidth={2.5} color="var(--primary)" />
-          </div>
-          <div style={{ flex: 1, minWidth: '200px' }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
-              Notifications
-            </h1>
-            <p style={{ margin: 0, fontSize: '1.05rem', color: 'var(--text-muted)', fontWeight: 500, lineHeight: 1.5 }}>
-              Updates on your uploads, courses and upcoming events.
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          icon={<Bell size={40} strokeWidth={2.5} />}
+          title="Notifications"
+          subtitle="Updates on your uploads, courses and upcoming events."
+        />
 
         {!user ? (
-          <ScrollReveal delay="reveal-delay-1">
-            <div style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', padding: '80px 32px', textAlign: 'center' }}>
-              <div style={{ marginBottom: '24px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><Lock size={64} strokeWidth={1.5} /></div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>Account Required</h2>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Please sign in to see your notifications.</p>
-              <button className="btn-primary" onClick={onSignIn}>Sign In Now</button>
-            </div>
-          </ScrollReveal>
+          <Card padding="lg">
+            <EmptyState
+              icon={<Lock size={56} strokeWidth={1.5} />}
+              title="Account Required"
+              text="Please sign in to see your notifications."
+              action={<Button variant="primary" onClick={onSignIn}>Sign In Now</Button>}
+            />
+          </Card>
         ) : (
           <>
             {/* Toolbar */}
@@ -126,28 +112,24 @@ const Notifications = ({ user, onSignIn }) => {
                 ))}
               </div>
               {unread > 0 && (
-                <button className="btn-nav" onClick={markAllRead}>
-                  <CheckCheck size={16} strokeWidth={2.5} /> Mark all read
-                </button>
+                <Button size="sm" icon={<CheckCheck size={16} strokeWidth={2.5} />} onClick={markAllRead}>
+                  Mark all read
+                </Button>
               )}
             </div>
 
             {loading ? (
               <LoadingSpinner message="Loading notifications..." />
             ) : visible.length === 0 ? (
-              <ScrollReveal delay="reveal-delay-1">
-                <div style={{ background: 'var(--bg-card)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.05)', padding: '60px 32px', textAlign: 'center' }}>
-                  <div style={{ marginBottom: '20px', color: 'var(--text-light)', display: 'flex', justifyContent: 'center' }}><BellOff size={56} strokeWidth={1.5} /></div>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)', marginBottom: '12px' }}>
-                    {filter === 'unread' ? "You're all caught up" : 'No notifications yet'}
-                  </h2>
-                  <p style={{ color: 'var(--text-muted)', maxWidth: '380px', margin: '0 auto' }}>
-                    {filter === 'unread'
-                      ? 'You have read everything. New updates will appear here.'
-                      : "When your uploads are reviewed or something new happens in your courses, you'll see it here."}
-                  </p>
-                </div>
-              </ScrollReveal>
+              <Card padding="lg">
+                <EmptyState
+                  icon={<BellOff size={56} strokeWidth={1.5} />}
+                  title={filter === 'unread' ? "You're all caught up" : 'No notifications yet'}
+                  text={filter === 'unread'
+                    ? 'You have read everything. New updates will appear here.'
+                    : "When your uploads are reviewed or something new happens in your courses, you'll see it here."}
+                />
+              </Card>
             ) : (
               <div className="notif-page-list">
                 {visible.map(n => (
@@ -167,10 +149,9 @@ const Notifications = ({ user, onSignIn }) => {
                   </div>
                 ))}
                 {hasMore && (
-                  <button className="btn-outline" onClick={loadMore} disabled={loadingMore}
-                    style={{ alignSelf: 'center', marginTop: '8px', fontSize: '0.9rem', padding: '10px 24px' }}>
+                  <Button onClick={loadMore} disabled={loadingMore} style={{ alignSelf: 'center', marginTop: '8px' }}>
                     {loadingMore ? 'Loading…' : 'Load more'}
-                  </button>
+                  </Button>
                 )}
               </div>
             )}

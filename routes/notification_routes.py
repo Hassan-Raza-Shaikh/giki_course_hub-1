@@ -1,5 +1,8 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
+import logging
+
+logger = logging.getLogger(__name__)
 
 notification_bp = Blueprint('notifications', __name__)
 
@@ -73,7 +76,7 @@ def list_notifications():
             "has_more": len(rows) > limit,
         }))
     except Exception:
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -98,7 +101,7 @@ def unread_count():
         cur.close()
         return _no_store(jsonify({"success": True, "unread_count": count}))
     except Exception:
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -127,7 +130,7 @@ def mark_read(notification_id):
         return jsonify({"success": True})
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -154,7 +157,7 @@ def mark_all_read():
         return jsonify({"success": True, "updated": updated})
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -183,7 +186,7 @@ def delete_notification(notification_id):
         return jsonify({"success": True})
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

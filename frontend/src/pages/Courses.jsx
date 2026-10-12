@@ -35,7 +35,7 @@ const CourseRow = ({ course, onClick }) => (
       cursor: 'pointer',
       transition: 'background 0.15s',
     }}
-    onMouseOver={e => e.currentTarget.style.background = '#FAF5FF'}
+    onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
     onMouseOut={e => e.currentTarget.style.background = 'transparent'}
   >
     <div style={{
@@ -113,16 +113,7 @@ const YearSection = ({ year, semesters, onCourseClick, programId }) => {
         <div style={{ padding: '8px 16px 16px' }}>
           {semesters.map(sem => (
             <div key={sem.semester}>
-              <div style={{
-                padding: '8px 16px',
-                fontSize: '0.72rem', fontWeight: 800,
-                color: '#7C3AED', textTransform: 'uppercase', letterSpacing: '0.1em',
-                display: 'flex', alignItems: 'center', gap: '8px',
-              }}>
-                <div style={{ height: 1, flex: 1, background: 'rgba(124,58,237,0.15)' }} />
-                Semester {sem.semester}
-                <div style={{ height: 1, flex: 1, background: 'rgba(124,58,237,0.15)' }} />
-              </div>
+              <div className="ui-divider-label">Semester {sem.semester}</div>
               {sem.courses.map(course => (
                 <CourseRow key={course.course_id || course.id || course.code} course={course} onClick={onCourseClick} />
               ))}
@@ -257,25 +248,25 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
             <div style={{ display: 'flex', alignItems: 'center' }}><IconMapper emoji={faculty.icon} size={28} /></div>
           </div>
           <div>
-            <div style={{ fontFamily: 'var(--font-primary)', fontWeight: 900, fontSize: '1.25rem', color: open ? 'white' : 'var(--primary)' }}>
+            <div style={{ fontFamily: 'var(--font-primary)', fontWeight: 900, fontSize: '1.25rem', color: open ? 'var(--on-primary)' : 'var(--primary)' }}>
               {faculty.name}
             </div>
-            <div style={{ fontSize: '0.85rem', marginTop: '4px', color: open ? 'rgba(255,255,255,0.65)' : 'var(--text-muted)' }}>
+            <div style={{ fontSize: '0.85rem', marginTop: '4px', color: open ? 'color-mix(in srgb, var(--on-primary) 70%, transparent)' : 'var(--text-muted)' }}>
               {faculty.full_name}
             </div>
             <div style={{ display: 'flex', gap: '12px', marginTop: '8px', flexWrap: 'wrap' }}>
               <span style={{
                 fontSize: '0.75rem', fontWeight: 700,
-                color: open ? 'rgba(255,255,255,0.9)' : '#06B6D4',
-                background: open ? 'rgba(255,255,255,0.15)' : 'rgba(6,182,212,0.1)',
+                color: open ? 'var(--on-primary)' : 'var(--electric)',
+                background: open ? 'color-mix(in srgb, var(--on-primary) 15%, transparent)' : 'color-mix(in srgb, var(--electric) 10%, transparent)',
                 padding: '3px 10px', borderRadius: '100px',
               }}>
                 {faculty.programs.length} Programs
               </span>
               <span style={{
                 fontSize: '0.75rem', fontWeight: 700,
-                color: open ? 'rgba(255,255,255,0.9)' : 'var(--text-muted)',
-                background: open ? 'rgba(255,255,255,0.15)' : 'var(--bg-subtle)',
+                color: open ? 'var(--on-primary)' : 'var(--text-muted)',
+                background: open ? 'color-mix(in srgb, var(--on-primary) 15%, transparent)' : 'var(--bg-subtle)',
                 padding: '3px 10px', borderRadius: '100px',
               }}>
                 {totalCourses} Courses
@@ -286,11 +277,11 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
 
         <div style={{
           width: 36, height: 36, borderRadius: '10px',
-          background: open ? 'rgba(255,255,255,0.18)' : 'var(--bg-subtle)',
+          background: open ? 'color-mix(in srgb, var(--on-primary) 18%, transparent)' : 'var(--bg-subtle)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '1.2rem', transition: 'all 0.3s', flexShrink: 0,
           transform: open ? 'rotate(180deg)' : 'none',
-          color: open ? 'white' : 'var(--electric)',
+          color: open ? 'var(--on-primary)' : 'var(--electric)',
         }}>
           <ChevronDown size={20} strokeWidth={2.5} />
         </div>

@@ -802,12 +802,12 @@ input::placeholder, textarea::placeholder {
 }
 .upload-zone.dragover {
   border-color: var(--primary);
-  background: rgba(124,58,237,0.05);
+  background: var(--primary-soft);
 }
 @media (hover: hover) {
   .upload-zone:hover {
     border-color: var(--primary);
-    background: rgba(124,58,237,0.05);
+    background: var(--primary-soft);
   }
 }
 
@@ -829,7 +829,7 @@ input::placeholder, textarea::placeholder {
   padding: 0;
   max-width: 440px;
   width: 92%;
-  box-shadow: 0 30px 80px rgba(124,58,237,0.35);
+  box-shadow: 0 30px 80px color-mix(in srgb, var(--primary) 35%, transparent);
   animation: scaleIn 0.25s ease;
   border: 2px solid var(--border);
   overflow: hidden;
@@ -934,9 +934,9 @@ input::placeholder, textarea::placeholder {
   font-weight: 700;
 }
 .badge-year {
-  background: rgba(124,58,237,0.1);
+  background: var(--primary-soft);
   color: var(--primary);
-  border: 1px solid rgba(124,58,237,0.2);
+  border: 1px solid var(--primary-line);
 }
 
 /* ── Shimmer skeleton ────────────────────────────────── */

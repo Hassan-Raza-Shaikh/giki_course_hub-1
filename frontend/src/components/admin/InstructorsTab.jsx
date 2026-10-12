@@ -51,7 +51,7 @@ export const InstructorsTab = ({ isAdmin, showToast, faculties }) => {
             </select>
           </div>
         </div>
-        <button type="submit" style={{ background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '100px', fontWeight: 700, width: '100%', padding: '14px', marginTop: '24px', cursor: 'pointer' }}>
+        <button type="submit" style={{ background: 'var(--primary)', color: 'var(--on-primary)', border: 'none', borderRadius: '100px', fontWeight: 700, width: '100%', padding: '14px', marginTop: '24px', cursor: 'pointer' }}>
           Create Instructor
         </button>
       </form>

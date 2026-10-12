@@ -306,7 +306,7 @@ const BulkUploader = ({
   if (uploadSuccess) {
     return (
       <div style={{ textAlign: 'center', padding: '32px 0', animation: 'scaleIn 0.3s ease' }}>
-        <div style={{ fontSize: '3rem', marginBottom: '16px' }}><CheckCircle size={56} color="#10B981" /></div>
+        <div style={{ fontSize: '3rem', marginBottom: '16px' }}><CheckCircle size={56} color="var(--success)" /></div>
         <p style={{ fontWeight: 800, color: 'var(--accent)', fontSize: '1.2rem', marginBottom: '8px' }}>
           {uploadSummary && uploadSummary.total_uploaded > 1 ? `${uploadSummary.total_uploaded} files submitted!` : 'Material submitted!'}
         </p>
@@ -324,10 +324,10 @@ const BulkUploader = ({
   return (
     <form onSubmit={handleBulkUpload} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {uploadError && (
-        <div style={{ padding: '14px', background: 'rgba(185,28,28,0.1)', color: 'var(--accent, #B91C1C)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', fontWeight: 600, border: '1px solid rgba(185,28,28,0.3)' }}>
+        <div style={{ padding: '14px', background: 'var(--danger-soft)', color: 'var(--danger)', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', fontWeight: 600, border: '1px solid var(--danger)' }}>
           {uploadError}
           {uploadError.includes('Report button below') && (
-            <button onClick={() => navigate('/report-issue')} style={{ marginTop: '8px', padding: '4px 10px', borderRadius: '4px', background: 'var(--accent)', color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 'bold', display: 'block' }}>
+            <button onClick={() => navigate('/report-issue')} style={{ marginTop: '8px', padding: '4px 10px', borderRadius: '100px', background: 'var(--danger-fill)', color: 'var(--on-status)', border: 'none', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 'bold', display: 'block' }}>
               Report Issue
             </button>
           )}
@@ -376,7 +376,7 @@ const BulkUploader = ({
               <select
                 value={sharedCourseId}
                 onChange={e => applySharedMeta('course_id', e.target.value)}
-                style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)' }}
+                style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)' }}
               >
                 <option value="">Select course…</option>
                 {allCourses.map(c => (
@@ -393,7 +393,7 @@ const BulkUploader = ({
             <select
               value={sharedCatId}
               onChange={e => applySharedMeta('category_id', e.target.value)}
-              style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)' }}
+              style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)' }}
             >
               <option value="">Select category…</option>
               {categories.map(c => (
@@ -409,7 +409,7 @@ const BulkUploader = ({
             <select
               value={sharedInstructorId}
               onChange={e => applySharedMeta('instructor_id', e.target.value)}
-              style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid #CBD5E1', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)' }}
+              style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border)', fontSize: '0.9rem', outline: 'none', background: 'var(--bg-white)', color: 'var(--text)' }}
             >
               <option value="">None / General</option>
               {courseInstructors.length > 0 && (
@@ -433,7 +433,7 @@ const BulkUploader = ({
             Upload Queue ({uploadQueue.length}/{MAX_FILES})
           </label>
           {uploadQueue.map((item, idx) => {
-            const statusIcon = { queued: <Clock size={16}/>, uploading: <UploadCloud size={16}/>, done: <CheckCircle size={16} color="#10B981"/>, error: <XCircle size={16} color="#EF4444"/>, skipped: <AlertTriangle size={16} color="#F59E0B"/> }[item.status] || <Clock size={16}/>;
+            const statusIcon = { queued: <Clock size={16}/>, uploading: <UploadCloud size={16}/>, done: <CheckCircle size={16} color="var(--success)"/>, error: <XCircle size={16} color="var(--danger)"/>, skipped: <AlertTriangle size={16} color="#F59E0B"/> }[item.status] || <Clock size={16}/>;
             const isEditable = item.status === 'queued';
             const sizeMB = (item.file.size / 1024 / 1024).toFixed(1);
             const maxMB = getMaxSizeMB(item.category_id);
@@ -442,7 +442,7 @@ const BulkUploader = ({
             return (
               <div key={idx} style={{
                 padding: '14px 16px', borderRadius: 'var(--radius-md)',
-                border: `1px solid ${item.status === 'error' ? '#FCA5A5' : item.status === 'done' ? '#86EFAC' : item.status === 'skipped' ? '#FDE68A' : 'var(--border)'}`,
+                border: `1px solid ${item.status === 'error' ? 'var(--danger)' : item.status === 'done' ? 'var(--success)' : item.status === 'skipped' ? 'var(--warning)' : 'var(--border)'}`,
                 background: item.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : item.status === 'done' ? 'rgba(34, 197, 94, 0.1)' : item.status === 'skipped' ? 'rgba(234, 179, 8, 0.1)' : 'var(--bg-white)',
                 transition: 'all 0.2s',
               }}>
@@ -468,7 +468,7 @@ const BulkUploader = ({
                     </span>
                   )}
 
-                  <span style={{ fontSize: '0.8rem', color: isTooLarge ? '#DC2626' : 'var(--text-muted)', fontWeight: 600, flexShrink: 0, width: '60px', textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.8rem', color: isTooLarge ? 'var(--danger)' : 'var(--text-muted)', fontWeight: 600, flexShrink: 0, width: '60px', textAlign: 'right' }}>
                     {sizeMB} MB
                   </span>
 
@@ -534,16 +534,16 @@ const BulkUploader = ({
                       <span>{item.progress}%</span>
                     </div>
                     <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ width: `${item.progress}%`, height: '100%', background: 'linear-gradient(90deg, #7C3AED, #EC4899)', transition: 'width 0.2s', borderRadius: '3px' }} />
+                      <div style={{ width: `${item.progress}%`, height: '100%', background: 'linear-gradient(90deg, var(--primary), var(--accent))', transition: 'width 0.2s', borderRadius: '3px' }} />
                     </div>
                   </div>
                 )}
 
                 {item.error && (
-                  <div style={{ marginTop: '6px', fontSize: '0.8rem', color: item.status === 'skipped' ? '#92400E' : '#DC2626', fontWeight: 500 }}>
+                  <div style={{ marginTop: '6px', fontSize: '0.8rem', color: item.status === 'skipped' ? 'var(--warning)' : 'var(--danger)', fontWeight: 500 }}>
                     {item.error}
                     {item.error.includes('Report button below') && (
-                      <button type="button" onClick={() => navigate('/report-issue')} style={{ marginLeft: '8px', padding: '2px 6px', borderRadius: '4px', background: '#DC2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                      <button type="button" onClick={() => navigate('/report-issue')} style={{ marginLeft: '8px', padding: '2px 8px', borderRadius: '100px', background: 'var(--danger-fill)', color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold' }}>
                         Report
                       </button>
                     )}
