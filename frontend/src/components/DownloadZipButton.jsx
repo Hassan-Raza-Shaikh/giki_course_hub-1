@@ -17,7 +17,7 @@ const formatSize = (bytes) => {
  *
  * variant: 'primary' for the course header, 'compact' for section headers.
  */
-const DownloadZipButton = ({ sections, rootFolder, zipName, label, user, variant = 'compact' }) => {
+const DownloadZipButton = ({ sections, rootFolder, zipName, label, user, variant = 'compact', tourId }) => {
   const toast = useToast();
   const [progress, setProgress] = useState(null); // { done, total } while zipping
   const abortRef = useRef(null);
@@ -75,6 +75,7 @@ const DownloadZipButton = ({ sections, rootFolder, zipName, label, user, variant
       onClick={run}
       title={title}
       aria-live="polite"
+      data-tour={tourId}
       className={`zip-download-btn zip-download-btn--${variant}${busy ? ' is-busy' : ''}`}
     >
       {icon}

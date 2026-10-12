@@ -5,7 +5,8 @@ import IconMapper from '../components/IconMapper';
 import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import { Library, GraduationCap, Building2, Unlock, FolderOpen, Sparkles } from 'lucide-react';
+import { Library, GraduationCap, Building2, Unlock, FolderOpen, Sparkles, Compass } from 'lucide-react';
+import { useTour } from '../components/tour/TourProvider';
 
 const QUOTES = [
   '"Education is the most powerful weapon which you can use to change the world."',
@@ -25,6 +26,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
   const [stats, setStats] = useState({ courses: '...', faculties: '...', programs: '...', materials: '...' });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { startTour } = useTour();
 
   useEffect(() => {
     // Fetch live stats
@@ -305,6 +307,13 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>
           © {new Date().getFullYear()} GIK Institute of Engineering Sciences and Technology
         </p>
+        <button
+          className="btn-nav"
+          onClick={() => startTour('main')}
+          style={{ marginTop: '20px' }}
+        >
+          <Compass size={15} strokeWidth={2.5} /> Take the Tour
+        </button>
       </footer>
     </div>
   );

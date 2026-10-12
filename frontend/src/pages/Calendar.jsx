@@ -219,7 +219,7 @@ const Calendar = ({ user }) => {
       <div className="page-container" style={{ maxWidth: '1200px' }}>
 
         {/* Header */}
-        <div className="cal-header" style={{ animation: 'fadeSlideUp 0.4s ease-out' }}>
+        <div className="cal-header" data-tour="calendar-header" style={{ animation: 'fadeSlideUp 0.4s ease-out' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap', flex: '1 1 340px', minWidth: 0 }}>
             <div style={{ background: 'var(--bg-card)', padding: '20px', borderRadius: '20px', border: '1px solid var(--border)', boxShadow: '0 4px 16px rgba(0,0,0,0.05)' }}>
               <CalendarDays size={40} strokeWidth={2.5} color="var(--primary)" />
@@ -247,7 +247,7 @@ const Calendar = ({ user }) => {
 
         {/* Countdowns */}
         {countdowns.length > 0 && (
-          <section style={{ marginBottom: '32px' }}>
+          <section data-tour="calendar-countdowns" style={{ marginBottom: '32px' }}>
             <h3 className="cal-section-title"><Hourglass size={18} /> Countdowns</h3>
             <div className="cal-countdowns">
               {countdowns.map((ev, i) => <CountdownCard key={ev.id} ev={ev} now={now} onOpen={setOpenEvent} index={i} />)}
