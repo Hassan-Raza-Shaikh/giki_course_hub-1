@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Activity, Megaphone } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Activity, Megaphone , CalendarDays } from 'lucide-react';
 
 export const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
 export const fmtSize = (b) => b ? `${(b / (1024 * 1024)).toFixed(2)} MB` : '—';
@@ -18,7 +18,8 @@ export const ACTION_ICONS = {
   approve_file:  <CheckCircle size={18} strokeWidth={1.5} />, reject_file: <XCircle size={18} strokeWidth={1.5} />, delete_file: <Trash2 size={18} strokeWidth={1.5} />,
   grant_admin:   <Shield size={18} strokeWidth={1.5} />, revoke_admin: <Ban size={18} strokeWidth={1.5} />,
   create_course: <BookOpen size={18} strokeWidth={1.5} />, update_course: <Edit3 size={18} strokeWidth={1.5} />, delete_course: <Trash2 size={18} strokeWidth={1.5} />,
-  resolve_report: <Flag size={18} strokeWidth={1.5} />, dismiss_report: <Play size={18} strokeWidth={1.5} />
+  resolve_report: <Flag size={18} strokeWidth={1.5} />, dismiss_report: <Play size={18} strokeWidth={1.5} />,
+  create_event: <CalendarDays size={18} strokeWidth={1.5} />, update_event: <Edit3 size={18} strokeWidth={1.5} />, delete_event: <Trash2 size={18} strokeWidth={1.5} />
 };
 
 export const LoadingRow = () => (
