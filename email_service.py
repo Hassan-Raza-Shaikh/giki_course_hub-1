@@ -15,7 +15,10 @@ import os
 import json
 import urllib.request
 import urllib.error
+import logging
 from concurrent.futures import ThreadPoolExecutor
+
+logger = logging.getLogger(__name__)
 
 RESEND_API_URL = "https://api.resend.com/emails"
 DEFAULT_FROM = "GIKI Course Hub <notifications@gikicoursehub.app>"
@@ -44,12 +47,12 @@ def send_email_sync(to_email, subject, body_html, body_text=None, headers=None):
         to_email = redirect_to
 
     if is_dry_run():
-        print(f"[EmailService] DRY RUN — would send to {to_email}: {subject}")
+        logger.info("DRY RUN: would send to %s: %s", to_email, subject)
         return False
 
     api_key = os.environ.get("RESEND_API_KEY")
     if not api_key:
-        print(f"[EmailService] Skipping email to {to_email}. RESEND_API_KEY environment variable is not configured.")
+        logger.info("Skipping email to %s: RESEND_API_KEY is not configured.", to_email)
         return False
 
     message = {
@@ -75,13 +78,13 @@ def send_email_sync(to_email, subject, body_html, body_text=None, headers=None):
 
     try:
         with urllib.request.urlopen(req, timeout=10) as response:
-            print(f"[EmailService] Email successfully sent to {to_email} (status {response.status})")
+            logger.info("Email sent to %s (status %s)", to_email, response.status)
             return True
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace")
-        print(f"[EmailService] Failed to send email to {to_email}: HTTP {e.code} - {body}")
-    except Exception as e:
-        print(f"[EmailService] Failed to send email to {to_email}: {e}")
+        logger.error("Failed to send email to %s: HTTP %s - %s", to_email, e.code, body)
+    except Exception:
+        logger.exception("Failed to send email to %s", to_email)
     return False
 
 
@@ -90,8 +93,8 @@ def run_in_background(fn, *args, **kwargs):
     def _safe():
         try:
             fn(*args, **kwargs)
-        except Exception as e:
-            print(f"[EmailService] Background email task failed: {e}")
+        except Exception:
+            logger.exception("Background email task failed")
     _executor.submit(_safe)
 
 

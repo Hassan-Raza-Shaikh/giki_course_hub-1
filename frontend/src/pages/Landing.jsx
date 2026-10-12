@@ -207,7 +207,7 @@ const Landing = ({ user, onSignIn, onSignOut }) => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                       <span style={{
                         padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 700,
-                        background: 'rgba(124,58,237,0.1)', color: 'var(--primary)', border: '1px solid rgba(124,58,237,0.2)',
+                        background: 'var(--primary-soft)', color: 'var(--primary)', border: '1px solid var(--primary-line)',
                       }}>Sem {course.semester}</span>
                       <span style={{ fontSize: '0.8rem', color: 'var(--tertiary)', fontWeight: 700 }}>{course.code}</span>
                     </div>

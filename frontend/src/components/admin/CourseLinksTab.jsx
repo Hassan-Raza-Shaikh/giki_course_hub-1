@@ -72,7 +72,7 @@ export const CourseLinksTab = ({ isAdmin, showToast }) => {
               <div style={{ fontWeight: 800, fontSize: '1.1rem' }}>{l.course_code_1} ↔ {l.course_code_2}</div>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Linked on {fmtDate(l.created_at)}</div>
             </div>
-            <button onClick={() => deleteCourseLink(l.link_id)} style={btnStyle('#EF4444')}><Trash2 size={16} /> Unlink</button>
+            <button onClick={() => deleteCourseLink(l.link_id)} style={btnStyle('var(--danger)')}><Trash2 size={16} /> Unlink</button>
           </div>
         ))}
       </div>

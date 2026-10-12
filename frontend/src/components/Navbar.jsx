@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Mail } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Bell, Mail } from 'lucide-react';
 import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon, KatanaIcon, CoffeeIcon, SpongebobIcon, DragonBallIcon, ScoobyIcon } from './ThemeIcons';
 import api from '../services/api';
+import NotificationBell from './notifications/NotificationBell';
 import { useTheme } from '../context/ThemeContext';
+import NavLinks from './NavLinks';
 
 
 const Navbar = ({ onSignIn, onSignOut, user }) => {
@@ -163,55 +165,11 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           )}
         </div>
 
-        <button
-          className="hide-mobile btn-nav"
-          onClick={() => navigate('/upload')}
-          style={{ background: 'color-mix(in srgb, var(--primary) 85%, var(--electric))', color: 'var(--nav-btn-text)' }}
-        >
-          <Upload size={16} strokeWidth={2.5} /> Upload
-        </button>
-
-        <button
-          className="hide-mobile btn-nav"
-          onClick={() => navigate('/courses')}
-          style={{ background: 'color-mix(in srgb, var(--secondary) 85%, var(--primary))', color: 'var(--nav-btn-text)' }}
-        >
-          <BookOpen size={16} strokeWidth={2.5} /> Courses
-        </button>
-
-        <button
-          className="hide-mobile btn-nav"
-          onClick={() => navigate('/search')}
-          style={{ background: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))', color: 'var(--nav-btn-text)' }}
-        >
-          <Search size={16} strokeWidth={2.5} /> Search
-        </button>
-
-        <button
-          className="hide-mobile btn-nav"
-          onClick={() => navigate('/bookmarks')}
-          style={{ background: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))', color: 'var(--nav-btn-text)' }}
-        >
-          <Bookmark size={16} strokeWidth={2.5} /> Bookmarks
-        </button>
-
-        <button
-          className="hide-mobile btn-nav"
-          onClick={() => navigate('/leaderboard')}
-          style={{ background: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))', color: 'var(--nav-btn-text)' }}
-        >
-          <Trophy size={16} strokeWidth={2.5} /> Leaderboard
-        </button>
-
-        <button
-          className="hide-mobile btn-nav"
-          onClick={() => navigate('/calculator')}
-          style={{ background: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))', color: 'var(--nav-btn-text)' }}
-        >
-          <Calculator size={16} strokeWidth={2.5} /> GPA Calculator
-        </button>
+        <NavLinks />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+
+          <NotificationBell user={user} />
 
           {user ? (
           <div ref={menuRef} style={{ position: 'relative' }}>
@@ -293,7 +251,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                         </span>
                       )}
                       {user.studentId && (
-                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: 'var(--bg-subtle)', color: '#10B981', borderRadius: '100px', border: '1px solid var(--border)' }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '3px 8px', background: 'var(--bg-subtle)', color: 'var(--success)', borderRadius: '100px', border: '1px solid var(--border)' }}>
                           #{user.studentId}
                         </span>
                       )}
@@ -321,6 +279,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   { icon: <Trophy size={16}/>, label: 'Leaderboard',   action: () => { setMenuOpen(false); navigate('/leaderboard'); } },
                   { icon: <Cloud size={16}/>, label: 'Global Upload',   action: () => { setMenuOpen(false); navigate('/upload'); } },
                   { icon: <UploadCloud size={16}/>, label: 'My Uploads', action: () => { setMenuOpen(false); navigate('/my-uploads'); } },
+                  { icon: <Bell size={16}/>, label: 'Notifications', action: () => { setMenuOpen(false); navigate('/notifications'); } },
                   { icon: <Bookmark size={16}/>, label: 'My Bookmarks',    action: () => { setMenuOpen(false); navigate('/bookmarks'); } },
                   { icon: <Calculator size={16}/>, label: 'GPA Calculator',  action: () => { setMenuOpen(false); navigate('/calculator'); } },
                   { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
@@ -364,7 +323,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                 {/* Sign out */}
                 <button
                   onClick={() => { setMenuOpen(false); onSignOut(); }}
-                  style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: '#dc2626', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
+                  style={{ width: '100%', padding: '12px 20px', background: 'none', border: 'none', textAlign: 'left', fontSize: '0.875rem', fontWeight: 700, color: 'var(--danger)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'background 0.15s' }}
                   onMouseOver={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
                   onMouseOut={e => e.currentTarget.style.background = 'none'}
                 >

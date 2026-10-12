@@ -15,12 +15,15 @@ off from the Email settings page or with the one-click unsubscribe link at the
 bottom of each email. The in-app notification centre can call these same
 functions from its notify() hook so both channels fire on the same events.
 """
+import logging
 import os
 from itsdangerous import URLSafeSerializer, BadSignature
 
 from db import get_connection
 from email_service import run_in_background, send_email_sync
 from email_templates import render_email
+
+logger = logging.getLogger(__name__)
 
 FRONTEND_URL = (os.environ.get("FRONTEND_URL") or "https://gikicoursehub.app").rstrip("/")
 
@@ -104,7 +107,7 @@ def _wants(email, category):
         return get_preferences(email).get(category, True)
     except Exception as e:
         # e.g. migration 025 not applied yet — fall back to sending, as before this feature
-        print(f"[EmailEvents] Could not read email preferences for {email}: {e}")
+        logger.warning("Could not read email preferences for %s: %s", email, e)
         return True
 
 
@@ -149,7 +152,7 @@ def _course_url(course_code):
         if row:
             return f"{FRONTEND_URL}/course/{row[0]}"
     except Exception as e:
-        print(f"[EmailEvents] Could not resolve course link for {course_code}: {e}")
+        logger.warning("Could not resolve course link for %s: %s", course_code, e)
     return f"{FRONTEND_URL}/courses"
 
 
@@ -169,7 +172,7 @@ def _deliver(category, to_email, subject, **content):
     if not to_email:
         return
     if not _wants(to_email, category):
-        print(f"[EmailEvents] {to_email} opted out of {category}; not sending '{subject}'.")
+        logger.info("%s opted out of %s; not sending %r", to_email, category, subject)
         return
     token = make_token(to_email, category)
     unsubscribe_url = f"{FRONTEND_URL}/email-settings?token={token}&unsubscribe={category}"

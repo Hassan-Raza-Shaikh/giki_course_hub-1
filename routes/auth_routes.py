@@ -4,6 +4,9 @@ from db import get_connection
 from firebase_admin_init import is_initialized
 import firebase_admin.auth as fb_auth
 from config import BOOTSTRAP_ADMIN_EMAILS
+import logging
+
+logger = logging.getLogger(__name__)
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -35,6 +38,7 @@ def _verify_id_token(id_token):
     except fb_auth.InvalidIdTokenError as e:
         raise ValueError(f"Invalid token: {e}")
     except Exception as e:
+        logger.exception("Unexpected error verifying Firebase ID token")
         raise ValueError(f"Token verification failed: {e}")
 
 
@@ -183,9 +187,10 @@ def firebase_auth():
             }
         })
 
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        return jsonify({"success": False, "message": f"Auth error: {e}"}), 500
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "Sign-in failed due to a server error. Please try again."}), 500
     finally:
         conn.close()
 
@@ -273,9 +278,10 @@ def signup():
                 "displayName": display_name or username, "email": email
             }
         })
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        return jsonify({"success": False, "message": f"Signup error: {e}"}), 500
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "Sign-up failed due to a server error. Please try again."}), 500
     finally:
         conn.close()
 
@@ -333,8 +339,9 @@ def login():
                 "profileComplete": profile_complete
             }
         })
-    except Exception as e:
-        return jsonify({"success": False, "message": f"Login error: {e}"}), 500
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "Login failed due to a server error. Please try again."}), 500
     finally:
         conn.close()
 
@@ -405,7 +412,8 @@ def get_me():
                     "profileComplete": profile_complete,
                 }
             })
-        except Exception as e:
+        except Exception:
+            logger.exception("Could not load profile for user %s; returning session data only", session.get('user_id'))
             return jsonify({"is_logged_in": True, "user": {"id": session['user_id'], "username": session['username'], "role": session['role'], "profileComplete": False}})
         finally:
             conn.close()
@@ -433,14 +441,15 @@ def get_me_stats():
             cur.execute("SELECT COUNT(*) FROM bookmarks WHERE user_id = %s;", (uid,))
             bookmarks = cur.fetchone()[0]
         except Exception:
+            logger.warning("Could not count bookmarks for user %s", uid, exc_info=True)
             bookmarks = 0
 
         cur.close()
         resp = jsonify({"success": True, "uploads": uploads, "bookmarks": bookmarks})
         resp.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
         return resp
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

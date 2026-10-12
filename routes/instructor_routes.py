@@ -1,6 +1,9 @@
 from flask import Blueprint, jsonify, request, session
 from db import get_connection
 from routes.admin_routes import _require_admin
+import logging
+
+logger = logging.getLogger(__name__)
 
 instructor_bp = Blueprint('instructors', __name__)
 
@@ -22,8 +25,8 @@ def get_course_instructors(course_id):
         
         instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in rows]
         return jsonify({"success": True, "instructors": instructors})
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -40,8 +43,8 @@ def get_all_instructors():
         
         instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in rows]
         return jsonify({"success": True, "instructors": instructors})
-    except Exception as e:
-        import traceback; traceback.print_exc()
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
@@ -75,9 +78,9 @@ def add_instructor():
             return jsonify({"success": False, "message": "Instructor already exists."}), 409
             
         return jsonify({"success": True, "message": "Instructor added.", "id": row[0]})
-    except Exception as e:
+    except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()

@@ -77,7 +77,7 @@ export const StatsTab = ({ isAdmin }) => {
               <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>{f.title}</div>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{f.course_code}</div>
             </div>
-            <div style={{ fontWeight: 900, color: '#EC4899' }}>{f.count} <Bookmark size={14} /></div>
+            <div style={{ fontWeight: 900, color: 'var(--secondary)' }}>{f.count} <Bookmark size={14} /></div>
           </div>
         ))}
         {Math.ceil(detailedStats.most_bookmarked.length / STATS_PER_PAGE) > 1 && (

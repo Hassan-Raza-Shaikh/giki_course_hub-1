@@ -1,17 +1,73 @@
 name: Keep Render Server Awake
 
+# Render's free tier puts the backend to sleep after 15 idle minutes, but GitHub
+# only runs cron schedules on a best-effort basis: on this repo the old
+# "every 10 minutes" job actually fired every 1-6 hours, so the server slept anyway.
+#
+# So each run stays alive for ~5.5 hours pinging every 4 minutes, then starts the
+# next run itself. The schedule below is only a safety net that restarts the chain
+# if it ever breaks. Public repos get Actions minutes for free.
+#
+# To stop it: disable the workflow in the Actions tab, then cancel the running
+# "Keep Render Server Awake" run (a cancelled run does not start the next one).
+
 on:
   schedule:
-    # Runs every 10 minutes to prevent the Render free tier server from sleeping (sleeps after 15m)
-    - cron: '*/10 * * * *'
-  workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+
+# Only one pinger at a time. A run that starts while another is going waits its turn.
+concurrency:
+  group: keepalive
+  cancel-in-progress: false
+
+permissions:
+  actions: write   # lets the run start the next one
+  contents: read
+
+env:
+  # Set a repository variable named BACKEND_URL to override (Settings > Secrets and variables > Actions > Variables)
+  BACKEND_URL: ${{ vars.BACKEND_URL || 'https://giki-course-hub-backend.onrender.com' }}
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
-      - name: Ping Backend Server
-        # Replace the URL with the actual production Render URL if different.
+      - name: Ping the backend every 4 minutes
         run: |
-          curl -sS https://giki-course-hub.onrender.com/api/courses/list > /dev/null
-          echo "Successfully pinged the server to keep it awake."
+          # First ping may take a minute while a sleeping server boots. If it still
+          # fails, stop now: the URL is wrong or the backend is down.
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 120 "$BACKEND_URL/api/courses/list" || true)
+          if [ "$code" != "200" ]; then
+            echo "::error::$BACKEND_URL returned HTTP ${code:-000} on the first ping"
+            exit 1
+          fi
+          echo "$(date -u +%H:%M:%S) OK (first ping)"
+          sleep 240
+
+          end=$(( $(date +%s) + 330 * 60 ))
+          streak=0; worst=0
+          while [ "$(date +%s)" -lt "$end" ]; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 120 "$BACKEND_URL/api/courses/list" || true)
+            if [ "$code" = "200" ]; then
+              echo "$(date -u +%H:%M:%S) OK"
+              streak=0
+            else
+              echo "::warning::$(date -u +%H:%M:%S) $BACKEND_URL returned HTTP ${code:-000}"
+              streak=$((streak + 1)); [ "$streak" -gt "$worst" ] && worst=$streak
+            fi
+            sleep 240
+          done
+          # Mark the run red if the backend was down for 3+ pings in a row, so it shows in the Actions tab
+          if [ "$worst" -ge 3 ]; then
+            echo "::error::Backend failed $worst pings in a row"
+            exit 1
+          fi
+
+      # Only chain after a healthy run. After a failure the schedule above restarts
+      # it, which avoids a tight loop of failing runs.
+      - name: Start the next run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run keepalive.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"

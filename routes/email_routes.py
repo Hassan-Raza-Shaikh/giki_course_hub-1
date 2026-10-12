@@ -2,6 +2,9 @@ from flask import Blueprint, request, session, jsonify
 from db import get_connection
 from config import BOOTSTRAP_ADMIN_EMAILS
 import email_events
+import logging
+
+logger = logging.getLogger(__name__)
 
 email_bp = Blueprint('email', __name__)
 
@@ -72,7 +75,7 @@ def email_preferences():
             prefs = email_events.get_preferences(email)
         return jsonify(_payload(email, prefs))
     except Exception:
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
 
 
@@ -93,5 +96,5 @@ def email_unsubscribe():
         prefs = email_events.set_preferences(email, {key: False for key in targets})
         return jsonify(_payload(email, prefs))
     except Exception:
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
