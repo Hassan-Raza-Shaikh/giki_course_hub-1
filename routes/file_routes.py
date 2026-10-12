@@ -5,6 +5,7 @@ from flask import Blueprint, request, session, jsonify, current_app
 import boto3
 from botocore.exceptions import NoCredentialsError
 from db import get_connection
+from notifications import notify_course_followers
 from werkzeug.utils import secure_filename
 import os
 import uuid
@@ -726,6 +727,9 @@ def upload_to_course(course_id):
             except Exception:
                 logger.exception("Failed to trigger admin notification email")
 
+        if initial_status == 'approved':
+            notify_course_followers(course_code, [title], exclude_user_ids=[uploader], conn=conn)
+
         conn.commit()
         cur.close()
         msg = "Material published!" if initial_status == 'approved' else "Submitted for review — visible once an admin approves it."
@@ -1312,6 +1316,9 @@ def bulk_upload_done(course_id, batch_id):
     
     pending_files = [u for u in uploaded if u['status'] == 'pending']
     approved_files = [u for u in uploaded if u['status'] == 'approved']
+
+    if approved_files:
+        notify_course_followers(course_code, [f['title'] for f in approved_files], exclude_user_ids=[uploader])
 
     # Send ONE consolidated email to admins if there are pending files
     if pending_files:
