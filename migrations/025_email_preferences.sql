@@ -1,5 +1,5 @@
 -- =====================================
--- Migration 023: Email notification preferences
+-- Migration 025: Email notification preferences
 -- One row per email address, created the first time someone changes a setting
 -- or unsubscribes. No row means every category is on.
 -- Keyed by email (lowercased) so it covers admins, who are identified by email.

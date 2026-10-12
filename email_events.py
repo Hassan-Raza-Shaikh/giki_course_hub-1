@@ -103,7 +103,7 @@ def _wants(email, category):
     try:
         return get_preferences(email).get(category, True)
     except Exception as e:
-        # e.g. migration 023 not applied yet — fall back to sending, as before this feature
+        # e.g. migration 025 not applied yet — fall back to sending, as before this feature
         print(f"[EmailEvents] Could not read email preferences for {email}: {e}")
         return True
 

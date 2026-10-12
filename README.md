@@ -35,5 +35,5 @@ Branded emails go out when material is uploaded, approved or rejected, when repo
 *   `EMAIL_DRY_RUN=1` — log instead of sending. Use this locally and on staging.
 *   `EMAIL_REDIRECT_TO=you@example.com` — send every email to one inbox for testing.
 *   `FRONTEND_URL` — base URL for links in emails (default `https://gikicoursehub.app`).
-*   Run `migrations/023_email_preferences.sql` so users can opt out at `/email-settings`.
+*   Run `migrations/025_email_preferences.sql` so users can opt out at `/email-settings`.
 *   `python preview_emails.py` writes every template to `email_previews/` to look at in a browser.
