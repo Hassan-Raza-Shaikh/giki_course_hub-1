@@ -124,7 +124,7 @@ const EmailSettings = ({ user, onSignIn }) => {
           </div>
         </div>
 
-        <div style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.04)', padding: 'clamp(20px, 5vw, 32px) clamp(20px, 5vw, 40px)', animation: 'fadeUp 0.4s ease-out' }}>
+        <div data-tour="email-prefs" style={{ background: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.04)', padding: 'clamp(20px, 5vw, 32px) clamp(20px, 5vw, 40px)', animation: 'fadeUp 0.4s ease-out' }}>
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '3px solid var(--electric)', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }} />

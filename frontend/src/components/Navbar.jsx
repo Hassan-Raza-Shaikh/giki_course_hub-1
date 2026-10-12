@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Bell, CalendarDays, Mail } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Sun, Moon, Cloud, LogIn, SunDim, Gamepad2, Ghost, Box, Terminal, Palette, Droplet, Flag, Shield, LogOut, Snowflake, Flame, Crown, UploadCloud, Trophy, User, Star, Swords, Github, Square, MessageSquare, Sunset, Coffee, Activity, Tv, Heart, TreePine, Waves, Sparkles, Circle, CircleDot, Calculator, Bell, CalendarDays, Mail, Compass } from 'lucide-react';
 import { BatIcon, PacmanIcon, PokeballIcon, MushroomIcon, TriforceIcon, MatrixIcon, RingIcon, DonutIcon, BlockIcon, KatanaIcon, CoffeeIcon, SpongebobIcon, DragonBallIcon, ScoobyIcon } from './ThemeIcons';
 import api from '../services/api';
 import NotificationBell from './notifications/NotificationBell';
 import { useTheme } from '../context/ThemeContext';
+import { useTour } from './tour/TourProvider';
 import NavLinks from './NavLinks';
 
 
@@ -63,6 +64,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
   }, [user]);
 
   const { theme, setTheme } = useTheme();
+  const { startTour } = useTour();
 
   const themes = [
     { id: 'light', name: 'Light', icon: <Sun size={14} /> },
@@ -118,6 +120,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         {/* Creative Theme Toggle */}
         <div ref={themeMenuRef} style={{ position: 'relative' }}>
           <button
+            data-tour="theme"
             className="btn-nav theme-btn-mobile"
             onClick={() => setThemeMenuOpen(o => !o)}
             style={{ background: 'var(--accent)', color: 'var(--nav-btn-text)', display: 'flex', gap: '8px', alignItems: 'center' }}
@@ -175,6 +178,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
           <div ref={menuRef} style={{ position: 'relative' }}>
             {/* Trigger pill */}
             <button
+              data-tour="account"
               onClick={() => setMenuOpen(o => !o)}
               style={{
                 height: 44, padding: '0 12px', gap: '8px', borderRadius: '14px',
@@ -286,6 +290,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
                   { icon: <Search size={16}/>, label: 'Global Search', badge: '/', action: () => { setMenuOpen(false); navigate('/search'); } },
                   { icon: <BookOpen size={16}/>, label: 'All Courses', action: () => { setMenuOpen(false); navigate('/courses'); } },
                   { icon: <Mail size={16}/>, label: 'Email Settings', action: () => { setMenuOpen(false); navigate('/email-settings'); } },
+                  { icon: <Compass size={16}/>, label: 'Take the Tour', action: () => { setMenuOpen(false); startTour('main'); } },
                   { icon: <Flag size={16}/>, label: 'Report an Issue', action: () => { setMenuOpen(false); navigate('/report-issue'); } },
                 ].map(link => (
                   <button key={link.label} onClick={link.action}
@@ -336,6 +341,7 @@ const Navbar = ({ onSignIn, onSignOut, user }) => {
         ) : (
           <button
             className="btn-nav"
+            data-tour="sign-in"
             onClick={onSignIn}
             style={{ background: 'var(--bg-white)', color: 'var(--text)' }}
           >
@@ -355,13 +361,13 @@ const MobileTabBar = ({ user, onSignIn }) => {
   const p = location.pathname;
 
   const tabs = [
-    { label: 'Upload',      icon: <Upload size={20} strokeWidth={2} />,    path: '/upload',      color: 'color-mix(in srgb, var(--primary) 85%, var(--electric))' },
-    { label: 'Courses',     icon: <BookOpen size={20} strokeWidth={2} />,  path: '/courses',     color: 'color-mix(in srgb, var(--secondary) 85%, var(--primary))' },
-    { label: 'Search',      icon: <Search size={20} strokeWidth={2} />,    path: '/search',      color: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))' },
-    { label: 'Bookmarks',   icon: <Bookmark size={20} strokeWidth={2} />,  path: '/bookmarks',   color: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))' },
-    { label: 'Leaderboard', icon: <Trophy size={20} strokeWidth={2} />,    path: '/leaderboard', color: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))' },
-    { label: 'GPA Calc',    icon: <Calculator size={20} strokeWidth={2} />,path: '/calculator',  color: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))' },
-    { label: 'Calendar',    icon: <CalendarDays size={20} strokeWidth={2} />,path: '/calendar', color: 'color-mix(in srgb, var(--secondary) 80%, var(--accent))' },
+    { label: 'Upload',      tour: 'tab-upload',      icon: <Upload size={20} strokeWidth={2} />,    path: '/upload',      color: 'color-mix(in srgb, var(--primary) 85%, var(--electric))' },
+    { label: 'Courses',     tour: 'tab-courses',     icon: <BookOpen size={20} strokeWidth={2} />,  path: '/courses',     color: 'color-mix(in srgb, var(--secondary) 85%, var(--primary))' },
+    { label: 'Search',      tour: 'tab-search',      icon: <Search size={20} strokeWidth={2} />,    path: '/search',      color: 'color-mix(in srgb, var(--electric) 85%, var(--tertiary))' },
+    { label: 'Bookmarks',   tour: 'tab-bookmarks',   icon: <Bookmark size={20} strokeWidth={2} />,  path: '/bookmarks',   color: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))' },
+    { label: 'Leaderboard', tour: 'tab-leaderboard', icon: <Trophy size={20} strokeWidth={2} />,    path: '/leaderboard', color: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))' },
+    { label: 'GPA Calc',    tour: 'tab-calculator',  icon: <Calculator size={20} strokeWidth={2} />,path: '/calculator',  color: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))' },
+    { label: 'Calendar',    tour: 'tab-calendar',    icon: <CalendarDays size={20} strokeWidth={2} />,path: '/calendar', color: 'color-mix(in srgb, var(--secondary) 80%, var(--accent))' },
   ];
 
   return (
@@ -371,6 +377,8 @@ const MobileTabBar = ({ user, onSignIn }) => {
         return (
           <button
             key={tab.path}
+            data-tour={tab.tour}
+            aria-label={tab.label}
             onClick={() => navigate(tab.path)}
             className="mob-tab-btn"
             style={{

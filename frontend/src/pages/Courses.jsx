@@ -226,6 +226,7 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
     }}>
       {/* Faculty Header */}
       <div
+        data-tour="faculty-header"
         onClick={toggle}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -392,7 +393,7 @@ const Courses = () => {
             </p>
           </div>
         </div>
-            <div style={{ position: 'relative', maxWidth: '480px' }}>
+            <div data-tour="courses-search" style={{ position: 'relative', maxWidth: '480px' }}>
               <span style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-muted)' }}><Search size={18} /></span>
               <input
                 type="text"
@@ -413,7 +414,7 @@ const Courses = () => {
 
 
           {/* Resource type chips */}
-          <div style={{ display: 'flex', gap: '12px', marginTop: '36px', flexWrap: 'wrap' }}>
+          <div data-tour="courses-types" style={{ display: 'flex', gap: '12px', marginTop: '36px', flexWrap: 'wrap' }}>
             {RESOURCE_TYPES.map(rt => {
               const slug = rt.label.toLowerCase().replace(' ', '-');
               return (
