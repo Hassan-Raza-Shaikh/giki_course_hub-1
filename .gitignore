@@ -9,3 +9,4 @@ env/
 .tmp_env/
 firebase/
 frontend/dist/
+email_previews/

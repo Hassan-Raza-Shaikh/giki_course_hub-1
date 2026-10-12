@@ -6,8 +6,10 @@
 ![Firebase](https://img.shields.io/badge/Firebase_Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
 A course resource hub for GIKI students: browse courses by faculty/program/semester,
-upload and download notes, slides, past papers and reference books, bookmark files,
-compare on a leaderboard, and calculate GPA. Uploads go through an admin approval queue.
+upload and download notes, slides, past papers and reference books (singly or as a zip),
+bookmark files, compare on a leaderboard, calculate GPA, and follow the GIKI academic
+calendar. Uploads go through an admin approval queue; users get in-app and email
+notifications.
 
 ## Architecture
 
@@ -18,7 +20,8 @@ compare on a leaderboard, and calculate GPA. Uploads go through an admin approva
 | Database | PostgreSQL on Supabase (connection pool in `db.py`) | schema history in `migrations/` |
 | File storage | Cloudflare R2 (S3-compatible, via `boto3`) | `config.py` |
 | Auth | Firebase Auth (Google sign-in); the backend verifies the ID token sent as `Authorization: Bearer` | `firebase_admin_init.py`, `app.py` |
-| Email | Resend (optional — skipped when `RESEND_API_KEY` is unset) | `email_service.py` |
+| Notifications | In-app notification centre | `notifications.py`, `routes/notification_routes.py` |
+| Email | Resend (optional — skipped when `RESEND_API_KEY` is unset) | `email_service.py`, `email_events.py`, `email_templates.py` |
 
 ## Hosting
 
@@ -29,7 +32,7 @@ a merge if it fails.
 
 | What | Where | Deploys from |
 |---|---|---|
-| Frontend | Vercel project `frontend` — https://frontend-xi-pink-10.vercel.app | `main` → Production; any other branch / PR → Preview. Built from the repo root using the root `vercel.json`. |
+| Frontend | Vercel project `frontend` — https://www.gikicoursehub.app (also https://frontend-xi-pink-10.vercel.app) | `main` → Production; any other branch / PR → Preview. Built from the repo root using the root `vercel.json`. |
 | Backend | Render (free tier, `Dockerfile`) — https://giki-course-hub-backend.onrender.com | `main` (auto-deploy — confirm in Render → Settings) |
 | Keep-awake | GitHub Actions `keepalive.yml` and `cron.yml` ping the backend so the free tier doesn't sleep | — |
 
@@ -73,7 +76,8 @@ Backend (`.env` locally, Render dashboard in production):
 | `FIREBASE_BUCKET` | Firebase storage bucket name |
 | `R2_BUCKET`, `R2_ENDPOINT_URL`, `R2_ACCESS_KEY`, `R2_SECRET_KEY`, `R2_PUBLIC_URL_PREFIX` | Cloudflare R2 storage |
 | `REDIS_URL` | Optional — shared rate-limit storage across gunicorn workers (in-memory otherwise) |
-| `RESEND_API_KEY` | Optional — enables notification emails |
+| `LOG_LEVEL` | Optional — application log level (default `INFO`) |
+| `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_DRY_RUN`, `EMAIL_REDIRECT_TO`, `FRONTEND_URL` | Email — see [Email notifications](#email-notifications) |
 
 Frontend (Vercel dashboard):
 
@@ -81,14 +85,29 @@ Frontend (Vercel dashboard):
 |---|---|
 | `VITE_API_URL` | Backend base URL including `/api`. Defaults to the production Render backend when unset — set it for the Preview environment so previews don't use production data. |
 
+## Email notifications
+
+Branded emails go out when material is uploaded, approved or rejected, when reports and issues are filed or resolved, and to admins when something needs review. Templates live in `email_templates.py`, events in `email_events.py`.
+
+*   `RESEND_API_KEY` — required to send. Without it, emails are skipped.
+*   `EMAIL_FROM` — optional sender address (defaults to the one set in `email_service.py`).
+*   `EMAIL_DRY_RUN=1` — log instead of sending. Use this locally and on staging.
+*   `EMAIL_REDIRECT_TO=you@example.com` — send every email to one inbox for testing.
+*   `FRONTEND_URL` — base URL for links in emails (default `https://gikicoursehub.app`).
+*   Run `migrations/025_email_preferences.sql` so users can opt out at `/email-settings`.
+*   `python preview_emails.py` writes every template to `email_previews/` to look at in a browser.
+
 ## Repo layout
 
 ```
 app.py, config.py, db.py   Flask app, config, DB pool
-routes/                    API blueprints (files, admin, auth, users, gpa, issues, instructors)
-utils/                     Validators and helpers
+notifications.py           In-app notification helper (notify())
+email_*.py                 Email sending, events and templates
+routes/                    API blueprints (files, admin, auth, users, gpa, issues, instructors,
+                           calendar, notifications, email)
+utils/                     Validators, calendar and other helpers
 migrations/                Numbered SQL migrations (applied manually, in order)
-sql/                       Reference schema and SQL functions
+sql/                       Reference schema, SQL functions and seeds
 scripts/                   Maintenance scripts — see scripts/README.md (some are destructive)
 frontend/                  React app (src/pages, src/components, src/services/api.js)
 ```

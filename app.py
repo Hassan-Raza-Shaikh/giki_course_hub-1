@@ -17,6 +17,9 @@ from routes.user_routes import user_bp
 from routes.issue_routes import issue_bp
 from routes.instructor_routes import instructor_bp
 from routes.gpa_routes import gpa_bp
+from routes.email_routes import email_bp
+from routes.calendar_routes import calendar_bp
+from routes.notification_routes import notification_bp
 
 
 # Send application logs (with tracebacks) to stderr, where Render/gunicorn collect them
@@ -97,6 +100,9 @@ def create_app():
     app.register_blueprint(issue_bp)
     app.register_blueprint(instructor_bp)
     app.register_blueprint(gpa_bp)
+    app.register_blueprint(email_bp)
+    app.register_blueprint(calendar_bp)
+    app.register_blueprint(notification_bp)
 
     # Apply strict rate limits to sensitive endpoints
     limiter.limit("5 per minute")(app.view_functions['auth.login'])
@@ -104,6 +110,8 @@ def create_app():
     limiter.limit("10 per minute")(app.view_functions['files.upload_to_course'])
     limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_init'])
     limiter.limit("10 per minute")(app.view_functions['gpa.save_gpa'])
+    limiter.limit("20 per minute")(app.view_functions['files.track_bulk_download'])
+    limiter.limit("10 per minute")(app.view_functions['calendar.run_reminders'])
 
     @app.before_request
     def handle_mobile_auth():

@@ -26,6 +26,9 @@ const UploadPage   = lazy(() => import('./pages/UploadPage'));
 const MyUploads    = lazy(() => import('./pages/MyUploads'));
 const CategoryView = lazy(() => import('./pages/CategoryView'));
 const Calculator   = lazy(() => import('./pages/GpaCalculator'));
+const EmailSettings = lazy(() => import('./pages/EmailSettings'));
+const Calendar     = lazy(() => import('./pages/Calendar'));
+const Notifications = lazy(() => import('./pages/Notifications'));
 
 const App = () => {
   const [user, setUser]           = useState(null);
@@ -277,13 +280,16 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="/upload"     element={<UploadPage user={user} onSignIn={handleSignIn} />} />
           <Route path="/my-uploads" element={<MyUploads user={user} />} />
           <Route path="/bookmarks"  element={<Bookmarks user={user} onSignIn={handleSignIn} />} />
+          <Route path="/notifications" element={<Notifications user={user} onSignIn={handleSignIn} />} />
           <Route path="/search"     element={<GlobalSearch user={user} onSignIn={handleSignIn} />} />
           <Route path="/calculator" element={<Calculator user={user} />} />
+          <Route path="/calendar"   element={<Calendar user={user} />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/u/:username" element={<UserProfile user={user} setUser={setUser} />} />
           <Route path="/category/:categorySlug" element={<CategoryView />} />
           <Route path="/admin"      element={<AdminPanel user={user} />} />
           <Route path="/report-issue" element={<ReportIssue user={user} />} />
+          <Route path="/email-settings" element={<EmailSettings user={user} onSignIn={handleSignIn} />} />
           <Route path="*"           element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

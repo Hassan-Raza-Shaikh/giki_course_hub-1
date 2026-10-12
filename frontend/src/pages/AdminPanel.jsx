@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
-import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw, Sparkles, Activity, Flame, Info, Users, Bookmark, Gem, Folder, Pin, Plus, PieChart, GraduationCap, Link, FlaskConical, Archive, PartyPopper, BarChart3, Eye, Download } from 'lucide-react';
+import { CheckCircle, XCircle, Trash2, Shield, Ban, BookOpen, Edit3, Flag, Play, Clock, Wrench, RefreshCw, Sparkles, Activity, Flame, Info, Users, Bookmark, Gem, Folder, Pin, Plus, PieChart, GraduationCap, Link, FlaskConical, Archive, PartyPopper, BarChart3, Eye, Download, Megaphone , CalendarDays } from 'lucide-react';
 
 import { PendingTab } from '../components/admin/PendingTab';
 import { ReportsTab } from '../components/admin/ReportsTab';
@@ -14,11 +14,14 @@ import { LogsTab } from '../components/admin/LogsTab';
 import { CourseLinksTab } from '../components/admin/CourseLinksTab';
 import { InstructorsTab } from '../components/admin/InstructorsTab';
 import { StatsTab } from '../components/admin/StatsTab';
+import { CalendarTab } from '../components/admin/CalendarTab';
+import { AnnounceTab } from '../components/admin/AnnounceTab';
 
 const AdminPanel = ({ user }) => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(null);
-  const [tab, setTab] = useState('pending');
+  const [searchParams] = useSearchParams();
+  const [tab, setTab] = useState(searchParams.get('tab') || 'pending');
   const [stats, setStats] = useState(null);
   const [reportCounts, setReportCounts] = useState({});
   const [issueCounts, setIssueCounts] = useState({});
@@ -201,12 +204,14 @@ const AdminPanel = ({ user }) => {
     { key: 'courses', icon: <BookOpen size={18} strokeWidth={2.5} />, label: 'Courses', color: 'var(--electric)' },
     { key: 'links',   icon: <Link size={18} strokeWidth={2.5} />, label: 'Shared Links', color: 'var(--tertiary)' },
 
+    { key: 'calendar', icon: <CalendarDays size={18} strokeWidth={2.5} />, label: 'Calendar', color: 'var(--accent)' },
     { key: 'instructors', icon: <GraduationCap size={18} strokeWidth={2.5} />, label: 'Instructors', color: 'var(--primary)' },
     { key: 'stats_detailed', icon: <BarChart3 size={18} strokeWidth={2.5} />, label: 'Stats', color: 'var(--secondary)' },
     { key: 'files',   icon: <Folder size={18} strokeWidth={2.5} />, label: 'All Files', color: 'var(--accent)' },
     { key: 'users',   icon: <Users size={18} strokeWidth={2.5} />, label: 'Users', count: stats?.total_users, color: 'var(--electric)' },
     { key: 'admins',  icon: <Shield size={18} strokeWidth={2.5} />, label: 'Admins', count: stats?.total_admins, color: 'var(--tertiary)' },
     { key: 'logs',    icon: <Activity size={18} strokeWidth={2.5} />, label: 'Activity', color: 'var(--primary)' },
+    { key: 'announce', icon: <Megaphone size={18} strokeWidth={2.5} />, label: 'Announce', color: 'var(--secondary)' },
   ];
 
   return (
@@ -533,11 +538,13 @@ const AdminPanel = ({ user }) => {
             {tab === 'courses' && <CoursesTab isAdmin={isAdmin} showToast={showToast} setConfirmModal={setConfirmModal} faculties={faculties} programs={programs} />}
             {tab === 'links' && <CourseLinksTab isAdmin={isAdmin} showToast={showToast} setConfirmModal={setConfirmModal} refreshKey={refreshKey} />}
             {tab === 'instructors' && <InstructorsTab isAdmin={isAdmin} showToast={showToast} setConfirmModal={setConfirmModal} faculties={faculties} />}
+            {tab === 'calendar' && <CalendarTab isAdmin={isAdmin} showToast={showToast} setConfirmModal={setConfirmModal} />}
             {tab === 'stats_detailed' && <StatsTab isAdmin={isAdmin} />}
             {tab === 'files' && <FilesTab isAdmin={isAdmin} showToast={showToast} categories={categories} openLinkModal={openLinkModal} openEditFile={openEditFile} openNoteModal={openNoteModal} deleteFile={deleteFile} refreshKey={refreshKey} />}
             {tab === 'users' && <UsersTab isAdmin={isAdmin} showToast={showToast} setConfirmModal={setConfirmModal} loadStats={loadStats} />}
             {tab === 'admins' && <AdminsTab isAdmin={isAdmin} showToast={showToast} setConfirmModal={setConfirmModal} loadStats={loadStats} />}
             {tab === 'logs' && <LogsTab isAdmin={isAdmin} />}
+            {tab === 'announce' && <AnnounceTab showToast={showToast} setConfirmModal={setConfirmModal} />}
           </div>
         </main>
       </div>

@@ -4,6 +4,8 @@ import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import CopyLinkButton, { useCopyLink } from '../components/CopyLinkButton';
 import BulkUploader from '../components/BulkUploader';
+import DownloadZipButton from '../components/DownloadZipButton';
+import { courseFolderName, sectionFolderName } from '../utils/zipDownload';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
 import { useToast } from '../components/Toast';
@@ -234,6 +236,15 @@ const CoursePage = ({ user, onSignIn }) => {
     });
   }, [filesByCategory, activeTab, instructorFilter, sortBy]);
 
+  // Every populated section, in tab order, for the course-wide zip
+  const allSections = React.useMemo(() => {
+    const order = categories.map(c => c.name);
+    const names = [...order, ...Object.keys(filesByCategory).filter(n => !order.includes(n))];
+    return names
+      .map(name => ({ name, files: filesByCategory[name] || [] }))
+      .filter(s => s.files.length > 0);
+  }, [categories, filesByCategory]);
+
   // Group instructors by faculty for organized dropdown
   const otherInstructorsGrouped = React.useMemo(() => {
     const grouped = instructors
@@ -347,6 +358,16 @@ const CoursePage = ({ user, onSignIn }) => {
               </div>
             )}
           </div>
+          {allSections.length > 0 && (
+            <DownloadZipButton
+              variant="primary"
+              label="Download course"
+              sections={allSections}
+              rootFolder={courseFolderName(course)}
+              zipName={`${courseFolderName(course)}.zip`}
+              user={user}
+            />
+          )}
         </div>
       </div>
 
@@ -539,6 +560,14 @@ const CoursePage = ({ user, onSignIn }) => {
                     {fileInstructors.map(i => <option key={i.id} value={i.name}>{i.name}</option>)}
                   </select>
                 )}
+                <DownloadZipButton
+                  key={activeTab}
+                  label="Download all"
+                  sections={[{ name: activeTab, files: currentFiles }]}
+                  rootFolder={courseFolderName(course)}
+                  zipName={`${courseFolderName(course)} - ${sectionFolderName(activeTab)}.zip`}
+                  user={user}
+                />
                 <select
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value)}

@@ -44,6 +44,9 @@ jobs:
             exit 1
           fi
           echo "$(date -u +%H:%M:%S) OK (first ping)"
+          # Send any GIKI calendar reminders that are due. Never fails the run.
+          remind() { curl -s -o /dev/null -X POST --max-time 60 "$BACKEND_URL/api/calendar/reminders/run" || true; }
+          remind
           sleep 240
 
           end=$(( $(date +%s) + 330 * 60 ))
@@ -53,6 +56,7 @@ jobs:
             if [ "$code" = "200" ]; then
               echo "$(date -u +%H:%M:%S) OK"
               streak=0
+              remind
             else
               echo "::warning::$(date -u +%H:%M:%S) $BACKEND_URL returned HTTP ${code:-000}"
               streak=$((streak + 1)); [ "$streak" -gt "$worst" ] && worst=$streak

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Upload, BookOpen, Search, Bookmark, Trophy, Calculator, MoreHorizontal } from 'lucide-react';
+import { Upload, BookOpen, Search, Bookmark, Trophy, Calculator, CalendarDays, MoreHorizontal } from 'lucide-react';
 
 // Desktop navbar links. `primary` links always show on desktop; the rest
 // show from 1400px up and fold into the "More" menu between 769px and
@@ -13,6 +13,7 @@ export const NAV_LINKS = [
   { to: '/bookmarks',   label: 'Bookmarks',      icon: Bookmark,   color: 'color-mix(in srgb, var(--tertiary) 85%, var(--accent))' },
   { to: '/leaderboard', label: 'Leaderboard',    icon: Trophy,     color: 'color-mix(in srgb, var(--accent) 85%, var(--secondary))' },
   { to: '/calculator',  label: 'GPA Calculator', icon: Calculator, color: 'color-mix(in srgb, var(--primary) 80%, var(--bg-white))' },
+  { to: '/calendar',    label: 'Calendar',       icon: CalendarDays, color: 'color-mix(in srgb, var(--secondary) 80%, var(--accent))' },
 ];
 
 const NavLinks = () => {
