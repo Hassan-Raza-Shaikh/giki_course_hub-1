@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Mail, AlertTriangle, CheckCircle2, BellOff, LogIn } from 'lucide-react';
+import { Mail, AlertTriangle, CheckCircle2, BellOff, LogIn, Info } from 'lucide-react';
 import api from '../services/api';
 
 const DESCRIPTIONS = {
@@ -183,6 +183,19 @@ const EmailSettings = ({ user, onSignIn }) => {
               {!data && !error && (
                 <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Nothing to show.</p>
               )}
+
+              <div style={{
+                marginTop: '24px', padding: '14px 16px', display: 'flex', gap: '10px', alignItems: 'flex-start',
+                background: 'var(--bg-subtle)', border: '1px dashed var(--border)', borderRadius: '12px',
+                color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.5
+              }}>
+                <Info size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>
+                  Email notifications are a new feature and may change as we improve them. Delivery isn't guaranteed:
+                  messages can occasionally be delayed, land in your spam folder or not arrive. For the latest status of
+                  your uploads and reports, check the app directly.
+                </span>
+              </div>
 
               <div style={{ marginTop: '28px', textAlign: 'center' }}>
                 <Link to="/" style={{ color: 'var(--primary)', fontWeight: 800, textDecoration: 'none' }}>← Back to GIKI Course Hub</Link>
