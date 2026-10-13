@@ -276,7 +276,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
       }>
         <Routes>
           <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
-          <Route path="/courses"    element={<Courses />} />
+          <Route path="/courses"    element={<Courses user={user} />} />
           <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
           <Route path="/upload"     element={<UploadPage user={user} onSignIn={handleSignIn} />} />
           <Route path="/my-uploads" element={<MyUploads user={user} />} />
