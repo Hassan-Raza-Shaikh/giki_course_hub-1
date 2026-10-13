@@ -8,6 +8,7 @@ import DownloadZipButton from '../components/DownloadZipButton';
 import { courseFolderName, sectionFolderName } from '../utils/zipDownload';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
+import CourseAbout from '../components/course/CourseAbout';
 import { useToast } from '../components/Toast';
 import { Modal, Button, EmptyState } from '../components/ui';
 import { BookOpen, FolderOpen, ArrowLeft, MoreVertical, Search, FileText, Download, ExternalLink, Calendar, Copy, Check, Clock, User, FileQuestion, FileEdit, Presentation, HelpCircle, ClipboardList, Archive, FlaskConical, Terminal, ClipboardCheck, Library, UploadCloud, AlertCircle, Edit3, BookmarkCheck, BookmarkPlus, Flag, Inbox, CheckCircle, AlertTriangle } from 'lucide-react';
@@ -338,7 +339,10 @@ const CoursePage = ({ user, onSignIn }) => {
                 background: 'color-mix(in srgb, var(--tertiary) 20%, transparent)', color: 'var(--tertiary)', border: '1px solid var(--tertiary)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {course.program}
               </span>
-              <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>{course.code}</span>
+              <span style={{ color: 'var(--text-muted)', fontWeight: 800, fontSize: '0.85rem', padding: '4px 12px', borderRadius: '100px', border: '1px solid var(--border)', background: 'var(--bg-subtle)' }}>
+                {course.code}
+                {course.old_code && <span title="Code for earlier batches" style={{ fontWeight: 700, opacity: 0.75 }}> / {course.old_code}</span>}
+              </span>
             </div>
             <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 8px 0', lineHeight: 1.1 }}>
               {course.name}
@@ -370,6 +374,8 @@ const CoursePage = ({ user, onSignIn }) => {
             />
           )}
         </div>
+
+        <CourseAbout course={course} />
       </div>
 
       {/* ── Materials Section ──────────────────────────────── */}
