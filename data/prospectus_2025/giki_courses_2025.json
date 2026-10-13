@@ -1,5 +1,5 @@
 {
-    "source": "GIKI Undergraduate Prospectus 2025",
+    "source": "GIKI Undergraduate Prospectus 2025, plus courses from the previous giki_courses_with_codes.json (marked \"source\": \"old_json\")",
     "faculties": [
         {
             "faculty_name": "Civil Engineering",
@@ -176,6 +176,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -538,6 +544,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CV314L",
+                                    "name": "Reinforced Concrete Design I Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -1225,6 +1237,24 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI201L",
+                                    "name": "Programming for AI Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE221",
+                                    "name": "Digital Logic Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE221L",
+                                    "name": "Digital Logic Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -1302,6 +1332,30 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI221",
+                                    "name": "Machine Learning",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "AI221L",
+                                    "name": "Machine Learning Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE222",
+                                    "name": "Computer Organization & Assembly Language",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE222L",
+                                    "name": "Computer Organization & Assembly Language Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -1379,6 +1433,30 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI331",
+                                    "name": "Deep Neural Networks",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "AI331L",
+                                    "name": "Deep Neural Networks Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS325",
+                                    "name": "Software Engineering",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS391",
+                                    "name": "Entrepreneurship & Technology Commercialization",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -1467,6 +1545,42 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI341",
+                                    "name": "Computer Vision",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "AI341L",
+                                    "name": "Computer Vision Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "AI351",
+                                    "name": "Natural Language Processing",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "AI351L",
+                                    "name": "Natural Language Processing Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE313",
+                                    "name": "Computer Communications & Networks",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM112",
+                                    "name": "Ideology and Constitution of Pakistan",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -1546,6 +1660,18 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CS478",
+                                    "name": "Design & Analysis of Algorithms",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS493",
+                                    "name": "Scientific Communication",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -1624,6 +1750,18 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CS494",
+                                    "name": "Professional Issues in IT",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM323",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -2075,6 +2213,12 @@
                                     "lec": 3,
                                     "lab": 0,
                                     "prereq": "MT101"
+                                },
+                                {
+                                    "code": "MM141L",
+                                    "name": "Materials & Nanotechnology Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -2262,6 +2406,12 @@
                                     "lec": 2,
                                     "lab": 0,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "CS391",
+                                    "name": "Entrepreneurship & Technology Commercialization",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -2327,6 +2477,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "HM112",
+                                    "name": "Ideology and Constitution of Pakistan",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -2456,6 +2612,18 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "CS494",
+                                    "name": "Professional Issues in IT",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM323",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -3045,6 +3213,18 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CE221",
+                                    "name": "Digital Logic Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE221L",
+                                    "name": "Digital Logic Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -3113,6 +3293,24 @@
                                     "lab": 0,
                                     "prereq": "CS231",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CE222",
+                                    "name": "Computer Organization & Assembly Language",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE222L",
+                                    "name": "Computer Organization & Assembly Language Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "SE202L",
+                                    "name": "Development Operations Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -3190,6 +3388,24 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CS325",
+                                    "name": "Software Engineering",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS342",
+                                    "name": "Advanced Database Management Systems",
+                                    "ch": 4,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS391",
+                                    "name": "Entrepreneurship & Technology Commercialization",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -3268,6 +3484,30 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CE313",
+                                    "name": "Computer Communications & Networks",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS334",
+                                    "name": "Compiler Construction",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS334L",
+                                    "name": "Compiler Construction Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM112",
+                                    "name": "Ideology and Constitution of Pakistan",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -3356,6 +3596,18 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CS478",
+                                    "name": "Design & Analysis of Algorithms",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS493",
+                                    "name": "Scientific Communication",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -3434,6 +3686,18 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CS494",
+                                    "name": "Professional Issues in IT",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM323",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -3910,6 +4174,12 @@
                                     "lab": 0,
                                     "prereq": "MT101",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -3987,6 +4257,24 @@
                                     "lab": 0,
                                     "prereq": null,
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CE221",
+                                    "name": "Digital Logic Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE221L",
+                                    "name": "Digital Logic Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "ES205",
+                                    "name": "Advanced Linear Algebra",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4073,6 +4361,18 @@
                                     "lab": 0,
                                     "prereq": null,
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CE222",
+                                    "name": "Computer Organization & Assembly Language",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE222L",
+                                    "name": "Computer Organization & Assembly Language Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4132,6 +4432,18 @@
                                     "lab": 0,
                                     "prereq": "MT102",
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CS342",
+                                    "name": "Advanced Database Management Systems",
+                                    "ch": 4,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS391",
+                                    "name": "Entrepreneurship & Technology Commercialization",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4219,6 +4531,48 @@
                                     "lab": 0,
                                     "prereq": null,
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CE313",
+                                    "name": "Computer Communications & Networks",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE342",
+                                    "name": "Computational Methods and Techniques",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE361",
+                                    "name": "Digital Signal Processing",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE361L",
+                                    "name": "Digital Signal Processing Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS361",
+                                    "name": "Computer Architecture",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS392",
+                                    "name": "Software Project Management",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM112",
+                                    "name": "Ideology and Constitution of Pakistan",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4306,6 +4660,18 @@
                                     "lab": 3,
                                     "prereq": null,
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CS478",
+                                    "name": "Design & Analysis of Algorithms",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS493",
+                                    "name": "Scientific Communication",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4393,6 +4759,24 @@
                                     "lab": 3,
                                     "prereq": null,
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CS465",
+                                    "name": "Data & Network Security",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS494",
+                                    "name": "Professional Issues in IT",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM323",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -4734,6 +5118,12 @@
                                     "lec": 1,
                                     "lab": 0,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "MM141L",
+                                    "name": "Materials & Nanotechnology Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4860,6 +5250,12 @@
                                     "lec": 3,
                                     "lab": 0,
                                     "prereq": "MT102"
+                                },
+                                {
+                                    "code": "CS202",
+                                    "name": "Information & Communication Technologies",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4917,6 +5313,12 @@
                                     "lec": 2,
                                     "lab": 0,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "SE202L",
+                                    "name": "Development Operations Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -4979,6 +5381,12 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "placeholder": true
+                                },
+                                {
+                                    "code": "CS391",
+                                    "name": "Entrepreneurship & Technology Commercialization",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -5048,6 +5456,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "HM112",
+                                    "name": "Ideology and Constitution of Pakistan",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -5115,6 +5529,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "CS493",
+                                    "name": "Scientific Communication",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -5178,6 +5598,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "HM323",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -5726,6 +6152,12 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -5794,6 +6226,24 @@
                                     "lab": 0,
                                     "prereq": "CS112",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CE221",
+                                    "name": "Digital Logic Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE221L",
+                                    "name": "Digital Logic Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "ES205",
+                                    "name": "Advanced Linear Algebra",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -5871,6 +6321,30 @@
                                     "lab": 0,
                                     "prereq": "SE201",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CE222",
+                                    "name": "Computer Organization & Assembly Language",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CE222L",
+                                    "name": "Computer Organization & Assembly Language Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM211",
+                                    "name": "Islamic Studies",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "SE202L",
+                                    "name": "Development Operations Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -5957,6 +6431,24 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CS311",
+                                    "name": "Operating Systems",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS311L",
+                                    "name": "Operating Systems Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS391",
+                                    "name": "Entrepreneurship & Technology Commercialization",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -6052,6 +6544,24 @@
                                     "lab": 3,
                                     "prereq": "SE322L",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CE313",
+                                    "name": "Computer Communications & Networks",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS392",
+                                    "name": "Software Project Management",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM112",
+                                    "name": "Ideology and Constitution of Pakistan",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -6131,6 +6641,18 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CS478",
+                                    "name": "Design & Analysis of Algorithms",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "CS493",
+                                    "name": "Scientific Communication",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -6209,6 +6731,18 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": null
+                                },
+                                {
+                                    "code": "CS494",
+                                    "name": "Professional Issues in IT",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HM323",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -6636,6 +7170,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -6875,6 +7415,30 @@
                                     "lec": 2,
                                     "lab": 0,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "EE314",
+                                    "name": "Electrical Instrumentation & Measurement",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE314L",
+                                    "name": "Electrical Instrumentation & Measurement Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE331",
+                                    "name": "Electronic Circuit Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE331L",
+                                    "name": "Electronic Circuit Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -6952,6 +7516,24 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "EE321-Co"
+                                },
+                                {
+                                    "code": "EE332",
+                                    "name": "Power Electronics",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE332L",
+                                    "name": "Power Electronics Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HMXYZ",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -7022,6 +7604,18 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "EE441",
+                                    "name": "Digital Signal Processing",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE441L",
+                                    "name": "Digital Signal Processing Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -7373,6 +7967,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -7604,6 +8204,18 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "EE341-Co"
+                                },
+                                {
+                                    "code": "EE331",
+                                    "name": "Electronic Circuit Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE331L",
+                                    "name": "Electronic Circuit Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -7681,6 +8293,24 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "EE321-Co"
+                                },
+                                {
+                                    "code": "EE332",
+                                    "name": "Power Electronics",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE332L",
+                                    "name": "Power Electronics Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HMXYZ",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -7759,6 +8389,24 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "EE441",
+                                    "name": "Digital Signal Processing",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE471",
+                                    "name": "Wave Propagation and Antennas",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE471L",
+                                    "name": "Wave Propagation and Antennas Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -8082,6 +8730,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -8313,6 +8967,18 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "EE341-Co"
+                                },
+                                {
+                                    "code": "EE331",
+                                    "name": "Electronic Circuit Design",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE331L",
+                                    "name": "Electronic Circuit Design Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -8390,6 +9056,24 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "EE321-Co"
+                                },
+                                {
+                                    "code": "EE332",
+                                    "name": "Power Electronics",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE332L",
+                                    "name": "Power Electronics Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HMXYZ",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -8460,6 +9144,18 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "EE441",
+                                    "name": "Digital Signal Processing",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE441L",
+                                    "name": "Digital Signal Processing Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -8766,6 +9462,12 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -9074,6 +9776,24 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "EE321-Co"
+                                },
+                                {
+                                    "code": "EE332",
+                                    "name": "Power Electronics",
+                                    "ch": 3,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE332L",
+                                    "name": "Power Electronics Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "HMXYZ",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -9152,6 +9872,18 @@
                                     "lec": 0,
                                     "lab": 3,
                                     "prereq": "None"
+                                },
+                                {
+                                    "code": "EE413",
+                                    "name": "High Voltage Engineering",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "EE413L",
+                                    "name": "High Voltage Engineering Lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -12503,6 +13235,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "PH101"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -12820,6 +13558,18 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CH391",
+                                    "name": "Petrochemical Engineering",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "ES341",
+                                    "name": "Numerical Analysis",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -12978,6 +13728,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CH482",
+                                    "name": "Chemical Engg. Project Design-II",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -13445,6 +14201,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "PH101"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -13676,6 +14438,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CH336L",
+                                    "name": "Natural Gas processing and Piping lab",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -13771,6 +14539,18 @@
                                     "lab": 0,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CH391",
+                                    "name": "Petrochemical Engineering",
+                                    "ch": 2,
+                                    "source": "old_json"
+                                },
+                                {
+                                    "code": "ES341",
+                                    "name": "Numerical Analysis",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -13936,6 +14716,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "CH482",
+                                    "name": "Chemical Engg. Project Design-II",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         }
@@ -14174,6 +14960,12 @@
                                     "lab": 0,
                                     "prereq": "MT101",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "AI102",
+                                    "name": "Python Programming & Freelancing Essentials",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -14328,6 +15120,12 @@
                                     "lab": 0,
                                     "prereq": "MT102",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "ME202",
+                                    "name": "Instrumentation and Digital Twin",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -14414,6 +15212,12 @@
                                     "lab": 3,
                                     "prereq": "ME213",
                                     "coreq": "ME313 ME314"
+                                },
+                                {
+                                    "code": "ES341/CS342",
+                                    "name": "Numerical Analysis",
+                                    "ch": 3,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -14570,6 +15374,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "ME411",
+                                    "name": "Computer Aided Engineering",
+                                    "ch": 2,
+                                    "source": "old_json"
                                 }
                             ]
                         },
@@ -14650,6 +15460,12 @@
                                     "lab": 3,
                                     "prereq": "None",
                                     "coreq": "None"
+                                },
+                                {
+                                    "code": "HM4xx",
+                                    "name": "Civics and Community Engagement",
+                                    "ch": 1,
+                                    "source": "old_json"
                                 }
                             ]
                         }
