@@ -1,0 +1,68 @@
+{
+  "_readme": "Hand-checked decisions for build_catalog.py. pairs: {program: {old code: 2025 code}} for the same subject when matching by name would pick wrong (senior design projects keep their codes). never_pair: {program: [[old, 2025]]} codes reused for a different subject. placeholder_codes_by_name: codes for courses printed as HM3XX, '' and so on (keys are normalised names). codes_by_name: codes that always apply to a name (fixes misprints). code_fixes / code_fixes_by_program: printed codes that are misprints. slot_names: pick-one slots that are not a single course. same_course_codes: codes whose rows are all one course even though programmes name it differently. Computer Engineering and Data Science still print Data Structures as CS221; the FCSE course descriptions use CS222 (CS221 is now Digital Logic Design), so they follow the descriptions. Cyber Security prints System and Unix Administration as CY412, which its elective list and descriptions give to Cryptography; it is CY351 there.",
+  "pairs": {
+    "BS Computer Engineering": {
+      "CS481": "CS481",
+      "CS482": "CS482"
+    },
+    "BS Data Science": {
+      "CS481": "CS481",
+      "CS482": "CS482"
+    },
+    "BS Civil Engineering": {
+      "CV481": "CV481",
+      "CV482": "CV482"
+    },
+    "BS Chemical Engineering": {
+      "CH481": "CH481"
+    },
+    "BS Chemical Engineering (Oil and Gas Engineering)": {
+      "CH481": "CH481"
+    }
+  },
+  "never_pair": {},
+  "placeholder_codes_by_name": {
+    "pakistan studies": "HM212",
+    "ideology and constitution of pakistan": "HM213",
+    "islamic studies": "HM211",
+    "corporate law and professional ethics": "HM322",
+    "civics and community engagement": "HM432",
+    "technical and business writing": "HM4XX",
+    "technical business writing": "HM4XX",
+    "entrepreneurship": "MSXXX",
+    "linear algebra ii": "ES205"
+  },
+  "codes_by_name": {
+    "understanding of quran i": "HM413",
+    "understanding of quran ii": "HM414"
+  },
+  "code_fixes": {
+    "S494": "CS494"
+  },
+  "code_fixes_by_program": {
+    "BS Electrical Engineering (Digital Design & Embedded Systems)": {
+      "EE441L": "EE432L"
+    },
+    "BS Cyber Security": {
+      "CY412": "CY351",
+      "CY412L": "CY351L"
+    },
+    "BS Computer Engineering": {
+      "CS221": "CS222",
+      "CS221L": "CS222L"
+    },
+    "BS Data Science": {
+      "CS221": "CS222",
+      "CS221L": "CS222L"
+    },
+    "BS Management Sciences": {
+      "HM213": "HM212"
+    }
+  },
+  "slot_names": [
+    "foreign language"
+  ],
+  "same_course_codes": [
+    "MM141L"
+  ]
+}

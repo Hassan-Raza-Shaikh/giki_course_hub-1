@@ -1,0 +1,621 @@
+program,change,old_code,old_name,old_semester,new_code,new_name,new_semester
+BS Artificial Intelligence,renamed,AI221,Machine Learning,4,AI312,Machine Learning,5
+BS Artificial Intelligence,renamed,AI221L,Machine Learning Lab,4,AI312L,Machine Learning Lab,5
+BS Artificial Intelligence,renamed,AI331,Deep Neural Networks,5,AI313,Deep Neural Network,6
+BS Artificial Intelligence,renamed,AI331L,Deep Neural Networks Lab,5,AI313L,Deep Neural Network Lab,6
+BS Artificial Intelligence,renamed,AI341,Computer Vision,6,AI441,Computer Vision,7
+BS Artificial Intelligence,renamed,AI341L,Computer Vision Lab,6,AI441L,Computer Vision Lab,7
+BS Artificial Intelligence,renamed,AI351,Natural Language Processing,6,AI361,Natural Language Processing,7
+BS Artificial Intelligence,renamed,AI351L,Natural Language Processing Lab,6,AI361L,Natural Language Processing Lab,7
+BS Artificial Intelligence,renamed,CE221,Digital Logic Design,3,CS221,Digital Logic Design,3
+BS Artificial Intelligence,renamed,CE221L,Digital Logic Design Lab,3,CS221L,Digital Logic Design Lab,3
+BS Artificial Intelligence,renamed,CE222,Computer Organization & Assembly Language,4,CS223,Computer Organization & Assembly Language,4
+BS Artificial Intelligence,renamed,CE222L,Computer Organization & Assembly Language Lab,4,CS223L,Computer Organization & Assembly Language Lab,4
+BS Artificial Intelligence,renamed,CE313,Computer Communications & Networks,6,CS313,Computer Communications & Networks,6
+BS Artificial Intelligence,renamed,CS221,Data Structures & Algorithms,3,CS222,Data Structures & Algorithms,3
+BS Artificial Intelligence,renamed,CS221L,Data Structures & Algorithms Lab,3,CS222L,Data Structures & Algorithms Lab,3
+BS Artificial Intelligence,renamed,CS325,Software Engineering,5,CS225,Software Engineering,4
+BS Artificial Intelligence,renamed,CS478,Design & Analysis of Algorithms,7,CS378,Design & Analysis of Algorithms,5
+BS Artificial Intelligence,renamed,HM112,Ideology and Constitution of Pakistan,6,HM213,Ideology and Constitution of Pakistan,6
+BS Artificial Intelligence,renamed,HM323,Civics and Community Engagement,8,HM432,Civics and Community Engagement,8
+BS Chemical Engineering,renamed,ES341,Numerical Analysis,6,ES341/CS342,Numerical Analysis,6
+BS Chemical Engineering,renamed,HM212,Ideology and Constitution of Pakistan,8,HM213,Ideology and Constitution of Pakistan,3
+BS Chemical Engineering (Oil and Gas Engineering),renamed,CH336L,Natural Gas processing and Piping lab,5,CH362L,Natural Gas processing and Piping lab,5
+BS Chemical Engineering (Oil and Gas Engineering),renamed,ES341,Numerical Analysis,6,ES341/CS342,Numerical Analysis,6
+BS Chemical Engineering (Oil and Gas Engineering),renamed,HM212,Ideology and Constitution of Pakistan,8,HM213,Ideology and Constitution of Pakistan,3
+BS Civil Engineering,renamed,HM212,Ideology and Constitution of Pakistan,3,HM213,Ideology and Constitution of Pakistan,4
+BS Computer Engineering,renamed,CS221,Data Structures and Algorithms,3,CS222,Data Structures and Algorithms,3
+BS Computer Engineering,renamed,CS221L,Data Structures and Algorithms Lab,3,CS222L,Data Structures and Algorithms Lab,3
+BS Computer Engineering,renamed,HM112,Ideology and Constitution of Pakistan,6,HM213,Ideology and Constitution of Pakistan,6
+BS Computer Engineering,renamed,HM323,Civics and Community Engagement,8,HM432,Civics and Community Engagement,8
+BS Computer Engineering,renamed,MM141L,Materials & Nanotechnology Lab,2,MM101L,Materials & Nanotechnology Lab,2
+BS Computer Science,renamed,CE221,Digital Logic Design,3,CS221,Digital Logic Design,3
+BS Computer Science,renamed,CE221L,Digital Logic Design Lab,3,CS221L,Digital Logic Design Lab,3
+BS Computer Science,renamed,CE222,Computer Organization & Assembly Language,4,CS223,Computer Organization & Assembly Language,4
+BS Computer Science,renamed,CE222L,Computer Organization & Assembly Language Lab,4,CS223L,Computer Organization & Assembly Language Lab,4
+BS Computer Science,renamed,CE313,Computer Communications & Networks,6,CS313,Computer Communications & Networks,6
+BS Computer Science,renamed,CS221,Data Structures & Algorithms,3,CS222,Data Structures & Algorithms,3
+BS Computer Science,renamed,CS221L,Data Structures & Algorithms Lab,3,CS222L,Data Structures & Algorithms Lab,3
+BS Computer Science,renamed,CS325,Software Engineering,5,CS225,Software Engineering,4
+BS Computer Science,renamed,CS334,Compiler Construction,6,CS424,Compiler Construction,7
+BS Computer Science,renamed,CS334L,Compiler Construction Lab,6,CS424L,Compiler Construction Lab,7
+BS Computer Science,renamed,CS342,Advanced Database Management Systems,5,CS412,Advanced Database Management Systems,7
+BS Computer Science,renamed,CS478,Design & Analysis of Algorithms,7,CS378,Design & Analysis of Algorithms,5
+BS Computer Science,renamed,HM112,Ideology and Constitution of Pakistan,6,HM213,Ideology and Constitution of Pakistan,3
+BS Computer Science,renamed,HM323,Civics and Community Engagement,8,HM432,Civics and Community Engagement,8
+BS Cyber Security,renamed,CE221,Digital Logic Design,3,CS221,Digital Logic Design,3
+BS Cyber Security,renamed,CE221L,Digital Logic Design Lab,3,CS221L,Digital Logic Design Lab,3
+BS Cyber Security,renamed,CE222,Computer Organization & Assembly Language,4,CS223,Computer Organization & Assembly Language,4
+BS Cyber Security,renamed,CE222L,Computer Organization & Assembly Language Lab,4,CS223L,Computer Organization & Assembly Language Lab,4
+BS Cyber Security,renamed,CE313,Computer Communications & Networks,6,CS213,Computer Communications & Networks,4
+BS Cyber Security,renamed,CS221,Data Structures & Algorithms,3,CS222,Data Structures & Algorithms,3
+BS Cyber Security,renamed,CS221L,Data Structures & Algorithms Lab,3,CS222L,Data Structures & Algorithms Lab,3
+BS Cyber Security,renamed,CS465,Data & Network Security,8,CS365,Data & Network Security,5
+BS Cyber Security,renamed,CS478,Design & Analysis of Algorithms,7,CS378,Design & Analysis of Algorithms,5
+BS Cyber Security,renamed,HM112,Ideology and Constitution of Pakistan,6,HM213,Ideology and Constitution of Pakistan,4
+BS Cyber Security,renamed,HM323,Civics and Community Engagement,8,HM432,Civics and Community Engagement,8
+BS Data Science,renamed,CS221,Data Structures & Algorithms,3,CS222,Data Structures & Algorithms,3
+BS Data Science,renamed,CS221L,Data Structures & Algorithms Lab,3,CS222L,Data Structures & Algorithms Lab,3
+BS Data Science,renamed,HM112,Ideology and Constitution of Pakistan,6,HM213,Ideology and Constitution of Pakistan,4
+BS Data Science,renamed,HM323,Civics and Community Engagement,8,HM432,Civics and Community Engagement,8
+BS Data Science,renamed,MM141L,Materials & Nanotechnology Lab,1,MM101L,Materials & Nanotechnology Lab,2
+BS Data Science,renamed,SE202L,Development Operations Lab,4,SE302L,Development Operations Lab,5
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,EE331,Electronic Circuit Design,5,EE432,Electronic Circuit Design,7
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,EE331L,Electronic Circuit Design Lab,5,EE432L,Electronic Circuit Design Lab,7
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,EE332,Power Electronics,6,EE431,Power Electronics,7
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,EE332L,Power Electronics Lab,6,EE431L,Power Electronics Lab,7
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,EE441,Digital Signal Processing,7,EE342,Digital Signal Processing,6
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,EE441L,Digital Signal Processing Lab,7,EE342L,Digital Signal Processing Lab,6
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,HM212,Ideology and Constitution of Pakistan,3,HM213,Ideology and Constitution of Pakistan,3
+BS Electrical Engineering (Digital Design & Embedded Systems),renamed,HMXYZ,Civics and Community Engagement,6,HM201,Civics and Community Engagement,3
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,EE314,Electrical Instrumentation & Measurement,5,EE315,Electrical Instrumentation & Measurement,5
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,EE314L,Electrical Instrumentation & Measurement Lab,5,EE315L,Electrical Instrumentation & Measurement Lab,5
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,EE332,Power Electronics,6,EE431,Power Electronics,7
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,EE332L,Power Electronics Lab,6,EE431L,Power Electronics Lab,7
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,EE441,Digital Signal Processing,7,EE342,Digital Signal Processing,6
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,EE441L,Digital Signal Processing Lab,7,EE342L,Digital Signal Processing Lab,6
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,HM212,Ideology and Constitution of Pakistan,3,HM213,Ideology and Constitution of Pakistan,3
+BS Electrical Engineering (Robotics & Autonomous Systems),renamed,HMXYZ,Civics and Community Engagement,6,HM201,Civics and Community Engagement,3
+BS Electrical Engineering (Smart Communication & Signal Processing),renamed,EE331,Electronic Circuit Design,5,EE432,Electronic Circuit Design,7
+BS Electrical Engineering (Smart Communication & Signal Processing),renamed,EE331L,Electronic Circuit Design Lab,5,EE432L,Electronic Circuit Design Lab,7
+BS Electrical Engineering (Smart Communication & Signal Processing),renamed,EE441,Digital Signal Processing,7,EE342,Digital Signal Processing,6
+BS Electrical Engineering (Smart Communication & Signal Processing),renamed,EE441L,Digital Signal Processing Lab,7,EE342L,Digital Signal Processing Lab,6
+BS Electrical Engineering (Smart Communication & Signal Processing),renamed,HM212,Ideology and Constitution of Pakistan,3,HM213,Ideology and Constitution of Pakistan,3
+BS Electrical Engineering (Smart Communication & Signal Processing),renamed,HMXYZ,Civics and Community Engagement,6,HM201,Civics and Community Engagement,3
+BS Electrical Engineering (Smart Grid),renamed,EE332,Power Electronics,6,EE431,Power Electronics,7
+BS Electrical Engineering (Smart Grid),renamed,EE332L,Power Electronics Lab,6,EE431L,Power Electronics Lab,7
+BS Electrical Engineering (Smart Grid),renamed,EE411,Power System Analysis,7,EE314,Power System Analysis,6
+BS Electrical Engineering (Smart Grid),renamed,EE411L,Power System Analysis Lab,7,EE314L,Power System Analysis Lab,6
+BS Electrical Engineering (Smart Grid),renamed,EE413,High Voltage Engineering,7,EE411,High Voltage Engineering,7
+BS Electrical Engineering (Smart Grid),renamed,EE413L,High Voltage Engineering Lab,7,EE411L,High Voltage Engineering Lab,7
+BS Electrical Engineering (Smart Grid),renamed,HM212,Ideology and Constitution of Pakistan,3,HM213,Ideology and Constitution of Pakistan,3
+BS Electrical Engineering (Smart Grid),renamed,HMXYZ,Civics and Community Engagement,6,HM201,Civics and Community Engagement,3
+BS Mechanical Engineering,renamed,ES341/CS342,Numerical Analysis,5,ES241,Numerical Analysis,4
+BS Mechanical Engineering,renamed,HM212,Ideology and Constitution of Pakistan,3,HM213,Ideology and Constitution of Pakistan,8
+BS Mechanical Engineering,renamed,HM4XX,Civics and Community Engagement,8,HM423,Civics and Community Engagement,8
+BS Mechanical Engineering,renamed,ME202,Instrumentation and Digital Twin,4,ME302,Instrumentation and Digital Twin,5
+BS Mechanical Engineering,renamed,ME411,Computer Aided Engineering,7,ME316,Computer Aided Engineering,6
+BS Software Engineering,renamed,CE221,Digital Logic Design,3,CS221,Digital Logic Design,3
+BS Software Engineering,renamed,CE221L,Digital Logic Design Lab,3,CS221L,Digital Logic Design Lab,3
+BS Software Engineering,renamed,CE222,Computer Organization & Assembly Language,4,CS223,Computer Organization & Assembly Language,4
+BS Software Engineering,renamed,CE222L,Computer Organization & Assembly Language Lab,4,CS223L,Computer Organization & Assembly Language Lab,4
+BS Software Engineering,renamed,CE313,Computer Communications & Networks,6,CS314,Computer Communications & Networks,5
+BS Software Engineering,renamed,CS221,Data Structures & Algorithms,3,CS222,Data Structures & Algorithms,3
+BS Software Engineering,renamed,CS221L,Data Structures & Algorithms Lab,3,CS222L,Data Structures & Algorithms Lab,3
+BS Software Engineering,renamed,CS311,Operating Systems,5,CS411,Operating Systems,7
+BS Software Engineering,renamed,CS311L,Operating Systems Lab,5,CS411L,Operating Systems Lab,7
+BS Software Engineering,renamed,CS392,Software Project Management,6,CS492,Software Project Management,7
+BS Software Engineering,renamed,CS478,Design & Analysis of Algorithms,7,CS378,Design & Analysis of Algorithms,5
+BS Software Engineering,renamed,HM112,Ideology and Constitution of Pakistan,6,HM213,Ideology and Constitution of Pakistan,5
+BS Software Engineering,renamed,HM323,Civics and Community Engagement,8,HM432,Civics and Community Engagement,8
+BS Software Engineering,renamed,SE202L,Development Operations Lab,4,SE302L,Development Operations Lab,6
+BS Artificial Intelligence,retitled,AI102,Python Programming & Freelancing Essentials,2,AI102,Python and Freelancing Essentials,2
+BS Artificial Intelligence,retitled,AI202,Concepts in AI,4,AI202,Concepts in Artificial Intelligence,4
+BS Artificial Intelligence,retitled,CH101,Applied Chemistry & Environment,2,CH101,"Chemistry, Environment and Climate Change",2
+BS Artificial Intelligence,retitled,CS481,Senior Design Project (Part-I),7,CS481,Senior Design Project,7
+BS Artificial Intelligence,retitled,CS482,Senior Design Project (Part II),8,CS482,Senior Design Project,8
+BS Artificial Intelligence,retitled,MM101,Materials & Nanotechnology,1,MM101,"Materials, Nanotech, and Sustainability",1
+BS Artificial Intelligence,retitled,MM141L,Materials & Nanotechnology Lab,1,MM141L,"Materials, Nanotech, and Sustainability Lab",1
+BS Chemical Engineering,retitled,CH351L,Heat and Mass Transfer Lab.,5,CH351L,Heat Transfer Lab.,5
+BS Chemical Engineering,retitled,CH411,Simultaneous Heat and Mass Transfer,7,CH411,Separation Processes,7
+BS Chemical Engineering,retitled,CH451L,Separation Processes Lab.,7,CH451L,Separation Processes and Mass Transfer Lab.,7
+BS Chemical Engineering,retitled,CH481,Chemical Engg. Project Design-I,7,CH481,Senior Design Project -III,8
+BS Chemical Engineering,retitled,HM321,Sociology and Human Behavior,5,HM321,Sociology and Human Behaviour,5
+BS Chemical Engineering,retitled,MM141L,Materials Lab-I,1,MM141L,Materials Lab I,1
+BS Chemical Engineering (Oil and Gas Engineering),retitled,CH323,Petroleum Refinery Engineering,6,CH323,Petroleum Refining,6
+BS Chemical Engineering (Oil and Gas Engineering),retitled,CH351L,Heat and Mass Transfer Lab.,5,CH351L,Heat Transfer Lab.,5
+BS Chemical Engineering (Oil and Gas Engineering),retitled,CH411,Simultaneous Heat and Mass Transfer,7,CH411,Separation Processes,7
+BS Chemical Engineering (Oil and Gas Engineering),retitled,CH451L,Separation Processes Lab,7,CH451L,Separation Processes and Mass Transfer Lab,7
+BS Chemical Engineering (Oil and Gas Engineering),retitled,CH481,Chemical Engg. Project Design-I,7,CH481,Chemical Engg. Project Design-III,8
+BS Chemical Engineering (Oil and Gas Engineering),retitled,HM321,Sociology and Human Behavior,5,HM321,Sociology and Human Behaviour,5
+BS Chemical Engineering (Oil and Gas Engineering),retitled,MM141L,Materials Lab-I,1,MM141L,Materials Lab I,1
+BS Civil Engineering,retitled,CV210L,Civil Engineering Drawing and Graphics,3,CV210L,Civil Engineering Drawing -II,4
+BS Civil Engineering,retitled,CV215L,Construction Materials & Concrete Technology Lab,3,CV215L,Construction Materials and Concrete Technology Lab,4
+BS Civil Engineering,retitled,CV481,Senior Design Project I,7,CV481,Senior Design Project II,7
+BS Civil Engineering,retitled,CV482,Senior Design Project II,8,CV482,Senior Design Project III,8
+BS Civil Engineering,retitled,IF101,Innovation and Makers Lab I,1,IF101,Innovation and Makers Lab 1,1
+BS Computer Engineering,retitled,AI102,Python Programming & Freelancing Essentials,2,AI102,Python and Freelancing Essentials,2
+BS Computer Engineering,retitled,CE231,Electronics – I,4,CE231,Electronic Devices and Circuits,4
+BS Computer Engineering,retitled,CE231L,Electronics – I Lab,4,CE231L,Electronic Devices and Circuits Lab,4
+BS Computer Engineering,retitled,CH101,Applied Chemistry & Environment,1,CH101,"Chemistry, Environment and Climate Change",1
+BS Computer Engineering,retitled,CS481,Senior Design Project (Part-I),7,CS481,Senior Design Project (Part-II),7
+BS Computer Engineering,retitled,CS482,Senior Design Project (Part II),8,CS482,Senior Design Project (Part III),8
+BS Computer Science,retitled,AI102,Python Programming & Freelancing Essentials,2,AI102,Python and Freelancing Essentials,2
+BS Computer Science,retitled,CH101,Applied Chemistry & Environment,2,CH101,"Chemistry, Environment and Climate Change",2
+BS Computer Science,retitled,CS272,Human Computer Interface and Computer Graphics,4,CS272,UI/UX,4
+BS Computer Science,retitled,CS481,Senior Design Project (Part-I),7,CS481,Senior Design Project,7
+BS Computer Science,retitled,CS482,Senior Design Project (Part II),8,CS482,Senior Design Project,8
+BS Computer Science,retitled,MM101,Materials & Nanotechnology,1,MM101,"Materials, Nanotech, and Sustainability",1
+BS Computer Science,retitled,MM141L,Materials & Nanotechnology Lab,1,MM141L,"Materials, Nanotech, and Sustainability Lab",1
+BS Cyber Security,retitled,CH101,Applied Chemistry & Environment,2,CH101,"Chemistry, Environment and Climate Change",2
+BS Cyber Security,retitled,CS481,Senior Design Project (Part-I),7,CS481,Senior Design Project,7
+BS Cyber Security,retitled,CS482,Senior Design Project (Part II),8,CS482,Senior Design Project,8
+BS Cyber Security,retitled,ES205,Advanced Linear Algebra,3,ES205,Linear Algebra II,5
+BS Cyber Security,retitled,MM101,Materials & Nanotechnology,1,MM101,"Materials, Nanotech, and Sustainability",1
+BS Cyber Security,retitled,MM141L,Materials & Nanotechnology Lab,1,MM141L,"Materials, Nanotech, and Sustainability Lab",1
+BS Data Science,retitled,AI102,Python Programming & Freelancing Essentials,2,AI102,Python and Freelancing Essentials,2
+BS Data Science,retitled,CH101,Applied Chemistry & Environment,2,CH101,"Chemistry, Environment & Climate Change",1
+BS Data Science,retitled,CS481,Senior Design Project (Part-I),7,CS481,Senior Design Project (Part-II),7
+BS Data Science,retitled,CS482,Senior Design Project (Part II),8,CS482,Senior Design Project (Part III),8
+BS Data Science,retitled,DS331,Data Warehousing & Businss Intelligence,6,DS331,Data Warehousing & Business Intelligence,6
+BS Data Science,retitled,DS331L,Data Warehousing & Businss Intelligence Lab,6,DS331L,Data Warehousing & Business Intelligence Lab,6
+BS Electrical Engineering (Digital Design & Embedded Systems),retitled,EE491,Senior Design Project (Part-I),7,EE491,Capstone Project - 2,7
+BS Electrical Engineering (Digital Design & Embedded Systems),retitled,EE492,Senior Design Project (Part-II),8,EE492,Capstone Project-3,8
+BS Electrical Engineering (Digital Design & Embedded Systems),retitled,MM101,Materials and Nanotechnology,1,MM101,"Materials, Nanotechnology, & Sustainability",1
+BS Electrical Engineering (Robotics & Autonomous Systems),retitled,EE491,Senior Design Project (Part-I),7,EE491,Capstone Project - 2,7
+BS Electrical Engineering (Robotics & Autonomous Systems),retitled,EE492,Senior Design Project (Part-II),8,EE492,Capstone Project-3,8
+BS Electrical Engineering (Robotics & Autonomous Systems),retitled,MM101,Materials and Nanotechnology,1,MM101,"Materials, Nanotechnology, & Sustainability",1
+BS Electrical Engineering (Smart Communication & Signal Processing),retitled,EE491,Senior Design Project (Part-I),7,EE491,Capstone Project - 2,7
+BS Electrical Engineering (Smart Communication & Signal Processing),retitled,EE492,Senior Design Project (Part-II),8,EE492,Capstone Project-3,8
+BS Electrical Engineering (Smart Communication & Signal Processing),retitled,MM101,Materials and Nanotechnology,1,MM101,"Materials, Nanotechnology, & Sustainability",1
+BS Electrical Engineering (Smart Grid),retitled,EE491,Senior Design Project (Part-I),7,EE491,Capstone Project - 2,7
+BS Electrical Engineering (Smart Grid),retitled,EE492,Senior Design Project (Part-II),8,EE492,Capstone Project-3,8
+BS Electrical Engineering (Smart Grid),retitled,MM101,Materials and Nanotechnology,1,MM101,"Materials, Nanotechnology, & Sustainability",1
+BS Mechanical Engineering,retitled,CH101,Chemistry Environment and Climate Change,1,CH101,"Chemistry, Environment and Climate Change",1
+BS Mechanical Engineering,retitled,HM321,Sociology and Human Behavior,6,HM321,Sociology,6
+BS Mechanical Engineering,retitled,HM322,Corporate Law and Professional Ethics,5,HM322,Professional Ethics,5
+BS Mechanical Engineering,retitled,ME213,Mechanics of Solids I,4,ME213,Mechanics of Solids,4
+BS Mechanical Engineering,retitled,ME231,Thermodynamics I,3,ME231,Fundamentals of Thermodynamics,3
+BS Mechanical Engineering,retitled,ME232,Thermodynamics II,4,ME232,Applied Thermodynamics,4
+BS Mechanical Engineering,retitled,ME314,Mechanics of Solids-II,5,ME314,Stress Analysis,5
+BS Mechanical Engineering,retitled,ME321,Fluid Mechanics I,5,ME321,Fluid Mechanics,5
+BS Mechanical Engineering,retitled,ME322,Fluid Mechanics II,6,ME322,Fluid Dynamics and Turbomachinery,6
+BS Software Engineering,retitled,CH101,Applied Chemistry & Environment,2,CH101,"Chemistry, Environment and Climate Change",2
+BS Software Engineering,retitled,CS372,Human Computer Interaction & UI Graphics,5,CS372,UI/UX,6
+BS Software Engineering,retitled,CS481,Senior Design Project (Part-I),7,CS481,Senior Design Project,7
+BS Software Engineering,retitled,CS482,Senior Design Project (Part II),8,CS482,Senior Design Project,8
+BS Software Engineering,retitled,ES205,Advanced Linear Algebra,3,ES205,Linear Algebra II,3
+BS Software Engineering,retitled,MM101,Materials & Nanotechnology,1,MM101,"Materials, Nanotech and Sustainability",1
+BS Software Engineering,retitled,MM141L,Materials & Nanotechnology Lab,1,MM141L,"Materials, Nanotech and Sustainability Lab",1
+BS Software Engineering,retitled,SE201,Software Engineering,3,SE201,Introduction to Software Engineering,3
+BS Software Engineering,retitled,SE331,Software Quality Assurance,6,SE331,Software Quality Engineering,6
+BS Artificial Intelligence,moved semester,CS392,Software Project Management,6,CS392,Software Project Management,5
+BS Civil Engineering,moved semester,CV215,Construction Materials and Concrete Technology,3,CV215,Construction Materials and Concrete Technology,4
+BS Civil Engineering,moved semester,CV230,Geology for Engineers,4,CV230,Geology for Engineers,3
+BS Computer Engineering,moved semester,CS391,Entrepreneurship & Technology Commercialization,5,CS391,Entrepreneurship & Technology Commercialization,8
+BS Computer Science,moved semester,CS324,Computer Architecture,6,CS324,Computer Architecture,5
+BS Computer Science,moved semester,HM211,Islamic Studies,4,HM211,Islamic Studies,5
+BS Cyber Security,moved semester,CS351,Artificial Intelligence,5,CS351,Artificial Intelligence,6
+BS Cyber Security,moved semester,CS351L,Artificial Intelligence Lab,5,CS351L,Artificial Intelligence Lab,6
+BS Cyber Security,moved semester,CY201,Cyber Security Principles & Concepts,4,CY201,Cyber Security Principles & Concepts,3
+BS Data Science,moved semester,CH161,Occupational Health & Safety,2,CH161,Occupational Health & Safety,1
+BS Data Science,moved semester,CS232,Database Management Systems,4,CS232,Database Management Systems,3
+BS Data Science,moved semester,CS232L,Database Management Systems Lab,4,CS232L,Database Management Systems Lab,3
+BS Data Science,moved semester,CS417,Parallel Processing & Distributed Computing,8,CS417,Parallel Processing & Distributed Computing,7
+BS Data Science,moved semester,CS478,Design & Analysis of Algorithms,7,CS478,Design & Analysis of Algorithms,6
+BS Data Science,moved semester,DS351,Data Visualization,6,DS351,Data Visualization,7
+BS Data Science,moved semester,DS351L,Data Visualization Lab,6,DS351L,Data Visualization Lab,7
+BS Data Science,moved semester,MM101,Materials & Nanotechnology,1,MM101,Materials & Nanotechnology,2
+BS Electrical Engineering (Digital Design & Embedded Systems),moved semester,HM221,Sociology and Human Behavior,4,HM221,Sociology and Human Behavior,5
+BS Electrical Engineering (Robotics & Autonomous Systems),moved semester,HM221,Sociology and Human Behavior,4,HM221,Sociology and Human Behavior,7
+BS Electrical Engineering (Robotics & Autonomous Systems),moved semester,HM322,Corporate law and Professional Ethics,7,HM322,Corporate law and Professional Ethics,5
+BS Electrical Engineering (Smart Communication & Signal Processing),moved semester,HM221,Sociology and Human Behavior,4,HM221,Sociology and Human Behavior,5
+BS Electrical Engineering (Smart Grid),moved semester,HM221,Sociology and Human Behavior,4,HM221,Sociology and Human Behavior,7
+BS Mechanical Engineering,moved semester,ME354,Manufacturing Processes,6,ME354,Manufacturing Processes,5
+BS Software Engineering,moved semester,HM211,Islamic Studies,4,HM211,Islamic Studies,5
+BS Artificial Intelligence,new course,,,,AI202L,Concepts in Artificial Intelligence Lab,4
+BS Artificial Intelligence,new course,,,,CS313L,Computer Communications & Networks Lab,6
+BS Artificial Intelligence,new course,,,,CS380,Senior Design Project,6
+BS Artificial Intelligence,new course,,,,CS417L,Parallel Processing & Distributed Computing Lab,8
+BS Artificial Intelligence,new course,,,,HM212,Pakistan Studies,3
+BS Artificial Intelligence,new course,,,,HM322,Corporate Law and Professional Ethics,8
+BS Artificial Intelligence,new course,,,,HM413,Understanding of Quran-I,7
+BS Artificial Intelligence,new course,,,,HM414,Understanding of Quran-II,8
+BS Artificial Intelligence,new course,,,,HM4XX,Technical & Business Writing,6
+BS Artificial Intelligence,new course,,,,MSXXX,Entrepreneurship,5
+BS Chemical Engineering,new course,,,,CH363,Process Safety,6
+BS Chemical Engineering,new course,,,,CH380,Senior Design Project-I,6
+BS Chemical Engineering,new course,,,,CH473,Product Design and Commercialisation,8
+BS Chemical Engineering,new course,,,,CH480,Senior Design Project -II,7
+BS Chemical Engineering,new course,,,,HM212,Pakistan Studies,4
+BS Chemical Engineering,new course,,,,HM413,Understanding of Quran-I,7
+BS Chemical Engineering,new course,,,,HM414,Understanding of Quran-II,8
+BS Chemical Engineering,new course,,,,MS130,Entrepreneurship and Free-Lancing,2
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,CH363,Process Safety,6
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,CH380,Senior Design Project -I,6
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,CH473,Product Design and Commercialisation,8
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,CH480,Senior Design Project -II,7
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,HM212,Pakistan Studies,4
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,HM413,Understanding of Quran-I,7
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,HM414,Understanding of Quran-II,8
+BS Chemical Engineering (Oil and Gas Engineering),new course,,,,MS130,Entrepreneurship and Free-Lancing,2
+BS Civil Engineering,new course,,,,CV209L,Civil Engineering Drawing I,3
+BS Civil Engineering,new course,,,,CV453,Architectural and Building Information Modeling,8
+BS Civil Engineering,new course,,,,CV480,Senior Design Project I,6
+BS Civil Engineering,new course,,,,HM212,Pakistan Studies,3
+BS Civil Engineering,new course,,,,HM413,Understanding of Quran-I,7
+BS Civil Engineering,new course,,,,HM414,Understanding of Quran-II,8
+BS Civil Engineering,new course,,,,MS103,Entrepreneurship and Freelancing Essentials,2
+BS Computer Engineering,new course,,,,CS380,Senior Design Project (Part-I),6
+BS Computer Engineering,new course,,,,HM212,Pakistan Studies,5
+BS Computer Engineering,new course,,,,HM413,Understanding of Quran-I,7
+BS Computer Engineering,new course,,,,HM414,Understanding of Quran-II,8
+BS Computer Science,new course,,,,CS312,Web Development,6
+BS Computer Science,new course,,,,CS312L,Web Development Lab,6
+BS Computer Science,new course,,,,CS313L,Computer Communications & Networks Lab,6
+BS Computer Science,new course,,,,CS380,Senior Design Project,6
+BS Computer Science,new course,,,,CS412L,Advanced Database Management Systems Lab,7
+BS Computer Science,new course,,,,CS417L,Parallel Processing & Distributed Computing Lab,8
+BS Computer Science,new course,,,,HM212,Pakistan Studies,6
+BS Computer Science,new course,,,,HM322,Corporate Law and Professional Ethics,8
+BS Computer Science,new course,,,,HM413,Understanding of Quran-I,7
+BS Computer Science,new course,,,,HM414,Understanding of Quran-II,8
+BS Computer Science,new course,,,,HM4XX,Technical & Business Writing,7
+BS Computer Science,new course,,,,MSXXX,Entrepreneurship,5
+BS Cyber Security,new course,,,,AI102L,Python and Freelancing Essentials,2
+BS Cyber Security,new course,,,,CS213L,Computer Communications & Networks Lab,4
+BS Cyber Security,new course,,,,CS380,Senior Design Project,6
+BS Cyber Security,new course,,,,CS417L,Parallel Processing & Distributed Computing Lab,8
+BS Cyber Security,new course,,,,CS4XX,Graph-Based Approaches in Cybersecurity,7
+BS Cyber Security,new course,,,,CY331,Information Assurance,6
+BS Cyber Security,new course,,,,CY341,Digital Forensics,6
+BS Cyber Security,new course,,,,CY341L,Digital Forensics Lab,6
+BS Cyber Security,new course,,,,CY351,System and Unix Administration,7
+BS Cyber Security,new course,,,,CY351L,System and Unix Administration Lab,7
+BS Cyber Security,new course,,,,CY392,Project Management for Cyber Security,6
+BS Cyber Security,new course,,,,CY424,Ethical Hacking with AI,8
+BS Cyber Security,new course,,,,CY424L,Ethical Hacking with AI Lab,8
+BS Cyber Security,new course,,,,CY478,Secure Software Design and Engineering,7
+BS Cyber Security,new course,,,,CY478L,Secure Software Design and Engineering Lab,7
+BS Cyber Security,new course,,,,HM101L,Communication Skills Lab,1
+BS Cyber Security,new course,,,,HM102L,Critical Thinking & Expository Writing Lab,2
+BS Cyber Security,new course,,,,HM212,Pakistan Studies,3
+BS Cyber Security,new course,,,,HM322,Corporate law and Professional Ethics,8
+BS Cyber Security,new course,,,,HM413,Understanding of Quran-I,7
+BS Cyber Security,new course,,,,HM414,Understanding of Quran-II,8
+BS Cyber Security,new course,,,,HM4XX,Technical Business Writing,7
+BS Cyber Security,new course,,,,MSXXX,Entrepreneurship,6
+BS Data Science,new course,,,,CS380,Senior Design Project (Part-I),6
+BS Data Science,new course,,,,HM101L,Communication Skills Lab,1
+BS Data Science,new course,,,,HM212,Pakistan Studies,4
+BS Data Science,new course,,,,HM413,Understanding of Quran-I,7
+BS Data Science,new course,,,,HM414,Understanding of Quran-II,8
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,EE312,Power Distribution and Utilization,5
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,EE312L,Power Distribution and Utilization Lab,5
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,EE391,Capstone Project - 1,6
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,EE422L,Digital Systems Design Lab,8
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,HM211,Islamic Studies,3
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,HM212,Pakistan Studies,4
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,HM413,Understanding of Quran-I,7
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,HM414,Understanding of Quran-II,8
+BS Electrical Engineering (Digital Design & Embedded Systems),new course,,,,MS101,Entrepreneurship and Freelancing Essentials,2
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,EE312,Power Distribution and Utilization,5
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,EE312L,Power Distribution and Utilization Lab,5
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,EE391,Capstone Project - 1,6
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,HM211,Islamic Studies,3
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,HM212,Pakistan Studies,4
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,HM413,Understanding of Quran-I,7
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,HM414,Understanding of Quran-II,8
+BS Electrical Engineering (Robotics & Autonomous Systems),new course,,,,MS101,Entrepreneurship and Freelancing Essentials,2
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,EE312,Power Distribution and Utilization,5
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,EE312L,Power Distribution and Utilization Lab,5
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,EE391,Capstone Project - 1,6
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,HM211,Islamic Studies,3
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,HM212,Pakistan Studies,4
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,HM413,Understanding of Quran-I,7
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,HM414,Understanding of Quran-II,8
+BS Electrical Engineering (Smart Communication & Signal Processing),new course,,,,MS101,Entrepreneurship and Freelancing Essentials,2
+BS Electrical Engineering (Smart Grid),new course,,,,EE391,Capstone Project - 1,6
+BS Electrical Engineering (Smart Grid),new course,,,,HM211,Islamic Studies,3
+BS Electrical Engineering (Smart Grid),new course,,,,HM212,Pakistan Studies,4
+BS Electrical Engineering (Smart Grid),new course,,,,HM413,Understanding of Quran-I,7
+BS Electrical Engineering (Smart Grid),new course,,,,HM414,Understanding of Quran-II,8
+BS Electrical Engineering (Smart Grid),new course,,,,MS101,Entrepreneurship and Freelancing Essentials,2
+BS Management Sciences,new course,,,,HM212,Pakistan Studies,3
+BS Management Sciences,new course,,,,HM413,Understanding of Quran-I,7
+BS Management Sciences,new course,,,,HM414,Understanding of Quran-II,8
+BS Mechanical Engineering,new course,,,,HM211,Islamic Studies,4
+BS Mechanical Engineering,new course,,,,HM212,Pakistan Studies,3
+BS Mechanical Engineering,new course,,,,HM413,Understanding of Quran-I,7
+BS Mechanical Engineering,new course,,,,HM414,Understanding of Quran-II,8
+BS Mechanical Engineering,new course,,,,ME448,Robotics and Electric Vehicle Lab,7
+BS Mechanical Engineering,new course,,,,MS130,Entrepreneurship & Freelancing Essentials,2
+BS Software Engineering,new course,,,,AI102L,Python Programming and Freelancing Essentials,2
+BS Software Engineering,new course,,,,CS314L,Computer Communications & Networks Lab,5
+BS Software Engineering,new course,,,,CS380,Senior Design Project,6
+BS Software Engineering,new course,,,,CS417L,Parallel Processing & Distributed Computing Lab,8
+BS Software Engineering,new course,,,,HM101L,Communication Skills Lab,1
+BS Software Engineering,new course,,,,HM102L,Critical Thinking & Expository Writing Lab,2
+BS Software Engineering,new course,,,,HM212,Pakistan Studies,4
+BS Software Engineering,new course,,,,HM322,Corporate Law and Professional Ethics,8
+BS Software Engineering,new course,,,,HM413,Understanding of Quran-I,7
+BS Software Engineering,new course,,,,HM414,Understanding of Quran-II,8
+BS Software Engineering,new course,,,,HM4XX,Technical Business Writing,7
+BS Software Engineering,new course,,,,MSXXX,Entrepreneurship,4
+BS Software Engineering,new course,,,,SE302,Development Operations,6
+BS Software Engineering,new course,,,,SE331L,Software Quality Engineering Lab,6
+BS Artificial Intelligence,earlier batches only,AI201L,Programming for AI Lab,3,,,
+BS Artificial Intelligence,earlier batches only,CS391,Entrepreneurship & Technology Commercialization,5,,,
+BS Artificial Intelligence,earlier batches only,CS493,Scientific Communication,7,,,
+BS Artificial Intelligence,earlier batches only,CS494,Professional Issues in IT,8,,,
+BS Chemical Engineering,earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Chemical Engineering,earlier batches only,CH391,Petrochemical Engineering,6,,,
+BS Chemical Engineering,earlier batches only,CH482,Chemical Engg. Project Design-II,8,,,
+BS Chemical Engineering (Oil and Gas Engineering),earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Chemical Engineering (Oil and Gas Engineering),earlier batches only,CH391,Petrochemical Engineering,6,,,
+BS Chemical Engineering (Oil and Gas Engineering),earlier batches only,CH482,Chemical Engg. Project Design-II,8,,,
+BS Civil Engineering,earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Civil Engineering,earlier batches only,CV314L,Reinforced Concrete Design I Lab,6,,,
+BS Computer Science,earlier batches only,CS391,Entrepreneurship & Technology Commercialization,5,,,
+BS Computer Science,earlier batches only,CS493,Scientific Communication,7,,,
+BS Computer Science,earlier batches only,CS494,Professional Issues in IT,8,,,
+BS Computer Science,earlier batches only,SE202L,Development Operations Lab,4,,,
+BS Cyber Security,earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Cyber Security,earlier batches only,CE342,Computational Methods and Techniques,6,,,
+BS Cyber Security,earlier batches only,CE361,Digital Signal Processing,6,,,
+BS Cyber Security,earlier batches only,CE361L,Digital Signal Processing Lab,6,,,
+BS Cyber Security,earlier batches only,CS342,Advanced Database Management Systems,5,,,
+BS Cyber Security,earlier batches only,CS361,Computer Architecture,6,,,
+BS Cyber Security,earlier batches only,CS391,Entrepreneurship & Technology Commercialization,5,,,
+BS Cyber Security,earlier batches only,CS392,Software Project Management,6,,,
+BS Cyber Security,earlier batches only,CS493,Scientific Communication,7,,,
+BS Cyber Security,earlier batches only,CS494,Professional Issues in IT,8,,,
+BS Cyber Security,earlier batches only,CY412,Cryptography,7,,,
+BS Data Science,earlier batches only,CS202,Information & Communication Technologies,3,,,
+BS Data Science,earlier batches only,CS391,Entrepreneurship & Technology Commercialization,5,,,
+BS Data Science,earlier batches only,CS493,Scientific Communication,7,,,
+BS Electrical Engineering (Digital Design & Embedded Systems),earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Electrical Engineering (Digital Design & Embedded Systems),earlier batches only,EE471,Wave Propagation and Antennas,7,,,
+BS Electrical Engineering (Digital Design & Embedded Systems),earlier batches only,EE471L,Wave Propagation and Antennas Lab,7,,,
+BS Electrical Engineering (Robotics & Autonomous Systems),earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Electrical Engineering (Robotics & Autonomous Systems),earlier batches only,EE331,Electronic Circuit Design,5,,,
+BS Electrical Engineering (Robotics & Autonomous Systems),earlier batches only,EE331L,Electronic Circuit Design Lab,5,,,
+BS Electrical Engineering (Smart Communication & Signal Processing),earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Electrical Engineering (Smart Communication & Signal Processing),earlier batches only,EE332,Power Electronics,6,,,
+BS Electrical Engineering (Smart Communication & Signal Processing),earlier batches only,EE332L,Power Electronics Lab,6,,,
+BS Electrical Engineering (Smart Grid),earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Mechanical Engineering,earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Software Engineering,earlier batches only,AI102,Python Programming & Freelancing Essentials,2,,,
+BS Software Engineering,earlier batches only,CS391,Entrepreneurship & Technology Commercialization,5,,,
+BS Software Engineering,earlier batches only,CS493,Scientific Communication,7,,,
+BS Software Engineering,earlier batches only,CS494,Professional Issues in IT,8,,,
+BS Materials Engineering (Manufacturing),new programme,,,,CH101,"Chemistry, Environment and Climate Change",1
+BS Materials Engineering (Manufacturing),new programme,,,,CH161,Occupational Health and Safety,1
+BS Materials Engineering (Manufacturing),new programme,,,,CS101,Computing and AI,1
+BS Materials Engineering (Manufacturing),new programme,,,,CS101L,Computing and AI Lab,1
+BS Materials Engineering (Manufacturing),new programme,,,,CS112,Object Oriented Programming and Design,2
+BS Materials Engineering (Manufacturing),new programme,,,,CS112L,Object Oriented Programming and Design Lab,2
+BS Materials Engineering (Manufacturing),new programme,,,,EE201,Applied Electrical Engineering,3
+BS Materials Engineering (Manufacturing),new programme,,,,ES111,Probability and Statistics,2
+BS Materials Engineering (Manufacturing),new programme,,,,ES341/CS342,Numerical Analysis,6
+BS Materials Engineering (Manufacturing),new programme,,,,HM101,Communication Skills,1
+BS Materials Engineering (Manufacturing),new programme,,,,HM102,Critical Thinking and Expository Writing,2
+BS Materials Engineering (Manufacturing),new programme,,,,HM211,Islamic Studies,3
+BS Materials Engineering (Manufacturing),new programme,,,,HM212,Pakistan Studies,4
+BS Materials Engineering (Manufacturing),new programme,,,,HM213,Ideology and Constitution of Pakistan,3
+BS Materials Engineering (Manufacturing),new programme,,,,HM321,Sociology and Human Behavior,5
+BS Materials Engineering (Manufacturing),new programme,,,,HM322,Corporate Law and Professional Ethics,6
+BS Materials Engineering (Manufacturing),new programme,,,,HM323,Civics and Community Engagement,5
+BS Materials Engineering (Manufacturing),new programme,,,,HM413,Understanding of Quran-I,7
+BS Materials Engineering (Manufacturing),new programme,,,,HM414,Understanding of Quran-II,8
+BS Materials Engineering (Manufacturing),new programme,,,,IF101,Innovation and Makers Lab I,1
+BS Materials Engineering (Manufacturing),new programme,,,,IF102,Innovation and Makers Lab II,2
+BS Materials Engineering (Manufacturing),new programme,,,,MM101,"Materials, Nanotechnology and Sustainability",1
+BS Materials Engineering (Manufacturing),new programme,,,,MM141L,"Materials, Nanotechnology and Sustainability Lab (Materials Lab I)",1
+BS Materials Engineering (Manufacturing),new programme,,,,MM201,Materials Chemistry,4
+BS Materials Engineering (Manufacturing),new programme,,,,MM212,Materials Evaluation Techniques and Instrumentation,3
+BS Materials Engineering (Manufacturing),new programme,,,,MM214,Minerals Processing and Extractive Metallurgy,3
+BS Materials Engineering (Manufacturing),new programme,,,,MM222,Strength of Materials,4
+BS Materials Engineering (Manufacturing),new programme,,,,MM231,Thermodynamics of Materials,3
+BS Materials Engineering (Manufacturing),new programme,,,,MM232,Phase Equilibria and Microstructures,4
+BS Materials Engineering (Manufacturing),new programme,,,,MM233,Alloy Production and Casting Design,4
+BS Materials Engineering (Manufacturing),new programme,,,,MM242L,Materials Lab II,3
+BS Materials Engineering (Manufacturing),new programme,,,,MM243L,Materials Lab III,4
+BS Materials Engineering (Manufacturing),new programme,,,,MM244L,Computational Tools in Materials Science (Materials Lab IV),4
+BS Materials Engineering (Manufacturing),new programme,,,,MM323,X-ray Diffraction and Electron Microscopy,5
+BS Materials Engineering (Manufacturing),new programme,,,,MM324,Deformation & Fracture,5
+BS Materials Engineering (Manufacturing),new programme,,,,MM334,Heat Treatment and Processing,5
+BS Materials Engineering (Manufacturing),new programme,,,,MM344L,Materials Lab V,5
+BS Materials Engineering (Manufacturing),new programme,,,,MM345L,Materials Lab VI,6
+BS Materials Engineering (Manufacturing),new programme,,,,MM351,Joining of Materials,5
+BS Materials Engineering (Manufacturing),new programme,,,,MM352,Manufacturing Processes-I,6
+BS Materials Engineering (Manufacturing),new programme,,,,MM362,Ceramics and Glasses,6
+BS Materials Engineering (Manufacturing),new programme,,,,MM365,Polymers and Composites,6
+BS Materials Engineering (Manufacturing),new programme,,,,MM380,Senior Design Project-I,6
+BS Materials Engineering (Manufacturing),new programme,,,,MM435,Corrosion Degradation and Protection,7
+BS Materials Engineering (Manufacturing),new programme,,,,MM446L,Materials Lab VII,7
+BS Materials Engineering (Manufacturing),new programme,,,,MM447L,Materials Lab VIII,8
+BS Materials Engineering (Manufacturing),new programme,,,,MM451,Manufacturing Processes-II,8
+BS Materials Engineering (Manufacturing),new programme,,,,MM453/ME418,CAD / CAM,7
+BS Materials Engineering (Manufacturing),new programme,,,,MM457,Additive Manufacturing,8
+BS Materials Engineering (Manufacturing),new programme,,,,MM481,Senior Design Project-II,7
+BS Materials Engineering (Manufacturing),new programme,,,,MM482,Senior Design Project-III,8
+BS Materials Engineering (Manufacturing),new programme,,,,MS130,Entrepreneurship and Freelancing,2
+BS Materials Engineering (Manufacturing),new programme,,,,MS291,Engineering Economy,4
+BS Materials Engineering (Manufacturing),new programme,,,,MT101,Calculus I,1
+BS Materials Engineering (Manufacturing),new programme,,,,MT102,Differential Equations and Linear Algebra I,2
+BS Materials Engineering (Manufacturing),new programme,,,,MT202,Calculus II,3
+BS Materials Engineering (Manufacturing),new programme,,,,PH101,Applied Physics,2
+BS Materials Engineering (Manufacturing),new programme,,,,PH101L,Applied Physics Lab,2
+BS Materials Engineering (Minerals Processing),new programme,,,,CH101,"Chemistry, Environment and Climate Change",1
+BS Materials Engineering (Minerals Processing),new programme,,,,CH161,Occupational Health and Safety,1
+BS Materials Engineering (Minerals Processing),new programme,,,,CS101,Computing and AI,1
+BS Materials Engineering (Minerals Processing),new programme,,,,CS101L,Computing and AI Lab,1
+BS Materials Engineering (Minerals Processing),new programme,,,,CS112,Object Oriented Programming and Design,2
+BS Materials Engineering (Minerals Processing),new programme,,,,CS112L,Object Oriented Programming and Design Lab,2
+BS Materials Engineering (Minerals Processing),new programme,,,,EE201,Applied Electrical Engineering,3
+BS Materials Engineering (Minerals Processing),new programme,,,,ES111,Probability and Statistics,2
+BS Materials Engineering (Minerals Processing),new programme,,,,ES341/CS342,Numerical Analysis,6
+BS Materials Engineering (Minerals Processing),new programme,,,,HM101,Communication Skills,1
+BS Materials Engineering (Minerals Processing),new programme,,,,HM102,Critical Thinking and Expository Writing,2
+BS Materials Engineering (Minerals Processing),new programme,,,,HM211,Islamic Studies,3
+BS Materials Engineering (Minerals Processing),new programme,,,,HM212,Pakistan Studies,4
+BS Materials Engineering (Minerals Processing),new programme,,,,HM213,Ideology and Constitution of Pakistan,3
+BS Materials Engineering (Minerals Processing),new programme,,,,HM321,Sociology and Human Behavior,5
+BS Materials Engineering (Minerals Processing),new programme,,,,HM322,Corporate Law and Professional Ethics,6
+BS Materials Engineering (Minerals Processing),new programme,,,,HM323,Civics and Community Engagement,5
+BS Materials Engineering (Minerals Processing),new programme,,,,HM413,Understanding of Quran-I,7
+BS Materials Engineering (Minerals Processing),new programme,,,,HM414,Understanding of Quran-II,8
+BS Materials Engineering (Minerals Processing),new programme,,,,IF101,Innovation and Makers Lab I,1
+BS Materials Engineering (Minerals Processing),new programme,,,,IF102,Innovation and Makers Lab II,2
+BS Materials Engineering (Minerals Processing),new programme,,,,MM101,"Materials, Nanotechnology and Sustainability",1
+BS Materials Engineering (Minerals Processing),new programme,,,,MM141L,"Materials, Nanotechnology and Sustainability Lab (Materials Lab I)",1
+BS Materials Engineering (Minerals Processing),new programme,,,,MM201,Materials Chemistry,4
+BS Materials Engineering (Minerals Processing),new programme,,,,MM212,Materials Evaluation Techniques and Instrumentation,3
+BS Materials Engineering (Minerals Processing),new programme,,,,MM214,Minerals Processing and Extractive Metallurgy,3
+BS Materials Engineering (Minerals Processing),new programme,,,,MM222,Strength of Materials,4
+BS Materials Engineering (Minerals Processing),new programme,,,,MM231,Thermodynamics of Materials,3
+BS Materials Engineering (Minerals Processing),new programme,,,,MM232,Phase Equilibria and Microstructures,4
+BS Materials Engineering (Minerals Processing),new programme,,,,MM233,Alloy Production and Casting Design,4
+BS Materials Engineering (Minerals Processing),new programme,,,,MM242L,Materials Lab II,3
+BS Materials Engineering (Minerals Processing),new programme,,,,MM243L,Materials Lab III,4
+BS Materials Engineering (Minerals Processing),new programme,,,,MM244L,Computational Tools in Materials Science (Materials Lab IV),4
+BS Materials Engineering (Minerals Processing),new programme,,,,MM323,X-ray Diffraction and Electron Microscopy,5
+BS Materials Engineering (Minerals Processing),new programme,,,,MM324,Deformation & Fracture,5
+BS Materials Engineering (Minerals Processing),new programme,,,,MM334,Heat Treatment and Processing,5
+BS Materials Engineering (Minerals Processing),new programme,,,,MM344L,Materials Lab V,5
+BS Materials Engineering (Minerals Processing),new programme,,,,MM345L,Materials Lab VI,6
+BS Materials Engineering (Minerals Processing),new programme,,,,MM362,Ceramics and Glasses,6
+BS Materials Engineering (Minerals Processing),new programme,,,,MM365,Polymers and Composites,6
+BS Materials Engineering (Minerals Processing),new programme,,,,MM371,"Geochemistry, Minerals and the Crystalline State",5
+BS Materials Engineering (Minerals Processing),new programme,,,,MM372,Mineral Evaluation and Petrography,6
+BS Materials Engineering (Minerals Processing),new programme,,,,MM380,Senior Design Project-I,6
+BS Materials Engineering (Minerals Processing),new programme,,,,MM435,Corrosion Degradation and Protection,7
+BS Materials Engineering (Minerals Processing),new programme,,,,MM446L,Materials Lab VII,7
+BS Materials Engineering (Minerals Processing),new programme,,,,MM447L,Materials Lab VIII,8
+BS Materials Engineering (Minerals Processing),new programme,,,,MM473,Extraction of Cu and Precious Metals,7
+BS Materials Engineering (Minerals Processing),new programme,,,,MM474,Minerals for Energy Applications,8
+BS Materials Engineering (Minerals Processing),new programme,,,,MM475,Construction Minerals,8
+BS Materials Engineering (Minerals Processing),new programme,,,,MM481,Senior Design Project-II,7
+BS Materials Engineering (Minerals Processing),new programme,,,,MM482,Senior Design Project-III,8
+BS Materials Engineering (Minerals Processing),new programme,,,,MS130,Entrepreneurship and Freelancing,2
+BS Materials Engineering (Minerals Processing),new programme,,,,MS291,Engineering Economy,4
+BS Materials Engineering (Minerals Processing),new programme,,,,MT101,Calculus I,1
+BS Materials Engineering (Minerals Processing),new programme,,,,MT102,Differential Equations and Linear Algebra I,2
+BS Materials Engineering (Minerals Processing),new programme,,,,MT202,Calculus II,3
+BS Materials Engineering (Minerals Processing),new programme,,,,PH101,Applied Physics,2
+BS Materials Engineering (Minerals Processing),new programme,,,,PH101L,Applied Physics Lab,2
+BS Materials Engineering (Nanotechnology),new programme,,,,CH101,"Chemistry, Environment and Climate Change",1
+BS Materials Engineering (Nanotechnology),new programme,,,,CH161,Occupational Health and Safety,1
+BS Materials Engineering (Nanotechnology),new programme,,,,CS101,Computing and AI,1
+BS Materials Engineering (Nanotechnology),new programme,,,,CS101L,Computing and AI Lab,1
+BS Materials Engineering (Nanotechnology),new programme,,,,CS112,Object Oriented Programming and Design,2
+BS Materials Engineering (Nanotechnology),new programme,,,,CS112L,Object Oriented Programming and Design Lab,2
+BS Materials Engineering (Nanotechnology),new programme,,,,EE201,Applied Electrical Engineering,3
+BS Materials Engineering (Nanotechnology),new programme,,,,ES111,Probability and Statistics,2
+BS Materials Engineering (Nanotechnology),new programme,,,,ES341/CS342,Numerical Analysis,6
+BS Materials Engineering (Nanotechnology),new programme,,,,HM101,Communication Skills,1
+BS Materials Engineering (Nanotechnology),new programme,,,,HM102,Critical Thinking and Expository Writing,2
+BS Materials Engineering (Nanotechnology),new programme,,,,HM211,Islamic Studies,3
+BS Materials Engineering (Nanotechnology),new programme,,,,HM212,Pakistan Studies,4
+BS Materials Engineering (Nanotechnology),new programme,,,,HM213,Ideology and Constitution of Pakistan,3
+BS Materials Engineering (Nanotechnology),new programme,,,,HM321,Sociology and Human Behavior,5
+BS Materials Engineering (Nanotechnology),new programme,,,,HM322,Corporate Law and Professional Ethics,6
+BS Materials Engineering (Nanotechnology),new programme,,,,HM323,Civics and Community Engagement,5
+BS Materials Engineering (Nanotechnology),new programme,,,,HM413,Understanding of Quran-I,7
+BS Materials Engineering (Nanotechnology),new programme,,,,HM414,Understanding of Quran-II,8
+BS Materials Engineering (Nanotechnology),new programme,,,,IF101,Innovation and Makers Lab I,1
+BS Materials Engineering (Nanotechnology),new programme,,,,IF102,Innovation and Makers Lab II,2
+BS Materials Engineering (Nanotechnology),new programme,,,,MM101,"Materials, Nanotechnology and Sustainability",1
+BS Materials Engineering (Nanotechnology),new programme,,,,MM141L,"Materials, Nanotechnology and Sustainability Lab (Materials Lab I)",1
+BS Materials Engineering (Nanotechnology),new programme,,,,MM201,Materials Chemistry,4
+BS Materials Engineering (Nanotechnology),new programme,,,,MM212,Materials Evaluation Techniques and Instrumentation,3
+BS Materials Engineering (Nanotechnology),new programme,,,,MM214,Minerals Processing and Extractive Metallurgy,3
+BS Materials Engineering (Nanotechnology),new programme,,,,MM222,Strength of Materials,4
+BS Materials Engineering (Nanotechnology),new programme,,,,MM231,Thermodynamics of Materials,3
+BS Materials Engineering (Nanotechnology),new programme,,,,MM232,Phase Equilibria and Microstructures,4
+BS Materials Engineering (Nanotechnology),new programme,,,,MM233,Alloy Production and Casting Design,4
+BS Materials Engineering (Nanotechnology),new programme,,,,MM242L,Materials Lab II,3
+BS Materials Engineering (Nanotechnology),new programme,,,,MM243L,Materials Lab III,4
+BS Materials Engineering (Nanotechnology),new programme,,,,MM244L,Computational Tools in Materials Science (Materials Lab IV),4
+BS Materials Engineering (Nanotechnology),new programme,,,,MM323,X-ray Diffraction and Electron Microscopy,5
+BS Materials Engineering (Nanotechnology),new programme,,,,MM324,Deformation & Fracture,5
+BS Materials Engineering (Nanotechnology),new programme,,,,MM334,Heat Treatment and Processing,5
+BS Materials Engineering (Nanotechnology),new programme,,,,MM344L,Materials Lab V,5
+BS Materials Engineering (Nanotechnology),new programme,,,,MM345L,Materials Lab VI,6
+BS Materials Engineering (Nanotechnology),new programme,,,,MM362,Ceramics and Glasses,6
+BS Materials Engineering (Nanotechnology),new programme,,,,MM365,Polymers and Composites,6
+BS Materials Engineering (Nanotechnology),new programme,,,,MM380,Senior Design Project-I,6
+BS Materials Engineering (Nanotechnology),new programme,,,,MM391,Nanomaterials and Nanotechnology I,5
+BS Materials Engineering (Nanotechnology),new programme,,,,MM392,Nanomaterials and Nanotechnology II,6
+BS Materials Engineering (Nanotechnology),new programme,,,,MM435,Corrosion Degradation and Protection,7
+BS Materials Engineering (Nanotechnology),new programme,,,,MM446L,Materials Lab VII,7
+BS Materials Engineering (Nanotechnology),new programme,,,,MM447L,Materials Lab VIII,8
+BS Materials Engineering (Nanotechnology),new programme,,,,MM481,Senior Design Project-II,7
+BS Materials Engineering (Nanotechnology),new programme,,,,MM482,Senior Design Project-III,8
+BS Materials Engineering (Nanotechnology),new programme,,,,MM494,Materials Characterization,7
+BS Materials Engineering (Nanotechnology),new programme,,,,MM495,Nanosystems and Devices,8
+BS Materials Engineering (Nanotechnology),new programme,,,,MM499,Nanotechnology for Energy,8
+BS Materials Engineering (Nanotechnology),new programme,,,,MS130,Entrepreneurship and Freelancing,2
+BS Materials Engineering (Nanotechnology),new programme,,,,MS291,Engineering Economy,4
+BS Materials Engineering (Nanotechnology),new programme,,,,MT101,Calculus I,1
+BS Materials Engineering (Nanotechnology),new programme,,,,MT102,Differential Equations and Linear Algebra I,2
+BS Materials Engineering (Nanotechnology),new programme,,,,MT202,Calculus II,3
+BS Materials Engineering (Nanotechnology),new programme,,,,PH101,Applied Physics,2
+BS Materials Engineering (Nanotechnology),new programme,,,,PH101L,Applied Physics Lab,2
+
+(uploads),moved,CS221,,,CS222,,
+(uploads),moved,CS221L,,,CS222L,,
+(uploads),moved,EE314,,,EE315,,
+(uploads),moved,EE314L,,,EE315L,,
+(uploads),moved,EE411,,,EE314,,
+(uploads),moved,EE411L,,,EE314L,,
+(uploads),moved,HM212,,,HM213,,
+(uploads),moved,HM4XX,,,HM423,,
+(uploads),linked,AI221,,,AI312,,
+(uploads),linked,AI221L,,,AI312L,,
+(uploads),linked,AI331,,,AI313,,
+(uploads),linked,AI331L,,,AI313L,,
+(uploads),linked,AI341,,,AI441,,
+(uploads),linked,AI341L,,,AI441L,,
+(uploads),linked,AI351,,,AI361,,
+(uploads),linked,AI351L,,,AI361L,,
+(uploads),linked,CE221,,,CS221,,
+(uploads),linked,CE221L,,,CS221L,,
+(uploads),linked,CE222,,,CS223,,
+(uploads),linked,CE222L,,,CS223L,,
+(uploads),linked,CE313,,,CS213,,
+(uploads),linked,CE313,,,CS313,,
+(uploads),linked,CE313,,,CS314,,
+(uploads),linked,CH336L,,,CH362L,,
+(uploads),linked,CS311,,,CS411,,
+(uploads),linked,CS311L,,,CS411L,,
+(uploads),linked,CS325,,,CS225,,
+(uploads),linked,CS334,,,CS424,,
+(uploads),linked,CS334L,,,CS424L,,
+(uploads),linked,CS342,,,CS412,,
+(uploads),linked,CS392,,,CS492,,
+(uploads),linked,CS465,,,CS365,,
+(uploads),linked,CS478,,,CS378,,
+(uploads),linked,EE331,,,EE432,,
+(uploads),linked,EE331L,,,EE432L,,
+(uploads),linked,EE332,,,EE431,,
+(uploads),linked,EE332L,,,EE431L,,
+(uploads),linked,EE413,,,EE411,,
+(uploads),linked,EE413L,,,EE411L,,
+(uploads),linked,EE441,,,EE342,,
+(uploads),linked,EE441L,,,EE342L,,
+(uploads),linked,ES341,,,ES341/CS342,,
+(uploads),linked,ES341/CS342,,,ES241,,
+(uploads),linked,HM112,,,HM213,,
+(uploads),linked,HM323,,,HM432,,
+(uploads),linked,HMXYZ,,,HM201,,
+(uploads),linked,ME202,,,ME302,,
+(uploads),linked,ME411,,,ME316,,
+(uploads),linked,MM141L,,,MM101L,,
+(uploads),linked,SE202L,,,SE302L,,
+(uploads),code shared by different courses,CH101: applied chemistry and environment | chemistry environment and climate change,,,,,
+(uploads),code shared by different courses,CH481: chemical engineering project design iii | senior design project iii,,,,,
+(uploads),code shared by different courses,HM321: sociology | sociology and human behavior | sociology and human behaviour,,,,,
+(uploads),code shared by different courses,MM141L: materials lab 1 | materials lab i | materials nanotech and sustainability lab | materials nanotechnology and sustainability lab materials lab i,,,,,
+(uploads),code shared by different courses,MS101: business mathematics | entrepreneurship and freelancing essentials,,,,,

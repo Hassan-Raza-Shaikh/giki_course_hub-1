@@ -22,3 +22,11 @@ Course descriptions are keyed by course code, with `name`, `credits` (as printed
   - `"HM213 (Service)"`: MGS service courses
   - `"CS101 (MGS)"`: the same code described by a second faculty
 - FCSE uses combined keys such as `"CS313/CS413"`; the `codes` field lists each code separately.
+
+## Loading it into the app
+`scripts/prospectus_2025/build_catalog.py` turns these files into the catalogue update:
+- `live_courses_2026-10-13.json`: the live `/api/courses` response the update was built against.
+- `overrides.json`: hand-checked decisions, such as misprinted codes and course pairs that matching by name gets wrong.
+- `catalog_changes.csv` (generated): every renamed, retitled, moved, new and dropped course, plus how uploads are linked or moved.
+- `sql/prospectus_2025/apply_catalog_2025.sql` (generated): the data changes. Run `migrations/027_course_catalog_2025.sql` first.
+- `frontend/src/data/giki_courses_2025.json` (generated): the 2025 plan for the GPA calculator.
