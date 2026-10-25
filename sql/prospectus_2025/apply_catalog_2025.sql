@@ -1744,7 +1744,17 @@ INSERT INTO manual_course_links (course_code_1, course_code_2) VALUES
   ('ME202', 'ME302'),
   ('ME411', 'ME316'),
   ('MM141L', 'MM101L'),
-  ('SE202L', 'SE302L')
+  ('SE202L', 'SE302L'),
+  ('HM121', 'HMXYZ'),
+  ('HM323', 'HMXYZ'),
+  ('HM423', 'HMXYZ'),
+  ('CE361', 'EE441'),
+  ('CE361L', 'EE441L'),
+  ('CH241', 'ME321'),
+  ('CH342', 'ME322'),
+  ('CV211', 'ME213'),
+  ('CS481', 'EE491'),
+  ('CS325', 'SE201')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO catalog_2025_applied SELECT WHERE NOT EXISTS (SELECT 1 FROM catalog_2025_applied);

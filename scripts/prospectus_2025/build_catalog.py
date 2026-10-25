@@ -194,6 +194,29 @@ def build():
             problems.append(f'uploads under {old_code} cannot be split: it is now {sorted(new_codes)} '
                             f'and also {sorted({r[1] + " in " + r[0] for r in reused})}')
 
+    # Courses with the exact same name share uploads. Where a retitle splits
+    # such a group (SE201 "Software Engineering" -> "Introduction to Software
+    # Engineering"), link the codes so no page loses uploads it shows today.
+    moved_to = dict(moves)
+    names_now = defaultdict(set)
+    for u in updates:
+        names_now[u['code']].add(u['name'])
+    for o in old_only:
+        names_now[o['code']].add(next(c['name'] for c in live[o['program']]['courses'] if c['id'] == o['id']))
+    for _, _, n, _ in inserts:
+        names_now[n['code']].add(n['name'])
+    groups = defaultdict(set)
+    for p in live.values():
+        for c in p['courses']:
+            groups[c['name']].add(moved_to.get(c['code'], c['code']))
+    linked = {frozenset(l) for l in links}
+    for name, codes in sorted(groups.items()):
+        for a in sorted(codes):
+            for b in sorted(codes):
+                if a < b and not names_now[a] & names_now[b] and frozenset((a, b)) not in linked:
+                    links.append((a, b))
+                    linked.add(frozenset((a, b)))
+
     # Codes that name different courses in different programmes share one upload pool
     subjects = defaultdict(set)
     for prog_name, code, subject, _ in final:
