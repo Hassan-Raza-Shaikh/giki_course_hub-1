@@ -3,6 +3,7 @@ import os
 
 from flask import Flask, jsonify, session, request
 from flask_cors import CORS
+from flask_cors.core import try_match_any_pattern
 from flask_compress import Compress
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -87,7 +88,7 @@ def create_app():
     )
 
     # Support production and local origins
-    allowed_origins = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
+    allowed_origins = [o.strip() for o in os.environ.get('ALLOWED_ORIGINS', 'http://localhost:5173').split(',') if o.strip()]
     CORS(app, supports_credentials=True, origins=allowed_origins)
 
     # Initialize Firebase Admin SDK (for ID token verification)
@@ -105,13 +106,39 @@ def create_app():
     app.register_blueprint(notification_bp)
 
     # Apply strict rate limits to sensitive endpoints
-    limiter.limit("5 per minute")(app.view_functions['auth.login'])
-    limiter.limit("5 per minute")(app.view_functions['auth.signup'])
+    limiter.limit("20 per minute")(app.view_functions['auth.firebase_auth'])
     limiter.limit("10 per minute")(app.view_functions['files.upload_to_course'])
     limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_init'])
+    limiter.limit("60 per minute")(app.view_functions['files.bulk_upload_file'])
+    limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_done'])
+    limiter.limit("10 per minute")(app.view_functions['files.report_file'])
+    limiter.limit("20 per minute")(app.view_functions['files.add_file_link'])
+    limiter.limit("5 per minute")(app.view_functions['issues.submit_issue'])
+    limiter.limit("20 per minute")(app.view_functions['email.email_preferences'])
+    limiter.limit("10 per minute")(app.view_functions['email.email_unsubscribe'])
     limiter.limit("10 per minute")(app.view_functions['gpa.save_gpa'])
     limiter.limit("20 per minute")(app.view_functions['files.track_bulk_download'])
     limiter.limit("10 per minute")(app.view_functions['calendar.run_reminders'])
+
+    unsafe_methods = {'POST', 'PUT', 'PATCH', 'DELETE'}
+
+    @app.before_request
+    def block_cross_site_writes():
+        """
+        CSRF guard. The session cookie is SameSite=None (needed for Vercel -> Render),
+        so a page on any other site could submit a form or multipart upload here and
+        the browser would attach the cookie. Browsers always send Origin on such
+        cross-site requests, so writes from an origin we don't serve are refused.
+        Requests without Origin (curl, the GitHub keep-awake job) are not browser
+        cross-site requests and pass through. Origins match the same way flask-cors
+        matches them, so anything CORS allows is allowed here too.
+        """
+        if request.method not in unsafe_methods:
+            return
+        origin = request.headers.get('Origin')
+        if origin and '*' not in allowed_origins and not try_match_any_pattern(origin, allowed_origins, caseSensitive=False):
+            logger.warning("Blocked cross-site %s %s from %s", request.method, request.path, origin)
+            return jsonify({"success": False, "message": "Cross-site request blocked."}), 403
 
     @app.before_request
     def handle_mobile_auth():
@@ -138,6 +165,8 @@ def create_app():
             uid = decoded.get('uid') or decoded.get('user_id')
             if not uid:
                 return
+            # Admin access is granted by email, so it needs a verified one (see _require_admin)
+            session['email_verified'] = bool(decoded.get('email_verified'))
 
             # ── Session cache: skip DB if we already resolved this UID ────────
             # The session stores the firebase_uid we last resolved. If it matches,
@@ -161,6 +190,11 @@ def create_app():
                     session['role']     = row[2]
                     session['username'] = row[3]
                     session['_fb_uid']  = uid   # mark as resolved
+                else:
+                    # Signed in to Firebase as someone with no account row yet: don't
+                    # keep acting as whoever this cookie belonged to before.
+                    for key in ('user_id', 'email', 'role', 'username', '_fb_uid'):
+                        session.pop(key, None)
             finally:
                 conn.close()
         except Exception:

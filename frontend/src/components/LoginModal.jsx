@@ -1,6 +1,6 @@
 import { BookOpen, PartyPopper } from 'lucide-react';
 import React, { useState } from 'react';
-import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
 import { auth, googleProvider } from '../services/firebase';
 import api from '../services/api';
 
@@ -188,6 +188,9 @@ const LoginModal = ({ onClose, onSuccess }) => {
         return;
       }
 
+      // Verified email is needed to link an older account or to use admin tools
+      sendEmailVerification(fbUser).catch(console.error);
+
       // 3. Show success screen — pre-fill login tab with email
       setLoginEmail(signupEmail);
       setSignupPassword('');
@@ -248,7 +251,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
               {tab === 'login' ? 'Welcome Back' : tab === 'signup-success' ? 'Account Created!' : 'Create Account'}
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.83rem' }}>
-              {tab === 'login' ? 'Sign in to access your GIKI Hub.' : tab === 'signup-success' ? 'You can now sign in with your new account.' : 'Join the GIKI academic community.'}
+              {tab === 'login' ? 'Sign in to access your GIKI Hub.' : tab === 'signup-success' ? 'You can now sign in. We also sent you a link to verify your email.' : 'Join the GIKI academic community.'}
             </p>
           </div>
 

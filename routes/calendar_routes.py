@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta, timezone
 from flask import Blueprint, Response, jsonify, request
 from db import get_connection
@@ -6,6 +7,8 @@ from utils.calendar import (
     EVENT_COLUMNS, EVENT_TYPES, build_ics, on_event_changed, parse_event_time, row_to_event,
     send_due_reminders,
 )
+
+logger = logging.getLogger(__name__)
 
 calendar_bp = Blueprint('calendar', __name__)
 
@@ -47,7 +50,7 @@ def list_events():
         cur.close()
         return jsonify({"success": True, "events": events})
     except Exception:
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": ERROR_MSG}), 500
     finally:
         conn.close()
@@ -70,7 +73,7 @@ def upcoming_events():
         cur.close()
         return jsonify({"success": True, "events": events})
     except Exception:
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": ERROR_MSG}), 500
     finally:
         conn.close()
@@ -182,7 +185,7 @@ def admin_create_event():
         cur.close()
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": ERROR_MSG}), 500
     finally:
         conn.close()
@@ -217,7 +220,7 @@ def admin_update_event(event_id):
         cur.close()
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": ERROR_MSG}), 500
     finally:
         conn.close()
@@ -244,7 +247,7 @@ def admin_delete_event(event_id):
         cur.close()
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": ERROR_MSG}), 500
     finally:
         conn.close()
@@ -270,7 +273,7 @@ def run_reminders():
         sent = send_due_reminders(conn)
     except Exception:
         conn.rollback()
-        import traceback; traceback.print_exc()
+        logger.exception("%s %s failed", request.method, request.path)
         return jsonify({"success": False, "message": ERROR_MSG}), 500
     finally:
         conn.close()

@@ -14,35 +14,49 @@ admin_bp = Blueprint('admin', __name__)
 # Helper: require admin
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _session_admin_email():
+    """(email, is_admin) for the session user, read from the DB on every call so a
+    revoked admin loses access at once. (None, False) when not logged in or unknown."""
+    if 'user_id' not in session:
+        return None, False
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT LOWER(TRIM(u.email)), EXISTS (SELECT 1 FROM admins a WHERE a.email = LOWER(TRIM(u.email)))
+            FROM users u WHERE u.user_id = %s;
+        """, (session['user_id'],))
+        row = cur.fetchone()
+        cur.close()
+    finally:
+        conn.close()
+    if not row or not row[0]:
+        return None, False
+    email, in_admins = row
+    return email, in_admins or email in BOOTSTRAP_ADMIN_EMAILS
+
+
+def is_admin_session():
+    """True if the session user is an admin with a verified email (see _require_admin)."""
+    email, is_admin = _session_admin_email()
+    return bool(email and is_admin and session.get('email_verified'))
+
+
 def _require_admin():
     """Return (user_email, None) if the session user is an admin, else (None, error_response)."""
     if 'user_id' not in session:
         return None, (jsonify({"success": False, "message": "Not logged in."}), 401)
 
-    conn = get_connection()
-    try:
-        cur = conn.cursor()
-        cur.execute("SELECT email FROM users WHERE user_id = %s;", (session['user_id'],))
-        row = cur.fetchone()
-        cur.close()
-        if not row:
-            return None, (jsonify({"success": False, "message": "User not found."}), 401)
-        
-        email = row[0].lower().strip()
-        
-        # OWNER BOOTSTRAP: Always allow the primary developers
-        if email in BOOTSTRAP_ADMIN_EMAILS:
-            return email, None
-
-        cur2 = conn.cursor()
-        cur2.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
-        is_admin = cur2.fetchone() is not None
-        cur2.close()
-        if not is_admin:
-            return None, (jsonify({"success": False, "message": "Admin access required."}), 403)
-        return email, None
-    finally:
-        conn.close()
+    email, is_admin = _session_admin_email()
+    if not email:
+        return None, (jsonify({"success": False, "message": "User not found."}), 401)
+    if not is_admin:
+        return None, (jsonify({"success": False, "message": "Admin access required."}), 403)
+    # Admin rights are granted by email address, and anyone can sign up with any
+    # address, so only an address the user has proven they own counts.
+    if not session.get('email_verified'):
+        return None, (jsonify({"success": False, "message": "Verify your email address to use admin tools, then sign in again."}), 403)
+    return email, None
 
 
 def _log(admin_email, action, target_id=None, target_desc=None):
@@ -151,34 +165,26 @@ def _notify_report(conn, report_id, resolved, notes=None):
 # ─────────────────────────────────────────────────────────────────────────────
 @admin_bp.route('/api/admin/check', methods=['GET'])
 def admin_check():
-    if 'user_id' not in session:
+    email, is_admin = _session_admin_email()
+    if not email:
         return jsonify({"is_admin": False})
+    is_admin = is_admin and bool(session.get('email_verified'))
+
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT email FROM users WHERE user_id = %s;", (session['user_id'],))
-        row = cur.fetchone()
+        cur.execute("SELECT granted_by, notes FROM admins WHERE email = %s;", (email,))
+        admin_row = cur.fetchone()
         cur.close()
-        if not row:
-            return jsonify({"is_admin": False})
-        
-        email = row[0].lower().strip()
-        
-        cur2 = conn.cursor()
-        cur2.execute("SELECT granted_by, notes FROM admins WHERE email = %s;", (email,))
-        admin_row = cur2.fetchone()
-        cur2.close()
-        
-        is_admin = admin_row is not None or email in BOOTSTRAP_ADMIN_EMAILS
-        
-        return jsonify({
-            "is_admin": is_admin,
-            "email": email,
-            "granted_by": admin_row[0] if admin_row else ('System' if email in BOOTSTRAP_ADMIN_EMAILS else None),
-            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in BOOTSTRAP_ADMIN_EMAILS else None),
-        })
     finally:
         conn.close()
+
+    return jsonify({
+        "is_admin": is_admin,
+        "email": email,
+        "granted_by": admin_row[0] if admin_row else ('System' if email in BOOTSTRAP_ADMIN_EMAILS else None),
+        "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in BOOTSTRAP_ADMIN_EMAILS else None),
+    })
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -266,7 +272,7 @@ def admin_all_files():
     status_filter = request.args.get('status', '')  # '' = all
     category_filter = request.args.get('category', '')
     q_filter = request.args.get('q', '').strip().lower()
-    page          = request.args.get('page', 1, type=int)
+    page          = max(request.args.get('page', 1, type=int) or 1, 1)
     per_page      = 30
     offset        = (page - 1) * per_page
 
@@ -572,8 +578,14 @@ def admin_delete_file(file_id):
         conn.commit()
         cur.close()
 
-        # Remove physical file or R2 object
-        _delete_stored_file(storage_path)
+        # Remove physical file or R2 object, unless another file row still uses it
+        if storage_path:
+            cur = conn.cursor()
+            cur.execute("SELECT 1 FROM files WHERE storage_path = %s LIMIT 1;", (storage_path,))
+            still_used = cur.fetchone() is not None
+            cur.close()
+            if not still_used:
+                _delete_stored_file(storage_path)
 
         _log(admin_email, 'delete_file', file_id, title)
         return jsonify({"success": True, "message": f"'{title}' deleted."})
@@ -593,7 +605,7 @@ def admin_list_users():
     admin_email, err = _require_admin()
     if err: return err
 
-    page = request.args.get('page', 1, type=int)
+    page = max(request.args.get('page', 1, type=int) or 1, 1)
     per_page = 50
     offset = (page - 1) * per_page
 
@@ -687,6 +699,7 @@ def admin_revoke(target_email):
     admin_email, err = _require_admin()
     if err: return err
 
+    target_email = target_email.strip().lower()
     if target_email == admin_email:
         return jsonify({"success": False, "message": "You cannot revoke your own admin access."}), 400
 
@@ -714,7 +727,7 @@ def admin_activity_logs():
     admin_email, err = _require_admin()
     if err: return err
 
-    page = request.args.get('page', 1, type=int)
+    page = max(request.args.get('page', 1, type=int) or 1, 1)
     per_page = 50
     offset = (page - 1) * per_page
 
@@ -827,6 +840,8 @@ def admin_dismiss_report(report_id):
         cur = conn.cursor()
         cur.execute("UPDATE reports SET status='dismissed', resolved_by=%s, resolved_at=NOW() WHERE report_id=%s;",
                     (admin_email, report_id))
+        if cur.rowcount == 0:
+            return jsonify({"success": False, "message": "Report not found."}), 404
         info = _report_info(cur, report_id)
         _notify_report(conn, report_id, resolved=False)
         conn.commit()
@@ -847,6 +862,13 @@ def admin_dismiss_report(report_id):
 # Bulk approve / reject
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _int_ids(raw):
+    """Distinct integer ids from a JSON list; anything else is dropped."""
+    if not isinstance(raw, list):
+        return []
+    return list({i for i in raw if isinstance(i, int) and not isinstance(i, bool)})
+
+
 def _group_by_uploader(rows):
     """{uploader_id: [(title, course_code), ...]} from (file_id, title, course_code, uploaded_by) rows,
     so each uploader gets one email per bulk action instead of one per file."""
@@ -861,7 +883,7 @@ def _group_by_uploader(rows):
 def admin_bulk_approve():
     admin_email, err = _require_admin()
     if err: return err
-    file_ids = (request.get_json() or {}).get('file_ids', [])
+    file_ids = _int_ids((request.get_json() or {}).get('file_ids'))
     if not file_ids:
         return jsonify({"success": False, "message": "No file IDs provided."}), 400
     conn = get_connection()
@@ -891,7 +913,7 @@ def admin_bulk_reject():
     admin_email, err = _require_admin()
     if err: return err
     data = request.get_json() or {}
-    file_ids = data.get('file_ids', [])
+    file_ids = _int_ids(data.get('file_ids'))
     reason   = data.get('reason', 'Bulk rejection.')
     if not file_ids:
         return jsonify({"success": False, "message": "No file IDs provided."}), 400
@@ -1014,7 +1036,7 @@ def admin_list_courses():
     admin_email, err = _require_admin()
     if err: return err
     q = request.args.get('q', '').strip()
-    page = request.args.get('page', 1, type=int)
+    page = max(request.args.get('page', 1, type=int) or 1, 1)
     per = 40; offset = (page - 1) * per
     conn = get_connection()
     try:
@@ -1174,19 +1196,32 @@ def admin_update_course(course_id):
     conn = get_connection()
     try:
         cur = conn.cursor()
-        name = d.get('name', '').strip()
-        code = d.get('code', '').strip()
-        
+        name = (d.get('name') or '').strip()
+        code = (d.get('code') or '').strip()
+        if not name or not code:
+            return jsonify({"success": False, "message": "Name and code are required."}), 400
+
+        cur.execute("SELECT COALESCE(NULLIF(code, ''), name) FROM courses WHERE course_id = %s;", (course_id,))
+        old = cur.fetchone()
+        if not old: return jsonify({"success": False, "message": "Course not found."}), 404
+        old_code = old[0]
+
         # 1. Update the specific course record
         cur.execute("""
             UPDATE courses 
             SET name=%s, code=%s, year=%s, semester=%s, is_lab=%s, icon=%s, faculty_id=%s, program_id=%s
             WHERE course_id=%s RETURNING name;
-        """, (name, code, d.get('year'), d.get('semester'), 
-              bool(d.get('is_lab')), d.get('icon'), d.get('faculty_id'), d.get('program_id'), course_id))
+        """, (name, code, d.get('year') or None, d.get('semester') or None,
+              bool(d.get('is_lab')), d.get('icon') or '📘', d.get('faculty_id') or None, d.get('program_id') or None, course_id))
         
         row = cur.fetchone()
-        if not row: return jsonify({"success": False, "message": "Course not found."}), 404
+
+        # Files are keyed by course code. If this was the last course using the old
+        # code, carry its files over to the new code so they don't become orphans.
+        if code != old_code:
+            cur.execute("SELECT 1 FROM courses WHERE COALESCE(NULLIF(code, ''), name) = %s LIMIT 1;", (old_code,))
+            if not cur.fetchone():
+                cur.execute("UPDATE files SET course_code = %s WHERE course_code = %s;", (code, old_code))
         
         # 2. Sync Shared Details (Name, Icon, Is_Lab) to all other programs using this code
         # This fulfills the "one code = one name" requirement
@@ -1194,7 +1229,7 @@ def admin_update_course(course_id):
             UPDATE courses 
             SET name=%s, icon=%s, is_lab=%s
             WHERE code=%s AND course_id != %s;
-        """, (name, d.get('icon'), bool(d.get('is_lab')), code, course_id))
+        """, (name, d.get('icon') or '📘', bool(d.get('is_lab')), code, course_id))
 
         conn.commit(); cur.close()
         _log(admin_email, 'update_course', course_id, row[0])
@@ -1336,7 +1371,7 @@ def admin_list_issues():
     admin_email, err = _require_admin()
     if err: return err
     status_filter = request.args.get('status', 'open')
-    page = request.args.get('page', 1, type=int)
+    page = max(request.args.get('page', 1, type=int) or 1, 1)
     per_page = 50
     offset = (page - 1) * per_page
     

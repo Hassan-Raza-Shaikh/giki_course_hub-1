@@ -170,7 +170,7 @@ BEGIN
                     'instructor_id', f.instructor_id,
                     'is_shared', uf.is_shared,
                     'shared_from', uf.shared_from,
-                    'downloads', COALESCE(fd.download_count, 0)
+                    'downloads', (SELECT COUNT(*) FROM file_downloads d WHERE d.file_id = f.file_id)
                 ) ORDER BY uf.title ASC
             ) AS files
         FROM unique_files uf
@@ -179,9 +179,6 @@ BEGIN
         LEFT JOIN file_metadata m ON f.file_id = m.file_id
         LEFT JOIN file_notes fn ON fn.file_id = f.file_id
         LEFT JOIN instructors i ON f.instructor_id = i.instructor_id
-        LEFT JOIN (
-            SELECT file_id, COUNT(*) AS download_count FROM file_downloads GROUP BY file_id
-        ) fd ON f.file_id = fd.file_id
         GROUP BY uf.category_name
     ) cat_group;
 

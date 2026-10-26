@@ -16,3 +16,8 @@ static/uploads
 firebase/
 Dockerfile
 .dockerignore
+# Not needed by the Flask backend image
+frontend/
+*.pdf
+data/
+email_previews/
