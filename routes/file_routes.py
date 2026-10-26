@@ -27,6 +27,17 @@ file_bp = Blueprint('files', __name__)
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
+_has_catalog_2025 = None
+
+def has_catalog_2025(cur):
+    """True once migration 027 (2025 prospectus columns on courses) has run."""
+    global _has_catalog_2025
+    if not _has_catalog_2025:
+        cur.execute("""SELECT 1 FROM information_schema.columns
+                       WHERE table_name = 'courses' AND column_name = 'curriculum'""")
+        _has_catalog_2025 = cur.fetchone() is not None
+    return _has_catalog_2025
+
 # boto3 singleton — created once at module load time, not per-request.
 # boto3 clients are thread-safe for read operations and creation is expensive.
 _s3_client = None
@@ -140,17 +151,25 @@ def search_all():
         } for r in cur.fetchall()]
 
         # 2. Search Courses (Distinct by name and code to avoid multi-program duplicates)
-        course_sql = """
+        catalog = has_catalog_2025(cur)
+        course_sql = f"""
             SELECT DISTINCT ON (c.name, c.code) 
-                   c.course_id, c.name, c.code, f.name as faculty_name, f.icon
+                   c.course_id, c.name, c.code, f.name as faculty_name, f.icon,
+                   {"c.old_code" if catalog else "NULL"}
             FROM courses c
             JOIN faculties f ON c.faculty_id = f.faculty_id
             WHERE 1=1
         """
         c_params = []
         if query:
-            course_sql += " AND (c.name ILIKE %s OR c.code ILIKE %s)"
-            c_params.extend([f'%{query}%', f'%{query}%'])
+            # Old codes and names too, so students on the earlier plan find their course
+            if catalog:
+                course_sql += (" AND (c.name ILIKE %s OR c.code ILIKE %s"
+                               " OR c.old_code ILIKE %s OR c.old_name ILIKE %s)")
+                c_params.extend([f'%{query}%'] * 4)
+            else:
+                course_sql += " AND (c.name ILIKE %s OR c.code ILIKE %s)"
+                c_params.extend([f'%{query}%', f'%{query}%'])
         if faculty_id:
             course_sql += " AND c.faculty_id = %s"
             c_params.append(faculty_id)
@@ -158,7 +177,7 @@ def search_all():
         course_sql += " LIMIT 20"
         cur.execute(course_sql, c_params)
         courses = [{
-            "id": r[0], "name": r[1], "code": r[2], "faculty": r[3], "icon": r[4]
+            "id": r[0], "name": r[1], "code": r[2], "faculty": r[3], "icon": r[4], "old_code": r[5]
         } for r in cur.fetchall()]
 
         cur.close()
@@ -353,12 +372,20 @@ def get_category_files(slug):
 
 @file_bp.route('/api/courses', methods=['GET'])
 def list_courses():
-    """All courses grouped by faculty → program → year (2 semesters per year)."""
+    """All courses grouped by faculty → program → year (2 semesters per year).
+
+    ?curriculum=old lists what earlier batches took (old codes and semesters);
+    the default is the 2025 prospectus plan.
+    """
+    curriculum = 'old' if request.args.get('curriculum') == 'old' else '2025'
     conn = get_connection()
     try:
         cur = conn.cursor()
         # Offload heavy data aggregation to PostgreSQL UDF
-        cur.execute("SELECT get_api_courses_hierarchy();")
+        if has_catalog_2025(cur):
+            cur.execute("SELECT get_api_courses_hierarchy(%s);", (curriculum,))
+        else:
+            cur.execute("SELECT get_api_courses_hierarchy();")
         result = cur.fetchone()[0] or []
         cur.close()
         return jsonify({"success": True, "faculties": result})
@@ -375,14 +402,16 @@ def list_courses_flat():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("""
-            SELECT DISTINCT ON (code) course_id, code, name, icon 
+        old_code = "old_code" if has_catalog_2025(cur) else "NULL"
+        cur.execute(f"""
+            SELECT DISTINCT ON (code) course_id, code, name, icon, {old_code}
             FROM courses 
             ORDER BY code, year DESC, semester DESC;
         """)
         rows = cur.fetchall()
         cur.close()
-        courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘'} for r in rows]
+        courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘', "old_code": r[4]}
+                   for r in rows]
         return jsonify({"success": True, "courses": courses})
     except Exception:
         logger.exception("%s %s failed", request.method, request.path)
@@ -438,10 +467,12 @@ def course_detail(course_id):
     try:
         cur = conn.cursor()
         # Course info with faculty/program context
-        cur.execute("""
+        catalog = ("c.old_code, c.old_name, c.old_semester, c.curriculum, c.description, c.credit_hours, c.prereq"
+                   if has_catalog_2025(cur) else "NULL, NULL, NULL, 'both', NULL, NULL, NULL")
+        cur.execute(f"""
             SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    f.name AS faculty_name, f.icon AS faculty_icon,
-                   p.name AS program_name, c.is_lab
+                   p.name AS program_name, c.is_lab, {catalog}
             FROM courses c
             LEFT JOIN faculties f ON c.faculty_id = f.faculty_id
             LEFT JOIN programs p  ON c.program_id = p.program_id
@@ -508,7 +539,9 @@ def course_detail(course_id):
             "course": {
                 "id": c[0], "name": c[1], "code": c[2], 
                 "year": c[3], "semester": c[4], "faculty": c[5], "icon": c[6], "program": c[7],
-                "is_lab": is_lab
+                "is_lab": is_lab,
+                "old_code": c[9], "old_name": c[10], "old_semester": c[11], "curriculum": c[12],
+                "description": c[13], "credit_hours": c[14], "prereq": c[15],
             },
             "files_by_category": by_category,
             "categories": categories,

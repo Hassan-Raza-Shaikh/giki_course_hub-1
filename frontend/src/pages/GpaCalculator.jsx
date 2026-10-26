@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo, Component } from 'react';
 import { Plus, X, Save, Info, Loader2, Trash2, ArrowRight, Calculator, BookOpen } from 'lucide-react';
 import api from '../services/api';
-import coursesData from '../data/giki_courses_with_codes.json';
+import oldPlanData from '../data/giki_courses_with_codes.json';
+import plan2025Data from '../data/giki_courses_2025.json';
+import CurriculumSwitch from '../components/course/CurriculumSwitch';
+import { useCurriculum } from '../utils/curriculum';
 import { useToast } from '../components/Toast';
 
 class ErrorBoundary extends Component {
@@ -59,6 +62,8 @@ function GpaCalculator({ user }) {
   const toast = useToast();
 
   // Selection state
+  const [curriculum, setCurriculum] = useCurriculum(user);
+  const coursesData = curriculum === 'old' ? oldPlanData : plan2025Data;
   const [faculty, setFaculty] = useState('');
   const [program, setProgram] = useState('');
   const [semester, setSemester] = useState('');
@@ -152,7 +157,7 @@ function GpaCalculator({ user }) {
     
     // If no default data exists for this semester
     setCourses([]);
-  }, [faculty, program, semester, savedRecords]);
+  }, [faculty, program, semester, savedRecords, coursesData]);
 
   // Close course name tooltips on global click
   useEffect(() => {
@@ -165,14 +170,23 @@ function GpaCalculator({ user }) {
   const availablePrograms = useMemo(() => {
     const facData = coursesData.faculties.find(f => f.faculty_name === faculty);
     return facData ? facData.programs.map(p => p.program_name) : [];
-  }, [faculty]);
+  }, [faculty, coursesData]);
 
   const availableSemesters = useMemo(() => {
     const facData = coursesData.faculties.find(f => f.faculty_name === faculty);
     if (!facData) return [];
     const progData = facData.programs.find(p => p.program_name === program);
     return progData ? progData.semesters.map(s => s.semester).sort((a,b) => a - b) : [];
-  }, [faculty, program]);
+  }, [faculty, program, coursesData]);
+
+  // Switching plans: keep the faculty and programme if the other plan has them
+  const changeCurriculum = (value) => {
+    const data = value === 'old' ? oldPlanData : plan2025Data;
+    const fac = data.faculties.find(f => f.faculty_name === faculty);
+    if (!fac) { setFaculty(''); setProgram(''); setSemester(''); }
+    else if (!fac.programs.some(p => p.program_name === program)) { setProgram(''); setSemester(''); }
+    setCurriculum(value);
+  };
 
 
   // Calculator Actions
@@ -304,6 +318,15 @@ function GpaCalculator({ user }) {
             Plan your semester, track your targets, and save them to your profile.
           </p>
         </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
+        <CurriculumSwitch value={curriculum} onChange={changeCurriculum} />
+        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', maxWidth: 420, lineHeight: 1.4 }}>
+          {curriculum === 'old'
+            ? 'Courses from before the 2025 prospectus.'
+            : 'Courses from the 2025 prospectus.'}
+        </span>
       </div>
 
       {/* Selection Area */}

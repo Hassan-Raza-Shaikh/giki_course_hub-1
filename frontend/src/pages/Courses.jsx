@@ -4,6 +4,8 @@ import api from '../services/api';
 import ScrollReveal from '../components/ScrollReveal';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import IconMapper from '../components/IconMapper';
+import CurriculumSwitch from '../components/course/CurriculumSwitch';
+import { useCurriculum } from '../utils/curriculum';
 import {
   FileText, FileEdit, Presentation, HelpCircle,
   ClipboardList, FlaskConical, Terminal, Library, Search, ChevronDown
@@ -45,6 +47,12 @@ const CourseRow = ({ course, onClick }) => (
       letterSpacing: '0.02em', lineHeight: 1.2,
     }}>
       {course.code}
+      {course.alt_code && (
+        <div title={course.curriculum === 'both' ? 'Code in the other curriculum' : undefined}
+             style={{ fontWeight: 700, color: 'var(--text-muted)', fontSize: '0.66rem', marginTop: 2 }}>
+          / {course.alt_code}
+        </div>
+      )}
     </div>
     <div style={{ flex: 1, minWidth: 0 }}>
       <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem', lineHeight: 1.3 }}>
@@ -301,20 +309,25 @@ const FacultyAccordion = ({ faculty, onCourseClick, defaultOpen }) => {
 };
 
 // ── Main Courses Page ─────────────────────────────────────────────────────────
-const Courses = () => {
+const Courses = ({ user }) => {
   const [faculties, setFaculties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [curriculum, setCurriculum] = useCurriculum(user);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     let attempts = 0;
+    let cancelled = false;
     const maxAttempts = 20; // Wait up to 60 seconds (20 * 3s)
+    setLoading(true);
 
     const fetchWithRetry = () => {
+      if (cancelled) return;
       attempts++;
-      api.get('/courses')
+      api.get(curriculum === 'old' ? '/courses?curriculum=old' : '/courses')
         .then(res => {
+          if (cancelled) return;
           if (res.data.success) {
             setFaculties(res.data.faculties || []);
             setLoading(false);
@@ -334,7 +347,8 @@ const Courses = () => {
     };
 
     fetchWithRetry();
-  }, []);
+    return () => { cancelled = true; };
+  }, [curriculum]);
 
   const handleCourseClick = (courseId) => navigate(`/course/${courseId}`);
 
@@ -347,7 +361,8 @@ const Courses = () => {
               s.courses
                 .filter(c =>
                   c.name.toLowerCase().includes(search.toLowerCase()) ||
-                  c.code.toLowerCase().includes(search.toLowerCase())
+                  c.code.toLowerCase().includes(search.toLowerCase()) ||
+                  (c.alt_code || '').toLowerCase().includes(search.toLowerCase())
                 )
                 .map(c => ({ ...c, faculty: f.name, program: p.name }))
             )
@@ -393,6 +408,14 @@ const Courses = () => {
             </p>
           </div>
         </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '20px' }}>
+              <CurriculumSwitch value={curriculum} onChange={setCurriculum} />
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', maxWidth: 420, lineHeight: 1.4 }}>
+                {curriculum === 'old'
+                  ? 'Codes and semesters from before the 2025 prospectus.'
+                  : 'Codes and semesters from the 2025 prospectus. A second code is the old one.'}
+              </span>
+            </div>
             <div data-tour="courses-search" style={{ position: 'relative', maxWidth: '480px' }}>
               <span style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', pointerEvents: 'none', color: 'var(--text-muted)' }}><Search size={18} /></span>
               <input
