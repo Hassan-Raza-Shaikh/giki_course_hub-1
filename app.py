@@ -8,7 +8,7 @@ from flask_compress import Compress
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_talisman import Talisman
-from config import SECRET_KEY, MAX_CONTENT_LENGTH
+from config import SECRET_KEY, MAX_CONTENT_LENGTH, REFERENCE_MAX_FILE_SIZE
 from firebase_admin_init import init_firebase_admin
 
 from routes.auth_routes  import auth_bp
@@ -113,6 +113,7 @@ def create_app():
     limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_done'])
     limiter.limit("10 per minute")(app.view_functions['files.report_file'])
     limiter.limit("20 per minute")(app.view_functions['files.add_file_link'])
+    limiter.limit("30 per minute")(app.view_functions['files.delete_own_upload'])
     limiter.limit("5 per minute")(app.view_functions['issues.submit_issue'])
     limiter.limit("20 per minute")(app.view_functions['email.email_preferences'])
     limiter.limit("10 per minute")(app.view_functions['email.email_unsubscribe'])
@@ -207,6 +208,40 @@ def create_app():
                 int(session['user_id'])
             except ValueError:
                 session.clear()
+
+    # Biggest upload a non-admin can make: a 50 MB Reference file, sent base64
+    # (about 4/3 larger) via the WAF fallback, plus form fields.
+    non_admin_upload_cap = REFERENCE_MAX_FILE_SIZE * 4 // 3 + 1024 * 1024
+    upload_endpoints = {'files.upload_to_course', 'files.bulk_upload_file'}
+
+    @app.before_request
+    def reject_oversized_uploads():
+        """Refuse a too-big upload from its Content-Length, before reading the body.
+        Without this the server would receive up to MAX_CONTENT_LENGTH (10 GB, for
+        admins) before the per-file size check could say no."""
+        if request.endpoint not in upload_endpoints:
+            return
+        if (request.content_length or 0) <= non_admin_upload_cap:
+            return
+        from routes.admin_routes import is_admin_session
+        if is_admin_session():
+            return
+        limit_mb = REFERENCE_MAX_FILE_SIZE // (1024 * 1024)
+        return jsonify({"success": False, "message": f"File is too large. The limit is {limit_mb}MB."}), 413
+
+    # Public, rarely-changing catalogue data: let browsers reuse it for a few
+    # minutes instead of hitting Render (and possibly a cold start) on every page.
+    public_cached_endpoints = {
+        'files.list_courses', 'files.list_courses_flat', 'files.get_public_stats',
+        'files.list_categories', 'user.get_faculties_programs', 'instructors.get_all_instructors',
+    }
+
+    @app.after_request
+    def cache_public_catalogue(resp):
+        if (request.method == 'GET' and resp.status_code == 200
+                and request.endpoint in public_cached_endpoints):
+            resp.headers['Cache-Control'] = 'private, max-age=300'
+        return resp
 
     @app.errorhandler(404)
     def not_found(e):

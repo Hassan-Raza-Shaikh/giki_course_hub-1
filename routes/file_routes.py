@@ -1,9 +1,6 @@
-import random
-import time
 import threading
-from flask import Blueprint, request, session, jsonify, current_app
+from flask import Blueprint, request, session, jsonify
 import boto3
-from botocore.exceptions import NoCredentialsError
 from db import get_connection
 from notifications import notify_course_followers
 from routes.admin_routes import is_admin_session
@@ -14,7 +11,7 @@ from config import (
     ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY,
     R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX,
     DEFAULT_MAX_FILE_SIZE, REFERENCE_MAX_FILE_SIZE, REFERENCE_CATEGORY_NAME,
-    BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
+    BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE,
 )
 import email_events
 from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension, safe_content_type
@@ -529,9 +526,12 @@ def course_detail(course_id):
         """, (list(aliases), course_id))
         file_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
 
-        # All instructors (for the upload dropdown autocomplete)
-        cur.execute("SELECT instructor_id, name, faculty_name FROM instructors ORDER BY name;")
-        all_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
+        # All instructors (for the upload dropdown autocomplete). The current frontend
+        # passes ?instructors=0 and loads /api/instructors only when it needs them.
+        all_instructors = []
+        if request.args.get('instructors') != '0':
+            cur.execute("SELECT instructor_id, name, faculty_name FROM instructors ORDER BY name;")
+            all_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
 
         cur.close()
 
@@ -757,6 +757,52 @@ def upload_to_course(course_id):
     finally:
         if conn:
             conn.close()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DELETE /api/files/<id> — uploader withdraws a pending upload or clears a rejected one
+# ─────────────────────────────────────────────────────────────────────────────
+
+@file_bp.route('/api/files/<int:file_id>', methods=['DELETE'])
+def delete_own_upload(file_id):
+    """Approved files stay: once live, only an admin can take them down."""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"success": False, "message": "Login required."}), 401
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT uploaded_by, status, storage_path, title FROM files WHERE file_id = %s;", (file_id,))
+        row = cur.fetchone()
+        if not row or row[0] != user_id:
+            cur.close()
+            return jsonify({"success": False, "message": "Upload not found."}), 404
+        _, status, storage_path, title = row
+        if status not in ('pending', 'rejected'):
+            cur.close()
+            return jsonify({"success": False, "message": "Approved files can only be removed by an admin. Use Report if something is wrong."}), 409
+
+        cur.execute("DELETE FROM file_course_links WHERE file_id = %s;", (file_id,))
+        cur.execute("DELETE FROM file_metadata WHERE file_id = %s;", (file_id,))
+        cur.execute("DELETE FROM files WHERE file_id = %s;", (file_id,))
+        still_used = False
+        if storage_path:
+            cur.execute("SELECT 1 FROM files WHERE storage_path = %s LIMIT 1;", (storage_path,))
+            still_used = cur.fetchone() is not None
+        conn.commit()
+        cur.close()
+
+        if storage_path and not still_used:
+            from routes.admin_routes import _delete_stored_file
+            _delete_stored_file(storage_path)
+        return jsonify({"success": True, "message": f"'{title}' removed."})
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+    finally:
+        conn.close()
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Bookmark routes

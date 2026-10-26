@@ -35,6 +35,30 @@ jobs:
       - run: pip install ruff==0.16.8
       - name: Check Python files compile
         run: python -m compileall -q -x 'node_modules' .
-      # Only errors that break at runtime: syntax errors and undefined names
-      - name: Ruff (syntax errors and undefined names)
-        run: ruff check --select E9,F63,F7,F82 --output-format github --exclude frontend .
+      # Errors that break at runtime (syntax errors, undefined names) plus unused imports
+      - name: Ruff (syntax errors, undefined names, unused imports)
+        run: ruff check --select E9,F63,F7,F82,F401 --output-format github --exclude frontend .
+
+  backend-tests:
+    name: Backend tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: coursehub_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Pytest (throwaway Postgres built from migrations/)
+        env:
+          TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/coursehub_test
+        run: pytest -q tests

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { Navigate, Link } from 'react-router-dom';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import { UploadCloud, CheckCircle, Clock, XCircle, AlertCircle, FileText } from 'lucide-react';
+import { UploadCloud, CheckCircle, Clock, XCircle, AlertCircle, FileText, Trash2 } from 'lucide-react';
+import { Button, Modal } from '../components/ui';
+import { useToast } from '../components/Toast';
 import '../styles/global.css';
 
 const MyUploads = ({ user }) => {
@@ -11,6 +13,25 @@ const MyUploads = ({ user }) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [removing, setRemoving] = useState(null); // upload waiting for confirmation
+  const [busy, setBusy] = useState(false);
+  const toast = useToast();
+
+  const confirmRemove = async () => {
+    if (!removing) return;
+    setBusy(true);
+    try {
+      await api.delete(`/files/${removing.file_id}`);
+      setUploads(prev => prev.filter(u => u.file_id !== removing.file_id));
+      setTotalCount(c => Math.max(0, c - 1));
+      toast.success(removing.status === 'pending' ? 'Upload withdrawn.' : 'Upload removed.');
+      setRemoving(null);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Couldn't remove that upload. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -133,6 +154,11 @@ const MyUploads = ({ user }) => {
                     </div>
                   )}
                 </div>
+                {(file.status === 'pending' || file.status === 'rejected') && (
+                  <Button size="sm" variant="danger-outline" icon={<Trash2 size={14} />} onClick={() => setRemoving(file)}>
+                    {file.status === 'pending' ? 'Withdraw' : 'Remove'}
+                  </Button>
+                )}
                 {file.status === 'approved' && file.file_url && (
                   <a 
                     href={file.file_url} 
@@ -148,6 +174,23 @@ const MyUploads = ({ user }) => {
             ))}
           </div>
         )}
+
+        <Modal
+          open={!!removing}
+          onClose={() => !busy && setRemoving(null)}
+          size="sm"
+          title={removing?.status === 'pending' ? 'Withdraw this upload?' : 'Remove this upload?'}
+          icon={<Trash2 size={22} />}
+          footer={<>
+            <Button onClick={() => setRemoving(null)} disabled={busy}>Cancel</Button>
+            <Button variant="danger" onClick={confirmRemove} disabled={busy}>{busy ? 'Removing…' : (removing?.status === 'pending' ? 'Withdraw' : 'Remove')}</Button>
+          </>}
+        >
+          <p style={{ margin: 0, color: 'var(--text-muted)' }}>
+            <strong style={{ color: 'var(--text)' }}>{removing?.title}</strong> will be deleted
+            {removing?.status === 'pending' ? ' and won\'t be reviewed' : ''}. You can upload it again later.
+          </p>
+        </Modal>
 
         {/* Pagination Controls */}
         {totalPages > 1 && (

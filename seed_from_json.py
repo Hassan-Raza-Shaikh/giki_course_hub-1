@@ -4,9 +4,11 @@ Structure: Faculty → Program → Semester → Course
 DB mapping: faculty table, programs table, courses table (with faculty_id, program_id, semester, year)
 """
 import json
-import psycopg2
 from db import get_connection
 
+
+from utils.confirm import require_confirmation
+require_confirmation("re-seeds faculties, programs, courses and categories in the database from JSON")
 
 CATEGORIES = [
     ("Outline",         False),

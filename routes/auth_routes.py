@@ -130,7 +130,6 @@ def firebase_auth():
 
         user_id = user[0]
         role    = user[2]
-        existing_display_name = user[3]
 
         # 4. Check if user is an admin to sync role (admin is granted by email, so the
         #    email must be verified)
@@ -144,32 +143,44 @@ def firebase_auth():
             cur.execute("UPDATE users SET role = 'user' WHERE user_id = %s;", (user_id,))
             role = 'user'
 
-        # Update display_name / photo_url on users row gracefully
+        # This runs on every app load, so only write what actually changed. The
+        # Google name only fills an empty display name: a name the user set on
+        # their profile is theirs and must not be reverted at each sign-in.
         if display_name or photo_url:
             cur.execute(
-                """UPDATE users 
-                   SET display_name = COALESCE(NULLIF(%s, ''), display_name), 
-                       photo_url = COALESCE(NULLIF(%s, ''), photo_url) 
-                   WHERE user_id = %s;""",
-                (display_name, photo_url, user_id)
+                """UPDATE users
+                   SET display_name = COALESCE(NULLIF(display_name, ''), NULLIF(%s, '')),
+                       photo_url    = COALESCE(NULLIF(%s, ''), photo_url)
+                   WHERE user_id = %s
+                     AND (COALESCE(display_name, '') = '' AND %s <> ''
+                          OR %s <> '' AND photo_url IS DISTINCT FROM %s);""",
+                (display_name, photo_url, user_id, display_name, photo_url, photo_url)
             )
 
-        # Upsert user_profiles gracefully
+        # Create the profile row on first sign-in; afterwards only fill in the
+        # sign-up fields when they were sent.
         cur.execute(
             """INSERT INTO user_profiles (user_id, display_name, student_id, batch_year, program)
                VALUES (%s, COALESCE(NULLIF(%s, ''), %s), %s, %s, %s)
                ON CONFLICT (user_id) DO UPDATE
-                 SET display_name = COALESCE(NULLIF(EXCLUDED.display_name, ''), user_profiles.display_name),
+                 SET display_name = COALESCE(NULLIF(user_profiles.display_name, ''), EXCLUDED.display_name),
                      student_id   = COALESCE(EXCLUDED.student_id,   user_profiles.student_id),
                      batch_year   = COALESCE(EXCLUDED.batch_year,   user_profiles.batch_year),
                      program      = COALESCE(EXCLUDED.program,      user_profiles.program),
-                     updated_at   = CURRENT_TIMESTAMP;""",
+                     updated_at   = CURRENT_TIMESTAMP
+                 WHERE EXCLUDED.student_id IS NOT NULL OR EXCLUDED.batch_year IS NOT NULL
+                    OR EXCLUDED.program IS NOT NULL OR COALESCE(user_profiles.display_name, '') = '';""",
             (user_id, display_name, user[1], student_id, batch_year, program)
         )
 
         # Fetch latest profile data to return complete state
-        cur.execute("SELECT student_id, batch_year, program, user_type FROM user_profiles WHERE user_id = %s;", (user_id,))
+        cur.execute("""SELECT up.student_id, up.batch_year, up.program, up.user_type,
+                              COALESCE(NULLIF(up.display_name, ''), NULLIF(u.display_name, ''), u.username), u.photo_url
+                       FROM users u LEFT JOIN user_profiles up ON up.user_id = u.user_id
+                       WHERE u.user_id = %s;""", (user_id,))
         p_row = cur.fetchone()
+        display_name = p_row[4] or display_name
+        photo_url    = p_row[5] or photo_url
         student_id_db = p_row[0] if p_row else student_id
         batch_year_db = p_row[1] if p_row else batch_year
         program_db    = p_row[2] if p_row else program

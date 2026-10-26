@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { User, Calendar, BookOpen, FileText, Download, Clock, ArrowLeft, Edit3, Calculator } from 'lucide-react';
 import api from '../services/api';
 import ProfileCompleteModal from '../components/ProfileCompleteModal';
+import VerifyEmailNotice from '../components/VerifyEmailNotice';
 
 const fmtSize = (b) => b ? `${(b / (1024 * 1024)).toFixed(2)} MB` : '—';
 const fmtDate = (ds) => new Date(ds).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -204,6 +205,8 @@ const UserProfile = ({ user, setUser }) => {
             )}
           </div>
         </div>
+
+        {user && user.username === profile.username && <VerifyEmailNotice />}
 
         {/* GPA Section - Show if there is data, OR if viewing own profile, OR if it's private */}
         {((user && user.username === profile.username) || (gpaData && gpaData.is_private) || (gpaData && gpaData.records && gpaData.records.length > 0)) && (

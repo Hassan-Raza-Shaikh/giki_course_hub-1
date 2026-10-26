@@ -1,5 +1,8 @@
 from db import get_connection
 
+from utils.confirm import require_confirmation
+require_confirmation("DELETES every elective course from the database (it is not a test)")
+
 conn = get_connection()
 cur = conn.cursor()
 

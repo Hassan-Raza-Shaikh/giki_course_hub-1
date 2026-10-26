@@ -100,13 +100,13 @@ const CoursePage = ({ user, onSignIn }) => {
 
   useEffect(() => {
     setLoading(true);
-    api.get(`/courses/${id}`)
+    // The full instructor list is only for the upload form; it's fetched separately below
+    api.get(`/courses/${id}?instructors=0`)
       .then(res => {
         if (res.data.success) {
           setCourse(res.data.course);
           setFiles(res.data.files_by_category);
           setCategories(res.data.categories);
-          setInstructors(res.data.all_instructors || []);
           setCourseInstructors(res.data.course_instructors || []);
           setFileInstructors(res.data.file_instructors || []);
           // Deep-link: check URL hash for a category tab
@@ -130,6 +130,12 @@ const CoursePage = ({ user, onSignIn }) => {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [id]);
+
+  // Instructor list for the upload form (cached by the api layer), only for signed-in users
+  useEffect(() => {
+    if (!user || instructors.length > 0) return;
+    api.get('/instructors').then(r => setInstructors(r.data.instructors || [])).catch(() => {});
+  }, [user, instructors.length]);
 
   const openEditFile = (file) => {
     setEditFileModal(file);
@@ -246,26 +252,6 @@ const CoursePage = ({ user, onSignIn }) => {
       .filter(s => s.files.length > 0);
   }, [categories, filesByCategory]);
 
-  // Group instructors by faculty for organized dropdown
-  const otherInstructorsGrouped = React.useMemo(() => {
-    const grouped = instructors
-      .filter(i => !courseInstructors.find(ci => ci.id === i.id))
-      .reduce((acc, i) => {
-        const fac = i.faculty || 'Other';
-        if (!acc[fac]) acc[fac] = [];
-        acc[fac].push(i);
-        return acc;
-      }, {});
-
-    return Object.keys(grouped)
-      .sort((a, b) => {
-        const faculty = course?.faculty;
-        if (faculty && a === faculty) return -1;
-        if (faculty && b === faculty) return 1;
-        return a.localeCompare(b);
-      })
-      .map(fac => ({ name: fac, list: grouped[fac] }));
-  }, [instructors, courseInstructors, course]);
 
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 70 }}>
