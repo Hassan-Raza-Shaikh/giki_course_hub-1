@@ -47,8 +47,13 @@ api.get = async (url, config) => {
   
   if (isCacheable) {
     const cacheKey = `api_cache_${url}`;
-    const cachedData = localStorage.getItem(cacheKey);
-    
+    let cachedData = null;
+    try {
+      cachedData = localStorage.getItem(cacheKey);
+    } catch {
+      // Storage blocked (private mode, disabled cookies): just fetch
+    }
+
     if (cachedData) {
       try {
         const parsed = JSON.parse(cachedData);
@@ -66,7 +71,7 @@ api.get = async (url, config) => {
         }
       } catch (e) {
         // Corrupted cache, just ignore and fetch new
-        localStorage.removeItem(cacheKey);
+        try { localStorage.removeItem(cacheKey); } catch { /* storage unavailable */ }
       }
     }
   }
@@ -76,10 +81,14 @@ api.get = async (url, config) => {
   
   // If successful and cacheable, save to localStorage
   if (isCacheable && response.status === 200 && response.data?.success) {
-    localStorage.setItem(`api_cache_${url}`, JSON.stringify({
-      timestamp: Date.now(),
-      data: response.data
-    }));
+    try {
+      localStorage.setItem(`api_cache_${url}`, JSON.stringify({
+        timestamp: Date.now(),
+        data: response.data
+      }));
+    } catch {
+      // Quota full or storage blocked: caching is optional, the response is still good
+    }
   }
   
   return response;

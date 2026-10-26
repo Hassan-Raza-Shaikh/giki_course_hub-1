@@ -15,7 +15,6 @@
     "docx-preview": "^0.3.7",
     "dompurify": "^3.4.16",
     "firebase": "^12.12.0",
-    "framer-motion": "^11.0.3",
     "lucide-react": "^0.331.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

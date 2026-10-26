@@ -228,7 +228,7 @@ const GlobalSearch = ({ user, onSignIn }) => {
                         <div style={{ fontSize: '1.8rem', display: 'flex', alignItems: 'center' }}><IconMapper emoji={course.icon} size={28} /></div>
                         <div>
                           <div style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1rem' }}>{course.name}</div>
-                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{course.code} · {course.faculty}</div>
+                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{course.code}{course.old_code ? ` / ${course.old_code}` : ''} · {course.faculty}</div>
                         </div>
                       </div>
                     </div>

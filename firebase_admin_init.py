@@ -7,8 +7,8 @@ SETUP:
   2. Click "Generate new private key" → download JSON
   3. Save it as  firebase/serviceAccountKey.json  (already in .gitignore)
 
-If the key file is NOT found, the app falls back to token-verification-disabled
-mode and prints a warning — useful during development before the key is added.
+If the key file is NOT found, sign-in is refused, unless ALLOW_UNVERIFIED_AUTH=1
+is set for local development (then the browser's uid/email are trusted as-is).
 """
 import os
 import logging
@@ -42,7 +42,7 @@ def init_firebase_admin():
         # For the error message, show the primary expected path
         fallback_path = possible_paths[1]
         print(f"\n⚠️  [Firebase Admin] Service account key NOT found at: {fallback_path}")
-        print("   Token verification is DISABLED — sign-in still works but UIDs are not verified.")
+        print("   Token verification is DISABLED — sign-in is refused unless ALLOW_UNVERIFIED_AUTH=1 (local dev only).")
         print("   To enable: Firebase Console → Project Settings → Service Accounts → Generate key\n")
         return False
 

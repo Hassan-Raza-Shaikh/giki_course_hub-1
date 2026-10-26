@@ -1,0 +1,7133 @@
+{
+ "faculties": [
+  {
+   "full_name": "Faculty of Computer Science & Engineering",
+   "icon": "💻",
+   "id": 21,
+   "name": "FCSE",
+   "programs": [
+    {
+     "id": 45,
+     "name": "BS Artificial Intelligence",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 2690,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 2691,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 2689,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 2687,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 2685,
+           "name": "Computing & Artificial Intelligence",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 2686,
+           "name": "Computing & Artificial Intelligence Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 2688,
+           "name": "Innovation & Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 2692,
+           "name": "Materials & Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 2693,
+           "name": "Materials & Nanotechnology Lab",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 2700,
+           "name": "Applied Chemistry & Environment",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 2697,
+           "name": "Critical Thinking & Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 2701,
+           "name": "Differential Equations & Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 2698,
+           "name": "Innovation & Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 2694,
+           "name": "Object-oriented Programming & Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 2695,
+           "name": "Object-oriented Programming & Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 2699,
+           "name": "Occupational Health & Safety",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 2696,
+           "name": "Probability & Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3622,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "ES205",
+           "id": 2708,
+           "name": "Advanced Linear Algebra",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221",
+           "id": 2705,
+           "name": "Data Structures & Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221L",
+           "id": 2706,
+           "name": "Data Structures & Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221",
+           "id": 2702,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221L",
+           "id": 2703,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS231",
+           "id": 2707,
+           "name": "Discrete Mathematics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS202",
+           "id": 2704,
+           "name": "Information & Communication Technologies",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "AI201L",
+           "id": 2709,
+           "name": "Programming for AI Lab",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CE222",
+           "id": 2713,
+           "name": "Computer Organization & Assembly Language",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222L",
+           "id": 2714,
+           "name": "Computer Organization & Assembly Language Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "AI202",
+           "id": 2710,
+           "name": "Concepts in AI",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232",
+           "id": 2716,
+           "name": "Database Management Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232L",
+           "id": 2717,
+           "name": "Database Management Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 2715,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "AI221",
+           "id": 2711,
+           "name": "Machine Learning",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "AI221L",
+           "id": 2712,
+           "name": "Machine Learning Lab",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "AI331",
+           "id": 2719,
+           "name": "Deep Neural Networks",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "AI331L",
+           "id": 2720,
+           "name": "Deep Neural Networks Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS391",
+           "id": 2724,
+           "name": "Entrepreneurship & Technology Commercialization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "AI311",
+           "id": 2718,
+           "name": "Knowledge Representation & Problem Solving",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311",
+           "id": 2721,
+           "name": "Operating Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311L",
+           "id": 2722,
+           "name": "Operating Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS325",
+           "id": 2723,
+           "name": "Software Engineering",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CE313",
+           "id": 2729,
+           "name": "Computer Communications & Networks",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "AI341",
+           "id": 2725,
+           "name": "Computer Vision",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "AI341L",
+           "id": 2726,
+           "name": "Computer Vision Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM112",
+           "id": 2732,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "AI351",
+           "id": 2727,
+           "name": "Natural Language Processing",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "AI351L",
+           "id": 2728,
+           "name": "Natural Language Processing Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS392",
+           "id": 2730,
+           "name": "Software Project Management",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS478",
+           "id": 2734,
+           "name": "Design & Analysis of Algorithms",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS493",
+           "id": 2736,
+           "name": "Scientific Communication",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS481",
+           "id": 2735,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 2742,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS465",
+           "id": 2739,
+           "name": "Data & Network Security",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS417",
+           "id": 2738,
+           "name": "Parallel Processing & Distributed Computing",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS494",
+           "id": 2741,
+           "name": "Professional Issues in IT",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS482",
+           "id": 2740,
+           "name": "Senior Design Project (Part II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 46,
+     "name": "BS Computer Science",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 2749,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 2750,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 2748,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 2746,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 2744,
+           "name": "Computing & Artificial Intelligence",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 2745,
+           "name": "Computing & Artificial Intelligence Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 2747,
+           "name": "Innovation & Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 2751,
+           "name": "Materials & Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 2752,
+           "name": "Materials & Nanotechnology Lab",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 2759,
+           "name": "Applied Chemistry & Environment",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 2756,
+           "name": "Critical Thinking & Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 2760,
+           "name": "Differential Equations & Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 2757,
+           "name": "Innovation & Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 2753,
+           "name": "Object-oriented Programming & Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 2754,
+           "name": "Object-oriented Programming & Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 2758,
+           "name": "Occupational Health & Safety",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 2755,
+           "name": "Probability & Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3624,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "ES205",
+           "id": 2767,
+           "name": "Advanced Linear Algebra",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221",
+           "id": 2764,
+           "name": "Data Structures & Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221L",
+           "id": 2765,
+           "name": "Data Structures & Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221",
+           "id": 2761,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221L",
+           "id": 2762,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS231",
+           "id": 2766,
+           "name": "Discrete Mathematics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS202",
+           "id": 2763,
+           "name": "Information & Communication Technologies",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CE222",
+           "id": 2768,
+           "name": "Computer Organization & Assembly Language",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222L",
+           "id": 2769,
+           "name": "Computer Organization & Assembly Language Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232",
+           "id": 2771,
+           "name": "Database Management Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232L",
+           "id": 2772,
+           "name": "Database Management Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "SE202L",
+           "id": 2775,
+           "name": "Development Operations Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS224",
+           "id": 2770,
+           "name": "Formal Languages and Automata Theory",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS272",
+           "id": 2773,
+           "name": "Human Computer Interface and Computer Graphics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 2774,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS342",
+           "id": 2779,
+           "name": "Advanced Database Management Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS351",
+           "id": 2780,
+           "name": "Artificial Intelligence",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS351L",
+           "id": 2781,
+           "name": "Artificial Intelligence Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS391",
+           "id": 2782,
+           "name": "Entrepreneurship & Technology Commercialization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311",
+           "id": 2776,
+           "name": "Operating Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311L",
+           "id": 2777,
+           "name": "Operating Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS325",
+           "id": 2778,
+           "name": "Software Engineering",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CS334",
+           "id": 2785,
+           "name": "Compiler Construction",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS334L",
+           "id": 2786,
+           "name": "Compiler Construction Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS324",
+           "id": 2784,
+           "name": "Computer Architecture",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE313",
+           "id": 2783,
+           "name": "Computer Communications & Networks",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM112",
+           "id": 2789,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS392",
+           "id": 2787,
+           "name": "Software Project Management",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS478",
+           "id": 2790,
+           "name": "Design & Analysis of Algorithms",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS493",
+           "id": 2792,
+           "name": "Scientific Communication",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS481",
+           "id": 2791,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 2799,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS465",
+           "id": 2796,
+           "name": "Data & Network Security",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS417",
+           "id": 2795,
+           "name": "Parallel Processing & Distributed Computing",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS494",
+           "id": 2798,
+           "name": "Professional Issues in IT",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS482",
+           "id": 2797,
+           "name": "Senior Design Project (Part II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 47,
+     "name": "BS Computer Engineering",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 2801,
+           "name": "Applied Chemistry & Environment",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101",
+           "id": 2807,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 2808,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 2806,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 2804,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 2802,
+           "name": "Computing & Artificial Intelligence",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 2803,
+           "name": "Computing & Artificial Intelligence Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 2805,
+           "name": "Innovation & Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 2809,
+           "name": "Occupational Health & Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "HM102",
+           "id": 2813,
+           "name": "Critical Thinking & Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 2817,
+           "name": "Differential Equations & Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 2814,
+           "name": "Innovation & Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 2815,
+           "name": "Materials & Nanotechnology",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 2816,
+           "name": "Materials & Nanotechnology Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 2810,
+           "name": "Object-oriented Programming & Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 2811,
+           "name": "Object-oriented Programming & Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 2812,
+           "name": "Probability & Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3623,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CE211",
+           "id": 2818,
+           "name": "Circuit Analysis",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE211L",
+           "id": 2819,
+           "name": "Circuit Analysis Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221",
+           "id": 2823,
+           "name": "Data Structures and Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221L",
+           "id": 2824,
+           "name": "Data Structures and Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221",
+           "id": 2820,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221L",
+           "id": 2821,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS231",
+           "id": 2825,
+           "name": "Discrete Mathematics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS202",
+           "id": 2822,
+           "name": "Information and Communication Technologies",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "ES205",
+           "id": 2832,
+           "name": "Advanced Linear Algebra",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222",
+           "id": 2826,
+           "name": "Computer Organization and Assembly Language",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222L",
+           "id": 2827,
+           "name": "Computer Organization and Assembly Language Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232",
+           "id": 2830,
+           "name": "Database Management Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232L",
+           "id": 2831,
+           "name": "Database Management Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE231",
+           "id": 2828,
+           "name": "Electronics – I",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE231L",
+           "id": 2829,
+           "name": "Electronics – I Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 2833,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS391",
+           "id": 2841,
+           "name": "Entrepreneurship & Technology Commercialization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CE324",
+           "id": 2834,
+           "name": "Microprocessor Interfacing",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CE324L",
+           "id": 2835,
+           "name": "Microprocessor Interfacing Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311",
+           "id": 2838,
+           "name": "Operating Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311L",
+           "id": 2839,
+           "name": "Operating Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CE341",
+           "id": 2836,
+           "name": "Signals & Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CE341L",
+           "id": 2837,
+           "name": "Signals & Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS325",
+           "id": 2840,
+           "name": "Software Engineering",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CE342",
+           "id": 2843,
+           "name": "Computational Methods and Techniques",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS361",
+           "id": 2846,
+           "name": "Computer Architecture",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE313",
+           "id": 2842,
+           "name": "Computer Communications & Networks",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE361",
+           "id": 2844,
+           "name": "Digital Signal Processing",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE361L",
+           "id": 2845,
+           "name": "Digital Signal Processing Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM112",
+           "id": 2848,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS392",
+           "id": 2847,
+           "name": "Software Project Management",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CE408",
+           "id": 2849,
+           "name": "Cloud Computing",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS478",
+           "id": 2852,
+           "name": "Design & Analysis of Algorithms",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CE436",
+           "id": 2850,
+           "name": "Digital System Design",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CE436L",
+           "id": 2851,
+           "name": "Digital System Design Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS481",
+           "id": 2853,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 2859,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS465",
+           "id": 2856,
+           "name": "Data and Network Security",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS494",
+           "id": 2858,
+           "name": "Professional Issues in IT",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS482",
+           "id": 2857,
+           "name": "Senior Design Project (Part II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 48,
+     "name": "BS Cyber Security",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 2866,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 2867,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 2865,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 2863,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 2861,
+           "name": "Computing & Artificial Intelligence",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 2862,
+           "name": "Computing & Artificial Intelligence Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 2864,
+           "name": "Innovation & Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 2868,
+           "name": "Materials & Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 2869,
+           "name": "Materials & Nanotechnology Lab",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 2876,
+           "name": "Applied Chemistry & Environment",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 2873,
+           "name": "Critical Thinking & Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 2877,
+           "name": "Differential Equations & Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 2874,
+           "name": "Innovation & Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 2870,
+           "name": "Object-oriented Programming & Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 2871,
+           "name": "Object-oriented Programming & Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 2875,
+           "name": "Occupational Health & Safety",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 2872,
+           "name": "Probability & Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3625,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "ES205",
+           "id": 2884,
+           "name": "Advanced Linear Algebra",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221",
+           "id": 2881,
+           "name": "Data Structures & Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221L",
+           "id": 2882,
+           "name": "Data Structures & Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221",
+           "id": 2878,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221L",
+           "id": 2879,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS231",
+           "id": 2883,
+           "name": "Discrete Mathematics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS202",
+           "id": 2880,
+           "name": "Information & Communication Technologies",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CE222",
+           "id": 2885,
+           "name": "Computer Organization & Assembly Language",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222L",
+           "id": 2886,
+           "name": "Computer Organization & Assembly Language Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CY201",
+           "id": 2889,
+           "name": "Cyber Security Principles & Concepts",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232",
+           "id": 2887,
+           "name": "Database Management Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232L",
+           "id": 2888,
+           "name": "Database Management Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CY211",
+           "id": 2890,
+           "name": "Information Security",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 2891,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS342",
+           "id": 2895,
+           "name": "Advanced Database Management Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS351",
+           "id": 2896,
+           "name": "Artificial Intelligence",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS351L",
+           "id": 2897,
+           "name": "Artificial Intelligence Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS391",
+           "id": 2898,
+           "name": "Entrepreneurship & Technology Commercialization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311",
+           "id": 2892,
+           "name": "Operating Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311L",
+           "id": 2893,
+           "name": "Operating Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS325",
+           "id": 2894,
+           "name": "Software Engineering",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CE342",
+           "id": 2900,
+           "name": "Computational Methods and Techniques",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS361",
+           "id": 2903,
+           "name": "Computer Architecture",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE313",
+           "id": 2899,
+           "name": "Computer Communications & Networks",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE361",
+           "id": 2901,
+           "name": "Digital Signal Processing",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE361L",
+           "id": 2902,
+           "name": "Digital Signal Processing Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM112",
+           "id": 2905,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS392",
+           "id": 2904,
+           "name": "Software Project Management",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CY412",
+           "id": 2911,
+           "name": "Cryptography",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS478",
+           "id": 2906,
+           "name": "Design & Analysis of Algorithms",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS493",
+           "id": 2908,
+           "name": "Scientific Communication",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS481",
+           "id": 2907,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 2916,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS465",
+           "id": 2913,
+           "name": "Data & Network Security",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS417",
+           "id": 2912,
+           "name": "Parallel Processing & Distributed Computing",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS494",
+           "id": 2915,
+           "name": "Professional Issues in IT",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS482",
+           "id": 2914,
+           "name": "Senior Design Project (Part II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 49,
+     "name": "BS Data Science",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 2923,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 2924,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 2922,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 2920,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 2918,
+           "name": "Computing & Artificial Intelligence",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 2919,
+           "name": "Computing & Artificial Intelligence Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 2921,
+           "name": "Innovation & Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 2925,
+           "name": "Materials & Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 2926,
+           "name": "Materials & Nanotechnology Lab",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 2933,
+           "name": "Applied Chemistry & Environment",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 2930,
+           "name": "Critical Thinking & Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 2934,
+           "name": "Differential Equations & Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 2931,
+           "name": "Innovation & Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 2927,
+           "name": "Object-oriented Programming & Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 2928,
+           "name": "Object-oriented Programming & Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 2932,
+           "name": "Occupational Health & Safety",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 2929,
+           "name": "Probability & Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3626,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "ES205",
+           "id": 2941,
+           "name": "Advanced Linear Algebra",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221",
+           "id": 2938,
+           "name": "Data Structures & Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221L",
+           "id": 2939,
+           "name": "Data Structures & Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221",
+           "id": 2935,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221L",
+           "id": 2936,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS231",
+           "id": 2940,
+           "name": "Discrete Mathematics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS202",
+           "id": 2937,
+           "name": "Information & Communication Technologies",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CE222",
+           "id": 2942,
+           "name": "Computer Organization & Assembly Language",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222L",
+           "id": 2943,
+           "name": "Computer Organization & Assembly Language Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232",
+           "id": 2944,
+           "name": "Database Management Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232L",
+           "id": 2945,
+           "name": "Database Management Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "SE202L",
+           "id": 2949,
+           "name": "Development Operations Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "DS221",
+           "id": 2947,
+           "name": "Inferential Statistics & Applied Probability",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 2948,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "DS211",
+           "id": 2946,
+           "name": "Theory of Data Science",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS351",
+           "id": 2953,
+           "name": "Artificial Intelligence",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS351L",
+           "id": 2954,
+           "name": "Artificial Intelligence Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "DS341",
+           "id": 2956,
+           "name": "Data Mining",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS391",
+           "id": 2955,
+           "name": "Entrepreneurship & Technology Commercialization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311",
+           "id": 2950,
+           "name": "Operating Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311L",
+           "id": 2951,
+           "name": "Operating Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS325",
+           "id": 2952,
+           "name": "Software Engineering",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "DS361",
+           "id": 2963,
+           "name": "Big Data Analytics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "DS361L",
+           "id": 2964,
+           "name": "Big Data Analytics Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CE313",
+           "id": 2957,
+           "name": "Computer Communications & Networks",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "DS351",
+           "id": 2961,
+           "name": "Data Visualization",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "DS351L",
+           "id": 2962,
+           "name": "Data Visualization Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "DS331",
+           "id": 2959,
+           "name": "Data Warehousing & Businss Intelligence",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "DS331L",
+           "id": 2960,
+           "name": "Data Warehousing & Businss Intelligence Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM112",
+           "id": 2965,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS392",
+           "id": 2958,
+           "name": "Software Project Management",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "DS471",
+           "id": 2971,
+           "name": "Data Engineering",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS478",
+           "id": 2966,
+           "name": "Design & Analysis of Algorithms",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS493",
+           "id": 2968,
+           "name": "Scientific Communication",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS481",
+           "id": 2967,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 2976,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS465",
+           "id": 2973,
+           "name": "Data & Network Security",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS417",
+           "id": 2972,
+           "name": "Parallel Processing & Distributed Computing",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS494",
+           "id": 2975,
+           "name": "Professional Issues in IT",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS482",
+           "id": 2974,
+           "name": "Senior Design Project (Part II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 50,
+     "name": "BS Software Engineering",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 2983,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 2984,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 2982,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 2980,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 2978,
+           "name": "Computing & Artificial Intelligence",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 2979,
+           "name": "Computing & Artificial Intelligence Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 2981,
+           "name": "Innovation & Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 2985,
+           "name": "Materials & Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 2986,
+           "name": "Materials & Nanotechnology Lab",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 2993,
+           "name": "Applied Chemistry & Environment",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 2990,
+           "name": "Critical Thinking & Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 2994,
+           "name": "Differential Equations & Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 2991,
+           "name": "Innovation & Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 2987,
+           "name": "Object-oriented Programming & Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 2988,
+           "name": "Object-oriented Programming & Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 2992,
+           "name": "Occupational Health & Safety",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 2989,
+           "name": "Probability & Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3627,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "ES205",
+           "id": 3000,
+           "name": "Advanced Linear Algebra",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221",
+           "id": 2997,
+           "name": "Data Structures & Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS221L",
+           "id": 2998,
+           "name": "Data Structures & Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221",
+           "id": 2995,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CE221L",
+           "id": 2996,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CS231",
+           "id": 2999,
+           "name": "Discrete Mathematics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "SE201",
+           "id": 3001,
+           "name": "Software Engineering",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CE222",
+           "id": 3002,
+           "name": "Computer Organization & Assembly Language",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CE222L",
+           "id": 3003,
+           "name": "Computer Organization & Assembly Language Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232",
+           "id": 3005,
+           "name": "Database Management Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS232L",
+           "id": 3006,
+           "name": "Database Management Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "SE202L",
+           "id": 3008,
+           "name": "Development Operations Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CS202",
+           "id": 3004,
+           "name": "Information & Communication Technologies",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 3007,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "SE211",
+           "id": 3009,
+           "name": "Software Requirement Engineering",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS351",
+           "id": 3012,
+           "name": "Artificial Intelligence",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS351L",
+           "id": 3013,
+           "name": "Artificial Intelligence Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS391",
+           "id": 3015,
+           "name": "Entrepreneurship & Technology Commercialization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS372",
+           "id": 3014,
+           "name": "Human Computer Interaction & UI Graphics",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311",
+           "id": 3010,
+           "name": "Operating Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CS311L",
+           "id": 3011,
+           "name": "Operating Systems Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "SE322",
+           "id": 3016,
+           "name": "Software Design & Architecture",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "SE322L",
+           "id": 3017,
+           "name": "Software Design & Architecture Lab",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CE313",
+           "id": 3018,
+           "name": "Computer Communications & Networks",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM112",
+           "id": 3025,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "SE323",
+           "id": 3021,
+           "name": "Software Construction & Development",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "SE323L",
+           "id": 3022,
+           "name": "Software Construction & Development Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CS392",
+           "id": 3024,
+           "name": "Software Project Management",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "SE331",
+           "id": 3023,
+           "name": "Software Quality Assurance",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "SE351",
+           "id": 3019,
+           "name": "Web Engineering & Mobile App Development",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "SE351L",
+           "id": 3020,
+           "name": "Web Engineering & Mobile App Development Lab",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CS478",
+           "id": 3026,
+           "name": "Design & Analysis of Algorithms",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS493",
+           "id": 3028,
+           "name": "Scientific Communication",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CS481",
+           "id": 3027,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 3035,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS465",
+           "id": 3032,
+           "name": "Data & Network Security",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS417",
+           "id": 3031,
+           "name": "Parallel Processing & Distributed Computing",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS494",
+           "id": 3034,
+           "name": "Professional Issues in IT",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CS482",
+           "id": 3033,
+           "name": "Senior Design Project (Part II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "full_name": "Faculty of Electrical Engineering",
+   "icon": "⚡",
+   "id": 22,
+   "name": "FEE",
+   "programs": [
+    {
+     "id": 51,
+     "name": "BS Electrical Engineering (Robotics & Autonomous Systems)",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 3037,
+           "name": "Applied Chemistry & Environment",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 3041,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3040,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3039,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3045,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 3044,
+           "name": "Innovation and Makers Lab-1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3042,
+           "name": "Materials and Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 3043,
+           "name": "Materials Lab 1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3038,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3050,
+           "name": "Applied Physics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3051,
+           "name": "Applied Physics Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3049,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3052,
+           "name": "Differential Equations & Linear Algebra",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 3054,
+           "name": "Innovation & Makers Lab-2",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3046,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3053,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3048,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3047,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT201",
+           "id": 3060,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222",
+           "id": 3057,
+           "name": "Data Structures and Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222L",
+           "id": 3063,
+           "name": "Data Structures and Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221",
+           "id": 3056,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221L",
+           "id": 3062,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM212",
+           "id": 3059,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211",
+           "id": 3055,
+           "name": "Linear Circuit Analysis",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211L",
+           "id": 3061,
+           "name": "Linear Circuit Analysis Lab",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "EE212",
+           "id": 3064,
+           "name": "Electrical Network Analysis",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231",
+           "id": 3066,
+           "name": "Electronic Devices and Circuits",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231L",
+           "id": 3071,
+           "name": "Electronic Devices and Circuits Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3067,
+           "name": "Engineering Economics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223",
+           "id": 3065,
+           "name": "Microprocessor Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223L",
+           "id": 3070,
+           "name": "Microprocessor Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE241",
+           "id": 3069,
+           "name": "Numerical Methods for Electrical Engineering",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM221",
+           "id": 3068,
+           "name": "Sociology and Human Behavior",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "EE311",
+           "id": 3072,
+           "name": "Electric Machines",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE311L",
+           "id": 3077,
+           "name": "Electric Machines Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE314",
+           "id": 3076,
+           "name": "Electrical Instrumentation & Measurement",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE314L",
+           "id": 3080,
+           "name": "Electrical Instrumentation & Measurement Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE371",
+           "id": 3075,
+           "name": "Electromagnetic Field Theory",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE331",
+           "id": 3073,
+           "name": "Electronic Circuit Design",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE331L",
+           "id": 3078,
+           "name": "Electronic Circuit Design Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341",
+           "id": 3074,
+           "name": "Signals and Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341L",
+           "id": 3079,
+           "name": "Signals and Systems Lab",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "EE321",
+           "id": 3081,
+           "name": "Artificial Intelligence",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE321L",
+           "id": 3089,
+           "name": "Artificial Intelligence Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HMXYZ",
+           "id": 3085,
+           "name": "Civics and Community Engagement",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361",
+           "id": 3084,
+           "name": "Communication Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361L",
+           "id": 3088,
+           "name": "Communication Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351",
+           "id": 3083,
+           "name": "Linear Control Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351L",
+           "id": 3087,
+           "name": "Linear Control Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332",
+           "id": 3082,
+           "name": "Power Electronics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332L",
+           "id": 3086,
+           "name": "Power Electronics Lab",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM322",
+           "id": 3095,
+           "name": "Corporate law and Professional Ethics",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE441",
+           "id": 3090,
+           "name": "Digital Signal Processing",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE441L",
+           "id": 3093,
+           "name": "Digital Signal Processing Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE452",
+           "id": 3091,
+           "name": "Robotics in Automation",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE452L",
+           "id": 3096,
+           "name": "Robotics in Automation Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE491",
+           "id": 3094,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "EE453",
+           "id": 3097,
+           "name": "Electric Machine Drives and Control",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE451L",
+           "id": 3102,
+           "name": "Industrial Control and Automation Lab",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE492",
+           "id": 3098,
+           "name": "Senior Design Project (Part-II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 52,
+     "name": "BS Electrical Engineering (Digital Design & Embedded Systems)",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 3103,
+           "name": "Applied Chemistry & Environment",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 3107,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3106,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3105,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3111,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 3110,
+           "name": "Innovation and Makers Lab-1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3108,
+           "name": "Materials and Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 3109,
+           "name": "Materials Lab 1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3104,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3116,
+           "name": "Applied Physics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3117,
+           "name": "Applied Physics Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3115,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3118,
+           "name": "Differential Equations & Linear Algebra",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 3120,
+           "name": "Innovation & Makers Lab-2",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3112,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3119,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3114,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3113,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT201",
+           "id": 3126,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222",
+           "id": 3123,
+           "name": "Data Structures and Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222L",
+           "id": 3129,
+           "name": "Data Structures and Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221",
+           "id": 3122,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221L",
+           "id": 3128,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM212",
+           "id": 3125,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211",
+           "id": 3121,
+           "name": "Linear Circuit Analysis",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211L",
+           "id": 3127,
+           "name": "Linear Circuit Analysis Lab",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "EE212",
+           "id": 3130,
+           "name": "Electrical Network Analysis",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231",
+           "id": 3132,
+           "name": "Electronic Devices and Circuits",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231L",
+           "id": 3137,
+           "name": "Electronic Devices and Circuits Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3133,
+           "name": "Engineering Economics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223",
+           "id": 3131,
+           "name": "Microprocessor Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223L",
+           "id": 3136,
+           "name": "Microprocessor Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE241",
+           "id": 3135,
+           "name": "Numerical Methods for Electrical Engineering",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM221",
+           "id": 3134,
+           "name": "Sociology and Human Behavior",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM322",
+           "id": 3142,
+           "name": "Corporate law and Professional Ethics",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE311",
+           "id": 3138,
+           "name": "Electric Machines",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE311L",
+           "id": 3143,
+           "name": "Electric Machines Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE371",
+           "id": 3141,
+           "name": "Electromagnetic Field Theory",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE331",
+           "id": 3139,
+           "name": "Electronic Circuit Design",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE331L",
+           "id": 3144,
+           "name": "Electronic Circuit Design Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341",
+           "id": 3140,
+           "name": "Signals and Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341L",
+           "id": 3145,
+           "name": "Signals and Systems Lab",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "EE321",
+           "id": 3146,
+           "name": "Artificial Intelligence",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE321L",
+           "id": 3154,
+           "name": "Artificial Intelligence Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HMXYZ",
+           "id": 3150,
+           "name": "Civics and Community Engagement",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361",
+           "id": 3149,
+           "name": "Communication Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361L",
+           "id": 3153,
+           "name": "Communication Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351",
+           "id": 3148,
+           "name": "Linear Control Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351L",
+           "id": 3152,
+           "name": "Linear Control Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332",
+           "id": 3147,
+           "name": "Power Electronics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332L",
+           "id": 3151,
+           "name": "Power Electronics Lab",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "EE441",
+           "id": 3156,
+           "name": "Digital Signal Processing",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE441L",
+           "id": 3159,
+           "name": "Digital Signal Processing Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE421",
+           "id": 3155,
+           "name": "Embedded Systems",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE421L",
+           "id": 3161,
+           "name": "Embedded Systems Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE491",
+           "id": 3162,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE471",
+           "id": 3157,
+           "name": "Wave Propagation and Antennas",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE471L",
+           "id": 3160,
+           "name": "Wave Propagation and Antennas Lab",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "EE422",
+           "id": 3163,
+           "name": "Digital Systems Design",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE451L",
+           "id": 3168,
+           "name": "Industrial Control and Automation Lab",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE492",
+           "id": 3164,
+           "name": "Senior Design Project (Part-II)",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 53,
+     "name": "BS Electrical Engineering (Smart Communication & Signal Processing)",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 3169,
+           "name": "Applied Chemistry & Environment",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 3173,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3172,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3171,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3177,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 3176,
+           "name": "Innovation and Makers Lab-1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3174,
+           "name": "Materials and Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 3175,
+           "name": "Materials Lab 1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3170,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3182,
+           "name": "Applied Physics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3183,
+           "name": "Applied Physics Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3181,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3184,
+           "name": "Differential Equations & Linear Algebra",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 3186,
+           "name": "Innovation & Makers Lab-2",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3178,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3185,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3180,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3179,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT201",
+           "id": 3192,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222",
+           "id": 3189,
+           "name": "Data Structures and Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222L",
+           "id": 3195,
+           "name": "Data Structures and Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221",
+           "id": 3188,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221L",
+           "id": 3194,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM212",
+           "id": 3191,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211",
+           "id": 3187,
+           "name": "Linear Circuit Analysis",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211L",
+           "id": 3193,
+           "name": "Linear Circuit Analysis Lab",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "EE212",
+           "id": 3196,
+           "name": "Electrical Network Analysis",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231",
+           "id": 3198,
+           "name": "Electronic Devices and Circuits",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231L",
+           "id": 3203,
+           "name": "Electronic Devices and Circuits Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3199,
+           "name": "Engineering Economics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223",
+           "id": 3197,
+           "name": "Microprocessor Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223L",
+           "id": 3202,
+           "name": "Microprocessor Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE241",
+           "id": 3201,
+           "name": "Numerical Methods for Electrical Engineering",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM221",
+           "id": 3200,
+           "name": "Sociology and Human Behavior",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM322",
+           "id": 3208,
+           "name": "Corporate law and Professional Ethics",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE311",
+           "id": 3204,
+           "name": "Electric Machines",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE311L",
+           "id": 3209,
+           "name": "Electric Machines Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE371",
+           "id": 3207,
+           "name": "Electromagnetic Field Theory",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE331",
+           "id": 3205,
+           "name": "Electronic Circuit Design",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE331L",
+           "id": 3210,
+           "name": "Electronic Circuit Design Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341",
+           "id": 3206,
+           "name": "Signals and Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341L",
+           "id": 3211,
+           "name": "Signals and Systems Lab",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "EE321",
+           "id": 3212,
+           "name": "Artificial Intelligence",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE321L",
+           "id": 3220,
+           "name": "Artificial Intelligence Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HMXYZ",
+           "id": 3216,
+           "name": "Civics and Community Engagement",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361",
+           "id": 3215,
+           "name": "Communication Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361L",
+           "id": 3219,
+           "name": "Communication Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351",
+           "id": 3214,
+           "name": "Linear Control Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351L",
+           "id": 3218,
+           "name": "Linear Control Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332",
+           "id": 3213,
+           "name": "Power Electronics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332L",
+           "id": 3217,
+           "name": "Power Electronics Lab",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "EE461",
+           "id": 3223,
+           "name": "Computer Communication Network",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE441",
+           "id": 3221,
+           "name": "Digital Signal Processing",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE441L",
+           "id": 3225,
+           "name": "Digital Signal Processing Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE491",
+           "id": 3227,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE471",
+           "id": 3222,
+           "name": "Wave Propagation and Antennas",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE471L",
+           "id": 3226,
+           "name": "Wave Propagation and Antennas Lab",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "EE451L",
+           "id": 3233,
+           "name": "Industrial Control and Automation Lab",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE492",
+           "id": 3229,
+           "name": "Senior Design Project (Part-II)",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE462",
+           "id": 3228,
+           "name": "Wireless Communication",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 54,
+     "name": "BS Electrical Engineering (Smart Grid)",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH101",
+           "id": 3234,
+           "name": "Applied Chemistry & Environment",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 3238,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3237,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3236,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3242,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101L",
+           "id": 3241,
+           "name": "Innovation and Makers Lab-1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3239,
+           "name": "Materials and Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 3240,
+           "name": "Materials Lab 1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3235,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3247,
+           "name": "Applied Physics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3248,
+           "name": "Applied Physics Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3246,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3249,
+           "name": "Differential Equations & Linear Algebra",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102L",
+           "id": 3251,
+           "name": "Innovation & Makers Lab-2",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3243,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3250,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3245,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3244,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT201",
+           "id": 3257,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222",
+           "id": 3254,
+           "name": "Data Structures and Algorithms",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE222L",
+           "id": 3260,
+           "name": "Data Structures and Algorithms Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221",
+           "id": 3253,
+           "name": "Digital Logic Design",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE221L",
+           "id": 3259,
+           "name": "Digital Logic Design Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM212",
+           "id": 3256,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211",
+           "id": 3252,
+           "name": "Linear Circuit Analysis",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE211L",
+           "id": 3258,
+           "name": "Linear Circuit Analysis Lab",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "EE212",
+           "id": 3261,
+           "name": "Electrical Network Analysis",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231",
+           "id": 3263,
+           "name": "Electronic Devices and Circuits",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE231L",
+           "id": 3268,
+           "name": "Electronic Devices and Circuits Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3264,
+           "name": "Engineering Economics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223",
+           "id": 3262,
+           "name": "Microprocessor Systems",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE223L",
+           "id": 3267,
+           "name": "Microprocessor Systems Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "EE241",
+           "id": 3266,
+           "name": "Numerical Methods for Electrical Engineering",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM221",
+           "id": 3265,
+           "name": "Sociology and Human Behavior",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "EE311",
+           "id": 3269,
+           "name": "Electric Machines",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE311L",
+           "id": 3274,
+           "name": "Electric Machines Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE371",
+           "id": 3272,
+           "name": "Electromagnetic Field Theory",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE312",
+           "id": 3270,
+           "name": "Power Distribution and Utilization",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE312L",
+           "id": 3275,
+           "name": "Power Distribution and Utilization Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE313",
+           "id": 3273,
+           "name": "Power Generation and Transmission",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE313L",
+           "id": 3276,
+           "name": "Power Generation and Transmission Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341",
+           "id": 3271,
+           "name": "Signals and Systems",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "EE341L",
+           "id": 3277,
+           "name": "Signals and Systems Lab",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "EE321",
+           "id": 3278,
+           "name": "Artificial Intelligence",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE321L",
+           "id": 3286,
+           "name": "Artificial Intelligence Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HMXYZ",
+           "id": 3282,
+           "name": "Civics and Community Engagement",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361",
+           "id": 3281,
+           "name": "Communication Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE361L",
+           "id": 3285,
+           "name": "Communication Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351",
+           "id": 3280,
+           "name": "Linear Control Systems",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE351L",
+           "id": 3284,
+           "name": "Linear Control Systems Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332",
+           "id": 3279,
+           "name": "Power Electronics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "EE332L",
+           "id": 3283,
+           "name": "Power Electronics Lab",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM322",
+           "id": 3291,
+           "name": "Corporate law and Professional Ethics",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE413",
+           "id": 3288,
+           "name": "High Voltage Engineering",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE413L",
+           "id": 3293,
+           "name": "High Voltage Engineering Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE411",
+           "id": 3287,
+           "name": "Power System Analysis",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE411L",
+           "id": 3292,
+           "name": "Power System Analysis Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "EE491",
+           "id": 3290,
+           "name": "Senior Design Project (Part-I)",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "EE451L",
+           "id": 3300,
+           "name": "Industrial Control and Automation Lab",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE412",
+           "id": 3294,
+           "name": "Power System Protection",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE412L",
+           "id": 3299,
+           "name": "Power System Protection Lab",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE492",
+           "id": 3296,
+           "name": "Senior Design Project (Part-II)",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "EE482",
+           "id": 3295,
+           "name": "Smart Grid",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "full_name": "Faculty of Management & Social Sciences",
+   "icon": "📈",
+   "id": 23,
+   "name": "MGS",
+   "programs": [
+    {
+     "id": 55,
+     "name": "BS Management Sciences",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MS101",
+           "id": 3305,
+           "name": "Business Mathematics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3301,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101-L",
+           "id": 3302,
+           "name": "Communication Skills Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3303,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101-L",
+           "id": 3304,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MS121",
+           "id": 3307,
+           "name": "Fundamentals of Management",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101",
+           "id": 3309,
+           "name": "Innovation and Makers Lab 1",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM111",
+           "id": 3306,
+           "name": "Islamic Studies/ Ethics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MS131",
+           "id": 3308,
+           "name": "Principles of Marketing",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "MS102",
+           "id": 3312,
+           "name": "Business Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM121",
+           "id": 3314,
+           "name": "Civics and Community Engagement",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3310,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102-L",
+           "id": 3311,
+           "name": "Critical Thinking and Expository Writing Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MS151",
+           "id": 3316,
+           "name": "Financial Accounting",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM112",
+           "id": 3313,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102",
+           "id": 3317,
+           "name": "Innovation and Makers Lab 2",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MS141",
+           "id": 3315,
+           "name": "Microeconomics",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM222",
+           "id": 3319,
+           "name": "Art of Learning",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM203",
+           "id": 3318,
+           "name": "Business Communication",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MS242",
+           "id": 3322,
+           "name": "Macroeconomics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MS252",
+           "id": 3323,
+           "name": "Management Accounting",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MS232",
+           "id": 3321,
+           "name": "Marketing Management",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MS222",
+           "id": 3320,
+           "name": "Organizational Behavior",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "MS253",
+           "id": 3329,
+           "name": "Business Finance",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS203",
+           "id": 3324,
+           "name": "Business Research Methods",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS233",
+           "id": 3327,
+           "name": "Consumer Behavior",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS234",
+           "id": 3328,
+           "name": "Entrepreneurship",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS211",
+           "id": 3325,
+           "name": "Environmental Sciences",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM223",
+           "id": 3326,
+           "name": "Sociology",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM324",
+           "id": 3331,
+           "name": "Corporate Law",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "MS354",
+           "id": 3332,
+           "name": "Financial Management",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "MS323",
+           "id": 3330,
+           "name": "Human Resources Management",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "MS361",
+           "id": 3333,
+           "name": "Operations and Supply Chain Management",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "MS304",
+           "id": 3336,
+           "name": "Business Analytics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "MS324",
+           "id": 3337,
+           "name": "Business Strategy",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "MS362",
+           "id": 3339,
+           "name": "Decision Analysis",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "MS335",
+           "id": 3338,
+           "name": "Hospitality and Tourism Marketing",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MS463",
+           "id": 3342,
+           "name": "Project Management",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "MS471",
+           "id": 3346,
+           "name": "Research Project I",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "MS445",
+           "id": 3348,
+           "name": "Contemporary Issues in Global Economics",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "MS427",
+           "id": 3347,
+           "name": "Leadership and Change Management",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "MS472",
+           "id": 3351,
+           "name": "Research Project II",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "full_name": "Faculty of Mechanical & Chemical Engineering",
+   "icon": "⚗️",
+   "id": 24,
+   "name": "FMCE",
+   "programs": [
+    {
+     "id": 56,
+     "name": "BS Chemical Engineering",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT101",
+           "id": 3358,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH101",
+           "id": 3352,
+           "name": "Chemistry, Environment and Climate Change",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3356,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3354,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3355,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101",
+           "id": 3357,
+           "name": "Innovation and Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3359,
+           "name": "Materials and Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 3360,
+           "name": "Materials Lab-I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3353,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3367,
+           "name": "Applied Physics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3368,
+           "name": "Applied Physics Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3364,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3366,
+           "name": "Differential Equations and Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102",
+           "id": 3365,
+           "name": "Innovation and Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3361,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3362,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3363,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3628,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH251L",
+           "id": 3372,
+           "name": "Applied Chemistry and Process Industries Lab.",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE201",
+           "id": 3373,
+           "name": "Applied Electrical Engineering",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MT202",
+           "id": 3375,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CH231",
+           "id": 3371,
+           "name": "Chemical Engineering Principles",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CH211",
+           "id": 3370,
+           "name": "Chemical Process Industries",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 3374,
+           "name": "Islamic Studies",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CH201",
+           "id": 3369,
+           "name": "Physical and Analytical Chemistry",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CH214",
+           "id": 3378,
+           "name": "Chemical Engg. Thermodynamics I",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH252L",
+           "id": 3380,
+           "name": "Energy and Thermodynamic Lab.",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH212",
+           "id": 3377,
+           "name": "Energy Engineering",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3382,
+           "name": "Engineering Economy",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH241",
+           "id": 3379,
+           "name": "Fluid Mechanics I",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH253L",
+           "id": 3381,
+           "name": "Fluid Mechanics Lab.",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH202",
+           "id": 3376,
+           "name": "Inorganic and Organic Chemistry",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH321",
+           "id": 3385,
+           "name": "Chemical Engg. Thermodynamics II",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "HM323",
+           "id": 3390,
+           "name": "Civics and Community Engagement",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH351L",
+           "id": 3387,
+           "name": "Heat and Mass Transfer Lab.",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH311",
+           "id": 3383,
+           "name": "Heat Transfer",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH313",
+           "id": 3384,
+           "name": "Mass Transfer",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH341",
+           "id": 3386,
+           "name": "Particle Technology",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH352L",
+           "id": 3388,
+           "name": "Particle Technology Lab.",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "HM321",
+           "id": 3389,
+           "name": "Sociology and Human Behavior",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CH353L",
+           "id": 3394,
+           "name": "Environment and Reaction Engg. Lab.",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH361",
+           "id": 3395,
+           "name": "Environmental Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH342",
+           "id": 3393,
+           "name": "Fluid Mechanics II",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ES341",
+           "id": 3397,
+           "name": "Numerical Analysis",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH391",
+           "id": 3396,
+           "name": "Petrochemical Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH331",
+           "id": 3392,
+           "name": "Process Modelling & Simulation",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM322",
+           "id": 3398,
+           "name": "Professional Ethics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH322",
+           "id": 3391,
+           "name": "Reaction Kinetics and Reactor Design",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH481",
+           "id": 3403,
+           "name": "Chemical Engg. Project Design-I",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH415",
+           "id": 3400,
+           "name": "Instrumentation and Process Control",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH453L",
+           "id": 3402,
+           "name": "Instrumentation and Process Control Lab.",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH451L",
+           "id": 3401,
+           "name": "Separation Processes Lab.",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH411",
+           "id": 3399,
+           "name": "Simultaneous Heat and Mass Transfer",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "CH441",
+           "id": 3407,
+           "name": "Chemical Engg. Plant Design",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH482",
+           "id": 3409,
+           "name": "Chemical Engg. Project Design-II",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "HM212",
+           "id": 3410,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH452L",
+           "id": 3408,
+           "name": "Process Modelling and Simulation Lab.",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH412",
+           "id": 3406,
+           "name": "Transport Phenomena",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    },
+    {
+     "id": 57,
+     "name": "BS Chemical Engineering (Oil and Gas Engineering)",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT101",
+           "id": 3419,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH101",
+           "id": 3413,
+           "name": "Chemistry, Environment and Climate Change",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3417,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3415,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3416,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101",
+           "id": 3418,
+           "name": "Innovation and Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3420,
+           "name": "Materials and Nanotechnology",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MM141L",
+           "id": 3421,
+           "name": "Materials Lab-I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3414,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3428,
+           "name": "Applied Physics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3429,
+           "name": "Applied Physics Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "HM102",
+           "id": 3425,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3427,
+           "name": "Differential Equations and Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102",
+           "id": 3426,
+           "name": "Innovation and Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3422,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3423,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3424,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3629,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH251L",
+           "id": 3433,
+           "name": "Applied Chemistry and Process Industries Lab.",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "EE201",
+           "id": 3434,
+           "name": "Applied Electrical Engineering",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MT202",
+           "id": 3436,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CH231",
+           "id": 3432,
+           "name": "Chemical Engineering Principles",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CH211",
+           "id": 3431,
+           "name": "Chemical Process Industries",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 3435,
+           "name": "Islamic Studies",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CH201",
+           "id": 3430,
+           "name": "Physical and Analytical Chemistry",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CH214",
+           "id": 3439,
+           "name": "Chemical Engg. Thermodynamics I",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH252L",
+           "id": 3441,
+           "name": "Energy and Thermodynamic Lab.",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH212",
+           "id": 3438,
+           "name": "Energy Engineering",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3443,
+           "name": "Engineering Economy",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH241",
+           "id": 3440,
+           "name": "Fluid Mechanics I",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH253L",
+           "id": 3442,
+           "name": "Fluid Mechanics Lab.",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CH202",
+           "id": 3437,
+           "name": "Inorganic and Organic Chemistry",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH321",
+           "id": 3446,
+           "name": "Chemical Engg. Thermodynamics II",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "HM323",
+           "id": 3451,
+           "name": "Civics and Community Engagement",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH351L",
+           "id": 3448,
+           "name": "Heat and Mass Transfer Lab.",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH311",
+           "id": 3444,
+           "name": "Heat Transfer",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH313",
+           "id": 3445,
+           "name": "Mass Transfer",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH362",
+           "id": 3447,
+           "name": "Natural Gas Processing and Pipeline Management",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CH336L",
+           "id": 3449,
+           "name": "Natural Gas processing and Piping lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "HM321",
+           "id": 3450,
+           "name": "Sociology and Human Behavior",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CH353L",
+           "id": 3455,
+           "name": "Environment and Reaction Engg. Lab.",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH361",
+           "id": 3456,
+           "name": "Environmental Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH342",
+           "id": 3454,
+           "name": "Fluid Mechanics II",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH372L",
+           "id": 3457,
+           "name": "Integrated Petroleum Engineering lab.",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ES341",
+           "id": 3459,
+           "name": "Numerical Analysis",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH391",
+           "id": 3458,
+           "name": "Petrochemical Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH323",
+           "id": 3453,
+           "name": "Petroleum Refinery Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM322",
+           "id": 3460,
+           "name": "Professional Ethics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CH322",
+           "id": 3452,
+           "name": "Reaction Kinetics and Reactor Design",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CH481",
+           "id": 3465,
+           "name": "Chemical Engg. Project Design-I",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH478",
+           "id": 3466,
+           "name": "Field Operations and Production",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH415",
+           "id": 3462,
+           "name": "Instrumentation and Process Control",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH453L",
+           "id": 3464,
+           "name": "Instrumentation and Process Control Lab.",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH474L",
+           "id": 3467,
+           "name": "Petroleum Processes Simulation Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH451L",
+           "id": 3463,
+           "name": "Separation Processes Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CH411",
+           "id": 3461,
+           "name": "Simultaneous Heat and Mass Transfer",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "CH441",
+           "id": 3470,
+           "name": "Chemical Engg. Plant Design",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH482",
+           "id": 3472,
+           "name": "Chemical Engg. Project Design-II",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "HM212",
+           "id": 3474,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH475",
+           "id": 3473,
+           "name": "Principles of Enhanced Oil Recovery",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH452L",
+           "id": 3471,
+           "name": "Process Modelling and Simulation Lab.",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CH412",
+           "id": 3469,
+           "name": "Transport Phenomena",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "full_name": "Faculty of Mechanical Engineering",
+   "icon": "⚙️",
+   "id": 25,
+   "name": "FME",
+   "programs": [
+    {
+     "id": 58,
+     "name": "BS Mechanical Engineering",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3483,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3484,
+           "name": "Applied Physics Lab.",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 3482,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH101",
+           "id": 3476,
+           "name": "Chemistry Environment and Climate Change",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3480,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3478,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3479,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101",
+           "id": 3481,
+           "name": "Innovation and Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3477,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "HM102",
+           "id": 3489,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3493,
+           "name": "Differential Equations and Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102",
+           "id": 3490,
+           "name": "Innovation and Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3491,
+           "name": "Materials and Nanotechnology",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MM141",
+           "id": 3492,
+           "name": "Materials Lab I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3486,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3487,
+           "name": "Object Oriented Programming and Design Lab.",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3488,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3485,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT202",
+           "id": 3494,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "ME203",
+           "id": 3499,
+           "name": "Circuits and Electronic Devices",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "MS291",
+           "id": 3495,
+           "name": "Engineering Economy",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "ME204",
+           "id": 3497,
+           "name": "Engineering Graphics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM212",
+           "id": 3498,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "ME211",
+           "id": 3496,
+           "name": "Statics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "ME231",
+           "id": 3501,
+           "name": "Thermodynamics I",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "ME245",
+           "id": 3500,
+           "name": "Workshop Practice",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "ME212",
+           "id": 3502,
+           "name": "Dynamics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "ME205",
+           "id": 3504,
+           "name": "Electrical Machines and Drives",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "ME243",
+           "id": 3505,
+           "name": "Electronics and Electrical Machines Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "ME202",
+           "id": 3509,
+           "name": "Instrumentation and Digital Twin",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "ME244",
+           "id": 3506,
+           "name": "Mechanics and Design Lab.",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "ME213",
+           "id": 3503,
+           "name": "Mechanics of Solids I",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "ME232",
+           "id": 3508,
+           "name": "Thermodynamics II",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "HM322",
+           "id": 3515,
+           "name": "Corporate Law and Professional Ethics",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ME363",
+           "id": 3511,
+           "name": "Design of Machine Elements I",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ME321",
+           "id": 3510,
+           "name": "Fluid Mechanics I",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ME348",
+           "id": 3517,
+           "name": "Mechanics of Solids and Machines Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ME314",
+           "id": 3516,
+           "name": "Mechanics of Solids-II",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ES341/CS342",
+           "id": 3513,
+           "name": "Numerical Analysis",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ME313",
+           "id": 3512,
+           "name": "Theory of Machines",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ME346",
+           "id": 3514,
+           "name": "Thermo-Fluid Lab-I",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "ME364",
+           "id": 3521,
+           "name": "Design of Machine Elements-II",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ME322",
+           "id": 3518,
+           "name": "Fluid Mechanics II",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ME333",
+           "id": 3519,
+           "name": "Heat Transfer",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ME354",
+           "id": 3522,
+           "name": "Manufacturing Processes",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ME315",
+           "id": 3520,
+           "name": "Mechanical Vibration",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ME380",
+           "id": 3525,
+           "name": "Senior Design Project-I",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM321",
+           "id": 3524,
+           "name": "Sociology and Human Behavior",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "ME347",
+           "id": 3523,
+           "name": "Thermo-Fluid Lab-II",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "ME411",
+           "id": 3531,
+           "name": "Computer Aided Engineering",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "ME446",
+           "id": 3529,
+           "name": "Mechanical Vibration and Control Systems Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "ME461",
+           "id": 3532,
+           "name": "Robotics and Automation",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "ME481",
+           "id": 3530,
+           "name": "Senior Design Project-II",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "ME464",
+           "id": 3528,
+           "name": "System Dynamics and Control",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM4XX",
+           "id": 3538,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "ME467",
+           "id": 3534,
+           "name": "Finite Element Analysis",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "ME482",
+           "id": 3537,
+           "name": "Senior Design Project-III",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "full_name": "Faculty of Civil Engineering",
+   "icon": "🏗️",
+   "id": 26,
+   "name": "Civil Engineering",
+   "programs": [
+    {
+     "id": 59,
+     "name": "BS Civil Engineering",
+     "years": [
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "PH101",
+           "id": 3540,
+           "name": "Applied Physics",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "PH101L",
+           "id": 3541,
+           "name": "Applied Physics Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "MT101",
+           "id": 3539,
+           "name": "Calculus I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH101",
+           "id": 3544,
+           "name": "Chemistry, Environment and Climate Change",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "HM101",
+           "id": 3546,
+           "name": "Communication Skills",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101",
+           "id": 3542,
+           "name": "Computing and AI",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CS101L",
+           "id": 3543,
+           "name": "Computing and AI Lab",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "IF101",
+           "id": 3547,
+           "name": "Innovation and Makers Lab I",
+           "semester": 1,
+           "year": 1
+          },
+          {
+           "code": "CH161",
+           "id": 3545,
+           "name": "Occupational Health and Safety",
+           "semester": 1,
+           "year": 1
+          }
+         ],
+         "semester": 1
+        },
+        {
+         "courses": [
+          {
+           "code": "HM102",
+           "id": 3555,
+           "name": "Critical Thinking and Expository Writing",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MT102",
+           "id": 3548,
+           "name": "Differential Equations and Linear Algebra I",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "IF102",
+           "id": 3556,
+           "name": "Innovation and Makers Lab II",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MM101",
+           "id": 3553,
+           "name": "Materials and Nanotechnology",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "MM141",
+           "id": 3554,
+           "name": "Materials Lab 1",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112",
+           "id": 3550,
+           "name": "Object Oriented Programming and Design",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "CS112L",
+           "id": 3551,
+           "name": "Object Oriented Programming and Design Lab",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "ES111",
+           "id": 3549,
+           "name": "Probability and Statistics",
+           "semester": 2,
+           "year": 1
+          },
+          {
+           "code": "AI102",
+           "id": 3552,
+           "name": "Python Programming & Freelancing Essentials",
+           "semester": 2,
+           "year": 1
+          }
+         ],
+         "semester": 2
+        }
+       ],
+       "year": 1
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MT202",
+           "id": 3557,
+           "name": "Calculus II",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV210L",
+           "id": 3560,
+           "name": "Civil Engineering Drawing and Graphics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV215L",
+           "id": 3563,
+           "name": "Construction Materials & Concrete Technology Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV215",
+           "id": 3562,
+           "name": "Construction Materials and Concrete Technology",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV201",
+           "id": 3558,
+           "name": "Engineering Surveying",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV201L",
+           "id": 3559,
+           "name": "Engineering Surveying Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV221",
+           "id": 3564,
+           "name": "Fluid Mechanics",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV221L",
+           "id": 3565,
+           "name": "Fluid Mechanics Lab",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "HM212",
+           "id": 3566,
+           "name": "Ideology and Constitution of Pakistan",
+           "semester": 3,
+           "year": 2
+          },
+          {
+           "code": "CV211",
+           "id": 3561,
+           "name": "Mechanics of Solids I",
+           "semester": 3,
+           "year": 2
+          }
+         ],
+         "semester": 3
+        },
+        {
+         "courses": [
+          {
+           "code": "CV202",
+           "id": 3567,
+           "name": "Advanced Engineering Surveying",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CV202L",
+           "id": 3568,
+           "name": "Advanced Engineering Surveying Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CV213",
+           "id": 3569,
+           "name": "Basic Structural Analysis",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CV230",
+           "id": 3570,
+           "name": "Geology for Engineers",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "HM211",
+           "id": 3574,
+           "name": "Islamic Studies",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CV231",
+           "id": 3571,
+           "name": "Soil Mechanics",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CV231L",
+           "id": 3572,
+           "name": "Soil Mechanics Lab",
+           "semester": 4,
+           "year": 2
+          },
+          {
+           "code": "CV241",
+           "id": 3573,
+           "name": "Transportation Engineering",
+           "semester": 4,
+           "year": 2
+          }
+         ],
+         "semester": 4
+        }
+       ],
+       "year": 2
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "CV322",
+           "id": 3579,
+           "name": "Advanced Fluid Mechanics",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CV322L",
+           "id": 3580,
+           "name": "Advanced Fluid Mechanics Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CV332",
+           "id": 3581,
+           "name": "Geotechnical and Foundation Engineering",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CV332L",
+           "id": 3582,
+           "name": "Geotechnical and Foundation Engineering Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CV313",
+           "id": 3578,
+           "name": "Indeterminate Structural Analysis",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CV312",
+           "id": 3575,
+           "name": "Mechanics of Solids II",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "CV312L",
+           "id": 3576,
+           "name": "Mechanics of Solids Lab",
+           "semester": 5,
+           "year": 3
+          },
+          {
+           "code": "ES341",
+           "id": 3577,
+           "name": "Numerical Analysis",
+           "semester": 5,
+           "year": 3
+          }
+         ],
+         "semester": 5
+        },
+        {
+         "courses": [
+          {
+           "code": "CV351",
+           "id": 3589,
+           "name": "Construction Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV315",
+           "id": 3586,
+           "name": "Design of Steel Structures",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV323",
+           "id": 3587,
+           "name": "Engineering Hydrology",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV323L",
+           "id": 3588,
+           "name": "Engineering Hydrology Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV361",
+           "id": 3590,
+           "name": "Environmental Engineering",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV361L",
+           "id": 3591,
+           "name": "Environmental Engineering Lab",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "HM322",
+           "id": 3592,
+           "name": "Professional Ethics",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV303L",
+           "id": 3583,
+           "name": "Quantity and Cost Estimation",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV314",
+           "id": 3584,
+           "name": "Reinforced Concrete Design I",
+           "semester": 6,
+           "year": 3
+          },
+          {
+           "code": "CV314L",
+           "id": 3585,
+           "name": "Reinforced Concrete Design I Lab",
+           "semester": 6,
+           "year": 3
+          }
+         ],
+         "semester": 6
+        }
+       ],
+       "year": 3
+      },
+      {
+       "semesters": [
+        {
+         "courses": [
+          {
+           "code": "MS291",
+           "id": 3595,
+           "name": "Engineering Economics",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV405",
+           "id": 3593,
+           "name": "Geo Informatics",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV405L",
+           "id": 3594,
+           "name": "Geo Informatics Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV442",
+           "id": 3598,
+           "name": "Highway Engineering",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV442L",
+           "id": 3599,
+           "name": "Highway Engineering Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV414",
+           "id": 3596,
+           "name": "Reinforced Concrete Design II",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV414L",
+           "id": 3597,
+           "name": "Reinforced Concrete Design II Lab",
+           "semester": 7,
+           "year": 4
+          },
+          {
+           "code": "CV481",
+           "id": 3601,
+           "name": "Senior Design Project I",
+           "semester": 7,
+           "year": 4
+          }
+         ],
+         "semester": 7
+        },
+        {
+         "courses": [
+          {
+           "code": "HM323",
+           "id": 3607,
+           "name": "Civics and Community Engagement",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CV452",
+           "id": 3604,
+           "name": "Construction Management",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CV425",
+           "id": 3603,
+           "name": "Hydraulics & Irrigation Engineering",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CV408",
+           "id": 3602,
+           "name": "Machine Learning Applications in Civil Engineering",
+           "semester": 8,
+           "year": 4
+          },
+          {
+           "code": "CV482",
+           "id": 3606,
+           "name": "Senior Design Project II",
+           "semester": 8,
+           "year": 4
+          }
+         ],
+         "semester": 8
+        }
+       ],
+       "year": 4
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "full_name": "Faculty of Basic Sciences",
+   "icon": "🧪",
+   "id": 27,
+   "name": "FBS",
+   "programs": []
+  }
+ ],
+ "success": true
+}

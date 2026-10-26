@@ -1,10 +1,10 @@
 from flask import Blueprint, request, session, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
 from db import get_connection
 from firebase_admin_init import is_initialized
 import firebase_admin.auth as fb_auth
 from config import BOOTSTRAP_ADMIN_EMAILS
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +21,8 @@ def _verify_id_token(id_token):
     Raises ValueError with message on invalid/expired token.
     """
     if not is_initialized():
-        # Degraded mode: parse the token without verifying signature.
-        # In production this should never happen — always add the key.
+        # Degraded mode (local dev without the service account key): the client's
+        # uid/email are trusted as-is, so it is opt-in and must never be on in production.
         return None
 
     try:
@@ -32,6 +32,9 @@ def _verify_id_token(id_token):
             "email":   decoded.get("email", ""),
             "name":    decoded.get("name", ""),
             "picture": decoded.get("picture", ""),
+            # Google sign-ins are verified; email/password sign-ups are not until the
+            # user clicks Firebase's verification link.
+            "email_verified": bool(decoded.get("email_verified")),
         }
     except fb_auth.ExpiredIdTokenError:
         raise ValueError("Session expired. Please sign in again.")
@@ -40,6 +43,11 @@ def _verify_id_token(id_token):
     except Exception as e:
         logger.exception("Unexpected error verifying Firebase ID token")
         raise ValueError(f"Token verification failed: {e}")
+
+
+def _unverified_auth_allowed():
+    """Local dev only: trust client-sent uid/email when there is no service account key."""
+    return os.environ.get('ALLOW_UNVERIFIED_AUTH', '').strip().lower() in ('1', 'true', 'yes')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -61,22 +69,22 @@ def firebase_auth():
     program    = data.get('program', '').strip()  or None   if data.get('program')    else None
 
     # ── Verify the token ──────────────────────────────────────────────────────
-    if id_token:
+    if not is_initialized():
+        if not _unverified_auth_allowed():
+            logger.error("Firebase Admin is not initialised; refusing sign-in")
+            return jsonify({"success": False, "message": "Sign-in is temporarily unavailable. Please try again later."}), 503
+        uid = uid_fallback
+        email_verified = True
+    elif id_token:
         try:
             decoded = _verify_id_token(id_token)
-            if decoded:
-                uid          = decoded['uid']
-                email        = decoded['email']
-                display_name = decoded.get('name') or display_name
-                photo_url    = decoded.get('picture') or photo_url
-            else:
-                uid = uid_fallback
         except ValueError as e:
             return jsonify({"success": False, "message": str(e)}), 401
-    elif uid_fallback:
-        if is_initialized():
-            return jsonify({"success": False, "message": "idToken is required for authenticated requests."}), 401
-        uid = uid_fallback
+        uid            = decoded['uid']
+        email          = decoded['email']
+        email_verified = decoded['email_verified']
+        display_name   = decoded.get('name') or display_name
+        photo_url      = decoded.get('picture') or photo_url
     else:
         return jsonify({"success": False, "message": "idToken is required."}), 400
 
@@ -97,6 +105,14 @@ def firebase_auth():
             cur.execute("SELECT user_id, username, role, display_name FROM users WHERE email = %s;", (email,))
             user = cur.fetchone()
             if user:
+                # Taking over an existing account by email needs proof the caller owns
+                # that inbox: anyone can create a Firebase password account for any address.
+                if not email_verified:
+                    return jsonify({
+                        "success": False,
+                        "message": "An account with this email already exists. Sign in with Google, "
+                                   "or verify your email address first.",
+                    }), 409
                 cur.execute("UPDATE users SET firebase_uid = %s WHERE user_id = %s;", (uid, user[0]))
             else:
                 # 3. Brand new user
@@ -116,9 +132,10 @@ def firebase_auth():
         role    = user[2]
         existing_display_name = user[3]
 
-        # 4. Check if user is an admin to sync role
+        # 4. Check if user is an admin to sync role (admin is granted by email, so the
+        #    email must be verified)
         cur.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
-        is_admin_in_db = cur.fetchone() is not None or email.lower() in BOOTSTRAP_ADMIN_EMAILS
+        is_admin_in_db = email_verified and (cur.fetchone() is not None or email.lower() in BOOTSTRAP_ADMIN_EMAILS)
         
         if is_admin_in_db and role != 'admin':
             cur.execute("UPDATE users SET role = 'admin' WHERE user_id = %s;", (user_id,))
@@ -172,6 +189,8 @@ def firebase_auth():
         session['user_id']  = user_id
         session['username'] = user[1]
         session['role']     = role  # use the updated role variable
+        session['email_verified'] = email_verified
+        session['_fb_uid']  = uid
 
         return jsonify({
             "success": True,
@@ -194,156 +213,6 @@ def firebase_auth():
     finally:
         conn.close()
 
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# POST /api/signup  — native email/password signup (profile upsert)
-# ─────────────────────────────────────────────────────────────────────────────
-@auth_bp.route('/api/signup', methods=['POST'])
-def signup():
-    import re
-    data         = request.get_json() or {}
-    email        = data.get('email', '').strip().lower()
-    password     = data.get('password', '').strip()
-    display_name = data.get('displayName', '').strip()
-    student_id   = data.get('studentId', '').strip() or None
-    batch_year   = data.get('batchYear', None)
-    program      = data.get('program', '').strip() or None
-
-    # ── Input validation ──────────────────────────────────────────────────────
-    if not email:
-        return jsonify({"success": False, "message": "Email is required."}), 400
-
-    email_regex = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
-    if not email_regex.match(email):
-        return jsonify({"success": False, "message": "Please enter a valid email address."}), 400
-
-    if not display_name:
-        return jsonify({"success": False, "message": "Full name is required."}), 400
-
-    if password and len(password) < 6:
-        return jsonify({"success": False, "message": "Password must be at least 6 characters."}), 400
-
-    conn = get_connection()
-    try:
-        cur = conn.cursor()
-
-        # Check if user already exists by email — reject duplicates clearly
-        cur.execute("SELECT user_id, username, firebase_uid FROM users WHERE email = %s;", (email,))
-        existing = cur.fetchone()
-
-        if existing:
-            user_id  = existing[0]
-            username = existing[1]
-            # If they already have a Firebase UID, this is a returning user — just upsert profile
-            # (This path is hit when /api/auth/firebase already created the row and calls /api/signup
-            #  as the second step to save profile data. That's the normal flow.)
-        else:
-            # Fallback: direct DB creation (should rarely happen — Firebase creates the row first)
-            if not password or len(password) < 6:
-                return jsonify({"success": False, "message": "Password must be at least 6 characters."}), 400
-            username = email.split('@')[0]
-            hashed   = generate_password_hash(password)
-            cur.execute("SELECT 1 FROM users WHERE username = %s;", (username,))
-            if cur.fetchone():
-                username = f"{username}_{email.split('@')[0][-4:]}"
-            cur.execute(
-                "INSERT INTO users (username, email, password, role) VALUES (%s, %s, %s, 'user') RETURNING user_id, username;",
-                (username, email, hashed)
-            )
-            row = cur.fetchone()
-            user_id, username = row[0], row[1]
-
-        # Upsert into user_profiles
-        cur.execute(
-            """INSERT INTO user_profiles (user_id, display_name, student_id, batch_year, program)
-               VALUES (%s, %s, %s, %s, %s)
-               ON CONFLICT (user_id) DO UPDATE
-                 SET display_name = EXCLUDED.display_name,
-                     student_id   = COALESCE(EXCLUDED.student_id,  user_profiles.student_id),
-                     batch_year   = COALESCE(EXCLUDED.batch_year,  user_profiles.batch_year),
-                     program      = COALESCE(EXCLUDED.program,     user_profiles.program),
-                     updated_at   = CURRENT_TIMESTAMP;""",
-            (user_id, display_name or username, student_id, batch_year, program)
-        )
-
-        conn.commit()
-        cur.close()
-
-        return jsonify({
-            "success": True,
-            "message": "Account created successfully.",
-            "user": {
-                "id": user_id, "username": username,
-                "displayName": display_name or username, "email": email
-            }
-        })
-    except Exception:
-        conn.rollback()
-        logger.exception("%s %s failed", request.method, request.path)
-        return jsonify({"success": False, "message": "Sign-up failed due to a server error. Please try again."}), 500
-    finally:
-        conn.close()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# POST /api/login  — username/password login
-# ─────────────────────────────────────────────────────────────────────────────
-@auth_bp.route('/api/login', methods=['POST'])
-def login():
-    data     = request.get_json() or {}
-    # Accept email OR username
-    login_id = (data.get('email', '') or data.get('username', '') or '').strip().lower()
-    password = (data.get('password', '') or '').strip()
-
-    if not login_id or not password:
-        return jsonify({"success": False, "message": "Email and password are required."}), 400
-
-    conn = get_connection()
-    try:
-        cur = conn.cursor()
-        # Try email first, then username (case-insensitive)
-        cur.execute(
-            """SELECT u.user_id, u.username, u.password, u.role, u.display_name, u.photo_url, u.email,
-                      up.batch_year, up.program, up.user_type
-               FROM users u
-               LEFT JOIN user_profiles up ON u.user_id = up.user_id
-               WHERE LOWER(u.email) = %s OR LOWER(u.username) = %s;""",
-            (login_id, login_id)
-        )
-        user = cur.fetchone()
-        cur.close()
-
-        # user[2] is the hashed password — Google-only users have NULL here
-        if not user or not user[2] or not check_password_hash(user[2], password):
-            return jsonify({"success": False, "message": "Invalid email or password."}), 401
-
-        batch_year, program, user_type = user[7], user[8], user[9]
-        if program and user_type:
-            if user_type in ('faculty', 'external'):
-                profile_complete = True
-            else:
-                profile_complete = bool(batch_year)
-        else:
-            profile_complete = False
-
-        session['user_id']  = user[0]
-        session['username'] = user[1]
-        session['role']     = user[3]
-        return jsonify({
-            "success": True,
-            "message": f"Welcome back, {user[4] or user[1]}!",
-            "user": {
-                "id": user[0], "username": user[1], "role": user[3],
-                "displayName": user[4] or user[1], "photoURL": user[5], "email": user[6],
-                "profileComplete": profile_complete
-            }
-        })
-    except Exception:
-        logger.exception("%s %s failed", request.method, request.path)
-        return jsonify({"success": False, "message": "Login failed due to a server error. Please try again."}), 500
-    finally:
-        conn.close()
 
 
 # ─────────────────────────────────────────────────────────────────────────────

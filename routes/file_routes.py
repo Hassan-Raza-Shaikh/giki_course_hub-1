@@ -6,6 +6,7 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 from db import get_connection
 from notifications import notify_course_followers
+from routes.admin_routes import is_admin_session
 from werkzeug.utils import secure_filename
 import os
 import uuid
@@ -26,6 +27,17 @@ file_bp = Blueprint('files', __name__)
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
+
+_has_catalog_2025 = None
+
+def has_catalog_2025(cur):
+    """True once migration 027 (2025 prospectus columns on courses) has run."""
+    global _has_catalog_2025
+    if not _has_catalog_2025:
+        cur.execute("""SELECT 1 FROM information_schema.columns
+                       WHERE table_name = 'courses' AND column_name = 'curriculum'""")
+        _has_catalog_2025 = cur.fetchone() is not None
+    return _has_catalog_2025
 
 # boto3 singleton — created once at module load time, not per-request.
 # boto3 clients are thread-safe for read operations and creation is expensive.
@@ -140,17 +152,25 @@ def search_all():
         } for r in cur.fetchall()]
 
         # 2. Search Courses (Distinct by name and code to avoid multi-program duplicates)
-        course_sql = """
+        catalog = has_catalog_2025(cur)
+        course_sql = f"""
             SELECT DISTINCT ON (c.name, c.code) 
-                   c.course_id, c.name, c.code, f.name as faculty_name, f.icon
+                   c.course_id, c.name, c.code, f.name as faculty_name, f.icon,
+                   {"c.old_code" if catalog else "NULL"}
             FROM courses c
             JOIN faculties f ON c.faculty_id = f.faculty_id
             WHERE 1=1
         """
         c_params = []
         if query:
-            course_sql += " AND (c.name ILIKE %s OR c.code ILIKE %s)"
-            c_params.extend([f'%{query}%', f'%{query}%'])
+            # Old codes and names too, so students on the earlier plan find their course
+            if catalog:
+                course_sql += (" AND (c.name ILIKE %s OR c.code ILIKE %s"
+                               " OR c.old_code ILIKE %s OR c.old_name ILIKE %s)")
+                c_params.extend([f'%{query}%'] * 4)
+            else:
+                course_sql += " AND (c.name ILIKE %s OR c.code ILIKE %s)"
+                c_params.extend([f'%{query}%', f'%{query}%'])
         if faculty_id:
             course_sql += " AND c.faculty_id = %s"
             c_params.append(faculty_id)
@@ -158,7 +178,7 @@ def search_all():
         course_sql += " LIMIT 20"
         cur.execute(course_sql, c_params)
         courses = [{
-            "id": r[0], "name": r[1], "code": r[2], "faculty": r[3], "icon": r[4]
+            "id": r[0], "name": r[1], "code": r[2], "faculty": r[3], "icon": r[4], "old_code": r[5]
         } for r in cur.fetchall()]
 
         cur.close()
@@ -178,8 +198,8 @@ def my_uploads():
     
     conn = get_connection()
     try:
-        page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 50))
+        page = max(request.args.get('page', 1, type=int) or 1, 1)
+        limit = min(max(request.args.get('limit', 50, type=int) or 50, 1), 100)
         offset = (page - 1) * limit
 
         cur = conn.cursor()
@@ -273,8 +293,8 @@ def get_category_files(slug):
     """Return paginated files for a specific category globally."""
     conn = get_connection()
     try:
-        page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 12))
+        page = max(request.args.get('page', 1, type=int) or 1, 1)
+        limit = min(max(request.args.get('limit', 12, type=int) or 12, 1), 100)
         offset = (page - 1) * limit
         
         cur = conn.cursor()
@@ -353,12 +373,20 @@ def get_category_files(slug):
 
 @file_bp.route('/api/courses', methods=['GET'])
 def list_courses():
-    """All courses grouped by faculty → program → year (2 semesters per year)."""
+    """All courses grouped by faculty → program → year (2 semesters per year).
+
+    ?curriculum=old lists what earlier batches took (old codes and semesters);
+    the default is the 2025 prospectus plan.
+    """
+    curriculum = 'old' if request.args.get('curriculum') == 'old' else '2025'
     conn = get_connection()
     try:
         cur = conn.cursor()
         # Offload heavy data aggregation to PostgreSQL UDF
-        cur.execute("SELECT get_api_courses_hierarchy();")
+        if has_catalog_2025(cur):
+            cur.execute("SELECT get_api_courses_hierarchy(%s);", (curriculum,))
+        else:
+            cur.execute("SELECT get_api_courses_hierarchy();")
         result = cur.fetchone()[0] or []
         cur.close()
         return jsonify({"success": True, "faculties": result})
@@ -375,14 +403,16 @@ def list_courses_flat():
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("""
-            SELECT DISTINCT ON (code) course_id, code, name, icon 
+        old_code = "old_code" if has_catalog_2025(cur) else "NULL"
+        cur.execute(f"""
+            SELECT DISTINCT ON (code) course_id, code, name, icon, {old_code}
             FROM courses 
             ORDER BY code, year DESC, semester DESC;
         """)
         rows = cur.fetchall()
         cur.close()
-        courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘'} for r in rows]
+        courses = [{"id": r[0], "code": r[1], "name": r[2], "icon": r[3] or '📘', "old_code": r[4]}
+                   for r in rows]
         return jsonify({"success": True, "courses": courses})
     except Exception:
         logger.exception("%s %s failed", request.method, request.path)
@@ -394,7 +424,7 @@ def list_courses_flat():
 @file_bp.route('/api/courses/random', methods=['GET'])
 def random_courses():
     """Return n random courses for the landing page hero."""
-    n = request.args.get('n', 3, type=int)
+    n = min(max(request.args.get('n', 3, type=int) or 3, 1), 20)
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -438,10 +468,12 @@ def course_detail(course_id):
     try:
         cur = conn.cursor()
         # Course info with faculty/program context
-        cur.execute("""
+        catalog = ("c.old_code, c.old_name, c.old_semester, c.curriculum, c.description, c.credit_hours, c.prereq"
+                   if has_catalog_2025(cur) else "NULL, NULL, NULL, 'both', NULL, NULL, NULL")
+        cur.execute(f"""
             SELECT c.course_id, c.name, c.code, c.year, c.semester,
                    f.name AS faculty_name, f.icon AS faculty_icon,
-                   p.name AS program_name, c.is_lab
+                   p.name AS program_name, c.is_lab, {catalog}
             FROM courses c
             LEFT JOIN faculties f ON c.faculty_id = f.faculty_id
             LEFT JOIN programs p  ON c.program_id = p.program_id
@@ -508,7 +540,9 @@ def course_detail(course_id):
             "course": {
                 "id": c[0], "name": c[1], "code": c[2], 
                 "year": c[3], "semester": c[4], "faculty": c[5], "icon": c[6], "program": c[7],
-                "is_lab": is_lab
+                "is_lab": is_lab,
+                "old_code": c[9], "old_name": c[10], "old_semester": c[11], "curriculum": c[12],
+                "description": c[13], "credit_hours": c[14], "prereq": c[15],
             },
             "files_by_category": by_category,
             "categories": categories,
@@ -583,7 +617,7 @@ def upload_to_course(course_id):
 
         # ── Category-aware size limit ─────────────────────────────────────────
         category_name = _resolve_category_name(cur, category_id)
-        is_admin = (session.get('role') == 'admin')
+        is_admin = is_admin_session()
         max_size = _get_max_file_size(category_name, is_admin)
         if file_size > max_size:
             cur.close()
@@ -682,8 +716,6 @@ def upload_to_course(course_id):
 
 
         # Auto-approve if the uploader is an admin
-        role = session.get('role', 'user')
-        is_admin = (role == 'admin')
         initial_status = 'approved' if is_admin else 'pending'
 
         cur.execute("""
@@ -861,7 +893,7 @@ def track_bulk_download():
         conn.commit()
         cur.close()
     except Exception:
-        pass
+        logger.warning("Could not record bulk download of %d files", len(file_ids), exc_info=True)
     finally:
         conn.close()
     return jsonify({"success": True})
@@ -881,9 +913,16 @@ def report_file(file_id):
     if not reason:
         return jsonify({"success": False, "message": "A reason is required."}), 400
 
+    if len(reason) > 2000:
+        return jsonify({"success": False, "message": "Please keep the reason under 2000 characters."}), 400
+
     conn = get_connection()
     try:
         cur = conn.cursor()
+        cur.execute("SELECT 1 FROM files WHERE file_id = %s;", (file_id,))
+        if not cur.fetchone():
+            cur.close()
+            return jsonify({"success": False, "message": "File not found."}), 404
         cur.execute(
             "INSERT INTO reports (file_id, reporter_id, reason) VALUES (%s, %s, %s) ON CONFLICT (file_id, reporter_id) DO NOTHING RETURNING report_id;",
             (file_id, session['user_id'], reason)
@@ -952,7 +991,7 @@ def bulk_upload_init(course_id):
     if not files_manifest:
         return jsonify({"success": False, "message": "No files provided."}), 400
 
-    is_admin = session.get('role') == 'admin'
+    is_admin = is_admin_session()
     max_files_allowed = BULK_MAX_FILES_ADMIN if is_admin else BULK_MAX_FILES
 
     if len(files_manifest) > max_files_allowed:
@@ -1011,7 +1050,6 @@ def bulk_upload_init(course_id):
                 continue
 
             # Size limit check
-            is_admin = (session.get('role') == 'admin')
             max_size = _get_max_file_size(cat_name, is_admin)
             if size > max_size:
                 limit_mb = max_size // (1024 * 1024)
@@ -1130,12 +1168,30 @@ def bulk_upload_file(course_id, batch_id):
 
         # Category-aware size limit
         category_name = _resolve_category_name(cur, category_id)
-        is_admin = (session.get('role') == 'admin')
+        if not category_name:
+            cur.close()
+            return jsonify({"success": False, "message": "Invalid category.", "file_index": file_index}), 400
+        is_admin = is_admin_session()
         max_size = _get_max_file_size(category_name, is_admin)
         if file_size > max_size:
             cur.close()
             limit_mb = max_size // (1024 * 1024)
             return jsonify({"success": False, "message": f"File exceeds {limit_mb}MB limit for {category_name}."}), 400
+
+        # /init only checks the manifest the browser sent, so hold the batch to the
+        # same file-count and total-size limits here, where the bytes actually arrive.
+        if not is_admin:
+            cur.execute("""
+                SELECT COUNT(*), COALESCE(SUM(m.file_size), 0)
+                FROM files f LEFT JOIN file_metadata m ON m.file_id = f.file_id
+                WHERE f.batch_id = %s AND f.uploaded_by = %s;
+            """, (batch_id, uploader))
+            batch_count, batch_bytes = cur.fetchone()
+            if batch_count >= BULK_MAX_FILES or batch_bytes + file_size > BULK_MAX_TOTAL_SIZE:
+                cur.close()
+                return jsonify({"success": False, "file_index": file_index,
+                                "message": f"This batch is over the limit of {BULK_MAX_FILES} files or "
+                                           f"{BULK_MAX_TOTAL_SIZE // (1024 * 1024)}MB. Start a new upload for the rest."}), 400
 
         cur.execute("SELECT code, name, is_lab FROM courses WHERE course_id = %s;", (course_id,))
         course_row = cur.fetchone()
@@ -1213,8 +1269,6 @@ def bulk_upload_file(course_id, batch_id):
             file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
 
         # Auto-approve for admins
-        role = session.get('role', 'user')
-        is_admin = (role == 'admin')
         initial_status = 'approved' if is_admin else 'pending'
 
         # Use provided title, or fall back to filename
@@ -1273,6 +1327,13 @@ def bulk_upload_done(course_id, batch_id):
     uploader = session.get('user_id')
     if not uploader:
         return jsonify({"success": False, "message": "You must be logged in."}), 401
+
+    # Each batch is finished once, so replaying /done can't re-send the emails
+    active_batches = session.get('_bulk_batches', [])
+    if batch_id not in active_batches:
+        return jsonify({"success": False, "message": "Invalid or expired batch session."}), 403
+    session['_bulk_batches'] = [b for b in active_batches if b != batch_id]
+    session.modified = True
 
     conn = get_connection()
     try:
@@ -1378,7 +1439,7 @@ def add_file_link(file_id):
             return jsonify({"success": False, "message": "File not found or not yet approved."}), 404
 
         # Only the file owner or an admin may create cross-links
-        is_admin = session.get('role') == 'admin'
+        is_admin = is_admin_session()
         file_owner = file_row[2]
         if not is_admin and file_owner != user_id:
             cur.close()
@@ -1415,21 +1476,29 @@ def add_file_link(file_id):
 
 @file_bp.route('/api/files/<int:file_id>/links/<int:course_id>', methods=['DELETE'])
 def remove_file_link(file_id, course_id):
-    """Remove a cross-link. Does NOT delete the physical file."""
-    if not session.get('user_id'):
+    """Remove a cross-link. Does NOT delete the physical file.
+    Only the file's uploader, whoever made the link, or an admin may remove it."""
+    user_id = session.get('user_id')
+    if not user_id:
         return jsonify({"success": False, "message": "Login required."}), 401
 
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM file_course_links WHERE file_id = %s AND course_id = %s RETURNING link_id;",
-            (file_id, course_id)
-        )
-        deleted = cur.fetchone()
-        if not deleted:
+        cur.execute("""
+            SELECT fcl.link_id, fcl.linked_by, f.uploaded_by
+            FROM file_course_links fcl JOIN files f ON f.file_id = fcl.file_id
+            WHERE fcl.file_id = %s AND fcl.course_id = %s;
+        """, (file_id, course_id))
+        link = cur.fetchone()
+        if not link:
             cur.close()
             return jsonify({"success": False, "message": "Link not found."}), 404
+        if user_id not in (link[1], link[2]) and not is_admin_session():
+            cur.close()
+            return jsonify({"success": False, "message": "You can only remove links to your own files."}), 403
+
+        cur.execute("DELETE FROM file_course_links WHERE link_id = %s;", (link[0],))
         conn.commit(); cur.close()
         return jsonify({"success": True, "message": "Link removed."})
     except Exception:

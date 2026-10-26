@@ -36,6 +36,9 @@ a merge if it fails.
 | Backend | Render (free tier, `Dockerfile`) — https://giki-course-hub-backend.onrender.com | `main` (auto-deploy — confirm in Render → Settings) |
 | Keep-awake | GitHub Actions `keepalive.yml` and `cron.yml` ping the backend so the free tier doesn't sleep | — |
 
+`frontend/vercel.json` mirrors the root `vercel.json` (same rewrites and headers) in case
+the Vercel project's Root Directory is ever set to `frontend/`. Keep the two in sync.
+
 GitHub disables scheduled workflows after 60 days without repo activity. If the
 backend starts cold-starting again, re-enable them under the **Actions** tab.
 

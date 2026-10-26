@@ -44,6 +44,7 @@ const NavLinks = () => {
       {NAV_LINKS.map(({ to, label, icon: Icon, color, primary }) => (
         <button
           key={to}
+          data-tour={`nav-${to.slice(1)}`}
           className={`hide-mobile btn-nav${primary ? '' : ' nav-link-secondary'}`}
           onClick={() => navigate(to)}
           aria-current={pathname === to ? 'page' : undefined}
@@ -56,6 +57,7 @@ const NavLinks = () => {
       <div ref={moreRef} className="nav-more" style={{ position: 'relative' }}>
         <button
           className="btn-nav"
+          data-tour="nav-more"
           onClick={() => setMoreOpen(o => !o)}
           aria-haspopup="menu"
           aria-expanded={moreOpen}

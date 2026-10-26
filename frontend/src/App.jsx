@@ -11,6 +11,7 @@ import ProfileCompleteModal from './components/ProfileCompleteModal';
 import { ToastProvider } from './components/Toast';
 import BackToTop from './components/BackToTop';
 import ThemeEffects from './components/ThemeEffects';
+import TourProvider from './components/tour/TourProvider';
 
 // Lazy loaded heavy routes to reduce initial bundle size
 const Landing      = lazy(() => import('./pages/Landing'));
@@ -117,16 +118,10 @@ const App = () => {
           setLoading(false);
         }
       } else {
-        api.get('/me', { timeout: 15000 }) // Faster timeout for unauthenticated check
-          .then(res => {
-            if (res.data.is_logged_in) {
-              setUser(res.data.user);
-            } else {
-              setUser(null);
-            }
-          })
-          .catch(() => setUser(null))
-          .finally(() => setLoading(false));
+        // Every sign-in goes through Firebase, so no Firebase user means signed out.
+        // Show the app straight away instead of waiting on the (possibly asleep) server.
+        setUser(null);
+        setLoading(false);
       }
     });
 
@@ -245,7 +240,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
   }, [navigate]);
 
   return (
-    <>
+    <TourProvider user={user} blocked={showLogin || (!!user && user.profileComplete === false)}>
       <ThemeEffects />
       <Navbar user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />
       <BackToTop />
@@ -275,7 +270,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
       }>
         <Routes>
           <Route path="/"           element={<Landing user={user} onSignIn={handleSignIn} onSignOut={handleSignOut} />} />
-          <Route path="/courses"    element={<Courses />} />
+          <Route path="/courses"    element={<Courses user={user} />} />
           <Route path="/course/:id" element={<CoursePage user={user} onSignIn={handleSignIn} />} />
           <Route path="/upload"     element={<UploadPage user={user} onSignIn={handleSignIn} />} />
           <Route path="/my-uploads" element={<MyUploads user={user} />} />
@@ -293,7 +288,7 @@ const AppContent = ({ user, showLogin, setShowLogin, setUser, handleSignIn, hand
           <Route path="*"           element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
-    </>
+    </TourProvider>
   );
 };
 

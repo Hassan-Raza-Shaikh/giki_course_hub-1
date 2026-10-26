@@ -380,7 +380,7 @@ const BulkUploader = ({
               >
                 <option value="">Select course…</option>
                 {allCourses.map(c => (
-                  <option key={c.id} value={c.id}>{c.code} — {c.name}</option>
+                  <option key={c.id} value={c.id}>{c.code}{c.old_code ? ` / ${c.old_code}` : ''} — {c.name}</option>
                 ))}
               </select>
             </div>
