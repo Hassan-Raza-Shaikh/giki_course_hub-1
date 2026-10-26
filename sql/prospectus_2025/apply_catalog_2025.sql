@@ -1350,7 +1350,7 @@ INSERT INTO courses (name, code, year, semester, faculty_id, program_id, is_lab,
 SELECT v.name, v.code, (v.semester + 1) / 2, v.semester, p.faculty_id, p.program_id, v.is_lab, '2025', v.ch, v.prereq,
        (SELECT body FROM _desc WHERE desc_id = v.desc_id)
   FROM (VALUES
-    ('Entrepreneurship and Freelancing Essentials', 'MS101', 2, FALSE, 1::int, NULL::text, NULL::int),
+    ('Entrepreneurship and Freelancing Essentials', 'MS103', 2, FALSE, 1::int, NULL::text, NULL::int),
     ('Islamic Studies', 'HM211', 3, FALSE, 2::int, NULL::text, 21::int),
     ('Pakistan Studies', 'HM212', 4, FALSE, 2::int, NULL::text, 229::int),
     ('Power Distribution and Utilization', 'EE312', 5, FALSE, 2::int, 'EE212'::text, 118::int),
@@ -1367,7 +1367,7 @@ INSERT INTO courses (name, code, year, semester, faculty_id, program_id, is_lab,
 SELECT v.name, v.code, (v.semester + 1) / 2, v.semester, p.faculty_id, p.program_id, v.is_lab, '2025', v.ch, v.prereq,
        (SELECT body FROM _desc WHERE desc_id = v.desc_id)
   FROM (VALUES
-    ('Entrepreneurship and Freelancing Essentials', 'MS101', 2, FALSE, 1::int, NULL::text, NULL::int),
+    ('Entrepreneurship and Freelancing Essentials', 'MS103', 2, FALSE, 1::int, NULL::text, NULL::int),
     ('Islamic Studies', 'HM211', 3, FALSE, 2::int, NULL::text, 21::int),
     ('Pakistan Studies', 'HM212', 4, FALSE, 2::int, NULL::text, 229::int),
     ('Power Distribution and Utilization', 'EE312', 5, FALSE, 2::int, 'EE212'::text, 118::int),
@@ -1385,7 +1385,7 @@ INSERT INTO courses (name, code, year, semester, faculty_id, program_id, is_lab,
 SELECT v.name, v.code, (v.semester + 1) / 2, v.semester, p.faculty_id, p.program_id, v.is_lab, '2025', v.ch, v.prereq,
        (SELECT body FROM _desc WHERE desc_id = v.desc_id)
   FROM (VALUES
-    ('Entrepreneurship and Freelancing Essentials', 'MS101', 2, FALSE, 1::int, NULL::text, NULL::int),
+    ('Entrepreneurship and Freelancing Essentials', 'MS103', 2, FALSE, 1::int, NULL::text, NULL::int),
     ('Islamic Studies', 'HM211', 3, FALSE, 2::int, NULL::text, 21::int),
     ('Pakistan Studies', 'HM212', 4, FALSE, 2::int, NULL::text, 229::int),
     ('Power Distribution and Utilization', 'EE312', 5, FALSE, 2::int, 'EE212'::text, 118::int),
@@ -1402,7 +1402,7 @@ INSERT INTO courses (name, code, year, semester, faculty_id, program_id, is_lab,
 SELECT v.name, v.code, (v.semester + 1) / 2, v.semester, p.faculty_id, p.program_id, v.is_lab, '2025', v.ch, v.prereq,
        (SELECT body FROM _desc WHERE desc_id = v.desc_id)
   FROM (VALUES
-    ('Entrepreneurship and Freelancing Essentials', 'MS101', 2, FALSE, 1::int, NULL::text, NULL::int),
+    ('Entrepreneurship and Freelancing Essentials', 'MS103', 2, FALSE, 1::int, NULL::text, NULL::int),
     ('Islamic Studies', 'HM211', 3, FALSE, 2::int, NULL::text, 21::int),
     ('Pakistan Studies', 'HM212', 4, FALSE, 2::int, NULL::text, 229::int),
     ('Capstone Project - 1', 'EE391', 6, FALSE, 1::int, NULL::text, 106::int),

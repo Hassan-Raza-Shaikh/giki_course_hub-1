@@ -41,7 +41,8 @@
   },
   "code_fixes_by_program": {
     "BS Electrical Engineering (Digital Design & Embedded Systems)": {
-      "EE441L": "EE432L"
+      "EE441L": "EE432L",
+      "MS101": "MS103"
     },
     "BS Cyber Security": {
       "CY412": "CY351",
@@ -57,6 +58,15 @@
     },
     "BS Management Sciences": {
       "HM213": "HM212"
+    },
+    "BS Electrical Engineering (Robotics & Autonomous Systems)": {
+      "MS101": "MS103"
+    },
+    "BS Electrical Engineering (Smart Communication & Signal Processing)": {
+      "MS101": "MS103"
+    },
+    "BS Electrical Engineering (Smart Grid)": {
+      "MS101": "MS103"
     }
   },
   "slot_names": [
