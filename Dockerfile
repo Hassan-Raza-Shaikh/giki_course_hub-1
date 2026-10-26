@@ -21,4 +21,7 @@ EXPOSE 8080
 # Run gunicorn
 # Uses the PORT environment variable injected by Render/DigitalOcean
 # Removes hardcoded -w 4 so Render's WEB_CONCURRENCY is automatically respected (prevents OOM crashes on free tier)
-CMD gunicorn -b 0.0.0.0:${PORT:-8080} app:app
+# gthread: each worker serves 4 requests at once, so one slow upload or cold DB
+# call no longer stalls every other visitor, and long uploads aren't killed at
+# the 30s sync-worker timeout.
+CMD gunicorn -b 0.0.0.0:${PORT:-8080} -k gthread --threads 4 --timeout 120 app:app

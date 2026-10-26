@@ -4,6 +4,18 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        // Libraries change far less often than app code. Keeping them in their own
+        // chunks means a deploy only invalidates the app chunk in returning visitors' caches.
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          firebase: ['firebase/app', 'firebase/auth'],
+        },
+      },
+    },
+  },
   server: {
     port: 5173,
     proxy: {

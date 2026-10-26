@@ -118,16 +118,10 @@ const App = () => {
           setLoading(false);
         }
       } else {
-        api.get('/me', { timeout: 15000 }) // Faster timeout for unauthenticated check
-          .then(res => {
-            if (res.data.is_logged_in) {
-              setUser(res.data.user);
-            } else {
-              setUser(null);
-            }
-          })
-          .catch(() => setUser(null))
-          .finally(() => setLoading(false));
+        // Every sign-in goes through Firebase, so no Firebase user means signed out.
+        // Show the app straight away instead of waiting on the (possibly asleep) server.
+        setUser(null);
+        setLoading(false);
       }
     });
 
