@@ -3,6 +3,10 @@ import boto3
 import db
 from dotenv import load_dotenv
 
+from utils.confirm import require_confirmation
+require_confirmation("DELETES every object in R2_BUCKET that has no row in the DATABASE_URL files table "
+                     "(make sure both point at the same environment)")
+
 load_dotenv(override=True)
 
 r2_endpoint = os.environ.get('R2_ENDPOINT_URL')
