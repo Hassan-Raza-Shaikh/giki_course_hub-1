@@ -1,7 +1,9 @@
-import os
 import json
 from firebase_admin import firestore
 from firebase_admin_init import init_firebase_admin
+
+from utils.confirm import require_confirmation
+require_confirmation("removes elective courses from the JSON data and from Firestore")
 
 init_firebase_admin()
 db = firestore.client()

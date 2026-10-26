@@ -26,9 +26,9 @@ notifications.
 ## Hosting
 
 **Pushing or merging to `main` deploys to production.** The `CI` workflow
-(`.github/workflows/ci.yml`) runs on every PR and push to `main` — frontend build, plus a
-backend compile and ruff check for syntax errors and undefined names — but nothing blocks
-a merge if it fails.
+(`.github/workflows/ci.yml`) runs on every PR and push to `main` — frontend build, a
+backend compile and ruff check (syntax errors, undefined names, unused imports), and the
+backend tests — but nothing blocks a merge if it fails.
 
 | What | Where | Deploys from |
 |---|---|---|
@@ -100,6 +100,14 @@ Branded emails go out when material is uploaded, approved or rejected, when repo
 *   Run `migrations/025_email_preferences.sql` so users can opt out at `/email-settings`.
 *   `python preview_emails.py` writes every template to `email_previews/` to look at in a browser.
 
+## Backend tests
+`tests/` runs the API against a throwaway Postgres built from `migrations/`. CI does this on every PR. Locally, point it at an empty database you don't mind wiping:
+
+```
+pip install -r requirements.txt -r requirements-dev.txt
+TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/coursehub_test pytest -q tests
+```
+
 ## Repo layout
 
 ```
@@ -111,6 +119,7 @@ routes/                    API blueprints (files, admin, auth, users, gpa, issue
 utils/                     Validators, calendar and other helpers
 migrations/                Numbered SQL migrations (applied manually, in order)
 sql/                       Reference schema, SQL functions and seeds
+tests/                     Backend API tests (pytest, throwaway Postgres)
 scripts/                   Maintenance scripts — see scripts/README.md (some are destructive)
 frontend/                  React app (src/pages, src/components, src/services/api.js)
 ```

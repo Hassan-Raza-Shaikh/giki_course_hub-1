@@ -1,5 +1,4 @@
 import os
-import math
 
 out_dir = 'frontend/public'
 os.makedirs(out_dir, exist_ok=True)

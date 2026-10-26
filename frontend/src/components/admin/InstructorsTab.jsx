@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api';
+import api, { clearApiCache } from '../../services/api';
 import { GraduationCap } from 'lucide-react';
 import { LoadingRow, btnStyle } from './AdminHelpers';
 
@@ -20,10 +20,13 @@ export const InstructorsTab = ({ isAdmin, showToast, faculties }) => {
   const saveInstructor = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/instructors', instructorForm);
+      const res = await api.post('/instructors', instructorForm);
       showToast('Instructor added');
+      // The list is cached for a few minutes, so add the new one locally instead of refetching
+      clearApiCache('/instructors');
+      setInstructors(prev => [...prev, { id: res.data.id, name: instructorForm.name.trim(), faculty: instructorForm.faculty_name.trim() }]
+        .sort((a, b) => a.name.localeCompare(b.name)));
       setInstructorForm({ name: '', faculty_name: '' });
-      api.get('/instructors').then(r => setInstructors(r.data.instructors || []));
     } catch (err) {
       showToast(err.response?.data?.message || 'Error saving instructor', 'error');
     }

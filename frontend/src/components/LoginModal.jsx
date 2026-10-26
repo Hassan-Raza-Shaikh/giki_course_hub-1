@@ -90,7 +90,7 @@ const LoginModal = ({ onClose, onSuccess }) => {
       });
 
       if (res.data.success) {
-        onSuccess({ ...res.data.user, displayName: fbUser.displayName, photoURL: fbUser.photoURL, email: fbUser.email });
+        onSuccess({ ...res.data.user, displayName: res.data.user.displayName || fbUser.displayName, photoURL: res.data.user.photoURL || fbUser.photoURL, email: fbUser.email });
       } else {
         setError(res.data.message || 'Sign-in failed.');
       }

@@ -22,3 +22,4 @@ frontend/
 data/
 email_previews/
 scripts/
+tests/

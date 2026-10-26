@@ -1,4 +1,3 @@
-import sys
 
 def replace_all(file_path):
     with open(file_path, 'r') as f:

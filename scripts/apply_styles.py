@@ -1,5 +1,3 @@
-import os
-import re
 
 file = '/Users/hassan/Projects/giki_course_hub-1/frontend/src/pages/AdminPanel.jsx'
 

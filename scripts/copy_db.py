@@ -1,9 +1,11 @@
 import psycopg2
 import psycopg2.extras
-import json
 
 import os
 from dotenv import load_dotenv
+
+from utils.confirm import require_confirmation
+require_confirmation("TRUNCATES every table in STAGING_DATABASE_URL and copies SOURCE_DATABASE_URL into it")
 
 load_dotenv(override=True)
 

@@ -1,5 +1,4 @@
 import re
-import os
 
 def check_file(filename):
     with open(filename, 'r') as f:
