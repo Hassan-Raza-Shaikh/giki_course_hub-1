@@ -8,6 +8,9 @@ import psycopg2
 from db import get_connection
 
 
+from utils.confirm import require_confirmation
+require_confirmation("re-seeds faculties, programs, courses and categories in the database from JSON")
+
 CATEGORIES = [
     ("Outline",         False),
     ("Notes",           False),
