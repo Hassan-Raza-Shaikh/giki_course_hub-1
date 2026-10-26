@@ -34,6 +34,7 @@ const CACHED_ENDPOINTS = [
   '/categories',
   '/stats',
   '/faculties',
+  '/instructors',
   '/admin/faculties-programs'
 ];
 
@@ -92,6 +93,11 @@ api.get = async (url, config) => {
   }
   
   return response;
+};
+
+// Drop a cached GET (e.g. after an admin changes the data behind it)
+export const clearApiCache = (url) => {
+  try { localStorage.removeItem(`api_cache_${url}`); } catch { /* storage unavailable */ }
 };
 
 export default api;

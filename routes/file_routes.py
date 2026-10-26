@@ -529,9 +529,12 @@ def course_detail(course_id):
         """, (list(aliases), course_id))
         file_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
 
-        # All instructors (for the upload dropdown autocomplete)
-        cur.execute("SELECT instructor_id, name, faculty_name FROM instructors ORDER BY name;")
-        all_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
+        # All instructors (for the upload dropdown autocomplete). The current frontend
+        # passes ?instructors=0 and loads /api/instructors only when it needs them.
+        all_instructors = []
+        if request.args.get('instructors') != '0':
+            cur.execute("SELECT instructor_id, name, faculty_name FROM instructors ORDER BY name;")
+            all_instructors = [{"id": r[0], "name": r[1], "faculty": r[2]} for r in cur.fetchall()]
 
         cur.close()
 

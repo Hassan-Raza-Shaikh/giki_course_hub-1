@@ -208,6 +208,20 @@ def create_app():
             except ValueError:
                 session.clear()
 
+    # Public, rarely-changing catalogue data: let browsers reuse it for a few
+    # minutes instead of hitting Render (and possibly a cold start) on every page.
+    public_cached_endpoints = {
+        'files.list_courses', 'files.list_courses_flat', 'files.get_public_stats',
+        'files.list_categories', 'user.get_faculties_programs', 'instructors.get_all_instructors',
+    }
+
+    @app.after_request
+    def cache_public_catalogue(resp):
+        if (request.method == 'GET' and resp.status_code == 200
+                and request.endpoint in public_cached_endpoints):
+            resp.headers['Cache-Control'] = 'private, max-age=300'
+        return resp
+
     @app.errorhandler(404)
     def not_found(e):
         return jsonify({
