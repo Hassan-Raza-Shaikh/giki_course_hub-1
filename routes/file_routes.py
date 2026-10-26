@@ -6,6 +6,7 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 from db import get_connection
 from notifications import notify_course_followers
+from routes.admin_routes import is_admin_session
 from werkzeug.utils import secure_filename
 import os
 import uuid
@@ -616,7 +617,7 @@ def upload_to_course(course_id):
 
         # ── Category-aware size limit ─────────────────────────────────────────
         category_name = _resolve_category_name(cur, category_id)
-        is_admin = (session.get('role') == 'admin')
+        is_admin = is_admin_session()
         max_size = _get_max_file_size(category_name, is_admin)
         if file_size > max_size:
             cur.close()
@@ -715,8 +716,6 @@ def upload_to_course(course_id):
 
 
         # Auto-approve if the uploader is an admin
-        role = session.get('role', 'user')
-        is_admin = (role == 'admin')
         initial_status = 'approved' if is_admin else 'pending'
 
         cur.execute("""
@@ -914,9 +913,16 @@ def report_file(file_id):
     if not reason:
         return jsonify({"success": False, "message": "A reason is required."}), 400
 
+    if len(reason) > 2000:
+        return jsonify({"success": False, "message": "Please keep the reason under 2000 characters."}), 400
+
     conn = get_connection()
     try:
         cur = conn.cursor()
+        cur.execute("SELECT 1 FROM files WHERE file_id = %s;", (file_id,))
+        if not cur.fetchone():
+            cur.close()
+            return jsonify({"success": False, "message": "File not found."}), 404
         cur.execute(
             "INSERT INTO reports (file_id, reporter_id, reason) VALUES (%s, %s, %s) ON CONFLICT (file_id, reporter_id) DO NOTHING RETURNING report_id;",
             (file_id, session['user_id'], reason)
@@ -985,7 +991,7 @@ def bulk_upload_init(course_id):
     if not files_manifest:
         return jsonify({"success": False, "message": "No files provided."}), 400
 
-    is_admin = session.get('role') == 'admin'
+    is_admin = is_admin_session()
     max_files_allowed = BULK_MAX_FILES_ADMIN if is_admin else BULK_MAX_FILES
 
     if len(files_manifest) > max_files_allowed:
@@ -1044,7 +1050,6 @@ def bulk_upload_init(course_id):
                 continue
 
             # Size limit check
-            is_admin = (session.get('role') == 'admin')
             max_size = _get_max_file_size(cat_name, is_admin)
             if size > max_size:
                 limit_mb = max_size // (1024 * 1024)
@@ -1163,12 +1168,30 @@ def bulk_upload_file(course_id, batch_id):
 
         # Category-aware size limit
         category_name = _resolve_category_name(cur, category_id)
-        is_admin = (session.get('role') == 'admin')
+        if not category_name:
+            cur.close()
+            return jsonify({"success": False, "message": "Invalid category.", "file_index": file_index}), 400
+        is_admin = is_admin_session()
         max_size = _get_max_file_size(category_name, is_admin)
         if file_size > max_size:
             cur.close()
             limit_mb = max_size // (1024 * 1024)
             return jsonify({"success": False, "message": f"File exceeds {limit_mb}MB limit for {category_name}."}), 400
+
+        # /init only checks the manifest the browser sent, so hold the batch to the
+        # same file-count and total-size limits here, where the bytes actually arrive.
+        if not is_admin:
+            cur.execute("""
+                SELECT COUNT(*), COALESCE(SUM(m.file_size), 0)
+                FROM files f LEFT JOIN file_metadata m ON m.file_id = f.file_id
+                WHERE f.batch_id = %s AND f.uploaded_by = %s;
+            """, (batch_id, uploader))
+            batch_count, batch_bytes = cur.fetchone()
+            if batch_count >= BULK_MAX_FILES or batch_bytes + file_size > BULK_MAX_TOTAL_SIZE:
+                cur.close()
+                return jsonify({"success": False, "file_index": file_index,
+                                "message": f"This batch is over the limit of {BULK_MAX_FILES} files or "
+                                           f"{BULK_MAX_TOTAL_SIZE // (1024 * 1024)}MB. Start a new upload for the rest."}), 400
 
         cur.execute("SELECT code, name, is_lab FROM courses WHERE course_id = %s;", (course_id,))
         course_row = cur.fetchone()
@@ -1246,8 +1269,6 @@ def bulk_upload_file(course_id, batch_id):
             file_url = f"{R2_ENDPOINT_URL.rstrip('/')}/{R2_BUCKET}/{unique_filename}"
 
         # Auto-approve for admins
-        role = session.get('role', 'user')
-        is_admin = (role == 'admin')
         initial_status = 'approved' if is_admin else 'pending'
 
         # Use provided title, or fall back to filename
@@ -1306,6 +1327,13 @@ def bulk_upload_done(course_id, batch_id):
     uploader = session.get('user_id')
     if not uploader:
         return jsonify({"success": False, "message": "You must be logged in."}), 401
+
+    # Each batch is finished once, so replaying /done can't re-send the emails
+    active_batches = session.get('_bulk_batches', [])
+    if batch_id not in active_batches:
+        return jsonify({"success": False, "message": "Invalid or expired batch session."}), 403
+    session['_bulk_batches'] = [b for b in active_batches if b != batch_id]
+    session.modified = True
 
     conn = get_connection()
     try:
@@ -1411,7 +1439,7 @@ def add_file_link(file_id):
             return jsonify({"success": False, "message": "File not found or not yet approved."}), 404
 
         # Only the file owner or an admin may create cross-links
-        is_admin = session.get('role') == 'admin'
+        is_admin = is_admin_session()
         file_owner = file_row[2]
         if not is_admin and file_owner != user_id:
             cur.close()
@@ -1448,21 +1476,29 @@ def add_file_link(file_id):
 
 @file_bp.route('/api/files/<int:file_id>/links/<int:course_id>', methods=['DELETE'])
 def remove_file_link(file_id, course_id):
-    """Remove a cross-link. Does NOT delete the physical file."""
-    if not session.get('user_id'):
+    """Remove a cross-link. Does NOT delete the physical file.
+    Only the file's uploader, whoever made the link, or an admin may remove it."""
+    user_id = session.get('user_id')
+    if not user_id:
         return jsonify({"success": False, "message": "Login required."}), 401
 
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM file_course_links WHERE file_id = %s AND course_id = %s RETURNING link_id;",
-            (file_id, course_id)
-        )
-        deleted = cur.fetchone()
-        if not deleted:
+        cur.execute("""
+            SELECT fcl.link_id, fcl.linked_by, f.uploaded_by
+            FROM file_course_links fcl JOIN files f ON f.file_id = fcl.file_id
+            WHERE fcl.file_id = %s AND fcl.course_id = %s;
+        """, (file_id, course_id))
+        link = cur.fetchone()
+        if not link:
             cur.close()
             return jsonify({"success": False, "message": "Link not found."}), 404
+        if user_id not in (link[1], link[2]) and not is_admin_session():
+            cur.close()
+            return jsonify({"success": False, "message": "You can only remove links to your own files."}), 403
+
+        cur.execute("DELETE FROM file_course_links WHERE link_id = %s;", (link[0],))
         conn.commit(); cur.close()
         return jsonify({"success": True, "message": "Link removed."})
     except Exception:

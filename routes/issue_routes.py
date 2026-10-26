@@ -7,6 +7,9 @@ logger = logging.getLogger(__name__)
 
 issue_bp = Blueprint('issues', __name__)
 
+# Matches the options on the Report an Issue page
+ISSUE_TYPES = {'ui', 'material', 'gpa_calculator', 'profile', 'leaderboard', 'bug', 'feature', 'other'}
+
 @issue_bp.route('/api/issues', methods=['POST'])
 def submit_issue():
     if 'user_id' not in session:
@@ -19,6 +22,10 @@ def submit_issue():
     
     if not title or not desc:
         return jsonify({"success": False, "message": "Title and description are required."}), 400
+    if itype not in ISSUE_TYPES:
+        itype = 'other'
+    if len(title) > 200 or len(desc) > 5000:
+        return jsonify({"success": False, "message": "Please keep the title under 200 and the description under 5000 characters."}), 400
         
     conn = get_connection()
     try:

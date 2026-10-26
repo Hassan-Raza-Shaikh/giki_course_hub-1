@@ -14,35 +14,49 @@ admin_bp = Blueprint('admin', __name__)
 # Helper: require admin
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _session_admin_email():
+    """(email, is_admin) for the session user, read from the DB on every call so a
+    revoked admin loses access at once. (None, False) when not logged in or unknown."""
+    if 'user_id' not in session:
+        return None, False
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT LOWER(TRIM(u.email)), EXISTS (SELECT 1 FROM admins a WHERE a.email = LOWER(TRIM(u.email)))
+            FROM users u WHERE u.user_id = %s;
+        """, (session['user_id'],))
+        row = cur.fetchone()
+        cur.close()
+    finally:
+        conn.close()
+    if not row or not row[0]:
+        return None, False
+    email, in_admins = row
+    return email, in_admins or email in BOOTSTRAP_ADMIN_EMAILS
+
+
+def is_admin_session():
+    """True if the session user is an admin with a verified email (see _require_admin)."""
+    email, is_admin = _session_admin_email()
+    return bool(email and is_admin and session.get('email_verified'))
+
+
 def _require_admin():
     """Return (user_email, None) if the session user is an admin, else (None, error_response)."""
     if 'user_id' not in session:
         return None, (jsonify({"success": False, "message": "Not logged in."}), 401)
 
-    conn = get_connection()
-    try:
-        cur = conn.cursor()
-        cur.execute("SELECT email FROM users WHERE user_id = %s;", (session['user_id'],))
-        row = cur.fetchone()
-        cur.close()
-        if not row:
-            return None, (jsonify({"success": False, "message": "User not found."}), 401)
-        
-        email = row[0].lower().strip()
-        
-        # OWNER BOOTSTRAP: Always allow the primary developers
-        if email in BOOTSTRAP_ADMIN_EMAILS:
-            return email, None
-
-        cur2 = conn.cursor()
-        cur2.execute("SELECT 1 FROM admins WHERE email = %s;", (email,))
-        is_admin = cur2.fetchone() is not None
-        cur2.close()
-        if not is_admin:
-            return None, (jsonify({"success": False, "message": "Admin access required."}), 403)
-        return email, None
-    finally:
-        conn.close()
+    email, is_admin = _session_admin_email()
+    if not email:
+        return None, (jsonify({"success": False, "message": "User not found."}), 401)
+    if not is_admin:
+        return None, (jsonify({"success": False, "message": "Admin access required."}), 403)
+    # Admin rights are granted by email address, and anyone can sign up with any
+    # address, so only an address the user has proven they own counts.
+    if not session.get('email_verified'):
+        return None, (jsonify({"success": False, "message": "Verify your email address to use admin tools, then sign in again."}), 403)
+    return email, None
 
 
 def _log(admin_email, action, target_id=None, target_desc=None):
@@ -151,34 +165,26 @@ def _notify_report(conn, report_id, resolved, notes=None):
 # ─────────────────────────────────────────────────────────────────────────────
 @admin_bp.route('/api/admin/check', methods=['GET'])
 def admin_check():
-    if 'user_id' not in session:
+    email, is_admin = _session_admin_email()
+    if not email:
         return jsonify({"is_admin": False})
+    is_admin = is_admin and bool(session.get('email_verified'))
+
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT email FROM users WHERE user_id = %s;", (session['user_id'],))
-        row = cur.fetchone()
+        cur.execute("SELECT granted_by, notes FROM admins WHERE email = %s;", (email,))
+        admin_row = cur.fetchone()
         cur.close()
-        if not row:
-            return jsonify({"is_admin": False})
-        
-        email = row[0].lower().strip()
-        
-        cur2 = conn.cursor()
-        cur2.execute("SELECT granted_by, notes FROM admins WHERE email = %s;", (email,))
-        admin_row = cur2.fetchone()
-        cur2.close()
-        
-        is_admin = admin_row is not None or email in BOOTSTRAP_ADMIN_EMAILS
-        
-        return jsonify({
-            "is_admin": is_admin,
-            "email": email,
-            "granted_by": admin_row[0] if admin_row else ('System' if email in BOOTSTRAP_ADMIN_EMAILS else None),
-            "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in BOOTSTRAP_ADMIN_EMAILS else None),
-        })
     finally:
         conn.close()
+
+    return jsonify({
+        "is_admin": is_admin,
+        "email": email,
+        "granted_by": admin_row[0] if admin_row else ('System' if email in BOOTSTRAP_ADMIN_EMAILS else None),
+        "notes": admin_row[1] if admin_row else ('Bootstrap Admin' if email in BOOTSTRAP_ADMIN_EMAILS else None),
+    })
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -687,6 +693,7 @@ def admin_revoke(target_email):
     admin_email, err = _require_admin()
     if err: return err
 
+    target_email = target_email.strip().lower()
     if target_email == admin_email:
         return jsonify({"success": False, "message": "You cannot revoke your own admin access."}), 400
 
