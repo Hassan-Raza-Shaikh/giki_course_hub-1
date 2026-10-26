@@ -1,9 +1,6 @@
-import random
-import time
 import threading
-from flask import Blueprint, request, session, jsonify, current_app
+from flask import Blueprint, request, session, jsonify
 import boto3
-from botocore.exceptions import NoCredentialsError
 from db import get_connection
 from notifications import notify_course_followers
 from routes.admin_routes import is_admin_session
@@ -14,7 +11,7 @@ from config import (
     ALLOWED_EXTENSIONS, R2_BUCKET, R2_ENDPOINT_URL, R2_ACCESS_KEY,
     R2_SECRET_KEY, R2_PUBLIC_URL_PREFIX,
     DEFAULT_MAX_FILE_SIZE, REFERENCE_MAX_FILE_SIZE, REFERENCE_CATEGORY_NAME,
-    BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE, BULK_BATCH_TTL,
+    BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE,
 )
 import email_events
 from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension, safe_content_type

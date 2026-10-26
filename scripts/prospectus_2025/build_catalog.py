@@ -31,7 +31,7 @@ import sys
 from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from match import (DATA, ROOT, clean_name, is_lab, live_programs, load,  # noqa: E402
+from match import (DATA, ROOT, is_lab, live_programs, load,  # noqa: E402
                    match_program, norm, plan_programs, similarity)
 
 SQL_OUT = os.path.join(ROOT, 'sql', 'prospectus_2025', 'apply_catalog_2025.sql')

@@ -1,6 +1,5 @@
 import psycopg2
 import psycopg2.extras
-import json
 
 import os
 from dotenv import load_dotenv

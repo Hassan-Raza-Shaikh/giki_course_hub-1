@@ -37,3 +37,11 @@ Branded emails go out when material is uploaded, approved or rejected, when repo
 *   `FRONTEND_URL` — base URL for links in emails (default `https://gikicoursehub.app`).
 *   Run `migrations/025_email_preferences.sql` so users can opt out at `/email-settings`.
 *   `python preview_emails.py` writes every template to `email_previews/` to look at in a browser.
+
+## Backend tests
+`tests/` runs the API against a throwaway Postgres built from `migrations/`. CI does this on every PR. Locally, point it at an empty database you don't mind wiping:
+
+```
+pip install -r requirements.txt -r requirements-dev.txt
+TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/coursehub_test pytest -q tests
+```

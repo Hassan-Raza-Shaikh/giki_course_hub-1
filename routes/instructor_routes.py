@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, request
 from db import get_connection
 from routes.admin_routes import _require_admin
 import logging

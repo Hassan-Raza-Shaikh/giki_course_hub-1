@@ -4,7 +4,6 @@ Structure: Faculty → Program → Semester → Course
 DB mapping: faculty table, programs table, courses table (with faculty_id, program_id, semester, year)
 """
 import json
-import psycopg2
 from db import get_connection
 
 
