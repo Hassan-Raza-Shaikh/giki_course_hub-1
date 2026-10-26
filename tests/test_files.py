@@ -74,3 +74,23 @@ def test_bad_pagination_params_do_not_error(client, login, make_user):
 
 def test_catalogue_responses_are_cacheable(client):
     assert client.get('/api/categories').headers['Cache-Control'] == 'private, max-age=300'
+
+
+def test_uploader_can_withdraw_pending_but_not_approved(client, db, make_user, login, course, make_file, monkeypatch):
+    import routes.admin_routes as admin_routes
+    deleted = []
+    monkeypatch.setattr(admin_routes, '_delete_stored_file', deleted.append)
+
+    owner, stranger = make_user(), make_user()
+    pending = make_file(course, owner, status='pending')
+    approved = make_file(course, owner, status='approved')
+
+    login(stranger)
+    assert client.delete(f'/api/files/{pending}').status_code == 404
+
+    login(owner)
+    assert client.delete(f'/api/files/{approved}').status_code == 409
+    assert client.delete(f'/api/files/{pending}').status_code == 200
+    db.execute("SELECT file_id FROM files WHERE file_id IN (%s, %s);", (pending, approved))
+    assert [r[0] for r in db.fetchall()] == [approved]
+    assert len(deleted) == 1

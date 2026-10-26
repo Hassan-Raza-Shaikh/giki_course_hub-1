@@ -759,6 +759,52 @@ def upload_to_course(course_id):
             conn.close()
 
 # ─────────────────────────────────────────────────────────────────────────────
+# DELETE /api/files/<id> — uploader withdraws a pending upload or clears a rejected one
+# ─────────────────────────────────────────────────────────────────────────────
+
+@file_bp.route('/api/files/<int:file_id>', methods=['DELETE'])
+def delete_own_upload(file_id):
+    """Approved files stay: once live, only an admin can take them down."""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"success": False, "message": "Login required."}), 401
+
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT uploaded_by, status, storage_path, title FROM files WHERE file_id = %s;", (file_id,))
+        row = cur.fetchone()
+        if not row or row[0] != user_id:
+            cur.close()
+            return jsonify({"success": False, "message": "Upload not found."}), 404
+        _, status, storage_path, title = row
+        if status not in ('pending', 'rejected'):
+            cur.close()
+            return jsonify({"success": False, "message": "Approved files can only be removed by an admin. Use Report if something is wrong."}), 409
+
+        cur.execute("DELETE FROM file_course_links WHERE file_id = %s;", (file_id,))
+        cur.execute("DELETE FROM file_metadata WHERE file_id = %s;", (file_id,))
+        cur.execute("DELETE FROM files WHERE file_id = %s;", (file_id,))
+        still_used = False
+        if storage_path:
+            cur.execute("SELECT 1 FROM files WHERE storage_path = %s LIMIT 1;", (storage_path,))
+            still_used = cur.fetchone() is not None
+        conn.commit()
+        cur.close()
+
+        if storage_path and not still_used:
+            from routes.admin_routes import _delete_stored_file
+            _delete_stored_file(storage_path)
+        return jsonify({"success": True, "message": f"'{title}' removed."})
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+    finally:
+        conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Bookmark routes
 # ─────────────────────────────────────────────────────────────────────────────
 

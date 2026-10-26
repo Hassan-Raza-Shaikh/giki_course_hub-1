@@ -113,6 +113,7 @@ def create_app():
     limiter.limit("10 per minute")(app.view_functions['files.bulk_upload_done'])
     limiter.limit("10 per minute")(app.view_functions['files.report_file'])
     limiter.limit("20 per minute")(app.view_functions['files.add_file_link'])
+    limiter.limit("30 per minute")(app.view_functions['files.delete_own_upload'])
     limiter.limit("5 per minute")(app.view_functions['issues.submit_issue'])
     limiter.limit("20 per minute")(app.view_functions['email.email_preferences'])
     limiter.limit("10 per minute")(app.view_functions['email.email_unsubscribe'])
