@@ -198,8 +198,8 @@ def my_uploads():
     
     conn = get_connection()
     try:
-        page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 50))
+        page = max(request.args.get('page', 1, type=int) or 1, 1)
+        limit = min(max(request.args.get('limit', 50, type=int) or 50, 1), 100)
         offset = (page - 1) * limit
 
         cur = conn.cursor()
@@ -293,8 +293,8 @@ def get_category_files(slug):
     """Return paginated files for a specific category globally."""
     conn = get_connection()
     try:
-        page = int(request.args.get('page', 1))
-        limit = int(request.args.get('limit', 12))
+        page = max(request.args.get('page', 1, type=int) or 1, 1)
+        limit = min(max(request.args.get('limit', 12, type=int) or 12, 1), 100)
         offset = (page - 1) * limit
         
         cur = conn.cursor()
@@ -424,7 +424,7 @@ def list_courses_flat():
 @file_bp.route('/api/courses/random', methods=['GET'])
 def random_courses():
     """Return n random courses for the landing page hero."""
-    n = request.args.get('n', 3, type=int)
+    n = min(max(request.args.get('n', 3, type=int) or 3, 1), 20)
     conn = get_connection()
     try:
         cur = conn.cursor()
@@ -893,7 +893,7 @@ def track_bulk_download():
         conn.commit()
         cur.close()
     except Exception:
-        pass
+        logger.warning("Could not record bulk download of %d files", len(file_ids), exc_info=True)
     finally:
         conn.close()
     return jsonify({"success": True})
