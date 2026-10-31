@@ -27,6 +27,26 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
+// The backend asks for a verified email before uploads, reports and issues. A
+// user who has just clicked the verification link still holds a token that says
+// unverified, so reload their Firebase profile and retry once with a fresh token.
+api.interceptors.response.use(undefined, async (error) => {
+  const { response, config } = error;
+  if (response?.status === 403 && response.data?.code === 'email_unverified'
+      && auth.currentUser && config && !config._verifyRetried) {
+    try {
+      await auth.currentUser.reload();
+      if (auth.currentUser.emailVerified) {
+        await auth.currentUser.getIdToken(true);
+        return api.request({ ...config, _verifyRetried: true });
+      }
+    } catch (err) {
+      console.warn("Could not refresh email verification", err);
+    }
+  }
+  return Promise.reject(error);
+});
+
 // Cache high-traffic, low-churn endpoints (TTL: 15 minutes)
 const CACHE_TTL_MS = 15 * 60 * 1000;
 const CACHED_ENDPOINTS = [

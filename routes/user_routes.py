@@ -187,7 +187,14 @@ def update_my_profile():
         row = cur.fetchone()
         
         # Determine the display name to save
-        final_display_name = req_display_name if req_display_name is not None and req_display_name.strip() != "" else (row[0] if row else session.get('username', 'User'))
+        if isinstance(req_display_name, str) and req_display_name.strip():
+            from utils.validators import check_display_name
+            from routes.admin_routes import is_admin_session
+            final_display_name, name_error = check_display_name(req_display_name, is_admin=is_admin_session())
+            if name_error:
+                return jsonify({"success": False, "message": name_error}), 400
+        else:
+            final_display_name = row[0] if row else session.get('username', 'User')
 
         # Upsert user_profiles
         cur.execute(

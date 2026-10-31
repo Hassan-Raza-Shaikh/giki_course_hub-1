@@ -73,6 +73,19 @@ def _log(admin_email, action, target_id=None, target_desc=None):
         conn.close()
 
 
+def _link_instructors(cur, file_ids):
+    """Show the instructor of each newly approved file on its course. Done at
+    approval, so an unreviewed upload can't add names to a course page."""
+    cur.execute("""
+        INSERT INTO course_instructors (course_id, instructor_id)
+        SELECT DISTINCT c.course_id, f.instructor_id
+        FROM files f
+        JOIN courses c ON COALESCE(NULLIF(c.code, ''), c.name) = f.course_code
+        WHERE f.file_id = ANY(%s) AND f.instructor_id IS NOT NULL
+        ON CONFLICT DO NOTHING;
+    """, (list(file_ids),))
+
+
 def _notify_review(conn, rows, approved, reason=None):
     """In-app notifications for reviewed uploads. rows: (file_id, title, course_code, uploader_id)."""
     codes = list({r[2] for r in rows if r[2]})
@@ -349,6 +362,7 @@ def admin_approve_file(file_id):
         
         file_title, course_code, uploader_id = row
 
+        _link_instructors(cur, [file_id])
         _notify_review(conn, [(file_id, file_title, course_code, uploader_id)], approved=True)
         conn.commit()
         cur.close()
@@ -893,6 +907,8 @@ def admin_bulk_approve():
             "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) AND status <> 'approved' RETURNING file_id, title, course_code, uploaded_by;",
             (admin_email, file_ids))
         updated = cur.fetchall()
+        if updated:
+            _link_instructors(cur, [r[0] for r in updated])
         _notify_review(conn, updated, approved=True)
         conn.commit(); cur.close()
         for uploader_id, files in _group_by_uploader(updated).items():
