@@ -213,6 +213,7 @@ def create_app():
     # (about 4/3 larger) via the WAF fallback, plus form fields.
     non_admin_upload_cap = REFERENCE_MAX_FILE_SIZE * 4 // 3 + 1024 * 1024
     upload_endpoints = {'files.upload_to_course', 'files.bulk_upload_file'}
+    OTHER_REQUEST_MAX_BYTES = 5 * 1024 * 1024  # generous: admin bulk course imports are the biggest JSON
 
     @app.before_request
     def reject_oversized_uploads():
@@ -220,6 +221,11 @@ def create_app():
         Without this the server would receive up to MAX_CONTENT_LENGTH (10 GB, for
         admins) before the per-file size check could say no."""
         if request.endpoint not in upload_endpoints:
+            # Everything else is JSON or a small form. MAX_CONTENT_LENGTH is 10 GB
+            # for admin uploads, so without this any endpoint would buffer a body
+            # that size in memory (request.get_json() reads it all).
+            if (request.content_length or 0) > OTHER_REQUEST_MAX_BYTES:
+                return jsonify({"success": False, "message": "Request is too large."}), 413
             return
         if (request.content_length or 0) <= non_admin_upload_cap:
             return

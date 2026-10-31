@@ -59,7 +59,7 @@ def list_events():
 @calendar_bp.route('/api/calendar/upcoming', methods=['GET'])
 def upcoming_events():
     """Upcoming and in-progress events, soonest first. Feeds the countdowns."""
-    limit = min(max(request.args.get('limit', 8, type=int), 1), 50)
+    limit = min(max(request.args.get('limit', 8, type=int) or 8, 1), 50)
     conn = get_connection()
     try:
         cur = conn.cursor()
