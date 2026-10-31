@@ -340,12 +340,12 @@ def admin_approve_file(file_id):
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s RETURNING title, course_code, uploaded_by;",
+            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s AND status <> 'approved' RETURNING title, course_code, uploaded_by;",
             (admin_email, file_id)
         )
         row = cur.fetchone()
         if not row:
-            return jsonify({"success": False, "message": "File not found."}), 404
+            return jsonify({"success": False, "message": "File not found or already approved."}), 404
         
         file_title, course_code, uploader_id = row
 
@@ -377,12 +377,12 @@ def admin_reject_file(file_id):
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s RETURNING title, course_code, uploaded_by;",
+            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id=%s AND status <> 'rejected' RETURNING title, course_code, uploaded_by;",
             (reason, admin_email, file_id)
         )
         row = cur.fetchone()
         if not row:
-            return jsonify({"success": False, "message": "File not found."}), 404
+            return jsonify({"success": False, "message": "File not found or already rejected."}), 404
             
         file_title, course_code, uploader_id = row
 
@@ -890,7 +890,7 @@ def admin_bulk_approve():
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title, course_code, uploaded_by;",
+            "UPDATE files SET status='approved', reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) AND status <> 'approved' RETURNING file_id, title, course_code, uploaded_by;",
             (admin_email, file_ids))
         updated = cur.fetchall()
         _notify_review(conn, updated, approved=True)
@@ -921,7 +921,7 @@ def admin_bulk_reject():
     try:
         cur = conn.cursor()
         cur.execute(
-            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) RETURNING file_id, title, course_code, uploaded_by;",
+            "UPDATE files SET status='rejected', rejection_reason=%s, reviewed_by=%s, reviewed_at=NOW() WHERE file_id = ANY(%s) AND status <> 'rejected' RETURNING file_id, title, course_code, uploaded_by;",
             (reason, admin_email, file_ids))
         updated = cur.fetchall()
         _notify_review(conn, updated, approved=False, reason=reason)

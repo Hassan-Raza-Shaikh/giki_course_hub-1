@@ -249,6 +249,30 @@ const FileViewer = ({ file, onClose }) => {
   );
 };
 
+// Uploaded .docx files are rendered straight into the page, so strip anything
+// in the generated nodes that could run script here: on* handlers and link or
+// media URLs that aren't plain web, mail, in-page or blob/data image ones.
+const SAFE_HREF = /^(https?:|mailto:|#)/i;
+const SAFE_SRC = /^(https?:|blob:|data:image\/)/i;
+const neutraliseDocxNode = (root) => {
+  if (root.nodeType !== 1) return;
+  const els = [root, ...root.querySelectorAll('*')];
+  for (const el of els) {
+    for (const attr of [...el.attributes]) {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim();
+      if (name.startsWith('on')) el.removeAttribute(attr.name);
+      else if ((name === 'href' || name === 'xlink:href') && value && !SAFE_HREF.test(value)) el.removeAttribute(attr.name);
+      else if ((name === 'src' || name === 'srcset') && value && !SAFE_SRC.test(value)) el.removeAttribute(attr.name);
+    }
+    if (el.tagName === 'A' && el.hasAttribute('href') && !el.getAttribute('href').startsWith('#')) {
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
+    }
+    if (['SCRIPT', 'IFRAME', 'OBJECT', 'EMBED'].includes(el.tagName)) el.remove();
+  }
+};
+
 // .docx renderer using docx-preview
 const DocxPreview = ({ url }) => {
   const containerRef = useRef(null);
@@ -263,18 +287,24 @@ const DocxPreview = ({ url }) => {
         return r.arrayBuffer();
       })
       .then(async buffer => {
-        const { renderAsync } = await import('docx-preview');
-        return renderAsync(
-        buffer,
-        containerRef.current,
-        undefined,          // styleContainer (use default)
-        {
+        const { parseAsync, renderDocument } = await import('docx-preview');
+        const options = {
           inWrapper: false, // don't add an extra wrapper div
           ignoreWidth: true,
           ignoreHeight: true,
           breakPages: true,
+        };
+        // Render detached, clean, then attach (instead of renderAsync, which
+        // attaches the nodes straight away)
+        const doc = await parseAsync(buffer, options);
+        const nodes = await renderDocument(doc, options);
+        const container = containerRef.current;
+        if (!container) return;
+        container.innerHTML = '';
+        for (const node of nodes) {
+          neutraliseDocxNode(node);
+          container.appendChild(node);
         }
-        );
       })
       .then(() => setStatus('done'))
       .catch(err => {

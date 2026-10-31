@@ -647,6 +647,13 @@ def upload_to_course(course_id):
         c_name, c_code = course_row
         course_code    = c_code or c_name
 
+        # An unknown instructor would fail the INSERT after the bytes are already in R2
+        if instructor_id:
+            cur.execute("SELECT 1 FROM instructors WHERE instructor_id = %s;", (instructor_id,))
+            if not cur.fetchone():
+                cur.close()
+                return jsonify({"success": False, "message": "Unknown instructor."}), 400
+
         # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)
         cur.execute(
@@ -1003,14 +1010,18 @@ def get_file_note(file_id):
     try:
         cur = conn.cursor()
         cur.execute(
-            "SELECT note_text, admin_email, updated_at FROM file_notes WHERE file_id = %s;",
+            "SELECT note_text, updated_at FROM file_notes WHERE file_id = %s;",
             (file_id,)
         )
         row = cur.fetchone()
         cur.close()
         if not row:
             return jsonify({"success": True, "note": None})
-        return jsonify({"success": True, "note": {"text": row[0], "by": row[1], "at": str(row[2])}})
+        # Public endpoint: which admin wrote the note (their email) stays private
+        return jsonify({"success": True, "note": {"text": row[0], "at": str(row[1])}})
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
 
@@ -1253,6 +1264,13 @@ def bulk_upload_file(course_id, batch_id):
         if cat_res and cat_res[0] and not is_lab:
             cur.close()
             return jsonify({"success": False, "message": "Lab materials can only be uploaded to lab courses."}), 400
+
+        # An unknown instructor would fail the INSERT after the bytes are already in R2
+        if instructor_id:
+            cur.execute("SELECT 1 FROM instructors WHERE instructor_id = %s;", (instructor_id,))
+            if not cur.fetchone():
+                cur.close()
+                return jsonify({"success": False, "message": "Unknown instructor.", "file_index": file_index}), 400
 
         # ── Global content-hash deduplication ────────────────────────────────
         content_hash = compute_file_hash(file)

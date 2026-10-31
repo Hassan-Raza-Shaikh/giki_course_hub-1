@@ -20,37 +20,56 @@ MAGIC_BYTES = {
     'jpeg': [b'\xff\xd8\xff'],
     'doc':  [b'\xd0\xcf\x11\xe0'],  # OLE2 compound document (legacy Office)
     'ppt':  [b'\xd0\xcf\x11\xe0'],
+    'xls':  [b'\xd0\xcf\x11\xe0'],
+    'gif':  [b'GIF87a', b'GIF89a'],
+    'webm': [b'\x1a\x45\xdf\xa3'],   # EBML header (Matroska/WebM)
 }
 
 # Extensions that have no reliable magic bytes (plain text formats)
+# Formats whose signature isn't a plain prefix: checked in _matches_container()
+CONTAINER_EXTENSIONS = {'webp', 'mp4'}
+
+# CSV is plain text too, but is stored as text/csv rather than text/plain
+UNSIGNED_EXTENSIONS = {'csv'}
+
 PLAINTEXT_EXTENSIONS = {'txt', 'ipynb', 'py', 'js', 'jsx', 'ts', 'tsx', 'cpp', 'c', 'h', 'hpp', 'java', 'rs', 'go', 'rb', 'php', 'css', 'html', 'json', 'yaml', 'yml', 'sh', 'md'}
+
+
+def _matches_container(header, extension):
+    if extension == 'webp':
+        return header[:4] == b'RIFF' and header[8:12] == b'WEBP'
+    if extension == 'mp4':
+        return header[4:8] == b'ftyp'  # ISO base media box
+    return False
 
 
 def validate_file_magic_bytes(file_stream, extension):
     """
-    Read the first 8 bytes of a file to verify its content matches the
+    Read the first 12 bytes of a file to verify its content matches the
     declared extension.  Returns True if the file is valid, False otherwise.
     Always resets the stream position to 0 after reading.
     """
     extension = extension.lower()
 
     # Plain text files have no magic bytes — allow them through
-    if extension in PLAINTEXT_EXTENSIONS:
+    if extension in PLAINTEXT_EXTENSIONS or extension in UNSIGNED_EXTENSIONS:
         return True
 
     expected = MAGIC_BYTES.get(extension)
-    if expected is None:
+    if expected is None and extension not in CONTAINER_EXTENSIONS:
         # Unknown extension — reject for safety (shouldn't happen if
         # ALLOWED_EXTENSIONS is checked first, but defense-in-depth)
         return False
 
     try:
-        header = file_stream.read(8)
+        header = file_stream.read(12)
         file_stream.seek(0)
 
         if not header:
             return False
 
+        if extension in CONTAINER_EXTENSIONS:
+            return _matches_container(header, extension)
         return any(header.startswith(magic) for magic in expected)
     except Exception:
         try:
