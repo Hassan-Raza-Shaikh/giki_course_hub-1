@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session, jsonify
 from db import get_connection
 import email_events
+from utils.auth import require_verified_email
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,6 +15,9 @@ ISSUE_TYPES = {'ui', 'material', 'gpa_calculator', 'profile', 'leaderboard', 'bu
 def submit_issue():
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Login required to report issues."}), 401
+    unverified = require_verified_email("report issues")
+    if unverified:
+        return unverified
     
     data = request.get_json() or {}
     itype = data.get('type', 'other')

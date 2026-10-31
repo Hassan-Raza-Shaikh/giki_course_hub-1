@@ -14,6 +14,7 @@ from config import (
     BULK_MAX_FILES, BULK_MAX_FILES_ADMIN, BULK_MAX_TOTAL_SIZE,
 )
 import email_events
+from utils.auth import require_verified_email
 from utils.validators import validate_file_magic_bytes, compute_file_hash, get_file_extension, safe_content_type
 import logging
 
@@ -601,6 +602,9 @@ def upload_to_course(course_id):
         uploader = session.get('user_id')
         if not uploader:
             return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
+        unverified = require_verified_email("upload files")
+        if unverified:
+            return unverified
 
         # ── Magic byte verification ───────────────────────────────────────────
         ext = get_file_extension(file.filename)
@@ -731,8 +735,9 @@ def upload_to_course(course_id):
         """, (title, course_code, category_id, uploader, initial_status, file_url, unique_filename, instructor_id, content_hash))
         new_file_id = cur.fetchone()[0]
 
-        # Automatically associate the instructor with this course if not already linked
-        if instructor_id:
+        # Associate the instructor with this course; for a pending upload that
+        # happens when an admin approves it (admin_routes._link_instructors)
+        if instructor_id and initial_status == 'approved':
             cur.execute(
                 "INSERT INTO course_instructors (course_id, instructor_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
                 (course_id, instructor_id)
@@ -910,9 +915,10 @@ def track_download(file_id):
     conn = get_connection()
     try:
         cur = conn.cursor()
+        # Only live files count, so ids can't be used to pad pending or missing ones
         cur.execute(
-            "INSERT INTO file_downloads (file_id, user_id) VALUES (%s, %s);",
-            (file_id, session.get('user_id'))
+            "INSERT INTO file_downloads (file_id, user_id) SELECT file_id, %s FROM files WHERE file_id = %s AND status = 'approved';",
+            (session.get('user_id'), file_id)
         )
         conn.commit()
         cur.close()
@@ -961,6 +967,9 @@ def report_file(file_id):
     """Submit a content report for a file. One report per user per file."""
     if 'user_id' not in session:
         return jsonify({"success": False, "message": "Must be logged in to report."}), 401
+    unverified = require_verified_email("report files")
+    if unverified:
+        return unverified
 
     reason = (request.get_json() or {}).get('reason', '').strip()
     if not reason:
@@ -1041,6 +1050,9 @@ def bulk_upload_init(course_id):
     uploader = session.get('user_id')
     if not uploader:
         return jsonify({"success": False, "message": "You must be logged in to upload files."}), 401
+    unverified = require_verified_email("upload files")
+    if unverified:
+        return unverified
 
     data = request.get_json() or {}
     files_manifest = data.get('files', [])
@@ -1168,6 +1180,9 @@ def bulk_upload_file(course_id, batch_id):
     uploader = session.get('user_id')
     if not uploader:
         return jsonify({"success": False, "message": "You must be logged in."}), 401
+    unverified = require_verified_email("upload files")
+    if unverified:
+        return unverified
 
     # Validate that this batch_id was legitimately issued by /bulk-upload/init
     active_batches = session.get('_bulk_batches', [])
@@ -1345,7 +1360,7 @@ def bulk_upload_file(course_id, batch_id):
         """, (title, course_code, category_id, uploader, initial_status, file_url, unique_filename, instructor_id, content_hash, batch_id))
         new_file_id = cur.fetchone()[0]
 
-        if instructor_id:
+        if instructor_id and initial_status == 'approved':
             cur.execute(
                 "INSERT INTO course_instructors (course_id, instructor_id) VALUES (%s, %s) ON CONFLICT DO NOTHING;",
                 (course_id, instructor_id)

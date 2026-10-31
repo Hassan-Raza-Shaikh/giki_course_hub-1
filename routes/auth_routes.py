@@ -60,7 +60,7 @@ def firebase_auth():
     id_token     = data.get('idToken')
     uid_fallback = data.get('uid')
     email        = (data.get('email', '') or '').strip().lower()
-    display_name = (data.get('displayName', '') or '').strip()
+    display_name = ' '.join((data.get('displayName', '') or '').split())[:60]
     photo_url    = (data.get('photoURL', '') or '').strip()
 
     # Optional profile fields — only sent during native email/password sign-up
@@ -83,7 +83,7 @@ def firebase_auth():
         uid            = decoded['uid']
         email          = decoded['email']
         email_verified = decoded['email_verified']
-        display_name   = decoded.get('name') or display_name
+        display_name   = ' '.join((decoded.get('name') or display_name).split())[:60]
         photo_url      = decoded.get('picture') or photo_url
     else:
         return jsonify({"success": False, "message": "idToken is required."}), 400

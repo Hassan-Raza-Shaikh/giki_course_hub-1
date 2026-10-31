@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 import BulkUploader from '../components/BulkUploader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import VerifyEmailNotice from '../components/VerifyEmailNotice';
 
 import { UploadCloud } from 'lucide-react';
 
@@ -43,7 +44,9 @@ const UploadPage = ({ user, onSignIn }) => {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-hero)', paddingTop: '100px', paddingBottom: '80px' }}>
       <div className="page-container" style={{ maxWidth: '1000px' }}>
-        
+        {/* Uploads need a verified email; this only shows for unverified email/password accounts */}
+        <VerifyEmailNotice />
+
         {/* Header */}
         <div style={{
           background: 'var(--bg-card)',

@@ -52,3 +52,46 @@ def test_approving_twice_does_not_renotify(client, db, login, make_user, make_fi
     assert r['approved'] == 0
     db.execute("SELECT COUNT(*) FROM notifications WHERE user_id = %s AND type = 'upload_approved';", (uploader,))
     assert db.fetchone()[0] == 1
+
+
+def test_pending_upload_does_not_list_instructor_until_approved(client, db, login, make_user, make_file, course):
+    db.execute("INSERT INTO instructors (name) VALUES ('Dr Test Pending') RETURNING instructor_id;")
+    iid = db.fetchone()[0]
+    fid = make_file(course, make_user(), status='pending')
+    db.execute("UPDATE files SET instructor_id = %s WHERE file_id = %s;", (iid, fid))
+
+    def listed():
+        db.execute("SELECT 1 FROM course_instructors WHERE course_id = %s AND instructor_id = %s;",
+                   (course['id'], iid))
+        return db.fetchone() is not None
+
+    assert not listed()
+    login(make_user(admin=True))
+    assert client.post(f'/api/admin/files/{fid}/approve').status_code == 200
+    assert listed()
+
+
+@pytest.mark.parametrize("name,ok", [("Ali Khan", True), ("  Admin  ", False), ("Course-Hub", False),
+                                     ("x" * 61, False), ("Moderator!", False), ("Admiral Ali", True)])
+def test_display_name_rules(client, login, make_user, name, ok):
+    login(make_user())
+    r = client.patch('/api/me/profile', json={"displayName": name})
+    assert (r.status_code == 200) is ok
+
+
+def test_download_of_pending_file_not_counted(client, db, make_user, make_file, course):
+    fid = make_file(course, make_user(), status='pending')
+    client.post(f'/api/files/{fid}/download')
+    db.execute("SELECT COUNT(*) FROM file_downloads WHERE file_id = %s;", (fid,))
+    assert db.fetchone()[0] == 0
+
+
+def test_unverified_email_cannot_report_or_file_issues(client, login, make_user, make_file, course):
+    fid = make_file(course, make_user())
+    login(make_user(), verified=False)
+    r = client.post(f'/api/reports/{fid}', json={"reason": "spam"})
+    assert r.status_code == 403 and r.get_json()['code'] == 'email_unverified'
+    r = client.post('/api/issues', json={"title": "t", "description": "d"})
+    assert r.status_code == 403
+    r = client.post(f"/api/courses/{course['id']}/bulk-upload/init", json={"files": [{"name": "a.pdf"}]})
+    assert r.status_code == 403

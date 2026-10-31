@@ -134,3 +134,26 @@ def safe_content_type(extension):
     if extension in PLAINTEXT_EXTENSIONS:
         return 'text/plain; charset=utf-8'
     return SAFE_CONTENT_TYPES.get(extension, 'application/octet-stream')
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Display names
+# ─────────────────────────────────────────────────────────────────────────────
+
+DISPLAY_NAME_MAX = 60
+# Names that would read as official; only admins may use them
+_RESERVED_NAMES = {'admin', 'administrator', 'moderator', 'mod', 'staff', 'support',
+                   'gikicoursehub', 'coursehub', 'coursehubteam', 'system', 'official'}
+
+
+def check_display_name(name, is_admin=False):
+    """Return (cleaned name, None) or (None, error message)."""
+    import re
+    name = ' '.join((name or '').split())  # collapse whitespace and control chars
+    if not name:
+        return None, "Display name cannot be empty."
+    if len(name) > DISPLAY_NAME_MAX:
+        return None, f"Display name must be {DISPLAY_NAME_MAX} characters or fewer."
+    if not is_admin and re.sub(r'[^a-z]', '', name.lower()) in _RESERVED_NAMES:
+        return None, "That display name is reserved. Please choose another."
+    return name, None
