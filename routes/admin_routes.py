@@ -223,11 +223,17 @@ def admin_stats():
             FROM files;
         """)
         row = cur.fetchone()
+        pending_links = 0
+        from routes.file_routes import has_link_review
+        if has_link_review(cur):
+            cur.execute("SELECT COUNT(*) FROM file_course_links WHERE status = 'pending';")
+            pending_links = cur.fetchone()[0]
         cur.close()
         return jsonify({
             "success": True,
             "stats": {
                 "pending_files":   row[0],
+                "pending_links":   pending_links,
                 "approved_files":  row[1],
                 "rejected_files":  row[2],
                 "total_users":     row[3],
@@ -522,11 +528,13 @@ def _safe_delete_file(file_id, cur, pending_storage_deletes):
         return None
     title, category_id, storage_path = row
 
-    cur.execute("""
+    # Only an approved link can take over; pending ones go with the file
+    from routes.file_routes import approved_links_only
+    cur.execute(f"""
         SELECT fcl.link_id, COALESCE(NULLIF(c.code, ''), c.name), fcl.category_id, fcl.custom_title
         FROM file_course_links fcl
         JOIN courses c ON c.course_id = fcl.course_id
-        WHERE fcl.file_id = %s
+        WHERE fcl.file_id = %s AND {approved_links_only(cur)}
         ORDER BY fcl.linked_at ASC, fcl.link_id ASC
         LIMIT 1;
     """, (file_id,))
@@ -1592,6 +1600,106 @@ def delete_manual_course_link(link_id):
         return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
     finally:
         conn.close()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Shared-file links waiting for review (migration 029)
+# A re-upload of an existing file, or a cross-link by its uploader, shows the
+# same file in another course. From non-admins these wait here first.
+# ─────────────────────────────────────────────────────────────────────────────
+@admin_bp.route('/api/admin/links/pending', methods=['GET'])
+def admin_pending_links():
+    admin_email, err = _require_admin()
+    if err: return err
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        from routes.file_routes import has_link_review
+        if not has_link_review(cur):
+            cur.close()
+            return jsonify({"success": True, "links": []})
+        cur.execute("""
+            SELECT fcl.link_id, fcl.file_id, COALESCE(fcl.custom_title, f.title) AS title,
+                   f.title AS original_title, f.course_code AS origin_course, f.status AS file_status,
+                   f.file_url, c.course_id, COALESCE(NULLIF(c.code, ''), c.name) AS target_course,
+                   c.name AS target_course_name, cat.name AS category,
+                   u.email AS linked_by_email, u.username AS linked_by, fcl.linked_at
+            FROM file_course_links fcl
+            JOIN files f ON f.file_id = fcl.file_id
+            JOIN courses c ON c.course_id = fcl.course_id
+            LEFT JOIN categories cat ON cat.category_id = fcl.category_id
+            LEFT JOIN users u ON u.user_id = fcl.linked_by
+            WHERE fcl.status = 'pending'
+            ORDER BY fcl.linked_at ASC;
+        """)
+        rows = cur.fetchall()
+        cols = [d[0] for d in cur.description]
+        cur.close()
+        return jsonify({"success": True, "links": [dict(zip(cols, r)) for r in rows]})
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+    finally:
+        conn.close()
+
+
+def _review_link(link_id, approve):
+    admin_email, err = _require_admin()
+    if err: return err
+    reason = ((request.get_json(silent=True) or {}).get('reason') or '').strip()[:500] or None
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT fcl.file_id, COALESCE(fcl.custom_title, f.title), fcl.linked_by,
+                   fcl.course_id, COALESCE(NULLIF(c.code, ''), c.name)
+            FROM file_course_links fcl
+            JOIN files f ON f.file_id = fcl.file_id
+            JOIN courses c ON c.course_id = fcl.course_id
+            WHERE fcl.link_id = %s AND fcl.status = 'pending';
+        """, (link_id,))
+        row = cur.fetchone()
+        if not row:
+            cur.close()
+            return jsonify({"success": False, "message": "Link not found or already reviewed."}), 404
+        file_id, title, linker, course_id, course_code = row
+        if approve:
+            cur.execute("UPDATE file_course_links SET status = 'approved', reviewed_by = %s, reviewed_at = NOW() WHERE link_id = %s;",
+                        (admin_email, link_id))
+            if linker:
+                notify_many([linker], 'upload_approved', "Your upload was approved",
+                            body=f"'{title}' is now live in {course_code}.", link=f"/course/{course_id}",
+                            data={"file_id": file_id, "course_code": course_code}, conn=conn)
+            notify_course_followers(course_code, [title], exclude_user_ids=[linker] if linker else [], conn=conn)
+        else:
+            # Deleted rather than kept as rejected, so the course can get the file later
+            cur.execute("DELETE FROM file_course_links WHERE link_id = %s;", (link_id,))
+            if linker:
+                notify_many([linker], 'upload_rejected', "Your upload was not approved",
+                            body=f"'{title}' ({course_code}) was rejected. Reason: {reason or 'No reason provided.'}",
+                            link="/my-uploads", data={"file_id": file_id, "course_code": course_code, "reason": reason},
+                            conn=conn)
+        conn.commit()
+        cur.close()
+        _log(admin_email, 'approve_link' if approve else 'reject_link', file_id, f"{title} → {course_code}")
+        verb = "approved" if approve else "rejected"
+        return jsonify({"success": True, "message": f"'{title}' in {course_code} {verb}."})
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+    finally:
+        conn.close()
+
+
+@admin_bp.route('/api/admin/links/<int:link_id>/approve', methods=['POST'])
+def admin_approve_link(link_id):
+    return _review_link(link_id, approve=True)
+
+
+@admin_bp.route('/api/admin/links/<int:link_id>/reject', methods=['POST'])
+def admin_reject_link(link_id):
+    return _review_link(link_id, approve=False)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
