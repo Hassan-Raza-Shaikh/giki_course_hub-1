@@ -197,7 +197,7 @@ const AdminPanel = ({ user }) => {
   );
 
   const TABS = [
-    { key: 'pending', icon: <Clock size={18} strokeWidth={2.5} />, label: 'Pending', count: stats?.pending_files, color: 'var(--primary)' },
+    { key: 'pending', icon: <Clock size={18} strokeWidth={2.5} />, label: 'Pending', count: stats ? (stats.pending_files || 0) + (stats.pending_links || 0) : undefined, color: 'var(--primary)' },
     { key: 'reports', icon: <Flag size={18} strokeWidth={2.5} />, label: 'Flags', count: reportCounts.pending, color: 'var(--secondary)' },
     { key: 'issues',  icon: <Wrench size={18} strokeWidth={2.5} />, label: 'Issues', count: issueCounts.open, color: 'var(--accent)' },
     

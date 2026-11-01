@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
-import { CheckCircle, XCircle, Eye, Edit3, PartyPopper } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, Edit3, PartyPopper, Link2 } from 'lucide-react';
 import { LoadingRow, EmptyRow, btnStyle, fmtDate, fmtSize } from './AdminHelpers';
 
 export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refreshKey }) => {
@@ -9,6 +9,8 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
   const [selectedPending, setSelectedPending] = useState(new Set());
   const [rejectTarget, setRejectTarget] = useState(null);
   const [rejectReason, setRejectReason] = useState('');
+  // Existing files shown in another course (re-uploads and cross-links) wait here too
+  const [pendingLinks, setPendingLinks] = useState([]);
 
   const loadPending = () => {
     setLoading(true);
@@ -16,6 +18,20 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
       .then(r => setPending(r.data.files || []))
       .catch(() => {})
       .finally(() => setLoading(false));
+    api.get('/admin/links/pending')
+      .then(r => setPendingLinks(r.data.links || []))
+      .catch(() => {});
+  };
+
+  const approveLink = async (link) => {
+    try {
+      await api.post(`/admin/links/${link.link_id}/approve`);
+      showToast('Shared file approved');
+      setPendingLinks(l => l.filter(x => x.link_id !== link.link_id));
+      loadStats();
+    } catch (err) {
+      showToast(err.response?.data?.message || 'Error approving shared file', 'error');
+    }
   };
 
   useEffect(() => {
@@ -56,7 +72,11 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
   const confirmReject = async () => {
     if (!rejectTarget) return;
     try {
-      if (rejectTarget.file_id === '__bulk__') {
+      if (rejectTarget.link_id) {
+        await api.post(`/admin/links/${rejectTarget.link_id}/reject`, { reason: rejectReason || 'No reason provided.' });
+        showToast('Shared file rejected');
+        setPendingLinks(l => l.filter(x => x.link_id !== rejectTarget.link_id));
+      } else if (rejectTarget.file_id === '__bulk__') {
         await api.post('/admin/files/bulk-reject', { file_ids: Array.from(selectedPending), reason: rejectReason || 'No reason provided.' });
         showToast('Files rejected');
         setPending(p => p.filter(f => !selectedPending.has(f.file_id)));
@@ -118,7 +138,7 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
       )}
       <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
         {loading ? <LoadingRow /> : pending.length === 0 ? (
-          <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg="No files pending review — all caught up!" />
+          <EmptyRow icon={<PartyPopper size={48} color="var(--primary)" />} msg={pendingLinks.length ? "No new files pending review." : "No files pending review — all caught up!"} />
         ) : pending.map(f => (
           <div key={f.file_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--border)', background: selectedPending.has(f.file_id) ? 'var(--primary-soft)' : 'transparent' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -152,6 +172,39 @@ export const PendingTab = ({ isAdmin, showToast, loadStats, openEditFile, refres
           </div>
         ))}
       </div>
+
+      {pendingLinks.length > 0 && (
+        <>
+          <h3 style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text)', margin: '28px 0 6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Link2 size={18} color="var(--primary)" /> Shared to another course ({pendingLinks.length})
+          </h3>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+            Someone uploaded a file that already exists, or cross-linked their own file, so it would show in one more course. Check the title and course.
+          </p>
+          <div style={{ background: 'var(--bg-white)', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden' }}>
+            {pendingLinks.map(l => (
+              <div key={l.link_id} style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1rem' }}>{l.title}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                    {l.origin_course} → <strong>{l.target_course}</strong> · {l.category || 'General'}
+                    {l.title !== l.original_title && <> · originally "{l.original_title}"</>}
+                    {l.file_status !== 'approved' && <> · original file is still {l.file_status}</>}
+                  </div>
+                </div>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                  by <strong>{l.linked_by || l.linked_by_email || 'unknown'}</strong> · {fmtDate(l.linked_at)}
+                </div>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <a href={l.file_url} target="_blank" rel="noreferrer" style={{ ...btnStyle('var(--primary)'), flex: 1, textAlign: 'center' }}><Eye size={16} style={{ marginRight: '4px' }} /> Preview</a>
+                  <button onClick={() => approveLink(l)} style={{ ...btnStyle('var(--electric)'), flex: 1 }}><CheckCircle size={14} /> Approve</button>
+                  <button onClick={() => { setRejectTarget({ link_id: l.link_id, title: `${l.title} in ${l.target_course}` }); setRejectReason(''); }} style={{ ...btnStyle('var(--danger)'), flex: 1 }}><XCircle size={14} /> Reject</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Reject modal */}
       {rejectTarget && (

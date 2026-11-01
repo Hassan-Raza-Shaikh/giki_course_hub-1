@@ -37,6 +37,42 @@ def has_catalog_2025(cur):
         _has_catalog_2025 = cur.fetchone() is not None
     return _has_catalog_2025
 
+_has_link_review = None
+
+def has_link_review(cur):
+    """True once migration 029 (review status on file_course_links) has run."""
+    global _has_link_review
+    if not _has_link_review:
+        cur.execute("""SELECT 1 FROM information_schema.columns
+                       WHERE table_name = 'file_course_links' AND column_name = 'status'""")
+        _has_link_review = cur.fetchone() is not None
+    return _has_link_review
+
+
+def insert_file_link(cur, file_id, course_id, category_id, custom_title, user_id, is_admin):
+    """Show an existing file in another course. Links from non-admins wait for
+    review (after migration 029); returns the link's status."""
+    if has_link_review(cur):
+        status = 'approved' if is_admin else 'pending'
+        cur.execute(
+            """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by, status)
+               VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (file_id, course_id) DO NOTHING;""",
+            (file_id, course_id, category_id, custom_title, user_id, status)
+        )
+        return status
+    cur.execute(
+        """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
+           VALUES (%s, %s, %s, %s, %s) ON CONFLICT (file_id, course_id) DO NOTHING;""",
+        (file_id, course_id, category_id, custom_title, user_id)
+    )
+    return 'approved'
+
+
+def approved_links_only(cur, alias='fcl'):
+    """SQL condition limiting file_course_links to approved rows ('TRUE' before 029)."""
+    return f"{alias}.status = 'approved'" if has_link_review(cur) else "TRUE"
+
+
 # boto3 singleton — created once at module load time, not per-request.
 # boto3 clients are thread-safe for read operations and creation is expensive.
 _s3_client = None
@@ -516,11 +552,11 @@ def course_detail(course_id):
         from utils.aliases import get_course_aliases
         aliases = get_course_aliases(c[2] or c[1])
 
-        cur.execute("""
+        cur.execute(f"""
             SELECT DISTINCT i.instructor_id, i.name, i.faculty_name
             FROM instructors i
             JOIN files f ON f.instructor_id = i.instructor_id
-            LEFT JOIN file_course_links fcl ON fcl.file_id = f.file_id
+            LEFT JOIN file_course_links fcl ON fcl.file_id = f.file_id AND {approved_links_only(cur)}
             WHERE (f.course_code = ANY(%s) OR fcl.course_id = %s)
               AND f.status = 'approved'
             ORDER BY i.name;
@@ -685,18 +721,19 @@ def upload_to_course(course_id):
 
             # Different course — create a cross-link instead of re-uploading
             custom_title = title if title != dup_title else None
-            cur.execute(
-                """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
-                   VALUES (%s, %s, %s, %s, %s) ON CONFLICT (file_id, course_id) DO NOTHING;""",
-                (dup_file_id, course_id, category_id, custom_title, uploader)
-            )
+            link_status = insert_file_link(cur, dup_file_id, course_id, category_id, custom_title, uploader, is_admin)
             conn.commit(); cur.close()
+            if link_status == 'pending':
+                msg = (f'♻️ This file already exists (uploaded in {dup_course}), so it was linked here as "{title}" '
+                       'instead of uploaded again. It will show once an admin approves it.')
+            else:
+                msg = f'♻️ This file already exists (uploaded in {dup_course}). It has been linked here as "{title}" — no extra storage used!'
             return jsonify({
                 "success": True,
                 "deduplicated": True,
-                "message": f'♻️ This file already exists (uploaded in {dup_course}). It has been linked here as "{title}" — no extra storage used!',
+                "message": msg,
                 "file_id": dup_file_id,
-                "status": "approved"
+                "status": link_status
             })
 
         s3_client = get_s3_client()
@@ -1307,18 +1344,16 @@ def bulk_upload_file(course_id, batch_id):
                                 "message": f'Duplicate: "{dup_title}" already in this course.'}), 409
 
             custom_title = title if title != dup_title else None
-            cur.execute(
-                """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
-                   VALUES (%s, %s, %s, %s, %s) ON CONFLICT (file_id, course_id) DO NOTHING;""",
-                (dup_file_id, course_id, category_id, custom_title, uploader)
-            )
+            link_status = insert_file_link(cur, dup_file_id, course_id, category_id, custom_title, uploader, is_admin)
             conn.commit(); cur.close()
+            suffix = " Shows once an admin approves it." if link_status == 'pending' else ""
             return jsonify({
                 "success": True,
                 "deduplicated": True,
                 "skipped": False,
                 "file_index": file_index,
-                "message": f'♻️ Linked from {dup_course} as "{title}" — no re-upload needed.',
+                "status": link_status,
+                "message": f'♻️ Linked from {dup_course} as "{title}" — no re-upload needed.{suffix}',
                 "file_id": dup_file_id,
             })
 
@@ -1466,13 +1501,13 @@ def get_file_links(file_id):
     conn = get_connection()
     try:
         cur = conn.cursor()
-        cur.execute("""
+        cur.execute(f"""
             SELECT fcl.link_id, fcl.course_id, c.name AS course_name, c.code AS course_code,
                    cat.name AS category, fcl.custom_title, fcl.linked_at
             FROM file_course_links fcl
             JOIN courses c ON c.course_id = fcl.course_id
             LEFT JOIN categories cat ON cat.category_id = fcl.category_id
-            WHERE fcl.file_id = %s
+            WHERE fcl.file_id = %s AND {approved_links_only(cur)}
             ORDER BY fcl.linked_at DESC;
         """, (file_id,))
         rows = cur.fetchall()
@@ -1537,14 +1572,12 @@ def add_file_link(file_id):
             cur.close()
             return jsonify({"success": False, "message": "This file already belongs to that course."}), 409
 
-        cur.execute(
-            """INSERT INTO file_course_links (file_id, course_id, category_id, custom_title, linked_by)
-               VALUES (%s, %s, %s, %s, %s)
-               ON CONFLICT (file_id, course_id) DO NOTHING;""",
-            (file_id, target_course_id, category_id, custom_title, user_id)
-        )
+        link_status = insert_file_link(cur, file_id, target_course_id, category_id, custom_title, user_id, is_admin)
         conn.commit(); cur.close()
-        return jsonify({"success": True, "message": f'📌 File linked to {course_row[0]} successfully!'})
+        if link_status == 'pending':
+            return jsonify({"success": True, "status": link_status,
+                            "message": f'📌 Link to {course_row[0]} sent for review. It shows once an admin approves it.'})
+        return jsonify({"success": True, "status": link_status, "message": f'📌 File linked to {course_row[0]} successfully!'})
     except Exception:
         if conn: conn.rollback()
         logger.exception("%s %s failed", request.method, request.path)
