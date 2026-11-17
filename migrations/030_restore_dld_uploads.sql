@@ -23,6 +23,10 @@
 
 BEGIN;
 
+-- Made by the catalogue script; created empty here so a fresh database
+-- built from migrations/ (CI) can run this file too
+CREATE TABLE IF NOT EXISTS files_course_code_backup_027 (file_id INT PRIMARY KEY, old_course_code TEXT, new_course_code TEXT, moved_at TIMESTAMPTZ DEFAULT NOW());
+
 CREATE TABLE IF NOT EXISTS files_course_code_backup_030 (
     file_id         INT PRIMARY KEY,
     old_course_code TEXT,
