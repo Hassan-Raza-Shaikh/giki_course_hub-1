@@ -1729,3 +1729,85 @@ def admin_send_announcement():
         return jsonify({"success": False, "message": "Couldn't send the announcement. Please try again."}), 500
     _log(admin_email, 'send_announcement', None, title)
     return jsonify({"success": True, "sent": sent, "message": f"Announcement sent to {sent} user(s)."})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Possibly misfiled uploads (see utils/misfiled.py for how files are picked)
+# ─────────────────────────────────────────────────────────────────────────────
+def _has_misfile_dismissals(cur):
+    """True once migration 031 has run."""
+    cur.execute("SELECT to_regclass('public.misfile_dismissals') IS NOT NULL;")
+    return cur.fetchone()[0]
+
+
+@admin_bp.route('/api/admin/misfiled', methods=['GET'])
+def admin_misfiled():
+    admin_email, err = _require_admin()
+    if err: return err
+    from utils.misfiled import find_misfiled
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        from routes.file_routes import has_catalog_2025
+        old_code = "old_code" if has_catalog_2025(cur) else "NULL"
+        cur.execute(f"SELECT course_id, code, name, {old_code} FROM courses;")
+        courses = [{"course_id": r[0], "code": r[1], "name": r[2], "old_code": r[3]} for r in cur.fetchall()]
+        cur.execute("SELECT course_code_1, course_code_2 FROM manual_course_links;")
+        links = cur.fetchall()
+        cur.execute("SELECT course_id, instructor_id FROM course_instructors;")
+        course_instructors = cur.fetchall()
+        cur.execute("SELECT instructor_id, name FROM instructors;")
+        instructor_names = dict(cur.fetchall())
+        cur.execute("""
+            SELECT file_id, course_code, title, COALESCE(NULLIF(storage_path, ''), file_url),
+                   instructor_id, status, category_id, file_url
+            FROM files WHERE status IN ('approved', 'pending');
+        """)
+        files = [{"file_id": r[0], "course_code": r[1], "title": r[2], "path": r[3], "instructor_id": r[4],
+                  "status": r[5], "category_id": r[6], "file_url": r[7]} for r in cur.fetchall()]
+        dismissed = []
+        can_dismiss = _has_misfile_dismissals(cur)
+        if can_dismiss:
+            # A dismissal only counts while the file is still under the course it was checked under
+            cur.execute("""SELECT d.file_id FROM misfile_dismissals d JOIN files f ON f.file_id = d.file_id
+                           WHERE f.course_code IS NOT DISTINCT FROM d.course_code;""")
+            dismissed = [r[0] for r in cur.fetchall()]
+        cur.close()
+        found = find_misfiled(courses, links, course_instructors, files, instructor_names, dismissed)
+        return jsonify({"success": True, "files": found, "can_dismiss": can_dismiss,
+                        "dismissed_count": len(dismissed)})
+    except Exception:
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+    finally:
+        conn.close()
+
+
+@admin_bp.route('/api/admin/misfiled/<int:file_id>/dismiss', methods=['POST'])
+def admin_misfiled_dismiss(file_id):
+    admin_email, err = _require_admin()
+    if err: return err
+    conn = get_connection()
+    try:
+        cur = conn.cursor()
+        if not _has_misfile_dismissals(cur):
+            return jsonify({"success": False, "message": "Run migration 031 first."}), 400
+        cur.execute("SELECT title, course_code FROM files WHERE file_id = %s;", (file_id,))
+        row = cur.fetchone()
+        if not row:
+            return jsonify({"success": False, "message": "File not found."}), 404
+        cur.execute("""
+            INSERT INTO misfile_dismissals (file_id, course_code, dismissed_by) VALUES (%s, %s, %s)
+            ON CONFLICT (file_id) DO UPDATE SET course_code = EXCLUDED.course_code,
+                dismissed_by = EXCLUDED.dismissed_by, dismissed_at = NOW();
+        """, (file_id, row[1], admin_email))
+        conn.commit()
+        cur.close()
+        _log(admin_email, 'dismiss_misfile', file_id, f"{row[0]} ({row[1]})")
+        return jsonify({"success": True})
+    except Exception:
+        conn.rollback()
+        logger.exception("%s %s failed", request.method, request.path)
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+    finally:
+        conn.close()
