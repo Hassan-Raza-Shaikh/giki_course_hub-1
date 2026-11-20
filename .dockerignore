@@ -21,4 +21,5 @@ frontend/
 *.pdf
 data/
 email_previews/
+scripts/
 tests/
